@@ -39,7 +39,7 @@
           <enum>Qt::AutoText</enum>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M2.DESC</string>
+          <string>$(CHAS):BAR:M2.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -59,7 +59,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M4.DESC</string>
+          <string>$(CHAS):BAR:M4.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -79,7 +79,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M14.DESC</string>
+          <string>$(CHAS):BAR:M14.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -99,7 +99,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M15.DESC</string>
+          <string>$(CHAS):BAR:M15.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -119,7 +119,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M16.DESC</string>
+          <string>$(CHAS):BAR:M16.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -139,7 +139,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M18.DESC</string>
+          <string>$(CHAS):BAR:M18.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -159,7 +159,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M28.DESC</string>
+          <string>$(CHAS):BAR:M28.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -179,7 +179,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M32.DESC</string>
+          <string>$(CHAS):BAR:M32.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -199,7 +199,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M40.DESC</string>
+          <string>$(CHAS):BAR:M40.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -219,7 +219,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M44.DESC</string>
+          <string>$(CHAS):BAR:M44.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -239,7 +239,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M69.DESC</string>
+          <string>$(CHAS):BAR:M69.DESC</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -266,7 +266,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M2</string>
+          <string>$(CHAS):BAR:M2</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -286,7 +286,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M4</string>
+          <string>$(CHAS):BAR:M4</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -306,7 +306,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M14</string>
+          <string>$(CHAS):BAR:M14</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -326,7 +326,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M15</string>
+          <string>$(CHAS):BAR:M15</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -346,7 +346,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M16</string>
+          <string>$(CHAS):BAR:M16</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -366,7 +366,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M18</string>
+          <string>$(CHAS):BAR:M18</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -386,7 +386,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M28</string>
+          <string>$(CHAS):BAR:M28</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -406,7 +406,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M32</string>
+          <string>$(CHAS):BAR:M32</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -426,7 +426,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M40</string>
+          <string>$(CHAS):BAR:M40</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -446,7 +446,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M44</string>
+          <string>$(CHAS):BAR:M44</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -466,7 +466,7 @@
           </font>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M69</string>
+          <string>$(CHAS):BAR:M69</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -507,7 +507,10 @@
           <enum>QEAnalogIndicator::Left_To_Right</enum>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M2</string>
+          <string>$(CHAS):BAR:M2</string>
+         </property>
+         <property name="variableSubstitutions" stdset="0">
+          <string/>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -544,7 +547,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M4</string>
+          <string>$(CHAS):BAR:M4</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -581,7 +584,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M14</string>
+          <string>$(CHAS):BAR:M14</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -618,7 +621,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M15</string>
+          <string>$(CHAS):BAR:M15</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -655,7 +658,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M16</string>
+          <string>$(CHAS):BAR:M16</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -692,7 +695,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M18</string>
+          <string>$(CHAS):BAR:M18</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -729,7 +732,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M28</string>
+          <string>$(CHAS):BAR:M28</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -766,7 +769,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M32</string>
+          <string>$(CHAS):BAR:M32</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -803,7 +806,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M40</string>
+          <string>$(CHAS):BAR:M40</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -840,7 +843,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M44</string>
+          <string>$(CHAS):BAR:M44</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -877,7 +880,7 @@
           <bool>true</bool>
          </property>
          <property name="variable" stdset="0">
-          <string>chas:BAR:M69</string>
+          <string>$(CHAS):BAR:M69</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
