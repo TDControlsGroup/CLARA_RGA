@@ -1,0 +1,35 @@
+In file included from widgets\QEPlotter/QEPlotterManager.h:31:0,
+                 from widgets\QEPlotter\QEPlotterManager.cpp:28:
+C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\include\QtDesigner/QDesignerCustomWidgetInterface:4:4: warning: #warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead.
+    ^
+In file included from O.win32-x86-mingw\moc\../../widgets/QEPlotter/QEPlotterManager.h:31:0,
+                 from O.win32-x86-mingw\moc\moc_QEPlotterManager.cpp:9:
+C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\include\QtDesigner/QDesignerCustomWidgetInterface:4:4: warning: #warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead.
+    ^
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x17f5): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x1805): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x187b): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x1893): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x1e0f): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x1f45): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x4bd8): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x4c18): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x8f43): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x8f73): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x8fd5): undefined reference to `QEStripChartRangeDialog::setRange(double, double)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x9012): undefined reference to `QEStripChartRangeDialog::getMinimum()'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x9023): undefined reference to `QEStripChartRangeDialog::getMaximum()'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x90c8): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x90ee): undefined reference to `QEGraphic::Axis::setLogarithmic(bool)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x9153): undefined reference to `QEStripChartRangeDialog::setRange(double, double)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x9190): undefined reference to `QEStripChartRangeDialog::getMinimum()'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x91a1): undefined reference to `QEStripChartRangeDialog::getMaximum()'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0xc38e): undefined reference to `QEStripChartRangeDialog::QEStripChartRangeDialog(QWidget*)'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x4bfa): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+./O.win32-x86-mingw\obj\QEPlotter.o:QEPlotter.cpp:(.text+0x4c3a): undefined reference to `QEGraphic::Axis::getLogarithmic() const'
+C:/Qt/Qt5.5.1_mingw/Tools/mingw492_32/bin/../lib/gcc/i686-w64-mingw32/4.9.2/../../../../i686-w64-mingw32/bin/ld.exe: ./O.win32-x86-mingw\obj\QEPlotter.o: bad reloc address 0x7 in section `.text$_ZN18standardPropertiesD0Ev[__ZN18standardPropertiesD0Ev]'
+collect2.exe: error: ld returned 1 exit status
+mingw32-make[1]: *** [designer\QEClaraPlugin.dll] Error 1
+mingw32-make: *** [release] Error 2
