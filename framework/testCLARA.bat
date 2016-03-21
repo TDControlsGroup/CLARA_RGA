@@ -13,4 +13,4 @@ set PATH=C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\designer;%PATH%
 
 REM Needs this if path moves or you change code. I think it tries the default dir
 set QT_PLUGIN_PATH=C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\
-C:\Users\zgm95989\Desktop\3.2.4\applications\QEGuiApp\bin\qegui.exe -e C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\ui\mv2_main_bar.ui -m "CHAS=chas"
+C:\Users\zgm95989\Desktop\3.2.4\applications\QEGuiApp\bin\qegui.exe -e C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\ui\mv2_epicsDisplay.ui

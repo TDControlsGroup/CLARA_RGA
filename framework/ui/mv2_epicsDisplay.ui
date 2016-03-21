@@ -6,4339 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1306</width>
-    <height>906</height>
+    <width>630</width>
+    <height>714</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>20</y>
-      <width>941</width>
-      <height>711</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::TabFocus</enum>
-    </property>
-    <property name="tabShape">
-     <enum>QTabWidget::Rounded</enum>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="RGA1">
-     <attribute name="title">
-      <string>RGA 1</string>
-     </attribute>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>933</width>
-        <height>571</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QELabel" name="qelabel_13">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_14">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>HE</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_15">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH2/N2++</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_16">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH3</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_17">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH4</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_18">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2O</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_19">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>N2/CO</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_20">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>O2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_21">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>AR</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_22">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CO2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_23">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CF3/C5H9</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
-         </property>
-         <item>
-          <widget class="QELabel" name="qelabel_35">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.599e-10 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_36">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>8.045e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_37">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>5.282e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_38">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_39">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_40">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.925e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_41">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.032e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_42">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.469e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_43">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_44">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>7.313e-12 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_45">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinimumSize</enum>
-         </property>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="orientation">
-            <enum>QEAnalogIndicator::Left_To_Right</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>3</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_4">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_6">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_7">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_9">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_10">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_11">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_8">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_5">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_3">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_2">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="geometry">
-       <rect>
-        <x>680</x>
-        <y>590</y>
-        <width>141</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Calibration</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_3">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Farady</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_4">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Multiplier</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Degas Filamant</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_5">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_6">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>RGA2</string>
-     </attribute>
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="geometry">
-       <rect>
-        <x>680</x>
-        <y>590</y>
-        <width>141</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Calibration</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_7">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_6">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Farady</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_7">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Multiplier</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_23">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Degas Filamant</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_8">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_9">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chbs:FILSTA</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="layoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>933</width>
-        <height>571</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QELabel" name="qelabel_24">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_25">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>HE</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_26">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH2/N2++</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_27">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH3</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_28">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH4</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_29">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2O</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_30">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>N2/CO</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_31">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>O2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_32">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>AR</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_33">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CO2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_34">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CF3/C5H9</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
-         </property>
-         <item>
-          <widget class="QELabel" name="qelabel_46">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.599e-10 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_47">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>8.045e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_48">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>5.282e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_49">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_50">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_52">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.925e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_60">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.032e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_61">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.469e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_62">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_63">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>7.313e-12 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_64">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinimumSize</enum>
-         </property>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_12">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="orientation">
-            <enum>QEAnalogIndicator::Left_To_Right</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M2</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>3</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_13">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M4</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_14">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M14</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_15">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M15</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_16">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M16</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_17">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M18</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_18">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M28</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_19">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M32</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_20">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M40</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_21">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M44</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_22">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chbs:BAR:M69</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>RGA3</string>
-     </attribute>
-     <widget class="QGroupBox" name="groupBox_8">
-      <property name="geometry">
-       <rect>
-        <x>680</x>
-        <y>590</y>
-        <width>141</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Calibration</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_20">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_24">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Farady</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_25">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Multiplier</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_26">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Degas Filamant</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_40">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_41">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chcs:FILSTA</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="layoutWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>933</width>
-        <height>571</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <widget class="QELabel" name="qelabel_65">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_66">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>HE</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_67">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH2/N2++</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_68">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH3</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_69">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH4</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_70">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2O</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_71">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>N2/CO</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_72">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>O2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_73">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>AR</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_74">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CO2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_75">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CF3/C5H9</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
-         </property>
-         <item>
-          <widget class="QELabel" name="qelabel_76">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.599e-10 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_77">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>8.045e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_78">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>5.282e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_79">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_80">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_81">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.925e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_82">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.032e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_83">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.469e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_84">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_85">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>7.313e-12 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_86">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinimumSize</enum>
-         </property>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_23">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="orientation">
-            <enum>QEAnalogIndicator::Left_To_Right</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M2</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>3</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_24">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M4</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_25">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M14</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_26">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M15</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_27">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M16</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_28">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M18</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_29">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M28</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_30">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M32</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_31">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M40</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_32">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M44</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_33">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chcs:BAR:M69</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_3">
-     <attribute name="title">
-      <string>RGA4</string>
-     </attribute>
-     <widget class="QGroupBox" name="groupBox_28">
-      <property name="geometry">
-       <rect>
-        <x>680</x>
-        <y>590</y>
-        <width>141</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Calibration</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_42">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_27">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Farady</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_28">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cal Multiplier</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_29">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Degas Filamant</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_43">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_44">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chds:FILSTA</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="layoutWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>933</width>
-        <height>571</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_10">
-         <item>
-          <widget class="QELabel" name="qelabel_87">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_88">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>HE</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_89">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH2/N2++</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_90">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH3</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_91">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CH4</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_92">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>H2O</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_93">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>N2/CO</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_94">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>O2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_95">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>AR</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_96">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CO2</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_97">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69.DESC</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>CF3/C5H9</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_11">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
-         </property>
-         <item>
-          <widget class="QELabel" name="qelabel_98">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M2</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.599e-10 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_99">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M4</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>8.045e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_100">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M14</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>5.282e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_101">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M15</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_102">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M16</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_103">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M18</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.925e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_104">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M28</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>2.032e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_105">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M32</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>4.469e-11 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_106">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M40</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_107">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M44</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>7.313e-12 mbar</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QELabel" name="qelabel_108">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chas:BAR:M69</string>
-           </property>
-           <property name="notation" stdset="0">
-            <enum>QELabel::Scientific</enum>
-           </property>
-           <property name="text">
-            <string>1.000e-14 mbar</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinimumSize</enum>
-         </property>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_34">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="orientation">
-            <enum>QEAnalogIndicator::Left_To_Right</enum>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M2</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>3</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_35">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M4</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_36">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M14</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_37">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M15</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_38">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M16</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_39">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M18</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_40">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M28</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_41">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M32</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_42">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M40</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_43">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M44</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_44">
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <double>0.000000000010000</double>
-           </property>
-           <property name="maximum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="showText">
-            <bool>false</bool>
-           </property>
-           <property name="showScale">
-            <bool>true</bool>
-           </property>
-           <property name="logScale">
-            <bool>true</bool>
-           </property>
-           <property name="variable" stdset="0">
-            <string>chds:BAR:M69</string>
-           </property>
-           <property name="useDbDisplayLimits">
-            <bool>true</bool>
-           </property>
-           <property name="precision">
-            <number>11</number>
-           </property>
-           <property name="useDbPrecision">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>311</width>
+      <width>351</width>
       <height>161</height>
      </rect>
     </property>
@@ -4705,13 +386,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:MODE</string>
+       <string>chas:CON</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Remote</string>
+       <string>Stop</string>
       </property>
      </widget>
     </widget>
@@ -5103,7 +784,7 @@
       <rect>
        <x>200</x>
        <y>10</y>
-       <width>101</width>
+       <width>131</width>
        <height>141</height>
       </rect>
      </property>
@@ -5115,24 +796,136 @@
        <rect>
         <x>10</x>
         <y>110</y>
-        <width>51</width>
+        <width>91</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Single</string>
+       <string>Single Scan</string>
       </property>
       <property name="variable" stdset="0">
        <string>cas</string>
       </property>
      </widget>
+     <widget class="QEPushButton" name="qepushbutton_30">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>77</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stop</string>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:CON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string>display=$(chas:CON)</string>
+      </property>
+      <property name="clickText">
+       <string>Stop</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>6</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_31">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>77</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1-50</string>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:CON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string>display=$(chas:CON)</string>
+      </property>
+      <property name="clickText">
+       <string>Stop</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>6</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_32">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>77</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1-100</string>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:CON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string>display=$(chas:CON)</string>
+      </property>
+      <property name="clickText">
+       <string>Stop</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>6</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_33">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>77</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1-200</string>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:CON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string>display=$(chas:CON)</string>
+      </property>
+      <property name="clickText">
+       <string>Stop</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>6</string>
+      </property>
+     </widget>
      <widget class="QEBitStatus" name="qebitstatus_45">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>31</width>
-        <height>21</height>
+        <x>90</x>
+        <y>41</y>
+        <width>21</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="numberOfBits">
@@ -5156,45 +949,73 @@
        </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:FILSTA</string>
+       <string>chas:DATA</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qepushbutton_30">
+     <widget class="QEBitStatus" name="qebitstatus_46">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>77</width>
-        <height>23</height>
+        <x>90</x>
+        <y>60</y>
+        <width>21</width>
+        <height>16</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Stop/Start</string>
+      <property name="numberOfBits">
+       <number>1</number>
+      </property>
+      <property name="shape">
+       <enum>QBitStatus::Circle</enum>
+      </property>
+      <property name="invalidColour">
+       <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="offColour">
+       <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:CON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chas:HEADSTA</string>
-      </property>
-      <property name="clickText">
-       <string>Stop</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>6</string>
+       <string>chas:DATA</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_4">
+     <widget class="QEBitStatus" name="qebitstatus_48">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>80</y>
-        <width>51</width>
-        <height>17</height>
+        <width>21</width>
+        <height>16</height>
        </rect>
       </property>
-      <property name="text">
-       <string>0-50</string>
+      <property name="numberOfBits">
+       <number>1</number>
+      </property>
+      <property name="shape">
+       <enum>QBitStatus::Circle</enum>
+      </property>
+      <property name="invalidColour">
+       <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="offColour">
+       <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:DATA</string>
       </property>
      </widget>
     </widget>
@@ -5204,7 +1025,7 @@
      <rect>
       <x>10</x>
       <y>180</y>
-      <width>311</width>
+      <width>351</width>
       <height>161</height>
      </rect>
     </property>
@@ -5571,13 +1392,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chbs:MODE</string>
+       <string>chbs:CON</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Remote</string>
+       <string>Stop</string>
       </property>
      </widget>
     </widget>
@@ -5983,7 +1804,7 @@
      <rect>
       <x>10</x>
       <y>340</y>
-      <width>311</width>
+      <width>351</width>
       <height>161</height>
      </rect>
     </property>
@@ -6350,13 +2171,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chcs:MODE</string>
+       <string>chcs:CON</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Remote</string>
+       <string>Stop</string>
       </property>
      </widget>
     </widget>
@@ -6762,7 +2583,7 @@
      <rect>
       <x>10</x>
       <y>500</y>
-      <width>311</width>
+      <width>351</width>
       <height>161</height>
      </rect>
     </property>
@@ -7129,7 +2950,7 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chds:MODE</string>
+       <string>chds:CON</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
@@ -7536,36 +3357,185 @@
      </property>
     </widget>
    </widget>
-   <widget class="QEPushButton" name="qepushbutton_22">
+   <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>760</y>
-      <width>131</width>
-      <height>20</height>
+      <x>380</x>
+      <y>20</y>
+      <width>161</width>
+      <height>151</height>
      </rect>
     </property>
-    <property name="text">
-     <string>RGA Bar Chart</string>
+    <property name="title">
+     <string>RGA plots</string>
     </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-    <property name="variable" stdset="0">
-     <string/>
-    </property>
-    <property name="altReadbackVariable" stdset="0">
-     <string/>
-    </property>
-    <property name="pressText">
-     <string>1</string>
-    </property>
-    <property name="guiFile" stdset="0">
-     <string>barchart.ui</string>
-    </property>
-    <property name="creationOption" stdset="0">
-     <enum>QEPushButton::NewTab</enum>
-    </property>
+    <widget class="QEPushButton" name="qepushbutton_22">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA Bar Chart</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>barchart.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewTab</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_23">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA 3</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chcs</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_24">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA 2</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chbs</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_25">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA 1</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chas</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_26">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA 4</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chds</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -7573,7 +3543,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1306</width>
+     <width>630</width>
      <height>21</height>
     </rect>
    </property>
@@ -7581,11 +3551,6 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QEAnalogProgressBar</class>
-   <extends>QEAnalogIndicator</extends>
-   <header>QEAnalogProgressBar.h</header>
-  </customwidget>
   <customwidget>
    <class>QEBitStatus</class>
    <extends>QBitStatus</extends>
@@ -7605,11 +3570,6 @@
    <class>QEPushButton</class>
    <extends>QPushButton</extends>
    <header>QEPushButton.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QEAnalogIndicator</class>
-   <extends>QWidget</extends>
-   <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
    <class>QBitStatus</class>
