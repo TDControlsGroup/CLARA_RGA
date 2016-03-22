@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>714</height>
+    <width>629</width>
+    <height>802</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -374,7 +374,7 @@
        <rect>
         <x>70</x>
         <y>30</y>
-        <width>71</width>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
@@ -386,13 +386,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:CON</string>
+       <string>chas:HEADSTA</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Stop</string>
+       <string>Local Control</string>
       </property>
      </widget>
     </widget>
@@ -796,15 +796,36 @@
        <rect>
         <x>10</x>
         <y>110</y>
-        <width>91</width>
-        <height>17</height>
+        <width>81</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
        <string>Single Scan</string>
       </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
       <property name="variable" stdset="0">
-       <string>cas</string>
+       <string>chas:SETSCAN</string>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>0</string>
+      </property>
+      <property name="releaseText">
+       <string>1</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>0</string>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_30">
@@ -832,7 +853,7 @@
        <string>Stop</string>
       </property>
       <property name="clickCheckedText">
-       <string>6</string>
+       <string/>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_31">
@@ -857,10 +878,10 @@
        <string>display=$(chas:CON)</string>
       </property>
       <property name="clickText">
-       <string>Stop</string>
+       <string>5</string>
       </property>
       <property name="clickCheckedText">
-       <string>6</string>
+       <string/>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_32">
@@ -885,10 +906,10 @@
        <string>display=$(chas:CON)</string>
       </property>
       <property name="clickText">
-       <string>Stop</string>
+       <string>6</string>
       </property>
       <property name="clickCheckedText">
-       <string>6</string>
+       <string/>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_33">
@@ -913,109 +934,172 @@
        <string>display=$(chas:CON)</string>
       </property>
       <property name="clickText">
-       <string>Stop</string>
+       <string>7</string>
       </property>
       <property name="clickCheckedText">
-       <string>6</string>
+       <string/>
       </property>
      </widget>
-     <widget class="QEBitStatus" name="qebitstatus_45">
+     <widget class="QESimpleShape" name="qesimpleshape">
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>41</y>
-        <width>21</width>
+        <y>20</y>
+        <width>16</width>
         <height>16</height>
        </rect>
       </property>
-      <property name="numberOfBits">
-       <number>1</number>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
       </property>
       <property name="shape">
-       <enum>QBitStatus::Circle</enum>
+       <enum>QSimpleShape::circle</enum>
       </property>
-      <property name="invalidColour">
+      <property name="format" stdset="0">
+       <enum>QSimpleShape::FixedText</enum>
+      </property>
+      <property name="colour0" stdset="0">
+       <color>
+        <red>255</red>
+        <green>255</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="colour1" stdset="0">
        <color>
         <red>255</red>
         <green>0</green>
         <blue>0</blue>
        </color>
       </property>
-      <property name="offColour">
+      <property name="variable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string/>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_4">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>40</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::circle</enum>
+      </property>
+      <property name="colour5" stdset="0">
        <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>0</red>
+        <green>200</green>
+        <blue>0</blue>
        </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:DATA</string>
+       <string>chas:HEADSTAT</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
       </property>
      </widget>
-     <widget class="QEBitStatus" name="qebitstatus_46">
+     <widget class="QESimpleShape" name="qesimpleshape_3">
       <property name="geometry">
        <rect>
         <x>90</x>
         <y>60</y>
-        <width>21</width>
+        <width>16</width>
         <height>16</height>
        </rect>
       </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
       <property name="shape">
-       <enum>QBitStatus::Circle</enum>
+       <enum>QSimpleShape::circle</enum>
       </property>
-      <property name="invalidColour">
+      <property name="colour6" stdset="0">
        <color>
-        <red>255</red>
-        <green>0</green>
+        <red>0</red>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
       <property name="variable" stdset="0">
-       <string>chas:DATA</string>
+       <string>chas:HEADSTAT</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
       </property>
      </widget>
-     <widget class="QEBitStatus" name="qebitstatus_48">
+     <widget class="QESimpleShape" name="qesimpleshape_2">
       <property name="geometry">
        <rect>
         <x>90</x>
         <y>80</y>
-        <width>21</width>
+        <width>16</width>
         <height>16</height>
        </rect>
       </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
       <property name="shape">
-       <enum>QBitStatus::Circle</enum>
+       <enum>QSimpleShape::circle</enum>
       </property>
-      <property name="invalidColour">
+      <property name="colour7" stdset="0">
        <color>
-        <red>255</red>
-        <green>0</green>
+        <red>0</red>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
-      <property name="offColour">
+      <property name="variable" stdset="0">
+       <string>chas:HEADSTAT</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_5">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::circle</enum>
+      </property>
+      <property name="colour0" stdset="0">
        <color>
-        <red>255</red>
+        <red>0</red>
         <green>255</green>
-        <blue>255</blue>
+        <blue>0</blue>
        </color>
       </property>
+      <property name="colour1" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
       <property name="variable" stdset="0">
-       <string>chas:DATA</string>
+       <string>chas:SCAN</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+      <property name="edgeAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Always</enum>
       </property>
      </widget>
     </widget>
@@ -1380,7 +1464,7 @@
        <rect>
         <x>70</x>
         <y>30</y>
-        <width>71</width>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
@@ -1392,13 +1476,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chbs:CON</string>
+       <string>chbs:HEADSTA</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Stop</string>
+       <string>Idle</string>
       </property>
      </widget>
     </widget>
@@ -1785,19 +1869,6 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_30">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>10</y>
-       <width>101</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Scan</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_16">
     <property name="geometry">
@@ -2159,7 +2230,7 @@
        <rect>
         <x>70</x>
         <y>30</y>
-        <width>71</width>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
@@ -2171,13 +2242,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chcs:CON</string>
+       <string>chcs:HEADSTA</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Stop</string>
+       <string>Idle</string>
       </property>
      </widget>
     </widget>
@@ -2564,19 +2635,6 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_31">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>20</y>
-       <width>101</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Scan</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_22">
     <property name="geometry">
@@ -2938,7 +2996,7 @@
        <rect>
         <x>70</x>
         <y>30</y>
-        <width>71</width>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
@@ -2950,13 +3008,13 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chds:CON</string>
+       <string>chds:HEADSTA</string>
       </property>
       <property name="notation" stdset="0">
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Remote</string>
+       <string>Idle</string>
       </property>
      </widget>
     </widget>
@@ -3343,19 +3401,6 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_32">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>20</y>
-       <width>101</width>
-       <height>121</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Scan</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -3537,13 +3582,895 @@
      </property>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="groupBox_33">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>190</y>
+      <width>131</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Scan</string>
+    </property>
+    <widget class="QECheckBox" name="qecheckbox_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Single Scan</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:SETSCAN</string>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_6">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="format" stdset="0">
+      <enum>QSimpleShape::FixedText</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>243</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:HEADSTA</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_7">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>60</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour6" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_8">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>80</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour7" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_9">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour5" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_10">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>110</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>0</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="flash0" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:SCAN</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+     <property name="edgeAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Always</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_34">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-100</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>6</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_35">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-200</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>7</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_36">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>Stop</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_37">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-50</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chbs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>5</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_30">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>350</y>
+      <width>131</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Scan</string>
+    </property>
+    <widget class="QECheckBox" name="qecheckbox_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Single Scan</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:SETSCAN</string>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_11">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="format" stdset="0">
+      <enum>QSimpleShape::FixedText</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>243</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:HEADSTA</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_12">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>60</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour6" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_13">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>80</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour7" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_14">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour5" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_15">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>110</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>0</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="flash0" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:SCAN</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+     <property name="edgeAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Always</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_38">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-100</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>6</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_39">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-200</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>7</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_40">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>Stop</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_41">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-50</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chcs:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>5</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_31">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>510</y>
+      <width>131</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Scan</string>
+    </property>
+    <widget class="QECheckBox" name="qecheckbox_6">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Single Scan</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:SETSCAN</string>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_16">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="format" stdset="0">
+      <enum>QSimpleShape::FixedText</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>243</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:HEADSTA</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_17">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>60</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour6" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_18">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>80</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour7" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_19">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour5" stdset="0">
+      <color>
+       <red>0</red>
+       <green>200</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:HEADSTAT</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="qesimpleshape_20">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>110</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::circle</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>0</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="flash0" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:SCAN</string>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+     <property name="edgeAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Always</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_42">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-100</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>6</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_43">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-200</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>7</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_44">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>Stop</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_45">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>77</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1-50</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>chds:CON</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string>chas:HEADSTA</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>display=$(chas:CON)</string>
+     </property>
+     <property name="clickText">
+      <string>5</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>630</width>
+     <width>629</width>
      <height>21</height>
     </rect>
    </property>
@@ -3572,9 +4499,19 @@
    <header>QEPushButton.h</header>
   </customwidget>
   <customwidget>
+   <class>QESimpleShape</class>
+   <extends>QSimpleShape</extends>
+   <header>QESimpleShape.h</header>
+  </customwidget>
+  <customwidget>
    <class>QBitStatus</class>
    <extends>QWidget</extends>
    <header>QBitStatus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSimpleShape</class>
+   <extends>QWidget</extends>
+   <header>QSimpleShape.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
