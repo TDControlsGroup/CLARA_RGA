@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
+    <width>529</width>
     <height>802</height>
    </rect>
   </property>
@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>351</width>
-      <height>161</height>
+      <y>80</y>
+      <width>341</width>
+      <height>221</height>
      </rect>
     </property>
     <property name="title">
@@ -227,7 +227,7 @@
        </font>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:SETFIL</string>
+       <string>chas:FIL</string>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_2">
@@ -392,7 +392,7 @@
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Local Control</string>
+       <string>Barchart 1-200</string>
       </property>
      </widget>
     </widget>
@@ -785,7 +785,7 @@
        <x>200</x>
        <y>10</y>
        <width>131</width>
-       <height>141</height>
+       <height>201</height>
       </rect>
      </property>
      <property name="title">
@@ -795,7 +795,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
+        <y>170</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -860,7 +860,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>60</y>
         <width>77</width>
         <height>20</height>
        </rect>
@@ -888,7 +888,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>80</y>
         <width>77</width>
         <height>20</height>
        </rect>
@@ -916,7 +916,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>100</y>
         <width>77</width>
         <height>20</height>
        </rect>
@@ -989,13 +989,27 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>40</y>
+        <y>60</y>
         <width>16</width>
         <height>16</height>
        </rect>
       </property>
       <property name="shape">
        <enum>QSimpleShape::circle</enum>
+      </property>
+      <property name="colour3" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="colour4" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
       </property>
       <property name="colour5" stdset="0">
        <color>
@@ -1004,8 +1018,14 @@
         <blue>0</blue>
        </color>
       </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="flash1" stdset="0">
+       <bool>false</bool>
+      </property>
       <property name="variable" stdset="0">
-       <string>chas:HEADSTAT</string>
+       <string>chas:HEADSTA</string>
       </property>
       <property name="displayAlarmStateOption" stdset="0">
        <enum>QESimpleShape::Never</enum>
@@ -1015,7 +1035,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>60</y>
+        <y>80</y>
         <width>16</width>
         <height>16</height>
        </rect>
@@ -1031,7 +1051,7 @@
        </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:HEADSTAT</string>
+       <string>chas:HEADSTA</string>
       </property>
       <property name="displayAlarmStateOption" stdset="0">
        <enum>QESimpleShape::Never</enum>
@@ -1041,7 +1061,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>80</y>
+        <y>100</y>
         <width>16</width>
         <height>16</height>
        </rect>
@@ -1057,7 +1077,7 @@
        </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chas:HEADSTAT</string>
+       <string>chas:HEADSTA</string>
       </property>
       <property name="displayAlarmStateOption" stdset="0">
        <enum>QESimpleShape::Never</enum>
@@ -1067,7 +1087,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>110</y>
+        <y>170</y>
         <width>16</width>
         <height>16</height>
        </rect>
@@ -1102,2313 +1122,102 @@
        <enum>QESimpleShape::Always</enum>
       </property>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_10">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>180</y>
-      <width>351</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>RGA 2</string>
-    </property>
-    <widget class="QGroupBox" name="groupBox_11">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Filament Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_13">
+     <widget class="QEPushButton" name="qepushbutton_34">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
+        <x>10</x>
+        <y>140</y>
+        <width>77</width>
+        <height>20</height>
        </rect>
       </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>3</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>4</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
+      <property name="text">
+       <string>1-200</string>
       </property>
       <property name="variable" stdset="0">
-       <string>chbs:FILSTA</string>
+       <string>chas:CON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string>display=$(chas:CON)</string>
+      </property>
+      <property name="clickText">
+       <string>8</string>
+      </property>
+      <property name="clickCheckedText">
+       <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="label_13">
+     <widget class="QESimpleShape" name="qesimpleshape_6">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>10</y>
+        <x>90</x>
+        <y>140</y>
         <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Fail</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>On/Off</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_14">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chbs:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_15">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Cool/Warm</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_15">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chbs:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_4">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>60</y>
-        <width>61</width>
         <height>16</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chas:SETFIL</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_10">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>81</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Filament select</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chbs:SETFIL</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chbs:FIL</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_11">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Filament Power</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chbs:FILCON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chbs:FILSTA</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_12">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>181</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_22">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
       <property name="shape">
-       <enum>QBitStatus::Circle</enum>
+       <enum>QSimpleShape::circle</enum>
       </property>
-      <property name="invalidColour">
+      <property name="colour7" stdset="0">
        <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
        </color>
       </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
+      <property name="colour8" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
       <property name="variable" stdset="0">
-       <string>chbs:ILK</string>
+       <string>chas:HEADSTA</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="label_16">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>IMG Interlock</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_28">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Control</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_54">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>30</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chbs:HEADSTA</string>
-      </property>
-      <property name="notation" stdset="0">
-       <enum>QELabel::Scientific</enum>
-      </property>
-      <property name="text">
-       <string>Idle</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_13">
-     <property name="geometry">
-      <rect>
-       <x>-10</x>
-       <y>410</y>
-       <width>211</width>
-       <height>191</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA 1</string>
-     </property>
-     <widget class="QGroupBox" name="groupBox_14">
+     <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
-        <width>181</width>
-        <height>101</height>
+        <y>40</y>
+        <width>47</width>
+        <height>13</height>
        </rect>
       </property>
-      <property name="title">
-       <string>Filament Status</string>
+      <property name="text">
+       <string>Bar Chart</string>
       </property>
-      <widget class="QEBitStatus" name="qebitstatus_16">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>3</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>4</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_17">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>20</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Fail</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_18">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>On/Off</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_17">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_19">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>20</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cool/Warm</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_18">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_5">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>70</y>
-         <width>61</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_12">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>81</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament select</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FIL</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_13">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament Power</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_15">
+     <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>120</y>
-        <width>151</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>RGA Status</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_23">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>0</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:ILK</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_20">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>IMG Interlock</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_29">
-       <property name="geometry">
-        <rect>
-         <x>80</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Control</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_55">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:MODE</string>
-       </property>
-       <property name="notation" stdset="0">
-        <enum>QELabel::Scientific</enum>
-       </property>
-       <property name="text">
-        <string>Remote</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_16">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>340</y>
-      <width>351</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>RGA 3</string>
-    </property>
-    <widget class="QGroupBox" name="groupBox_17">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Filament Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_24">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>3</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>4</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_21">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>10</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Fail</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_22">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>On/Off</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_25">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_23">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Cool/Warm</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_26">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_6">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>60</y>
-        <width>61</width>
+        <width>121</width>
         <height>16</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chas:SETFIL</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_14">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>81</width>
-        <height>23</height>
-       </rect>
-      </property>
       <property name="text">
-       <string>Filament select</string>
+       <string>Analogue Scan (32 ppp)</string>
       </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:SETFIL</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chcs:FIL</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_15">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Filament Power</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:FILCON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chcs:FILSTA</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_18">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>181</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_27">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>0</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:ILK</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_24">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>IMG Interlock</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_30">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Control</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_56">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>30</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chcs:HEADSTA</string>
-      </property>
-      <property name="notation" stdset="0">
-       <enum>QELabel::Scientific</enum>
-      </property>
-      <property name="text">
-       <string>Idle</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_19">
-     <property name="geometry">
-      <rect>
-       <x>-10</x>
-       <y>410</y>
-       <width>211</width>
-       <height>191</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA 1</string>
-     </property>
-     <widget class="QGroupBox" name="groupBox_20">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>181</width>
-        <height>101</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Filament Status</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_28">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>3</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>4</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_31">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>20</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Fail</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_32">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>On/Off</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_29">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_33">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>20</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cool/Warm</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_30">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_7">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>70</y>
-         <width>61</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_16">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>81</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament select</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FIL</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_17">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament Power</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_21">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>151</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>RGA Status</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_31">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>0</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:ILK</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_34">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>IMG Interlock</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_35">
-       <property name="geometry">
-        <rect>
-         <x>80</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Control</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_57">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:MODE</string>
-       </property>
-       <property name="notation" stdset="0">
-        <enum>QELabel::Scientific</enum>
-       </property>
-       <property name="text">
-        <string>Remote</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_22">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>500</y>
-      <width>351</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>RGA 4</string>
-    </property>
-    <widget class="QGroupBox" name="groupBox_23">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Filament Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_32">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>3</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>4</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_36">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>10</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Fail</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_37">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>On/Off</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_33">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_38">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Cool/Warm</string>
-      </property>
-     </widget>
-     <widget class="QEBitStatus" name="qebitstatus_34">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shift">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:FILSTA</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_8">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>60</y>
-        <width>61</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chas:SETFIL</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_18">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>81</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Filament select</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:SETFIL</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chds:FIL</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="qepushbutton_19">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Filament Power</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:FILCON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string>chds:FILSTA</string>
-      </property>
-      <property name="pressText">
-       <string>1</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_24">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>181</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA Status</string>
-     </property>
-     <widget class="QEBitStatus" name="qebitstatus_35">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="numberOfBits">
-       <number>1</number>
-      </property>
-      <property name="shape">
-       <enum>QBitStatus::Circle</enum>
-      </property>
-      <property name="invalidColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="onColour">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="offColour">
-       <color>
-        <red>0</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:ILK</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_39">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>IMG Interlock</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_40">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Control</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_58">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>30</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="variable" stdset="0">
-       <string>chds:HEADSTA</string>
-      </property>
-      <property name="notation" stdset="0">
-       <enum>QELabel::Scientific</enum>
-      </property>
-      <property name="text">
-       <string>Idle</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_25">
-     <property name="geometry">
-      <rect>
-       <x>-10</x>
-       <y>410</y>
-       <width>211</width>
-       <height>191</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>RGA 1</string>
-     </property>
-     <widget class="QGroupBox" name="groupBox_26">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>181</width>
-        <height>101</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Filament Status</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_36">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>3</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>4</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_41">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>20</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Fail</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_42">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>On/Off</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_37">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_43">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>20</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cool/Warm</string>
-       </property>
-      </widget>
-      <widget class="QEBitStatus" name="qebitstatus_38">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shift">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_9">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>70</y>
-         <width>61</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_20">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>81</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament select</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:SETFIL</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FIL</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-      <widget class="QEPushButton" name="qepushbutton_21">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filament Power</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:FILCON</string>
-       </property>
-       <property name="altReadbackVariable" stdset="0">
-        <string>chas:FILSTA</string>
-       </property>
-       <property name="pressText">
-        <string>1</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_27">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>151</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>RGA Status</string>
-      </property>
-      <widget class="QEBitStatus" name="qebitstatus_39">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="numberOfBits">
-        <number>1</number>
-       </property>
-       <property name="shape">
-        <enum>QBitStatus::Circle</enum>
-       </property>
-       <property name="invalidColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="onColour">
-        <color>
-         <red>255</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="offColour">
-        <color>
-         <red>0</red>
-         <green>255</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:ILK</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_44">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>IMG Interlock</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_45">
-       <property name="geometry">
-        <rect>
-         <x>80</x>
-         <y>20</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>6</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Control</string>
-       </property>
-      </widget>
-      <widget class="QELabel" name="qelabel_59">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="variable" stdset="0">
-        <string>chas:MODE</string>
-       </property>
-       <property name="notation" stdset="0">
-        <enum>QELabel::Scientific</enum>
-       </property>
-       <property name="text">
-        <string>Remote</string>
-       </property>
-      </widget>
      </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>20</y>
-      <width>161</width>
-      <height>151</height>
+      <x>10</x>
+      <y>10</y>
+      <width>511</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="title">
@@ -3417,9 +1226,9 @@
     <widget class="QEPushButton" name="qepushbutton_22">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>120</y>
-       <width>131</width>
+       <x>380</x>
+       <y>20</y>
+       <width>121</width>
        <height>20</height>
       </rect>
      </property>
@@ -3445,51 +1254,17 @@
       <enum>QEPushButton::NewTab</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_23">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>131</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>RGA 3</string>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <property name="variable" stdset="0">
-      <string/>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string/>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>CHD=chcs</string>
-     </property>
-     <property name="pressText">
-      <string>1</string>
-     </property>
-     <property name="guiFile" stdset="0">
-      <string>mv2_main_bar.ui</string>
-     </property>
-     <property name="creationOption" stdset="0">
-      <enum>QEPushButton::NewWindow</enum>
-     </property>
-    </widget>
     <widget class="QEPushButton" name="qepushbutton_24">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>220</x>
        <y>40</y>
-       <width>131</width>
+       <width>141</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>RGA 2</string>
+      <string>RGA Analogue Strip Chart</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -3516,14 +1291,14 @@
     <widget class="QEPushButton" name="qepushbutton_25">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>220</x>
        <y>20</y>
-       <width>131</width>
+       <width>141</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>RGA 1</string>
+      <string>RGA Strip chart</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -3547,17 +1322,116 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
+    <widget class="QEPushButton" name="qepushbutton_27">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>40</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA Analogue Scan</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>barchart.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewTab</enum>
+     </property>
+    </widget>
     <widget class="QEPushButton" name="qepushbutton_26">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
-       <width>131</width>
+       <y>40</y>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>RGA 4</string>
+      <string>RGA summary 3</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chcs</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_28">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA summary 1</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string/>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string>CHD=chas</string>
+     </property>
+     <property name="pressText">
+      <string>1</string>
+     </property>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
+     </property>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
+     </property>
+    </widget>
+    <widget class="QEPushButton" name="qepushbutton_29">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>40</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RGA Summary 4</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -3581,886 +1455,38 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_33">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>190</y>
-      <width>131</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Scan</string>
-    </property>
-    <widget class="QECheckBox" name="qecheckbox_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>110</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Single Scan</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:SETSCAN</string>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_6">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>20</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="format" stdset="0">
-      <enum>QSimpleShape::FixedText</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>243</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>255</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:HEADSTA</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_7">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>60</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour6" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_8">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>80</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour7" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_9">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>40</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour5" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_10">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>110</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>0</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>200</red>
-       <green>200</green>
-       <blue>200</blue>
-      </color>
-     </property>
-     <property name="flash0" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:SCAN</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-     <property name="edgeAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Always</enum>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_34">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-100</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>6</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
     <widget class="QEPushButton" name="qepushbutton_35">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-200</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>7</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_36">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
+       <x>100</x>
        <y>20</y>
-       <width>77</width>
+       <width>101</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Stop</string>
+      <string>RGA Summary 2</string>
      </property>
-     <property name="variable" stdset="0">
-      <string>chbs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>Stop</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_37">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-50</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chbs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>5</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_30">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>350</y>
-      <width>131</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Scan</string>
-    </property>
-    <widget class="QECheckBox" name="qecheckbox_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>110</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Single Scan</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:SETSCAN</string>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_11">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>20</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="format" stdset="0">
-      <enum>QSimpleShape::FixedText</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>243</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>255</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:HEADSTA</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_12">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>60</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour6" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_13">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>80</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour7" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_14">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>40</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour5" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_15">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>110</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>0</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>200</red>
-       <green>200</green>
-       <blue>200</blue>
-      </color>
-     </property>
-     <property name="flash0" stdset="0">
+     <property name="checkable">
       <bool>false</bool>
      </property>
      <property name="variable" stdset="0">
-      <string>chcs:SCAN</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-     <property name="edgeAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Always</enum>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_38">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-100</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>6</string>
-     </property>
-     <property name="clickCheckedText">
       <string/>
      </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_39">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-200</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:CON</string>
-     </property>
      <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>7</string>
-     </property>
-     <property name="clickCheckedText">
       <string/>
      </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_40">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stop</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
      <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
+      <string>CHD=chbs</string>
      </property>
-     <property name="clickText">
-      <string>Stop</string>
+     <property name="pressText">
+      <string>1</string>
      </property>
-     <property name="clickCheckedText">
-      <string/>
+     <property name="guiFile" stdset="0">
+      <string>mv2_main_bar.ui</string>
      </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_41">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-50</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chcs:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>5</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_31">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>510</y>
-      <width>131</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Scan</string>
-    </property>
-    <widget class="QECheckBox" name="qecheckbox_6">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>110</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Single Scan</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:SETSCAN</string>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_16">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>20</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="format" stdset="0">
-      <enum>QSimpleShape::FixedText</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>243</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>255</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:HEADSTA</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_17">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>60</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour6" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_18">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>80</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour7" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_19">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>40</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour5" stdset="0">
-      <color>
-       <red>0</red>
-       <green>200</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:HEADSTAT</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_20">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>110</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::circle</enum>
-     </property>
-     <property name="colour0" stdset="0">
-      <color>
-       <red>0</red>
-       <green>255</green>
-       <blue>0</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>200</red>
-       <green>200</green>
-       <blue>200</blue>
-      </color>
-     </property>
-     <property name="flash0" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:SCAN</string>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-     <property name="edgeAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Always</enum>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_42">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-100</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>6</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_43">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-200</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>7</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_44">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stop</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>Stop</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QEPushButton" name="qepushbutton_45">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>77</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>1-50</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>chds:CON</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string>chas:HEADSTA</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string>display=$(chas:CON)</string>
-     </property>
-     <property name="clickText">
-      <string>5</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
+     <property name="creationOption" stdset="0">
+      <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
    </widget>
@@ -4470,7 +1496,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>629</width>
+     <width>529</width>
      <height>21</height>
     </rect>
    </property>
