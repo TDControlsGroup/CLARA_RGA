@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/forms">
+        <file alias="mainform">C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_epicsDisplay.ui</file>
+        <file alias="bar">C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_main_bar.ui</file>
+        <file alias="barchart">C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart.ui</file>
+        <file alias="anachart">C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart_ana.ui</file>
+    </qresource>
+</RCC>

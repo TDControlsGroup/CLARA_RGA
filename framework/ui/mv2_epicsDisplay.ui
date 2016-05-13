@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>80</y>
-      <width>341</width>
-      <height>221</height>
+      <width>371</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="title">
@@ -392,7 +392,7 @@
        <enum>QELabel::Scientific</enum>
       </property>
       <property name="text">
-       <string>Barchart 1-200</string>
+       <string>Analog 1-200</string>
       </property>
      </widget>
     </widget>
@@ -784,8 +784,8 @@
       <rect>
        <x>200</x>
        <y>10</y>
-       <width>131</width>
-       <height>201</height>
+       <width>151</width>
+       <height>231</height>
       </rect>
      </property>
      <property name="title">
@@ -1209,6 +1209,37 @@
        <string>Analogue Scan (32 ppp)</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_26">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Percent scanned:</string>
+      </property>
+     </widget>
+     <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>210</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="variable" stdset="0">
+       <string>chas:PERSCANNED</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
@@ -1223,7 +1254,7 @@
     <property name="title">
      <string>RGA plots</string>
     </property>
-    <widget class="QEPushButton" name="qepushbutton_22">
+    <widget class="QEPushButton" name="barscan">
      <property name="geometry">
       <rect>
        <x>380</x>
@@ -1254,7 +1285,7 @@
       <enum>QEPushButton::NewTab</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_24">
+    <widget class="QEPushButton" name="anastrip">
      <property name="geometry">
       <rect>
        <x>220</x>
@@ -1288,7 +1319,7 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_25">
+    <widget class="QEPushButton" name="barstrip">
      <property name="geometry">
       <rect>
        <x>220</x>
@@ -1322,7 +1353,7 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_27">
+    <widget class="QEPushButton" name="anascan">
      <property name="geometry">
       <rect>
        <x>380</x>
@@ -1347,13 +1378,13 @@
       <string>1</string>
      </property>
      <property name="guiFile" stdset="0">
-      <string>barchart.ui</string>
+      <string>barchart_ana.ui</string>
      </property>
      <property name="creationOption" stdset="0">
       <enum>QEPushButton::NewTab</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_26">
+    <widget class="QEPushButton" name="summary3">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1375,10 +1406,13 @@
       <string/>
      </property>
      <property name="variableSubstitutions" stdset="0">
-      <string>CHD=chcs</string>
+      <string/>
      </property>
      <property name="pressText">
-      <string>1</string>
+      <string>3</string>
+     </property>
+     <property name="clickText">
+      <string>3</string>
      </property>
      <property name="guiFile" stdset="0">
       <string>mv2_main_bar.ui</string>
@@ -1387,7 +1421,7 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_28">
+    <widget class="QEPushButton" name="summary1">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1409,7 +1443,7 @@
       <string/>
      </property>
      <property name="variableSubstitutions" stdset="0">
-      <string>CHD=chas</string>
+      <string/>
      </property>
      <property name="pressText">
       <string>1</string>
@@ -1421,7 +1455,7 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_29">
+    <widget class="QEPushButton" name="summary4">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -1443,10 +1477,13 @@
       <string/>
      </property>
      <property name="variableSubstitutions" stdset="0">
-      <string>CHD=chds</string>
+      <string/>
      </property>
      <property name="pressText">
-      <string>1</string>
+      <string>4</string>
+     </property>
+     <property name="clickText">
+      <string>4</string>
      </property>
      <property name="guiFile" stdset="0">
       <string>mv2_main_bar.ui</string>
@@ -1455,7 +1492,7 @@
       <enum>QEPushButton::NewWindow</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_35">
+    <widget class="QEPushButton" name="summary2">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -1477,10 +1514,13 @@
       <string/>
      </property>
      <property name="variableSubstitutions" stdset="0">
-      <string>CHD=chbs</string>
+      <string/>
      </property>
      <property name="pressText">
-      <string>1</string>
+      <string>2</string>
+     </property>
+     <property name="clickText">
+      <string>2</string>
      </property>
      <property name="guiFile" stdset="0">
       <string>mv2_main_bar.ui</string>
@@ -1505,6 +1545,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QEAnalogProgressBar</class>
+   <extends>QEAnalogIndicator</extends>
+   <header>QEAnalogProgressBar.h</header>
+  </customwidget>
+  <customwidget>
    <class>QEBitStatus</class>
    <extends>QBitStatus</extends>
    <header>QEBitStatus.h</header>
@@ -1528,6 +1573,11 @@
    <class>QESimpleShape</class>
    <extends>QSimpleShape</extends>
    <header>QESimpleShape.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEAnalogIndicator</class>
+   <extends>QWidget</extends>
+   <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
    <class>QBitStatus</class>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>anachart</class>
+ <widget class="QMainWindow" name="anachart">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1218</width>
+    <height>1000</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QEPlotter" name="qeplotter">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>1151</width>
+      <height>721</height>
+     </rect>
+    </property>
+    <property name="enableContextMenu" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="toolBarVisible">
+     <bool>true</bool>
+    </property>
+    <property name="pvItemsVisible">
+     <bool>true</bool>
+    </property>
+    <property name="statusVisible">
+     <bool>false</bool>
+    </property>
+    <property name="yLogarithmic">
+     <bool>true</bool>
+    </property>
+    <property name="contextMenuEmitText" stdset="0">
+     <string>Export mass and pressure</string>
+    </property>
+    <property name="DataVariableX" stdset="0">
+     <string>=(S-0.5)/32</string>
+    </property>
+    <property name="DataVariableA" stdset="0">
+     <string extracomment="test">chas:ANA</string>
+    </property>
+    <property name="DataVariableB" stdset="0">
+     <string>chbs:ANA</string>
+    </property>
+    <property name="DataVariableC" stdset="0">
+     <string>chcs:ANA</string>
+    </property>
+    <property name="DataVariableD" stdset="0">
+     <string>chds:ANA</string>
+    </property>
+    <property name="DataVariableE" stdset="0">
+     <string/>
+    </property>
+    <property name="SizeVariableX" stdset="0">
+     <string/>
+    </property>
+    <property name="SizeVariableA" stdset="0">
+     <string/>
+    </property>
+    <property name="AliasNameX" stdset="0">
+     <string>Mass</string>
+    </property>
+    <property name="AliasNameA" stdset="0">
+     <string>RGA1</string>
+    </property>
+    <property name="AliasNameB" stdset="0">
+     <string>RGA2</string>
+    </property>
+    <property name="AliasNameC" stdset="0">
+     <string>RGA3</string>
+    </property>
+    <property name="AliasNameD" stdset="0">
+     <string>RGA4</string>
+    </property>
+    <property name="AliasNameE" stdset="0">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="qepushbutton_27">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>770</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RGA 50</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string/>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="pressText">
+     <string>1</string>
+    </property>
+    <property name="guiFile" stdset="0">
+     <string>barchart.ui</string>
+    </property>
+    <property name="creationOption" stdset="0">
+     <enum>QEPushButton::NewTab</enum>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>800</y>
+      <width>251</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Right click to read mass and pressure</string>
+    </property>
+    <widget class="QLCDNumber" name="lcdNumber">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>111</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="digitCount">
+      <number>3</number>
+     </property>
+     <property name="mode">
+      <enum>QLCDNumber::Dec</enum>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="lcdNumber_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>50</y>
+       <width>111</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="digitCount">
+      <number>8</number>
+     </property>
+     <property name="mode">
+      <enum>QLCDNumber::Dec</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Mass (X axis)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pressure (Y axis)</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>50</y>
+      <width>241</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Note: Drag and click to zoom axis. Dx to reset.</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_26">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>50</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Percent scanned:</string>
+    </property>
+   </widget>
+   <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>50</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="variable" stdset="0">
+     <string>chas:PERSCANNED</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1218</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionClose">
+   <property name="text">
+    <string> Open as Window</string>
+   </property>
+  </action>
+  <action name="actionClose_Window">
+   <property name="text">
+    <string>Close Tab</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QEAnalogProgressBar</class>
+   <extends>QEAnalogIndicator</extends>
+   <header>QEAnalogProgressBar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEPlotter</class>
+   <extends>QEFrame</extends>
+   <header>QEPlotter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEPushButton</class>
+   <extends>QPushButton</extends>
+   <header>QEPushButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEAnalogIndicator</class>
+   <extends>QWidget</extends>
+   <header>QEAnalogIndicator.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEFrame</class>
+   <extends>QFrame</extends>
+   <header>QEFrame.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>qeplotter</sender>
+   <signal>yCoordinateSelected(double)</signal>
+   <receiver>lcdNumber_2</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>526</x>
+     <y>655</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>275</x>
+     <y>903</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>qeplotter</sender>
+   <signal>xCoordinateSelected(double)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>688</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>109</x>
+     <y>876</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

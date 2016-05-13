@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>barchart</class>
+ <widget class="QMainWindow" name="barchart">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -42,13 +42,13 @@
      <string>Export mass and pressure</string>
     </property>
     <property name="DataVariableX" stdset="0">
-     <string/>
+     <string>=S-0.5</string>
     </property>
     <property name="DataVariableA" stdset="0">
      <string extracomment="test">chas:BAR</string>
     </property>
     <property name="DataVariableB" stdset="0">
-     <string>chbs:BAR</string>
+     <string>chas:ANA</string>
     </property>
     <property name="DataVariableC" stdset="0">
      <string>chcs:BAR</string>
@@ -196,6 +196,37 @@
      <string>Note: Drag and click to zoom axis. Dx to reset.</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_26">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>50</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Percent scanned:</string>
+    </property>
+   </widget>
+   <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>50</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="variable" stdset="0">
+     <string>chas:PERSCANNED</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -221,6 +252,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QEAnalogProgressBar</class>
+   <extends>QEAnalogIndicator</extends>
+   <header>QEAnalogProgressBar.h</header>
+  </customwidget>
+  <customwidget>
    <class>QEPlotter</class>
    <extends>QEFrame</extends>
    <header>QEPlotter.h</header>
@@ -229,6 +265,11 @@
    <class>QEPushButton</class>
    <extends>QPushButton</extends>
    <header>QEPushButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEAnalogIndicator</class>
+   <extends>QWidget</extends>
+   <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
    <class>QEFrame</class>

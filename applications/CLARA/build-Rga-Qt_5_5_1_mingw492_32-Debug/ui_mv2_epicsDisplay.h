@@ -1,0 +1,575 @@
+/********************************************************************************
+** Form generated from reading UI file 'mv2_epicsDisplay.ui'
+**
+** Created by: Qt User Interface Compiler version 5.5.1
+**
+** WARNING! All changes made in this file will be lost when recompiling UI file!
+********************************************************************************/
+
+#ifndef UI_MV2_EPICSDISPLAY_H
+#define UI_MV2_EPICSDISPLAY_H
+
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QWidget>
+#include "QBitStatus.h"
+#include "QEAnalogIndicator.h"
+#include "QEAnalogProgressBar.h"
+#include "QEBitStatus.h"
+#include "QECheckBox.h"
+#include "QELabel.h"
+#include "QEPushButton.h"
+#include "QESimpleShape.h"
+#include "QSimpleShape.h"
+
+QT_BEGIN_NAMESPACE
+
+class Ui_mainWindow
+{
+public:
+    QWidget *centralwidget;
+    QGroupBox *groupBox_5;
+    QGroupBox *groupBox;
+    QEBitStatus *qebitstatus_4;
+    QLabel *label_4;
+    QLabel *label;
+    QEBitStatus *qebitstatus;
+    QLabel *label_2;
+    QEBitStatus *qebitstatus_2;
+    QELabel *qelabel;
+    QEPushButton *qepushbutton_2;
+    QEPushButton *qepushbutton;
+    QGroupBox *groupBox_6;
+    QEBitStatus *qebitstatus_19;
+    QLabel *label_5;
+    QLabel *label_25;
+    QELabel *qelabel_51;
+    QGroupBox *groupBox_7;
+    QGroupBox *groupBox_4;
+    QEBitStatus *qebitstatus_10;
+    QLabel *label_9;
+    QLabel *label_10;
+    QEBitStatus *qebitstatus_11;
+    QLabel *label_11;
+    QEBitStatus *qebitstatus_12;
+    QELabel *qelabel_3;
+    QEPushButton *qepushbutton_8;
+    QEPushButton *qepushbutton_9;
+    QGroupBox *groupBox_9;
+    QEBitStatus *qebitstatus_21;
+    QLabel *label_12;
+    QLabel *label_27;
+    QELabel *qelabel_53;
+    QGroupBox *groupBox_29;
+    QECheckBox *qecheckbox_3;
+    QEPushButton *qepushbutton_30;
+    QEPushButton *qepushbutton_31;
+    QEPushButton *qepushbutton_32;
+    QEPushButton *qepushbutton_33;
+    QESimpleShape *qesimpleshape;
+    QESimpleShape *qesimpleshape_4;
+    QESimpleShape *qesimpleshape_3;
+    QESimpleShape *qesimpleshape_2;
+    QESimpleShape *qesimpleshape_5;
+    QEPushButton *qepushbutton_34;
+    QESimpleShape *qesimpleshape_6;
+    QLabel *label_3;
+    QLabel *label_6;
+    QLabel *label_26;
+    QEAnalogProgressBar *qeanalogprogressbar;
+    QGroupBox *groupBox_2;
+    QEPushButton *barscan;
+    QEPushButton *anastrip;
+    QEPushButton *barstrip;
+    QEPushButton *anascan;
+    QEPushButton *summary3;
+    QEPushButton *summary1;
+    QEPushButton *summary4;
+    QEPushButton *summary2;
+    QMenuBar *menubar;
+    QStatusBar *statusbar;
+
+    void setupUi(QMainWindow *mainWindow)
+    {
+        if (mainWindow->objectName().isEmpty())
+            mainWindow->setObjectName(QStringLiteral("mainWindow"));
+        mainWindow->resize(529, 802);
+        centralwidget = new QWidget(mainWindow);
+        centralwidget->setObjectName(QStringLiteral("centralwidget"));
+        groupBox_5 = new QGroupBox(centralwidget);
+        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
+        groupBox_5->setGeometry(QRect(10, 80, 371, 251));
+        groupBox = new QGroupBox(groupBox_5);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setGeometry(QRect(10, 10, 181, 81));
+        qebitstatus_4 = new QEBitStatus(groupBox);
+        qebitstatus_4->setObjectName(QStringLiteral("qebitstatus_4"));
+        qebitstatus_4->setGeometry(QRect(150, 30, 31, 21));
+        qebitstatus_4->setNumberOfBits(1);
+        qebitstatus_4->setShift(3);
+        qebitstatus_4->setShape(QBitStatus::Circle);
+        qebitstatus_4->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_4->setOnColour(QColor(255, 0, 4));
+        qebitstatus_4->setOffColour(QColor(255, 255, 255));
+        label_4 = new QLabel(groupBox);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setGeometry(QRect(160, 10, 16, 21));
+        QFont font;
+        font.setPointSize(6);
+        label_4->setFont(font);
+        label = new QLabel(groupBox);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(90, 10, 31, 21));
+        label->setFont(font);
+        qebitstatus = new QEBitStatus(groupBox);
+        qebitstatus->setObjectName(QStringLiteral("qebitstatus"));
+        qebitstatus->setGeometry(QRect(90, 30, 31, 21));
+        qebitstatus->setNumberOfBits(1);
+        qebitstatus->setShape(QBitStatus::Circle);
+        qebitstatus->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus->setOffColour(QColor(255, 255, 255));
+        label_2 = new QLabel(groupBox);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(120, 10, 41, 21));
+        label_2->setFont(font);
+        qebitstatus_2 = new QEBitStatus(groupBox);
+        qebitstatus_2->setObjectName(QStringLiteral("qebitstatus_2"));
+        qebitstatus_2->setGeometry(QRect(120, 30, 31, 21));
+        qebitstatus_2->setNumberOfBits(1);
+        qebitstatus_2->setShift(1);
+        qebitstatus_2->setShape(QBitStatus::Circle);
+        qebitstatus_2->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_2->setOnColour(QColor(255, 255, 0));
+        qebitstatus_2->setOffColour(QColor(255, 255, 255));
+        qelabel = new QELabel(groupBox);
+        qelabel->setObjectName(QStringLiteral("qelabel"));
+        qelabel->setGeometry(QRect(100, 60, 61, 16));
+        QFont font1;
+        font1.setBold(false);
+        font1.setWeight(50);
+        qelabel->setFont(font1);
+        qepushbutton_2 = new QEPushButton(groupBox);
+        qepushbutton_2->setObjectName(QStringLiteral("qepushbutton_2"));
+        qepushbutton_2->setGeometry(QRect(10, 50, 81, 23));
+        qepushbutton_2->setCheckable(true);
+        qepushbutton = new QEPushButton(groupBox);
+        qepushbutton->setObjectName(QStringLiteral("qepushbutton"));
+        qepushbutton->setGeometry(QRect(10, 30, 81, 21));
+        qepushbutton->setCheckable(true);
+        groupBox_6 = new QGroupBox(groupBox_5);
+        groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
+        groupBox_6->setGeometry(QRect(10, 90, 181, 61));
+        qebitstatus_19 = new QEBitStatus(groupBox_6);
+        qebitstatus_19->setObjectName(QStringLiteral("qebitstatus_19"));
+        qebitstatus_19->setGeometry(QRect(20, 30, 31, 21));
+        qebitstatus_19->setNumberOfBits(1);
+        qebitstatus_19->setShape(QBitStatus::Circle);
+        qebitstatus_19->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_19->setOnColour(QColor(255, 0, 0));
+        qebitstatus_19->setOffColour(QColor(0, 255, 0));
+        label_5 = new QLabel(groupBox_6);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setGeometry(QRect(20, 10, 51, 21));
+        label_5->setFont(font);
+        label_25 = new QLabel(groupBox_6);
+        label_25->setObjectName(QStringLiteral("label_25"));
+        label_25->setGeometry(QRect(80, 10, 31, 21));
+        label_25->setFont(font);
+        qelabel_51 = new QELabel(groupBox_6);
+        qelabel_51->setObjectName(QStringLiteral("qelabel_51"));
+        qelabel_51->setGeometry(QRect(70, 30, 111, 21));
+        QFont font2;
+        font2.setPointSize(12);
+        font2.setBold(false);
+        font2.setWeight(50);
+        qelabel_51->setFont(font2);
+        qelabel_51->setProperty("notation", QVariant(QELabel::Scientific));
+        groupBox_7 = new QGroupBox(groupBox_5);
+        groupBox_7->setObjectName(QStringLiteral("groupBox_7"));
+        groupBox_7->setGeometry(QRect(-10, 410, 211, 191));
+        groupBox_4 = new QGroupBox(groupBox_7);
+        groupBox_4->setObjectName(QStringLiteral("groupBox_4"));
+        groupBox_4->setGeometry(QRect(10, 20, 181, 101));
+        qebitstatus_10 = new QEBitStatus(groupBox_4);
+        qebitstatus_10->setObjectName(QStringLiteral("qebitstatus_10"));
+        qebitstatus_10->setGeometry(QRect(150, 40, 31, 21));
+        qebitstatus_10->setNumberOfBits(1);
+        qebitstatus_10->setShift(3);
+        qebitstatus_10->setShape(QBitStatus::Circle);
+        qebitstatus_10->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_10->setOnColour(QColor(255, 0, 4));
+        qebitstatus_10->setOffColour(QColor(255, 255, 255));
+        label_9 = new QLabel(groupBox_4);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setGeometry(QRect(160, 20, 16, 21));
+        label_9->setFont(font);
+        label_10 = new QLabel(groupBox_4);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setGeometry(QRect(90, 20, 31, 21));
+        label_10->setFont(font);
+        qebitstatus_11 = new QEBitStatus(groupBox_4);
+        qebitstatus_11->setObjectName(QStringLiteral("qebitstatus_11"));
+        qebitstatus_11->setGeometry(QRect(90, 40, 31, 21));
+        qebitstatus_11->setNumberOfBits(1);
+        qebitstatus_11->setShape(QBitStatus::Circle);
+        qebitstatus_11->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_11->setOffColour(QColor(255, 255, 255));
+        label_11 = new QLabel(groupBox_4);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setGeometry(QRect(120, 20, 41, 21));
+        label_11->setFont(font);
+        qebitstatus_12 = new QEBitStatus(groupBox_4);
+        qebitstatus_12->setObjectName(QStringLiteral("qebitstatus_12"));
+        qebitstatus_12->setGeometry(QRect(120, 40, 31, 21));
+        qebitstatus_12->setNumberOfBits(1);
+        qebitstatus_12->setShift(1);
+        qebitstatus_12->setShape(QBitStatus::Circle);
+        qebitstatus_12->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_12->setOnColour(QColor(255, 255, 0));
+        qebitstatus_12->setOffColour(QColor(255, 255, 255));
+        qelabel_3 = new QELabel(groupBox_4);
+        qelabel_3->setObjectName(QStringLiteral("qelabel_3"));
+        qelabel_3->setGeometry(QRect(100, 70, 61, 16));
+        qelabel_3->setFont(font1);
+        qepushbutton_8 = new QEPushButton(groupBox_4);
+        qepushbutton_8->setObjectName(QStringLiteral("qepushbutton_8"));
+        qepushbutton_8->setGeometry(QRect(10, 70, 81, 23));
+        qepushbutton_8->setCheckable(true);
+        qepushbutton_9 = new QEPushButton(groupBox_4);
+        qepushbutton_9->setObjectName(QStringLiteral("qepushbutton_9"));
+        qepushbutton_9->setGeometry(QRect(10, 40, 81, 21));
+        qepushbutton_9->setCheckable(true);
+        groupBox_9 = new QGroupBox(groupBox_7);
+        groupBox_9->setObjectName(QStringLiteral("groupBox_9"));
+        groupBox_9->setGeometry(QRect(10, 120, 151, 71));
+        qebitstatus_21 = new QEBitStatus(groupBox_9);
+        qebitstatus_21->setObjectName(QStringLiteral("qebitstatus_21"));
+        qebitstatus_21->setGeometry(QRect(20, 40, 31, 21));
+        qebitstatus_21->setNumberOfBits(1);
+        qebitstatus_21->setShape(QBitStatus::Circle);
+        qebitstatus_21->setInvalidColour(QColor(255, 0, 0));
+        qebitstatus_21->setOnColour(QColor(255, 0, 0));
+        qebitstatus_21->setOffColour(QColor(0, 255, 0));
+        label_12 = new QLabel(groupBox_9);
+        label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setGeometry(QRect(20, 20, 51, 21));
+        label_12->setFont(font);
+        label_27 = new QLabel(groupBox_9);
+        label_27->setObjectName(QStringLiteral("label_27"));
+        label_27->setGeometry(QRect(80, 20, 31, 21));
+        label_27->setFont(font);
+        qelabel_53 = new QELabel(groupBox_9);
+        qelabel_53->setObjectName(QStringLiteral("qelabel_53"));
+        qelabel_53->setGeometry(QRect(70, 40, 71, 21));
+        qelabel_53->setFont(font2);
+        qelabel_53->setProperty("notation", QVariant(QELabel::Scientific));
+        groupBox_29 = new QGroupBox(groupBox_5);
+        groupBox_29->setObjectName(QStringLiteral("groupBox_29"));
+        groupBox_29->setGeometry(QRect(200, 10, 151, 231));
+        qecheckbox_3 = new QECheckBox(groupBox_29);
+        qecheckbox_3->setObjectName(QStringLiteral("qecheckbox_3"));
+        qecheckbox_3->setGeometry(QRect(10, 170, 81, 21));
+        qecheckbox_3->setChecked(false);
+        qecheckbox_3->setWriteOnPress(false);
+        qecheckbox_3->setWriteOnClick(true);
+        qepushbutton_30 = new QEPushButton(groupBox_29);
+        qepushbutton_30->setObjectName(QStringLiteral("qepushbutton_30"));
+        qepushbutton_30->setGeometry(QRect(10, 20, 77, 20));
+        qepushbutton_31 = new QEPushButton(groupBox_29);
+        qepushbutton_31->setObjectName(QStringLiteral("qepushbutton_31"));
+        qepushbutton_31->setGeometry(QRect(10, 60, 77, 20));
+        qepushbutton_32 = new QEPushButton(groupBox_29);
+        qepushbutton_32->setObjectName(QStringLiteral("qepushbutton_32"));
+        qepushbutton_32->setGeometry(QRect(10, 80, 77, 20));
+        qepushbutton_33 = new QEPushButton(groupBox_29);
+        qepushbutton_33->setObjectName(QStringLiteral("qepushbutton_33"));
+        qepushbutton_33->setGeometry(QRect(10, 100, 77, 20));
+        qesimpleshape = new QESimpleShape(groupBox_29);
+        qesimpleshape->setObjectName(QStringLiteral("qesimpleshape"));
+        qesimpleshape->setGeometry(QRect(90, 20, 16, 16));
+        qesimpleshape->setFocusPolicy(Qt::NoFocus);
+        qesimpleshape->setContextMenuPolicy(Qt::CustomContextMenu);
+        qesimpleshape->setShape(QSimpleShape::circle);
+        qesimpleshape->setProperty("format", QVariant(QSimpleShape::FixedText));
+        qesimpleshape->setProperty("colour0", QVariant(QColor(255, 255, 0)));
+        qesimpleshape->setProperty("colour1", QVariant(QColor(255, 0, 0)));
+        qesimpleshape->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_4 = new QESimpleShape(groupBox_29);
+        qesimpleshape_4->setObjectName(QStringLiteral("qesimpleshape_4"));
+        qesimpleshape_4->setGeometry(QRect(90, 60, 16, 16));
+        qesimpleshape_4->setShape(QSimpleShape::circle);
+        qesimpleshape_4->setProperty("colour3", QVariant(QColor(200, 200, 200)));
+        qesimpleshape_4->setProperty("colour4", QVariant(QColor(200, 200, 200)));
+        qesimpleshape_4->setProperty("colour5", QVariant(QColor(0, 200, 0)));
+        qesimpleshape_4->setProperty("flash0", QVariant(false));
+        qesimpleshape_4->setProperty("flash1", QVariant(false));
+        qesimpleshape_4->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_3 = new QESimpleShape(groupBox_29);
+        qesimpleshape_3->setObjectName(QStringLiteral("qesimpleshape_3"));
+        qesimpleshape_3->setGeometry(QRect(90, 80, 16, 16));
+        qesimpleshape_3->setShape(QSimpleShape::circle);
+        qesimpleshape_3->setProperty("colour6", QVariant(QColor(0, 200, 0)));
+        qesimpleshape_3->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_2 = new QESimpleShape(groupBox_29);
+        qesimpleshape_2->setObjectName(QStringLiteral("qesimpleshape_2"));
+        qesimpleshape_2->setGeometry(QRect(90, 100, 16, 16));
+        qesimpleshape_2->setShape(QSimpleShape::circle);
+        qesimpleshape_2->setProperty("colour7", QVariant(QColor(0, 200, 0)));
+        qesimpleshape_2->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_5 = new QESimpleShape(groupBox_29);
+        qesimpleshape_5->setObjectName(QStringLiteral("qesimpleshape_5"));
+        qesimpleshape_5->setGeometry(QRect(90, 170, 16, 16));
+        qesimpleshape_5->setShape(QSimpleShape::circle);
+        qesimpleshape_5->setProperty("colour0", QVariant(QColor(0, 255, 0)));
+        qesimpleshape_5->setProperty("colour1", QVariant(QColor(200, 200, 200)));
+        qesimpleshape_5->setProperty("flash0", QVariant(false));
+        qesimpleshape_5->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_5->setProperty("edgeAlarmStateOption", QVariant(QESimpleShape::Always));
+        qepushbutton_34 = new QEPushButton(groupBox_29);
+        qepushbutton_34->setObjectName(QStringLiteral("qepushbutton_34"));
+        qepushbutton_34->setGeometry(QRect(10, 140, 77, 20));
+        qesimpleshape_6 = new QESimpleShape(groupBox_29);
+        qesimpleshape_6->setObjectName(QStringLiteral("qesimpleshape_6"));
+        qesimpleshape_6->setGeometry(QRect(90, 140, 16, 16));
+        qesimpleshape_6->setShape(QSimpleShape::circle);
+        qesimpleshape_6->setProperty("colour7", QVariant(QColor(200, 200, 200)));
+        qesimpleshape_6->setProperty("colour8", QVariant(QColor(0, 200, 0)));
+        qesimpleshape_6->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        label_3 = new QLabel(groupBox_29);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(10, 40, 47, 13));
+        label_6 = new QLabel(groupBox_29);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setGeometry(QRect(10, 120, 121, 16));
+        label_26 = new QLabel(groupBox_29);
+        label_26->setObjectName(QStringLiteral("label_26"));
+        label_26->setGeometry(QRect(10, 190, 91, 21));
+        QFont font3;
+        font3.setPointSize(8);
+        label_26->setFont(font3);
+        qeanalogprogressbar = new QEAnalogProgressBar(groupBox_29);
+        qeanalogprogressbar->setObjectName(QStringLiteral("qeanalogprogressbar"));
+        qeanalogprogressbar->setGeometry(QRect(10, 210, 131, 16));
+        groupBox_2 = new QGroupBox(centralwidget);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        groupBox_2->setGeometry(QRect(10, 10, 511, 71));
+        barscan = new QEPushButton(groupBox_2);
+        barscan->setObjectName(QStringLiteral("barscan"));
+        barscan->setGeometry(QRect(380, 20, 121, 20));
+        barscan->setCheckable(false);
+        barscan->setProperty("creationOption", QVariant(QEPushButton::NewTab));
+        anastrip = new QEPushButton(groupBox_2);
+        anastrip->setObjectName(QStringLiteral("anastrip"));
+        anastrip->setGeometry(QRect(220, 40, 141, 20));
+        anastrip->setCheckable(false);
+        anastrip->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        barstrip = new QEPushButton(groupBox_2);
+        barstrip->setObjectName(QStringLiteral("barstrip"));
+        barstrip->setGeometry(QRect(220, 20, 141, 20));
+        barstrip->setCheckable(false);
+        barstrip->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        anascan = new QEPushButton(groupBox_2);
+        anascan->setObjectName(QStringLiteral("anascan"));
+        anascan->setGeometry(QRect(380, 40, 121, 21));
+        anascan->setCheckable(false);
+        anascan->setProperty("creationOption", QVariant(QEPushButton::NewTab));
+        summary3 = new QEPushButton(groupBox_2);
+        summary3->setObjectName(QStringLiteral("summary3"));
+        summary3->setGeometry(QRect(10, 40, 91, 20));
+        summary3->setCheckable(false);
+        summary3->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        summary1 = new QEPushButton(groupBox_2);
+        summary1->setObjectName(QStringLiteral("summary1"));
+        summary1->setGeometry(QRect(10, 20, 91, 20));
+        summary1->setCheckable(false);
+        summary1->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        summary4 = new QEPushButton(groupBox_2);
+        summary4->setObjectName(QStringLiteral("summary4"));
+        summary4->setGeometry(QRect(100, 40, 101, 20));
+        summary4->setCheckable(false);
+        summary4->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        summary2 = new QEPushButton(groupBox_2);
+        summary2->setObjectName(QStringLiteral("summary2"));
+        summary2->setGeometry(QRect(100, 20, 101, 20));
+        summary2->setCheckable(false);
+        summary2->setProperty("creationOption", QVariant(QEPushButton::NewWindow));
+        mainWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(mainWindow);
+        menubar->setObjectName(QStringLiteral("menubar"));
+        menubar->setGeometry(QRect(0, 0, 529, 21));
+        mainWindow->setMenuBar(menubar);
+        statusbar = new QStatusBar(mainWindow);
+        statusbar->setObjectName(QStringLiteral("statusbar"));
+        mainWindow->setStatusBar(statusbar);
+
+        retranslateUi(mainWindow);
+
+        QMetaObject::connectSlotsByName(mainWindow);
+    } // setupUi
+
+    void retranslateUi(QMainWindow *mainWindow)
+    {
+        mainWindow->setWindowTitle(QApplication::translate("mainWindow", "MainWindow", 0));
+        groupBox_5->setTitle(QApplication::translate("mainWindow", "RGA 1", 0));
+        groupBox->setTitle(QApplication::translate("mainWindow", "Filament Status", 0));
+        qebitstatus_4->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        label_4->setText(QApplication::translate("mainWindow", "Fail", 0));
+        label->setText(QApplication::translate("mainWindow", "On/Off", 0));
+        qebitstatus->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        label_2->setText(QApplication::translate("mainWindow", "Cool/Warm", 0));
+        qebitstatus_2->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        qelabel->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FIL", 0)));
+        qepushbutton_2->setText(QApplication::translate("mainWindow", "Filament select", 0));
+        qepushbutton_2->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:SETFIL", 0)));
+        qepushbutton_2->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:FIL", 0)));
+        qepushbutton_2->setPressText(QApplication::translate("mainWindow", "1", 0));
+        qepushbutton->setText(QApplication::translate("mainWindow", "Filament Power", 0));
+        qepushbutton->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILCON", 0)));
+        qepushbutton->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        qepushbutton->setPressText(QApplication::translate("mainWindow", "1", 0));
+        groupBox_6->setTitle(QApplication::translate("mainWindow", "RGA Status", 0));
+        qebitstatus_19->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:ILK", 0)));
+        label_5->setText(QApplication::translate("mainWindow", "IMG Interlock", 0));
+        label_25->setText(QApplication::translate("mainWindow", "Control", 0));
+        qelabel_51->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qelabel_51->setText(QApplication::translate("mainWindow", "Analog 1-200", 0));
+        groupBox_7->setTitle(QApplication::translate("mainWindow", "RGA 1", 0));
+        groupBox_4->setTitle(QApplication::translate("mainWindow", "Filament Status", 0));
+        qebitstatus_10->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        label_9->setText(QApplication::translate("mainWindow", "Fail", 0));
+        label_10->setText(QApplication::translate("mainWindow", "On/Off", 0));
+        qebitstatus_11->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        label_11->setText(QApplication::translate("mainWindow", "Cool/Warm", 0));
+        qebitstatus_12->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        qelabel_3->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:SETFIL", 0)));
+        qepushbutton_8->setText(QApplication::translate("mainWindow", "Filament select", 0));
+        qepushbutton_8->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:SETFIL", 0)));
+        qepushbutton_8->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:FIL", 0)));
+        qepushbutton_8->setPressText(QApplication::translate("mainWindow", "1", 0));
+        qepushbutton_9->setText(QApplication::translate("mainWindow", "Filament Power", 0));
+        qepushbutton_9->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:FILCON", 0)));
+        qepushbutton_9->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:FILSTA", 0)));
+        qepushbutton_9->setPressText(QApplication::translate("mainWindow", "1", 0));
+        groupBox_9->setTitle(QApplication::translate("mainWindow", "RGA Status", 0));
+        qebitstatus_21->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:ILK", 0)));
+        label_12->setText(QApplication::translate("mainWindow", "IMG Interlock", 0));
+        label_27->setText(QApplication::translate("mainWindow", "Control", 0));
+        qelabel_53->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:MODE", 0)));
+        qelabel_53->setText(QApplication::translate("mainWindow", "Remote", 0));
+        groupBox_29->setTitle(QApplication::translate("mainWindow", "Scan", 0));
+        qecheckbox_3->setText(QApplication::translate("mainWindow", "Single Scan", 0));
+        qecheckbox_3->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:SETSCAN", 0)));
+        qecheckbox_3->setPressText(QApplication::translate("mainWindow", "0", 0));
+        qecheckbox_3->setReleaseText(QApplication::translate("mainWindow", "1", 0));
+        qecheckbox_3->setClickText(QApplication::translate("mainWindow", "1", 0));
+        qecheckbox_3->setClickCheckedText(QApplication::translate("mainWindow", "0", 0));
+        qepushbutton_30->setText(QApplication::translate("mainWindow", "Stop", 0));
+        qepushbutton_30->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:CON", 0)));
+        qepushbutton_30->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qepushbutton_30->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "display=$(chas:CON)", 0)));
+        qepushbutton_30->setClickText(QApplication::translate("mainWindow", "Stop", 0));
+        qepushbutton_30->setClickCheckedText(QString());
+        qepushbutton_31->setText(QApplication::translate("mainWindow", "1-50", 0));
+        qepushbutton_31->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:CON", 0)));
+        qepushbutton_31->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qepushbutton_31->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "display=$(chas:CON)", 0)));
+        qepushbutton_31->setClickText(QApplication::translate("mainWindow", "5", 0));
+        qepushbutton_31->setClickCheckedText(QString());
+        qepushbutton_32->setText(QApplication::translate("mainWindow", "1-100", 0));
+        qepushbutton_32->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:CON", 0)));
+        qepushbutton_32->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qepushbutton_32->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "display=$(chas:CON)", 0)));
+        qepushbutton_32->setClickText(QApplication::translate("mainWindow", "6", 0));
+        qepushbutton_32->setClickCheckedText(QString());
+        qepushbutton_33->setText(QApplication::translate("mainWindow", "1-200", 0));
+        qepushbutton_33->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:CON", 0)));
+        qepushbutton_33->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qepushbutton_33->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "display=$(chas:CON)", 0)));
+        qepushbutton_33->setClickText(QApplication::translate("mainWindow", "7", 0));
+        qepushbutton_33->setClickCheckedText(QString());
+        qesimpleshape->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qesimpleshape->setProperty("variableSubstitutions", QVariant(QString()));
+        qesimpleshape_4->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qesimpleshape_3->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qesimpleshape_2->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qesimpleshape_5->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:SCAN", 0)));
+        qepushbutton_34->setText(QApplication::translate("mainWindow", "1-200", 0));
+        qepushbutton_34->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:CON", 0)));
+        qepushbutton_34->setProperty("altReadbackVariable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        qepushbutton_34->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "display=$(chas:CON)", 0)));
+        qepushbutton_34->setClickText(QApplication::translate("mainWindow", "8", 0));
+        qepushbutton_34->setClickCheckedText(QString());
+        qesimpleshape_6->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:HEADSTA", 0)));
+        label_3->setText(QApplication::translate("mainWindow", "Bar Chart", 0));
+        label_6->setText(QApplication::translate("mainWindow", "Analogue Scan (32 ppp)", 0));
+        label_26->setText(QApplication::translate("mainWindow", "Percent scanned:", 0));
+        qeanalogprogressbar->setProperty("variable", QVariant(QApplication::translate("mainWindow", "chas:PERSCANNED", 0)));
+        groupBox_2->setTitle(QApplication::translate("mainWindow", "RGA plots", 0));
+        barscan->setText(QApplication::translate("mainWindow", "RGA Bar Chart", 0));
+        barscan->setProperty("variable", QVariant(QString()));
+        barscan->setProperty("altReadbackVariable", QVariant(QString()));
+        barscan->setPressText(QApplication::translate("mainWindow", "1", 0));
+        barscan->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "barchart.ui", 0)));
+        anastrip->setText(QApplication::translate("mainWindow", "RGA Analogue Strip Chart", 0));
+        anastrip->setProperty("variable", QVariant(QString()));
+        anastrip->setProperty("altReadbackVariable", QVariant(QString()));
+        anastrip->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "CHD=chbs", 0)));
+        anastrip->setPressText(QApplication::translate("mainWindow", "1", 0));
+        anastrip->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+        barstrip->setText(QApplication::translate("mainWindow", "RGA Strip chart", 0));
+        barstrip->setProperty("variable", QVariant(QString()));
+        barstrip->setProperty("altReadbackVariable", QVariant(QString()));
+        barstrip->setProperty("variableSubstitutions", QVariant(QApplication::translate("mainWindow", "CHD=chas", 0)));
+        barstrip->setPressText(QApplication::translate("mainWindow", "1", 0));
+        barstrip->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+        anascan->setText(QApplication::translate("mainWindow", "RGA Analogue Scan", 0));
+        anascan->setProperty("variable", QVariant(QString()));
+        anascan->setProperty("altReadbackVariable", QVariant(QString()));
+        anascan->setPressText(QApplication::translate("mainWindow", "1", 0));
+        anascan->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "barchart_ana.ui", 0)));
+        summary3->setText(QApplication::translate("mainWindow", "RGA summary 3", 0));
+        summary3->setProperty("variable", QVariant(QString()));
+        summary3->setProperty("altReadbackVariable", QVariant(QString()));
+        summary3->setProperty("variableSubstitutions", QVariant(QString()));
+        summary3->setPressText(QApplication::translate("mainWindow", "3", 0));
+        summary3->setClickText(QApplication::translate("mainWindow", "3", 0));
+        summary3->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+        summary1->setText(QApplication::translate("mainWindow", "RGA summary 1", 0));
+        summary1->setProperty("variable", QVariant(QString()));
+        summary1->setProperty("altReadbackVariable", QVariant(QString()));
+        summary1->setProperty("variableSubstitutions", QVariant(QString()));
+        summary1->setPressText(QApplication::translate("mainWindow", "1", 0));
+        summary1->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+        summary4->setText(QApplication::translate("mainWindow", "RGA Summary 4", 0));
+        summary4->setProperty("variable", QVariant(QString()));
+        summary4->setProperty("altReadbackVariable", QVariant(QString()));
+        summary4->setProperty("variableSubstitutions", QVariant(QString()));
+        summary4->setPressText(QApplication::translate("mainWindow", "4", 0));
+        summary4->setClickText(QApplication::translate("mainWindow", "4", 0));
+        summary4->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+        summary2->setText(QApplication::translate("mainWindow", "RGA Summary 2", 0));
+        summary2->setProperty("variable", QVariant(QString()));
+        summary2->setProperty("altReadbackVariable", QVariant(QString()));
+        summary2->setProperty("variableSubstitutions", QVariant(QString()));
+        summary2->setPressText(QApplication::translate("mainWindow", "2", 0));
+        summary2->setClickText(QApplication::translate("mainWindow", "2", 0));
+        summary2->setProperty("guiFile", QVariant(QApplication::translate("mainWindow", "mv2_main_bar.ui", 0)));
+    } // retranslateUi
+
+};
+
+namespace Ui {
+    class mainWindow: public Ui_mainWindow {};
+} // namespace Ui
+
+QT_END_NAMESPACE
+
+#endif // UI_MV2_EPICSDISPLAY_H
