@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <time.h>
 
 class scandata
 {
@@ -16,7 +17,7 @@ class scandata
     unsigned int _pindex;
     unsigned int _mindex;
     unsigned int _scan;
-
+    char _mybuffer[];
 
 public:
     scandata();
@@ -47,7 +48,7 @@ public:
     float getPressure();
     float getMass();
 
-    int getNumberPressureScans();
+    int getNumberScans();
     int getPressureRange();
     int getMassRange();
     int checkMassPressureSize();

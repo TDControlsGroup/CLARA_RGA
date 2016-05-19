@@ -5,7 +5,8 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     scandata.cpp \
-    stripFile.cpp
+    stripFile.cpp \
+    rgaxml.cpp
 
 SOURCES += ../tinyxml/tinyxml.cpp
 SOURCES += ../tinyxml/tinyxmlparser.cpp
@@ -18,4 +19,5 @@ INCLUDEPATH += . \
 
 HEADERS += \
     scandata.h \
-    stripFile.h
+    stripFile.h \
+    rgaxml.h

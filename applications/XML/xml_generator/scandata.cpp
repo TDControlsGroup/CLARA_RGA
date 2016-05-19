@@ -41,6 +41,7 @@ this->_mindex=mass_index;
  //Time info
  if(timeInfo.size()<_scan+1){
   timeInfo.resize(_scan+1);
+
  }
 }
 
@@ -61,14 +62,14 @@ this->_mindex=mass_index;
  float scandata::getPressure(){            return this->_pressure[_scan][_pindex];}
  float scandata::getMass(){                return this->_mass[_mindex];}
  float scandata::getSumP(){                return this->_sump[_scan];}
- int scandata::getNumberPressureScans(){   return this->_pressure.size();}
+ int scandata::getNumberScans(){           return this->_pressure.size();}
  int scandata::getPressureRange(){         return this->_pressure[_scan].size();}
  int scandata::getMassRange(){             return this->_mass.size();}
 
  int scandata::checkMassPressureSize(){
   int mass_press_equal=1;
      //Check each scan is the same size as the mass range
-     for (int scanno=0; scanno < this->getNumberPressureScans() ; scanno++){
+     for (int scanno=0; scanno < this->getNumberScans() ; scanno++){
          if (_mass.size() != _pressure[scanno].size() ) {mass_press_equal=0;};
 
      }
@@ -76,14 +77,17 @@ this->_mindex=mass_index;
  }
 
 
- void scandata::setYear(int year){   this->timeInfo[_scan].tm_year = year -1900;} //Years after 1900
- void scandata::setMonth(int month){ this->timeInfo[_scan].tm_mon = month - 1;} //Jan == 0, months since Jan
- void scandata::setDay(int day){     this->timeInfo[_scan].tm_mday = day;} //Month day
- void scandata::setHour(int hour){   this->timeInfo[_scan].tm_hour = hour;}
- void scandata::setMin(int min){     this->timeInfo[_scan].tm_min = min;}
- void scandata::setSec(int sec){     this->timeInfo[_scan].tm_sec = sec;}
- char* scandata::getDateTime(){}
+void scandata::setYear(int year){   this->timeInfo[_scan].tm_year = year -1900;} //Years after 1900
+void scandata::setMonth(int month){ this->timeInfo[_scan].tm_mon = month - 1;} //Jan == 0, months since Jan
+void scandata::setDay(int day){     this->timeInfo[_scan].tm_mday = day;} //Month day
+void scandata::setHour(int hour){   this->timeInfo[_scan].tm_hour = hour;}
+void scandata::setMin(int min){     this->timeInfo[_scan].tm_min = min;}
+void scandata::setSec(int sec){     this->timeInfo[_scan].tm_sec = sec;}
+char* scandata::getDateTime(){
+ strftime(_mybuffer,20,"%Y-%m-%d %H:%M:%S",&(this->timeInfo[_scan]));
 
+ return _mybuffer;
+}
 
 
 

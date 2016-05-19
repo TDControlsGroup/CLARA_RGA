@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rga>
+    <SCAN no="1">
+        <NAME>7.00e+000</NAME>
+        <ID>7.00e+000</ID>
+        <GAIN1>7.00e+000</GAIN1>
+        <GAIN2>7.00e+000</GAIN2>
+        <GAIN3>7.00e+000</GAIN3>
+        <MAXMASS>7.00e+000</MAXMASS>
+        <FILAMENT>7.00e+000</FILAMENT>
+        <PLOT>7.00e+000</PLOT>
+        <CHANNEL>7.00e+000</CHANNEL>
+        <DETECTOR>7.00e+000</DETECTOR>
+        <MULT>7.00e+000</MULT>
+        <SENSITIVITY>7.00e+000</SENSITIVITY>
+        <SUMP>7.00e+000</SUMP>
+        <DATA>
+            <PRESS mass="0.50">1.10e-002</PRESS>
+            <PRESS mass="1.50">1.50e-001</PRESS>
+        </DATA>
+    </SCAN>
+    <SCAN no="2">
+        <NAME>6.71e-007</NAME>
+        <ID>6.71e-007</ID>
+        <GAIN1>6.71e-007</GAIN1>
+        <GAIN2>6.71e-007</GAIN2>
+        <GAIN3>6.71e-007</GAIN3>
+        <MAXMASS>6.71e-007</MAXMASS>
+        <FILAMENT>6.71e-007</FILAMENT>
+        <PLOT>6.71e-007</PLOT>
+        <CHANNEL>6.71e-007</CHANNEL>
+        <DETECTOR>6.71e-007</DETECTOR>
+        <MULT>6.71e-007</MULT>
+        <SENSITIVITY>6.71e-007</SENSITIVITY>
+        <SUMP>6.71e-007</SUMP>
+        <DATA>
+            <PRESS mass="0.50">1.50e-004</PRESS>
+            <PRESS mass="1.50">1.20e-010</PRESS>
+        </DATA>
+    </SCAN>
+    <SCAN no="3">
+        <NAME>4.43e-039</NAME>
+        <ID>4.43e-039</ID>
+        <GAIN1>4.43e-039</GAIN1>
+        <GAIN2>4.43e-039</GAIN2>
+        <GAIN3>4.43e-039</GAIN3>
+        <MAXMASS>4.43e-039</MAXMASS>
+        <FILAMENT>4.43e-039</FILAMENT>
+        <PLOT>4.43e-039</PLOT>
+        <CHANNEL>4.43e-039</CHANNEL>
+        <DETECTOR>4.43e-039</DETECTOR>
+        <MULT>4.43e-039</MULT>
+        <SENSITIVITY>4.43e-039</SENSITIVITY>
+        <SUMP>4.43e-039</SUMP>
+        <DATA>
+            <PRESS mass="0.50">0.00e+000</PRESS>
+            <PRESS mass="1.50">0.00e+000</PRESS>
+        </DATA>
+    </SCAN>
+</rga>

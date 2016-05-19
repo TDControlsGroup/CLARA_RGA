@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     ../scandata.cpp \
+    ../rgaxml.cpp
 
 
 SOURCES += ../../tinyxml/tinyxml.cpp
