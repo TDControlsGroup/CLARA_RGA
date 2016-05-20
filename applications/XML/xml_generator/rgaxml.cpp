@@ -49,6 +49,7 @@ void rgaxml::gen(){
         }
     }
 }
+
 void rgaxml::_buildScan(int scanno){
     char  mychar[10];
 

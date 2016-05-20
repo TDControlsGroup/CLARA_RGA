@@ -13,10 +13,14 @@
 using namespace std;
 class stripFile
 {
+    std::vector<string> regexmap;
+
     int _maxdata;
     int _scanno;
     int _massstart;
     int _datastart;
+    int _instrument_start;
+    int _eventstart;
     scandata *loadscan;
     void lineScanner(std::string line);
     void lineFlagger(std::string line);

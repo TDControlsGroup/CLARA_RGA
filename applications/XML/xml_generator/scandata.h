@@ -22,20 +22,35 @@ class scandata
 public:
     scandata();
     //Global info that will not change between scans
-    void  setScanType(char *);
-    char* getScanType();
 
-    void setFil();
-    int getFil();
 
-    void setDetector();
-    int getDetctor();
+void setName(char *);
+void setSerialno();
+void setDetector();
+void setSensitivity();
+void setPlotType();
+void setGain1();
+void setGain2();
+void setGain3();
+void setMax_mass();
+void setFilament();
+void setChannel_count();
+void setMultiply();
 
-    void setMult();
-    int getMult();
+char* getName();
+char* getSerialno();
+char* getDetector();
+char* getSensitivity();
+char* getPlotType();
+float getGain1();
+float getGain2();
+float getGain3();
+int getMax_mass();
+int getFilament();
+int getChannel_count();
+int getMultiply();
 
-    void setRange();
-    int getRange();
+
 
     //Scan level info
 
