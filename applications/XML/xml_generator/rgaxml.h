@@ -3,6 +3,7 @@
 #include <iostream>
 #include <regex>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <fstream>
 #include "tinyxml.h"
@@ -19,36 +20,15 @@ class rgaxml
     //Xml structure
     //Instrument settings info
 
-
-    std::vector <TiXmlElement * > _name;
-    std::vector <TiXmlText * > _text_name;
-    std::vector <TiXmlElement * > _serialno;
-    std::vector <TiXmlText * > _text_serialno;
-    std::vector <TiXmlElement * > _gain1;
-    std::vector <TiXmlText * > _text_gain1;
-    std::vector <TiXmlElement * > _gain2;
-    std::vector <TiXmlText * > _text_gain2;
-    std::vector <TiXmlElement * > _gain3;
-    std::vector <TiXmlText * > _text_gain3;
-    std::vector <TiXmlElement * > _max_mass;
-    std::vector <TiXmlText * > _text_max_mass;
-    std::vector <TiXmlElement * > _filament;
-    std::vector <TiXmlText * > _text_filament;
-    std::vector <TiXmlElement * > _plot_type;
-    std::vector <TiXmlText * > _text_plot_type;
-    std::vector <TiXmlElement * > _channel_count;
-    std::vector <TiXmlText * > _text_channel_count;
-    std::vector <TiXmlElement * > _detector;
-    std::vector <TiXmlText * > _text_detector;
-    std::vector <TiXmlElement * > _sensitivity;
-    std::vector <TiXmlText * > _text_sensitivity;
-    std::vector <TiXmlElement * > _multiply;
-    std::vector <TiXmlText * > _text_multiply;
+    std::vector <TiXmlElement * > _element;
+    std::vector <TiXmlText    * > _text_element;
 
     //Scan info
     TiXmlDocument * doc;
     TiXmlDeclaration * decl;
     TiXmlElement * root;
+    TiXmlElement * infosection;
+
     std::vector <TiXmlElement * > _scans;
     std::vector <TiXmlElement * > _data;
     std::vector <TiXmlElement * > _sump;
@@ -63,6 +43,7 @@ public:
     rgaxml();
     ~rgaxml();
     void build(scandata *myobj);
+    void addinfo();
     void gen();
 };
 

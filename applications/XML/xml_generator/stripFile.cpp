@@ -4,18 +4,6 @@
 
 stripFile::stripFile(){
     this->_maxdata = 0;
-    regexmap.push_back("Instrument Name");
-    regexmap.push_back("Serial number");
-    regexmap.push_back("Electronic Gain 1");
-    regexmap.push_back("Electronic Gain 2");
-    regexmap.push_back("Electronic Gain 3");
-    regexmap.push_back("Maximum mass");
-    regexmap.push_back("Filament");
-    regexmap.push_back("Channel count");
-    regexmap.push_back("Detector");
-    regexmap.push_back("Sensitivity .?A.?mbar.?");
-    regexmap.push_back("Detector gain");
-    regexmap.push_back("Electronic Gain Id");
 }
 
 void stripFile::scan(const char *filetype, scandata *myresults)
@@ -81,14 +69,12 @@ void stripFile::lineScanner(std::string line){
 
         std:smatch match;
 
-           for(int info=0; info < regexmap.size(); info++){
-               string temp = regexmap[info];
-               temp.append("\"\t\"?([A-Za-z0-9\.-]*)\"?");
-               std::regex in(temp);
+           for(int info=0; info < this->loadscan->getInfoSize(); info++){
+               this->loadscan->setInfoIndex(info);
+               std::regex in(this->loadscan->getInfoNameRegExp());
            if (std::regex_search(line, match, in) && match.length() > 0 ) {
-             cout << match.str(1) << "\n";
-             while(getline (stream,mysubstring,'"'))
-             {}
+             this->loadscan->setInfo(match.str(1));
+             cout << this->loadscan->getInfoName() << " " << this->loadscan->getInfo() << "\n";
            }
           }       
     }

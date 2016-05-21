@@ -8,8 +8,39 @@ scandata::scandata()
     pressure-> scan#,pressure
     scanInfo-> scan#, time, sum of pressures
     */
+    rege_name.push_back("Instrument Name");
+    rege_name.push_back("Serial number");
+    rege_name.push_back("Electronic Gain 1");
+    rege_name.push_back("Electronic Gain 2");
+    rege_name.push_back("Electronic Gain 3");
+    rege_name.push_back("Maximum mass");
+    rege_name.push_back("Filament");
+    rege_name.push_back("Channel count");
+    rege_name.push_back("Detector");
+    rege_name.push_back("Sensitivity");
+    rege_name.push_back("Detector gain");
+    rege_name.push_back("Electronic Gain Id");
 
-
+    //Make the names into regexp
+    rege_map=rege_name;
+    rege_map[9].append(" .?A.?mbar.?");
+    for(int i =0; i < rege_map.size(); i++){
+        rege_map[i].append("\"\t\"?([A-Za-z0-9\.-]*)\"?");
+        infoval.push_back("");
+    }
+   //Add XML element names
+    elenamemap.push_back("INSTRUMENT");
+    elenamemap.push_back("SERIAL_NUMBER");
+    elenamemap.push_back("E_GAIN_1");
+    elenamemap.push_back("E_GAIN_2");
+    elenamemap.push_back("E_GAIN_3");
+    elenamemap.push_back("MAX_MASS");
+    elenamemap.push_back("FILAMENT");
+    elenamemap.push_back("CHANNEL_COUNT");
+    elenamemap.push_back("DETECTOR");
+    elenamemap.push_back("SENSITIVITY");
+    elenamemap.push_back("DETECTOR_GAIN");
+    elenamemap.push_back("E_GAIN_ID");
 }
  void scandata::setIndex(unsigned int  scan_index, unsigned mass_index ,unsigned int  pressure_index)
 {

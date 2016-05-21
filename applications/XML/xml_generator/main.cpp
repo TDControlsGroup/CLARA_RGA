@@ -14,9 +14,10 @@
 int main()
 {
     scandata  *myresults=new scandata();
+    rgaxml myxml;
     stripFile myscan;
 
     myscan.scan("ana2.txt",myresults);
-//    rgaxml.gen();
+    myxml.build(myresults);
     return 0;
 }

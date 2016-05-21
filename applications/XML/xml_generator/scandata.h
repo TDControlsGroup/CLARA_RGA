@@ -18,38 +18,24 @@ class scandata
     unsigned int _mindex;
     unsigned int _scan;
     char _mybuffer[];
+    std::vector<std::string> rege_name;
+    std::vector<std::string> rege_map;
+    std::vector<std::string> infoval;
+    std::vector<std::string> elenamemap;
+    int _name;
 
 public:
     scandata();
     //Global info that will not change between scans
 
+void setInfoIndex(int name){this->_name=name;}
+void setInfo(std::string info){this->infoval[_name]= info;}
 
-void setName(char *);
-void setSerialno();
-void setDetector();
-void setSensitivity();
-void setPlotType();
-void setGain1();
-void setGain2();
-void setGain3();
-void setMax_mass();
-void setFilament();
-void setChannel_count();
-void setMultiply();
-
-char* getName();
-char* getSerialno();
-char* getDetector();
-char* getSensitivity();
-char* getPlotType();
-float getGain1();
-float getGain2();
-float getGain3();
-int getMax_mass();
-int getFilament();
-int getChannel_count();
-int getMultiply();
-
+const char * getInfo()         {return this->infoval[_name].c_str();}
+std::string getInfoName()      {return this->rege_name[_name]                ;}
+std::string getInfoNameRegExp(){return this->rege_map[_name]                 ;}
+int getInfoSize()              {return this->infoval.size()                  ;}
+const char * getElementName()  {return this->elenamemap[_name].c_str()       ;}
 
 
     //Scan level info
