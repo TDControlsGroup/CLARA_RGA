@@ -1,11 +1,5 @@
 #include "rgaxml.h"
 
-/*
- Note: New is used here but not deleted as this is a one shot wonder and the OS
-*/
-
-
-
 rgaxml::rgaxml()
 {
 
@@ -13,12 +7,12 @@ rgaxml::rgaxml()
 
 rgaxml::~rgaxml(){
 
+delete doc; //Deleting doc will delete all attached TiXml nodes
+
 }
 
 
-
-
-void rgaxml::build(scandata *myobj)
+void rgaxml::build(scandata *myobj, std::string myout)
 {
 
     doc= new TiXmlDocument();
@@ -27,17 +21,18 @@ void rgaxml::build(scandata *myobj)
     decl = new  TiXmlDeclaration( "1.0", "utf-8", "");
     doc->LinkEndChild( decl );
     root = new TiXmlElement( "rga" );
-    infosection = new TiXmlElement ( "INFO");
+
     this->addinfo();
     this->gen();
     doc->LinkEndChild( root );
-    doc->SaveFile( "madeByHand.xml" );
+    doc->SaveFile( myout.c_str() );
 
 }
 
 void rgaxml::addinfo(){
 
     //Load info
+    infosection = new TiXmlElement ( "GENERAL_INFORMATION");
     std::string killblanks;
     for(int info=0 ; info < this->myscan->getInfoSize(); info ++){
     //Element
@@ -54,8 +49,12 @@ void rgaxml::addinfo(){
 }
 
 void rgaxml::gen(){
+    //Measurement info
+     _scans.push_back( new TiXmlElement("MEASUREMENT"));
+     _scans.push_back( new TiXmlElement("CHANNEL_NAME"));
 for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
  {
+
    //Build header elements
    _buildScan(scanno);
 
@@ -67,33 +66,44 @@ for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
    }
  }
 
+
+for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
+ {
+     _scans[1]->LinkEndChild(_sump[scanno]);
+     _scans[1]->LinkEndChild(_date[scanno]);
+ }
+
+    root->LinkEndChild(_scans[1]);
+    root->LinkEndChild(_scans[0]);
 }
 
 void rgaxml::_buildScan(int scanno){
 
-
-    //Scan info
-    _scans.push_back( new TiXmlElement("SCAN"));
-    _scans[scanno]->SetAttribute("no",scanno+1);
-
-    //Sump
+    //Sump and date
     char  mychar[10];
     _sump.push_back(new TiXmlElement("SUMP"));
+    _sump[scanno]->SetAttribute("no",scanno+1);
     std::sprintf(mychar,"%.2e",myscan->getSumP() );
     _text_sump.push_back( new TiXmlText(mychar));
 
+    _date.push_back(new TiXmlElement("DATE"));
+    _date[scanno]->SetAttribute("no",scanno+1);
+    std::sprintf(mychar,"%s",myscan->getDateTime() );
+    _text_date.push_back( new TiXmlText(mychar));
 
     //Data block
-    _data.push_back(new TiXmlElement("DATA"));
+    _data.push_back(new TiXmlElement("SCAN"));
+    _data[scanno]->SetAttribute("no",scanno+1);
 
     //Document layout of pressure elements
 
     _sump[scanno]->LinkEndChild(_text_sump[scanno]);
-    _scans[scanno]->LinkEndChild(_sump[scanno]);
-    _scans[scanno]->LinkEndChild(_data[scanno]);
+    _date[scanno]->LinkEndChild(_text_date[scanno]);
+
+    _scans[0]->LinkEndChild(_data[scanno]);
 
 
-    root->LinkEndChild(_scans[scanno]);
+
 
 }
 

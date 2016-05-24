@@ -10,6 +10,7 @@
 
 class scandata
 {
+
     std::vector<float> _mass;
     std::vector<std::vector <float>> _pressure;
     std::vector <float> _sump;
@@ -26,6 +27,7 @@ class scandata
 
 public:
     scandata();
+    ~scandata(){};
     //Global info that will not change between scans
 
 void setInfoIndex(int name){this->_name=name;}

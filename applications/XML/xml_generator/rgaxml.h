@@ -33,6 +33,8 @@ class rgaxml
     std::vector <TiXmlElement * > _data;
     std::vector <TiXmlElement * > _sump;
     std::vector <TiXmlText * > _text_sump;
+    std::vector <TiXmlElement * > _date;
+    std::vector <TiXmlText * > _text_date;
     std::vector < std::vector <TiXmlElement * >> _pressures;
     std::vector < std::vector <TiXmlText * >> _text_pressures;
 
@@ -42,7 +44,7 @@ class rgaxml
 public:
     rgaxml();
     ~rgaxml();
-    void build(scandata *myobj);
+    void build(scandata *myobj, std::string myout);
     void addinfo();
     void gen();
 };

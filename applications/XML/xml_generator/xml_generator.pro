@@ -21,3 +21,6 @@ HEADERS += \
     scandata.h \
     stripFile.h \
     rgaxml.h
+
+DISTFILES += \
+    filelist.xml

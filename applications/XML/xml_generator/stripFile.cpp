@@ -42,6 +42,8 @@ void stripFile::lineFlagger(std::string line){
     //Look for sections and trip flags
     if( line.find("[Instrument_1]") !=line.npos && this->_massstart ==0 )
     {this->_instrument_start=1;}
+    if( line.find("[Events]") !=line.npos && this->_massstart ==0 )
+    {this->_instrument_start=0;this->_eventstart=0;}
     if( line.find("[Acquisition Settings_1]") !=line.npos && this->_massstart ==0 )
     {this->_eventstart=1 ; this->_instrument_start=0;}
     if( line.find("[Acquisition Settings_2]") !=line.npos && this->_massstart ==0 )
@@ -63,12 +65,17 @@ void stripFile::lineScanner(std::string line){
     stringstream stream(line);
     string mysubstring;
 
+
     if (this->_instrument_start==1 || this->_eventstart==1)
     {
         //Instrument section
-
+        //hack to add units
+        if( line.find("[Instrument_1]") !=line.npos){
+            //Add units by default
+            line = "\"Units\"\t\"mBar\"";
+        }
         std:smatch match;
-
+//cout << line << "\n";
            for(int info=0; info < this->loadscan->getInfoSize(); info++){
                this->loadscan->setInfoIndex(info);
                std::regex in(this->loadscan->getInfoNameRegExp());
@@ -77,6 +84,7 @@ void stripFile::lineScanner(std::string line){
              cout << this->loadscan->getInfoName() << " " << this->loadscan->getInfo() << "\n";
            }
           }       
+
     }
 
     if (this->_massstart==1 && this->_datastart==0)

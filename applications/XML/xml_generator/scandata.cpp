@@ -14,8 +14,11 @@ scandata::scandata()
     rege_name.push_back("Electronic Gain 2");
     rege_name.push_back("Electronic Gain 3");
     rege_name.push_back("Maximum mass");
+    rege_name.push_back("Measurement");
+    rege_name.push_back("Units");
     rege_name.push_back("Filament");
     rege_name.push_back("Channel count");
+    rege_name.push_back("Accuracy");
     rege_name.push_back("Detector");
     rege_name.push_back("Sensitivity");
     rege_name.push_back("Detector gain");
@@ -35,8 +38,11 @@ scandata::scandata()
     elenamemap.push_back("E_GAIN_2");
     elenamemap.push_back("E_GAIN_3");
     elenamemap.push_back("MAX_MASS");
+    elenamemap.push_back("MEASUREMENT");
+    elenamemap.push_back("UNITS");
     elenamemap.push_back("FILAMENT");
     elenamemap.push_back("CHANNEL_COUNT");
+    elenamemap.push_back("ACCURACY");
     elenamemap.push_back("DETECTOR");
     elenamemap.push_back("SENSITIVITY");
     elenamemap.push_back("DETECTOR_GAIN");
