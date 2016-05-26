@@ -24,7 +24,7 @@ class rgaxml
     std::vector <TiXmlText    * > _text_element;
 
     //Scan info
-    TiXmlDocument * doc;
+    TiXmlDocument  doc;
     TiXmlDeclaration * decl;
     TiXmlElement * root;
     TiXmlElement * infosection;

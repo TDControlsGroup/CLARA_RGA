@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rga>
-    <GENERAL_INFORMATION>
-        <INSTRUMENT>VGovenRear</INSTRUMENT>
-        <SERIAL_NUMBER>MKS104-J0213001</SERIAL_NUMBER>
-        <E_GAIN_1>1.0</E_GAIN_1>
-        <MAX_MASS>200</MAX_MASS>
-        <MEASUREMENT>Analog</MEASUREMENT>
-        <UNITS>mBar</UNITS>
-        <FILAMENT>1</FILAMENT>
-        <ACCURACY>8</ACCURACY>
-        <DETECTOR>Faraday</DETECTOR>
-        <DETECTOR_GAIN>1.00</DETECTOR_GAIN>
-    </GENERAL_INFORMATION>
+    <GENERAL_INFORMATION />
     <CHANNEL_NAME>
         <SUMP no="1">1.84e-007</SUMP>
-        <DATE no="1">2016-01-29 15:32:38</DATE>
+        <DATE no="1">2016-1-29 15:32:38</DATE>
         <SUMP no="2">4.48e-007</SUMP>
-        <DATE no="2">2016-01-29 14:30:44</DATE>
+        <DATE no="2">2016-1-29 14:30:44</DATE>
     </CHANNEL_NAME>
     <MEASUREMENT>
         <SCAN no="1">

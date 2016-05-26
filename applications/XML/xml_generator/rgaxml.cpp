@@ -7,25 +7,23 @@ rgaxml::rgaxml()
 
 rgaxml::~rgaxml(){
 
-delete doc; //Deleting doc will delete all attached TiXml nodes
-
 }
 
 
 void rgaxml::build(scandata *myobj, std::string myout)
 {
 
-    doc= new TiXmlDocument();
+
     myscan=myobj;
     //TiXmlDeclaration * decl;
     decl = new  TiXmlDeclaration( "1.0", "utf-8", "");
-    doc->LinkEndChild( decl );
+    doc.LinkEndChild( decl );
     root = new TiXmlElement( "rga" );
 
     this->addinfo();
     this->gen();
-    doc->LinkEndChild( root );
-    doc->SaveFile( myout.c_str() );
+    doc.LinkEndChild( root );
+    doc.SaveFile( myout.c_str() );
 
 }
 
