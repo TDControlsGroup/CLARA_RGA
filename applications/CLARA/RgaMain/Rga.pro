@@ -6,17 +6,34 @@ FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart_ana.ui
 FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_main_bar.ui
 
 
-HEADERS     = RGA.h
+HEADERS     = RGA.h \
+    ui_mv2_epicsDisplay.h \
+    ui_barchart.h \
+    ui_barchart_ana.h \
+    ui_mv2_main_bar.h \
+    C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.h
+
 RESOURCES   = \
     FileList.qrc
-SOURCES     = RGA.cpp \
-              main.cpp
+SOURCES     = main.cpp\
+              RGA.cpp\
+              C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.cpp
+
 QT += core gui xml widgets uitools
 #! [0]
 target.path = C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaMain\
 INSTALLS += target
 LIBS += -LC:\Users\zgm95989\Desktop\base-3.15.3\base-3.15.3\bin\win32-x86-mingw -lca -lCom
-LIBS += -LC:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\designer -lQEPlugin
+
+debug {
+    LIBS += -LC:\Users\zgm95989\Desktop\3.2.4-CLARA\build-framework-Desktop_Qt_5_5_1_MinGW_32bit-Debug\designer -lQEPlugin
+}
+
+release {
+    LIBS += -LC:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\designer -lQEPlugin
+}
+
+
 
 INCLUDEPATH += . \
     ./include \

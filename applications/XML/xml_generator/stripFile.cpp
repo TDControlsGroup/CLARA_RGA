@@ -4,6 +4,18 @@
 
 stripFile::stripFile(){
     this->_maxdata = 0;
+    regexmap.push_back("Instrument Name");
+    regexmap.push_back("Serial number");
+    regexmap.push_back("Electronic Gain 1");
+    regexmap.push_back("Electronic Gain 2");
+    regexmap.push_back("Electronic Gain 3");
+    regexmap.push_back("Maximum mass");
+    regexmap.push_back("Filament");
+    regexmap.push_back("Channel count");
+    regexmap.push_back("Detector");
+    regexmap.push_back("Sensitivity .?A.?mbar.?");
+    regexmap.push_back("Detector gain");
+    regexmap.push_back("Electronic Gain Id");
 }
 
 void stripFile::scan(const char *filetype, scandata *myresults)
@@ -42,8 +54,6 @@ void stripFile::lineFlagger(std::string line){
     //Look for sections and trip flags
     if( line.find("[Instrument_1]") !=line.npos && this->_massstart ==0 )
     {this->_instrument_start=1;}
-    if( line.find("[Events]") !=line.npos && this->_massstart ==0 )
-    {this->_instrument_start=0;this->_eventstart=0;}
     if( line.find("[Acquisition Settings_1]") !=line.npos && this->_massstart ==0 )
     {this->_eventstart=1 ; this->_instrument_start=0;}
     if( line.find("[Acquisition Settings_2]") !=line.npos && this->_massstart ==0 )
@@ -65,26 +75,22 @@ void stripFile::lineScanner(std::string line){
     stringstream stream(line);
     string mysubstring;
 
-
     if (this->_instrument_start==1 || this->_eventstart==1)
     {
         //Instrument section
-        //hack to add units
-        if( line.find("[Instrument_1]") !=line.npos){
-            //Add units by default
-            line = "\"Units\"\t\"mBar\"";
-        }
+
         std:smatch match;
-//cout << line << "\n";
-           for(int info=0; info < this->loadscan->getInfoSize(); info++){
-               this->loadscan->setInfoIndex(info);
-               std::regex in(this->loadscan->getInfoNameRegExp());
+
+           for(int info=0; info < regexmap.size(); info++){
+               string temp = regexmap[info];
+               temp.append("\"\t\"?([A-Za-z0-9\.-]*)\"?");
+               std::regex in(temp);
            if (std::regex_search(line, match, in) && match.length() > 0 ) {
-             this->loadscan->setInfo(match.str(1));
-             cout << this->loadscan->getInfoName() << " " << this->loadscan->getInfo() << "\n";
+             cout << match.str(1) << "\n";
+             while(getline (stream,mysubstring,'"'))
+             {}
            }
           }       
-
     }
 
     if (this->_massstart==1 && this->_datastart==0)

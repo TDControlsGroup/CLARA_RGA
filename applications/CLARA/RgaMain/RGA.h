@@ -40,47 +40,54 @@
 
 #ifndef RGAFORM_H
 #define RGAFORM_H
-
-#include <QWidget>
-#include <QMainWindow>
-#include <QSpinBox>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QFile>
-#include <QtCore/QVariant>
-#include "ui_mv2_epicsDisplay.h"
-#include "ui_barchart.h"
-#include "ui_barchart_ana.h"
-#include "ui_mv2_main_bar.h"
 #include <stdio.h>
-
+#include <QMainWindow>
+#include <QWidget>
+#include <QTabWidget>
+#include "ui_mv2_epicsDisplay.h"
+//#include "ui_barchart.h"
+//#include "ui_barchart_ana.h"
+#include "ui_mv2_main_bar.h"
 //! [0]
+
 class RGA : public QObject
 {
     Q_OBJECT
 
     //Windows
-    QMainWindow *pWinMain       = NULL;
-    QMainWindow *pWinAnachart   = NULL;
-    QMainWindow *pWinBarchart   = NULL;
-    QMainWindow *pWinMainbar[3]; //NULLed in constructor
+   // QMainWindow pWinMain ;
 
     //Forms from designer used in the windows
-    Ui::mainWindow  pmain      ;
-    Ui::anachart    panachart  ;
-    Ui::barchart    pbarchart  ;
-    Ui::mainBar     pmainbar[3];
+
+   // Ui::anachart    panachart  ;
+   // Ui::barchart    pbarchart  ;
+   // Ui::mainBar     pmainbar[3];
 
 public:
+    QTabWidget  mytabs;
+    QMainWindow mymain;
+    QMainWindow ov1;
+    QMainWindow ov2;
+    QMainWindow ov3;
+    QMainWindow ov4;
 
-    RGA();
+
+
+   explicit RGA();
     ~RGA();
     void RGAMain();
 public slots:
     void RGAFormShowAnaPlot();
     void RGAFormShowBarPlot();
     void RGAFormShowBarSummary(int);
-
+private:
+    Ui::mainWindow  pmain     ;
+//    Ui::barchart    pbar      ;
+//    Ui::anachart    pana      ;
+    Ui::mainBar     poverview1;
+    Ui::mainBar     poverview2;
+    Ui::mainBar     poverview3;
+    Ui::mainBar     poverview4;
 };
 //! [0]
 

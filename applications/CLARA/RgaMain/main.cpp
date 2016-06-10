@@ -38,30 +38,18 @@
 **
 ****************************************************************************/
 
+
 #include <QApplication>
-//#include "RGA.h"
-#include <QWidget>
-#include <QMainWindow>
-#include "ui_mv2_epicsDisplay.h"
-#include "ui_barchart.h"
-#include "ui_barchart_ana.h"
-#include "ui_mv2_main_bar.h"
+#include "RGA.h"
+
 
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(FileList);
-
     QApplication app(argc, argv);
+
     //Windows
-    QMainWindow *pWinMain       = NULL;
- pWinMain = new QMainWindow;
-
-    //Forms from designer used in the windows
-    Ui::mainWindow  pmain      ;
-
-
-    pmain.setupUi(pWinMain);
-   // RGA rga;
-   // rga.RGAMain();
+    RGA myrga;
+    myrga.RGAMain();
     return app.exec();
 }

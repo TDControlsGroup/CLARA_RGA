@@ -39,7 +39,10 @@
 ****************************************************************************/
 
 //! [0]
+#include <iostream>
 #include <QtUiTools>
+
+
 //! [0]
 
 
@@ -48,36 +51,39 @@
 //! [1]
 RGA::RGA()
 {
- pWinMain = new QMainWindow;
- //Null pointer arrays
- for (int i= 0; i< 3; i++){pWinMainbar[i]=NULL;}
+//Setup Main UI
+ pmain.setupUi(&mymain);
+ poverview1.setupUi(&ov1);
+ poverview2.setupUi(&ov2);
+ poverview3.setupUi(&ov3);
+ poverview4.setupUi(&ov4);
 }
 
 RGA::~RGA()
 {
-    //Delete all the windows
-    delete pWinMain;
-    delete pWinAnachart;
-    delete pWinBarchart;
-    delete pWinMainbar[0];
-    delete pWinMainbar[1];
-    delete pWinMainbar[2];
 
 }
 
 void  RGA::RGAMain(){
-    pmain.setupUi(pWinMain);
-    //Seupup slots: Make buttons work
+    //Seupup slots for main UI: Make buttons work
     QObject::connect (pmain.anascan,  SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
     QObject::connect (pmain.barscan,  SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
     QObject::connect (pmain.summary1, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
     QObject::connect (pmain.summary2, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
     QObject::connect (pmain.summary3, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
     QObject::connect (pmain.summary4, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    pWinMain->show();
+   //Add main ui to a tabbed window
+    mytabs.setFixedSize(mymain.geometry().width(),mymain.geometry().height());
+    mytabs.addTab(&mymain, tr ("RGA Overview"));
+    mytabs.show();
+   //Title the overview barcharts
+    ov1.setWindowTitle("RGA 1");
+    ov2.setWindowTitle("RGA 2");
+    ov3.setWindowTitle("RGA 3");
+    ov4.setWindowTitle("RGA 4");
  }
 void  RGA::RGAFormShowAnaPlot(){
-    if (pWinAnachart == NULL) {pWinAnachart = new QMainWindow;}
+ //   if (pWinAnachart == NULL) {pWinAnachart = new QMainWindow;}
  //   if (panachart    == NULL) {panachart = new Ui_anachart; panachart->setupUi(pWinAnachart); }
     //Alter Y range
  //   panachart->qeplotter->setYRange(1e-12,0.1);
@@ -88,6 +94,12 @@ void  RGA::RGAFormShowBarPlot(){
 
  }
 void  RGA::RGAFormShowBarSummary(int rga){
- printf("Selected:%d", rga);
+    switch(rga) {
+        case 1 : ov1.show(); break; // Show Bar1
+        case 2 : ov2.show(); break; // Show Bar2
+        case 3 : ov3.show(); break; // Show Bar3
+        case 4 : ov4.show(); break; // Show Bar4
+
+    }
  }
 

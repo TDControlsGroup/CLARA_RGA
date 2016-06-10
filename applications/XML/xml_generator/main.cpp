@@ -13,28 +13,10 @@
 
 int main()
 {
-    TiXmlDocument files("filelist.xml");
-    files.LoadFile();
-    TiXmlElement *filel = files.FirstChildElement("files");
+    scandata  *myresults=new scandata();
+    stripFile myscan;
 
-    for(TiXmlElement* e = filel->FirstChildElement("file"); e != NULL; e = e->NextSiblingElement("file"))
-            {
-                cout << "Playing: " << e->GetText() << "\n";
-                string currentfile = e->GetText();
-
-
-                stripFile myscan;
-                rgaxml myxml;
-
-                TiXmlDocument  doc;
-                scandata myresults;
-                myscan.scan(currentfile.c_str(),&myresults);
-                std::string myoutfile="outfile_";
-                myoutfile+=e->GetText();
-                myoutfile+=".xml";
-
-                myxml.build(&myresults, myoutfile.c_str());
-            }
-
+    myscan.scan("ana2.txt",myresults);
+//    rgaxml.gen();
     return 0;
 }

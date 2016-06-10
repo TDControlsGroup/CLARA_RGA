@@ -1,5 +1,5 @@
 #! [0]
-HEADERS     = calculatorform.h
+HEADERS       = calculatorform.h
 RESOURCES   = calculatorbuilder.qrc
 SOURCES     = calculatorform.cpp \
               main.cpp

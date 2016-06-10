@@ -13,7 +13,7 @@
 using namespace std;
 class stripFile
 {
-
+    std::vector<string> regexmap;
 
     int _maxdata;
     int _scanno;

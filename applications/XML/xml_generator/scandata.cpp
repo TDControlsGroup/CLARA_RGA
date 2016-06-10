@@ -8,48 +8,8 @@ scandata::scandata()
     pressure-> scan#,pressure
     scanInfo-> scan#, time, sum of pressures
     */
-    my_rege_name.push_back("Instrument Name");
-    my_rege_name.push_back("Serial number");
-    my_rege_name.push_back("Electronic Gain 1");
-    my_rege_name.push_back("Electronic Gain 2");
-    my_rege_name.push_back("Electronic Gain 3");
-    my_rege_name.push_back("Maximum mass");
-    my_rege_name.push_back("Measurement");
-    my_rege_name.push_back("Units");
-    my_rege_name.push_back("Filament");
-    my_rege_name.push_back("Channel count");
-    my_rege_name.push_back("Accuracy");
-    my_rege_name.push_back("Detector");
-    my_rege_name.push_back("Sensitivity");
-    my_rege_name.push_back("Detector gain");
-    my_rege_name.push_back("Electronic Gain Id");
-
-    //Make the names into regexp
 
 
-    for(unsigned int i =0; i < my_rege_name.size(); i++){
-        my_rege_map.push_back("");
-        my_rege_map[i] = my_rege_name[i];
-        if(my_rege_name[i] == "Sensitivity" ){my_rege_map[i].append(" .?A.?mbar.?");}
-        my_rege_map[i].append("\"\t\"?([A-Za-z0-9\.-]*)\"?");
-        infoval.push_back("");
-    }
-   //Add XML element names
-    elenamemap.push_back("INSTRUMENT");
-    elenamemap.push_back("SERIAL_NUMBER");
-    elenamemap.push_back("E_GAIN_1");
-    elenamemap.push_back("E_GAIN_2");
-    elenamemap.push_back("E_GAIN_3");
-    elenamemap.push_back("MAX_MASS");
-    elenamemap.push_back("MEASUREMENT");
-    elenamemap.push_back("UNITS");
-    elenamemap.push_back("FILAMENT");
-    elenamemap.push_back("CHANNEL_COUNT");
-    elenamemap.push_back("ACCURACY");
-    elenamemap.push_back("DETECTOR");
-    elenamemap.push_back("SENSITIVITY");
-    elenamemap.push_back("DETECTOR_GAIN");
-    elenamemap.push_back("E_GAIN_ID");
 }
  void scandata::setIndex(unsigned int  scan_index, unsigned mass_index ,unsigned int  pressure_index)
 {
@@ -117,23 +77,17 @@ this->_mindex=mass_index;
  }
 
 
-void scandata::setYear(int year){   this->timeInfo[_scan].year = year;}
-void scandata::setMonth(int month){ this->timeInfo[_scan].month = month;}
-void scandata::setDay(int day){     this->timeInfo[_scan].day = day;}
-void scandata::setHour(int hour){   this->timeInfo[_scan].hour = hour;}
-void scandata::setMin(int min){     this->timeInfo[_scan].min = min;}
-void scandata::setSec(int sec){     this->timeInfo[_scan].sec = sec;}
+void scandata::setYear(int year){   this->timeInfo[_scan].tm_year = year -1900;} //Years after 1900
+void scandata::setMonth(int month){ this->timeInfo[_scan].tm_mon = month - 1;} //Jan == 0, months since Jan
+void scandata::setDay(int day){     this->timeInfo[_scan].tm_mday = day;} //Month day
+void scandata::setHour(int hour){   this->timeInfo[_scan].tm_hour = hour;}
+void scandata::setMin(int min){     this->timeInfo[_scan].tm_min = min;}
+void scandata::setSec(int sec){     this->timeInfo[_scan].tm_sec = sec;}
+char* scandata::getDateTime(){
+ strftime(_mybuffer,20,"%Y-%m-%d %H:%M:%S",&(this->timeInfo[_scan]));
 
-const char* scandata::getDateTime(){
-    char buffer[20];
-    sprintf(buffer, "%i-%i-%i %i:%i:%i",
-            this->timeInfo[_scan].year, this->timeInfo[_scan].month, this->timeInfo[_scan].day,
-            this->timeInfo[_scan].hour, this->timeInfo[_scan].min, this->timeInfo[_scan].sec
-            );
-    temptime=buffer;
-    return this->temptime.c_str();
+ return _mybuffer;
 }
-
 
 
 
