@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // The profile will remain published unti releaseProfile() is called, below.
     ContainerProfile profile;
     profile.setupProfile( this, QStringList(), "", applicationMacros );
-
+profile.setup
     // Read the UI
     ui->setupUi(this);
 
@@ -334,7 +334,7 @@ void MainWindow::buttonClick( bool )
 // It uses a QEForm to load the .ui file and place it in a dialog.
 void MainWindow::requestAction( const QEActionRequests& request )
 {
-    // Only handle file open requests
+
     if( request.getKind() != QEActionRequests::KindOpenFile )
     {
         return;
@@ -344,9 +344,7 @@ void MainWindow::requestAction( const QEActionRequests& request )
     if (request.getArguments().count () >= 1)
     {
         // Build the gui and load it into a dialog.
-        // Note, this is very similar to the default method that QE push buttons uses
-        // to present a gui if the application has not provided a handler to
-        // create GUIs through the ContainerProfile.
+
         QDialog* d = new QDialog();
         QEForm* gui = new QEForm( request.getArguments().first() );
         if( gui )

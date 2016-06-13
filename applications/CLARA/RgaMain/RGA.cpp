@@ -52,11 +52,33 @@
 RGA::RGA()
 {
 //Setup Main UI
+ QString applicationMacros[4];
+
+ //Macro substitutions in the Ui files
+ applicationMacros[0]="CHD=test1";
+ applicationMacros[1]="CHD=test2";
+ applicationMacros[2]="CHD=test3";
+ applicationMacros[3]="CHD=test4";
+
  pmain.setupUi(&mymain);
+ ContainerProfile profile;
+
+ profile.setupProfile( this, QStringList(), "", applicationMacros[0] );
  poverview1.setupUi(&ov1);
+ profile.releaseProfile();
+
+ profile.setupProfile( this, QStringList(), "", applicationMacros[1] );
  poverview2.setupUi(&ov2);
+ profile.releaseProfile();
+
+ profile.setupProfile( this, QStringList(), "", applicationMacros[2] );
  poverview3.setupUi(&ov3);
+ profile.releaseProfile();
+
+ profile.setupProfile( this, QStringList(), "", applicationMacros[3] );
  poverview4.setupUi(&ov4);
+ profile.releaseProfile();
+
 }
 
 RGA::~RGA()
@@ -103,3 +125,47 @@ void  RGA::RGAFormShowBarSummary(int rga){
     }
  }
 
+void RGA::requestAction( const QEActionRequests& request )
+{
+
+    /*
+        There are two ways to handle signals in EpicsQt
+        Through Qt Signal/Slots or through EpicsQt ContainerProfile.
+        I used ContainerProfile for macros not for signals
+        but this is here to stop runtime warnings and incasae I do
+        decide to use this method (for example, use EpicsQt to open a Gui using a macro)
+    */
+    // Only handle file open requests
+    if( request.getKind() != QEActionRequests::KindOpenFile )
+    {
+        return;
+    }
+
+    // If there is enough arguments, open the file
+    if (request.getArguments().count () >= 1)
+    {
+        // Build the gui and load it into a dialog.
+        // Note, this is very similar to the default method that QE push buttons uses
+        // to present a gui if the application has not provided a handler to
+        // create GUIs through the ContainerProfile.
+        QDialog* d = new QDialog();
+        QEForm* gui = new QEForm( request.getArguments().first() );
+        if( gui )
+        {
+            if( gui->readUiFile())
+            {
+                gui->setParent( d );
+                d->exec();
+            }
+            else
+            {
+                delete gui;
+                gui = NULL;
+            }
+        }
+        else
+        {
+            delete d;
+        }
+    }
+}

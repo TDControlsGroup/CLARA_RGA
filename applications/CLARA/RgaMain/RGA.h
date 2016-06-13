@@ -44,10 +44,12 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QTabWidget>
+#include "QEActionRequests.h"
 #include "ui_mv2_epicsDisplay.h"
-//#include "ui_barchart.h"
-//#include "ui_barchart_ana.h"
+#include "ui_barchart.h"
+#include "ui_barchart_ana.h"
 #include "ui_mv2_main_bar.h"
+
 //! [0]
 
 class RGA : public QObject
@@ -80,6 +82,7 @@ public slots:
     void RGAFormShowAnaPlot();
     void RGAFormShowBarPlot();
     void RGAFormShowBarSummary(int);
+    void requestAction( const QEActionRequests& requests );
 private:
     Ui::mainWindow  pmain     ;
 //    Ui::barchart    pbar      ;
