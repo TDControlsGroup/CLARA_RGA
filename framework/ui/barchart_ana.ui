@@ -45,16 +45,16 @@
      <string>=(S-0.5)/32</string>
     </property>
     <property name="DataVariableA" stdset="0">
-     <string extracomment="test">chas:ANA</string>
+     <string extracomment="test">$(RGA1):ANA</string>
     </property>
     <property name="DataVariableB" stdset="0">
-     <string>chbs:ANA</string>
+     <string>$(RGA2):ANA</string>
     </property>
     <property name="DataVariableC" stdset="0">
-     <string>chcs:ANA</string>
+     <string>$(RGA3):ANA</string>
     </property>
     <property name="DataVariableD" stdset="0">
-     <string>chds:ANA</string>
+     <string>$(RGA4):ANA</string>
     </property>
     <property name="DataVariableE" stdset="0">
      <string/>
@@ -69,16 +69,16 @@
      <string>Mass</string>
     </property>
     <property name="AliasNameA" stdset="0">
-     <string>RGA1</string>
+     <string>$(RGANAME1)</string>
     </property>
     <property name="AliasNameB" stdset="0">
-     <string>RGA2</string>
+     <string>$(RGANAME2)</string>
     </property>
     <property name="AliasNameC" stdset="0">
-     <string>RGA3</string>
+     <string>$(RGANAME3)</string>
     </property>
     <property name="AliasNameD" stdset="0">
-     <string>RGA4</string>
+     <string>$(RGANAME4)</string>
     </property>
     <property name="AliasNameE" stdset="0">
      <string/>
@@ -189,7 +189,7 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>360</x>
       <y>50</y>
       <width>241</width>
       <height>16</height>
@@ -197,37 +197,6 @@
     </property>
     <property name="text">
      <string>Note: Drag and click to zoom axis. Dx to reset.</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_26">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>50</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Percent scanned:</string>
-    </property>
-   </widget>
-   <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>50</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="variable" stdset="0">
-     <string>chas:PERSCANNED</string>
     </property>
    </widget>
   </widget>
@@ -255,11 +224,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QEAnalogProgressBar</class>
-   <extends>QEAnalogIndicator</extends>
-   <header>QEAnalogProgressBar.h</header>
-  </customwidget>
-  <customwidget>
    <class>QEPlotter</class>
    <extends>QEFrame</extends>
    <header>QEPlotter.h</header>
@@ -268,11 +232,6 @@
    <class>QEPushButton</class>
    <extends>QPushButton</extends>
    <header>QEPushButton.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QEAnalogIndicator</class>
-   <extends>QWidget</extends>
-   <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
    <class>QEFrame</class>

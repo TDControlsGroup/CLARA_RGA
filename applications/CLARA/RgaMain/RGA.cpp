@@ -41,7 +41,10 @@
 //! [0]
 #include <iostream>
 #include <QtUiTools>
-
+#include <QString>
+#include <QStringList>
+#define MIN_YPRESSURE 1e-13
+#define MAX_YPRESSURE 0.1
 
 //! [0]
 
@@ -52,17 +55,43 @@
 RGA::RGA()
 {
 //Setup Main UI
+
+ DeviceName1="rga1";
+ DeviceName2="rga2";
+ DeviceName3="rga3";
+ DeviceName4="rga4";
+
+ DeviceTitle1="Rga1";
+ DeviceTitle2="Rga2";
+ DeviceTitle3="Rga3";
+ DeviceTitle4="Rga4";
+
  QString applicationMacros[4];
+ QString mainWindowMacros;
 
  //Macro substitutions in the Ui files
- applicationMacros[0]="CHD=test1";
- applicationMacros[1]="CHD=test2";
- applicationMacros[2]="CHD=test3";
- applicationMacros[3]="CHD=test4";
+ applicationMacros[0]="RGA="+DeviceName1;
+ applicationMacros[1]="RGA="+DeviceName2;
+ applicationMacros[2]="RGA="+DeviceName3;
+ applicationMacros[3]="RGA="+DeviceName4;
 
- pmain.setupUi(&mymain);
+ mainWindowMacros="RGA1="+DeviceName1+", RGA2="+DeviceName2+", RGA3="+DeviceName3+", RGA4="+DeviceName4+", GRGA=GlobalRga";
+
  ContainerProfile profile;
+ //Main GUI
+ profile.setupProfile( this, QStringList(), "", mainWindowMacros );
+ pmain.setupUi(&mymain);
+ prga.setupUi(&rgamain);
+ profile.releaseProfile();
 
+ //Comparison barcharts
+ pbar.setupUi(&mybar);
+ pana.setupUi(&myana);
+
+ //Stripchart tool
+ pstrip.setupUi(&mystrip);
+
+ //Summary bar charts
  profile.setupProfile( this, QStringList(), "", applicationMacros[0] );
  poverview1.setupUi(&ov1);
  profile.releaseProfile();
@@ -87,33 +116,66 @@ RGA::~RGA()
 }
 
 void  RGA::RGAMain(){
+
     //Seupup slots for main UI: Make buttons work
-    QObject::connect (pmain.anascan,  SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
-    QObject::connect (pmain.barscan,  SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
-    QObject::connect (pmain.summary1, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary2, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary3, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary4, SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
+    QObject::connect (pmain.barscan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
+    QObject::connect (pmain.barstrip,  SIGNAL( clicked() ), this, SLOT( RGAFormShowStripPlot() ) );
+    QObject::connect (pmain.summary1,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    QObject::connect (pmain.summary2,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    QObject::connect (pmain.summary3,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    QObject::connect (pmain.summary4,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+
+    //Correct button names
+    pmain.summary1->setText("Summary "+DeviceTitle1);
+    pmain.summary2->setText("Summary "+DeviceTitle2);
+    pmain.summary3->setText("Summary "+DeviceTitle3);
+    pmain.summary4->setText("Summary "+DeviceTitle4);
+
    //Add main ui to a tabbed window
-    mytabs.setFixedSize(mymain.geometry().width(),mymain.geometry().height());
-    mytabs.addTab(&mymain, tr ("RGA Overview"));
+    mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());
+    mytabs.addTab(&mymain, tr ("RGA startup"));
+    mytabs.addTab(&rgamain, tr ("RGA settings"));
     mytabs.show();
    //Title the overview barcharts
-    ov1.setWindowTitle("RGA 1");
-    ov2.setWindowTitle("RGA 2");
-    ov3.setWindowTitle("RGA 3");
-    ov4.setWindowTitle("RGA 4");
+    ov1.setWindowTitle(DeviceTitle1);
+    ov2.setWindowTitle(DeviceTitle2);
+    ov3.setWindowTitle(DeviceTitle3);
+    ov4.setWindowTitle(DeviceTitle4);
  }
 void  RGA::RGAFormShowAnaPlot(){
- //   if (pWinAnachart == NULL) {pWinAnachart = new QMainWindow;}
- //   if (panachart    == NULL) {panachart = new Ui_anachart; panachart->setupUi(pWinAnachart); }
-    //Alter Y range
- //   panachart->qeplotter->setYRange(1e-12,0.1);
-//    panachart->qeplotter->setXRange(0,200);
-//    pWinAnachart->show();
+      pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
+      pana.qeplotter->setXRange(0,200);
+      QStringList pvs;
+      pvs << "=(S-.5)/32" << DeviceName1+":ANA" << DeviceName2+":ANA" << DeviceName3+":ANA" << DeviceName4+":ANA";
+      pana.qeplotter->setDataPvNameSet(pvs);
+      myana.show();
  }
 void  RGA::RGAFormShowBarPlot(){
+    pbar.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
+    pbar.qeplotter->setXRange(0,200);
+    QStringList pvs;
+    pvs << "=(S-0.5)" << DeviceName1+":BAR" << DeviceName2+":BAR" << DeviceName3+":BAR" << DeviceName4+":BAR";
+    pbar.qeplotter->setDataPvNameSet(pvs);
+    mybar.show();
+ }
+void  RGA::RGAFormShowStripPlot(){
+    pstrip.qestripchart->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
+    pstrip.qestripchart->yScaleModeSelected(QEStripChartNames::log);
 
+    pstrip.qestripchart->setPvName(0,DeviceName1+":BAR:M2");
+    pstrip.qestripchart->setPvName(1,DeviceName1+":BAR:M4");
+    pstrip.qestripchart->setPvName(2,DeviceName1+":BAR:M16");
+    pstrip.qestripchart->setPvName(3,DeviceName2+":BAR:M2");
+    pstrip.qestripchart->setPvName(4,DeviceName2+":BAR:M4");
+    pstrip.qestripchart->setPvName(5,DeviceName2+":BAR:M16");
+    pstrip.qestripchart->setPvName(6,DeviceName3+":BAR:M2");
+    pstrip.qestripchart->setPvName(7,DeviceName3+":BAR:M4");
+    pstrip.qestripchart->setPvName(8,DeviceName3+":BAR:M16");
+    pstrip.qestripchart->setPvName(9,DeviceName4+":BAR:M2");
+    pstrip.qestripchart->setPvName(10,DeviceName4+":BAR:M4");
+    pstrip.qestripchart->setPvName(11,DeviceName4+":BAR:M16");
+    mystrip.show();
  }
 void  RGA::RGAFormShowBarSummary(int rga){
     switch(rga) {
@@ -129,11 +191,9 @@ void RGA::requestAction( const QEActionRequests& request )
 {
 
     /*
-        There are two ways to handle signals in EpicsQt
-        Through Qt Signal/Slots or through EpicsQt ContainerProfile.
-        I used ContainerProfile for macros not for signals
-        but this is here to stop runtime warnings and incasae I do
-        decide to use this method (for example, use EpicsQt to open a Gui using a macro)
+        There are two ways to handle signals in EpicsQt. One is through Qt Signal/Slots and the other through EpicsQt ContainerProfile.
+        I don't use ContainerProfile for Signals/Slots but I do use it for macro substitutions. This is here to stop runtime warnings from that.
+        If you decide to use this, for example: open a Gui using a macro, then its functions will go here.
     */
     // Only handle file open requests
     if( request.getKind() != QEActionRequests::KindOpenFile )

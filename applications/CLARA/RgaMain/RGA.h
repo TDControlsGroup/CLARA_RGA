@@ -46,9 +46,10 @@
 #include <QTabWidget>
 #include "QEActionRequests.h"
 #include "ui_mv2_epicsDisplay.h"
+#include "ui_mv2_rgaDisplay.h"
 #include "ui_barchart.h"
-#include "ui_barchart_ana.h"
 #include "ui_mv2_main_bar.h"
+#include "ui_mv2_stripchart.h"
 
 //! [0]
 
@@ -61,32 +62,64 @@ class RGA : public QObject
 
     //Forms from designer used in the windows
 
-   // Ui::anachart    panachart  ;
+
    // Ui::barchart    pbarchart  ;
    // Ui::mainBar     pmainbar[3];
 
 public:
-    QTabWidget  mytabs;
-    QMainWindow mymain;
-    QMainWindow ov1;
-    QMainWindow ov2;
-    QMainWindow ov3;
-    QMainWindow ov4;
 
-
-
-   explicit RGA();
+   RGA();
     ~RGA();
     void RGAMain();
 public slots:
     void RGAFormShowAnaPlot();
     void RGAFormShowBarPlot();
+    void RGAFormShowStripPlot();
     void RGAFormShowBarSummary(int);
     void requestAction( const QEActionRequests& requests );
 private:
+    QString DeviceName1;
+    QString DeviceName2;
+    QString DeviceName3;
+    QString DeviceName4;
+
+    QString DeviceTitle1;
+    QString DeviceTitle2;
+    QString DeviceTitle3;
+    QString DeviceTitle4;
+
+    //*******
+    //Windows
+    //*******
+
+    //Tab box
+    QTabWidget  mytabs;
+
+    //Main GUI
+    QMainWindow mymain;
+    QMainWindow rgamain;
+
+    //Barchart RGA overview
+    QMainWindow mybar;
+    QMainWindow myana;
+
+    //Live stripchart tool
+    QMainWindow mystrip;
+
+    //Overview barcharts
+    QMainWindow ov1;
+    QMainWindow ov2;
+    QMainWindow ov3;
+    QMainWindow ov4;
+
+    //*****
+    //Forms
+    //*****
     Ui::mainWindow  pmain     ;
-//    Ui::barchart    pbar      ;
-//    Ui::anachart    pana      ;
+    Ui::rgaWindow   prga;
+    Ui::barchart    pbar      ;
+    Ui::barchart    pana      ;
+    Ui::stripWindow pstrip    ;
     Ui::mainBar     poverview1;
     Ui::mainBar     poverview2;
     Ui::mainBar     poverview3;

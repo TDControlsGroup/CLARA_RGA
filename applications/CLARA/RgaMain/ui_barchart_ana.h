@@ -21,8 +21,6 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
-#include "QEAnalogIndicator.h"
-#include "QEAnalogProgressBar.h"
 #include "QEFrame.h"
 #include "QEPlotter.h"
 #include "QEPushButton.h"
@@ -43,8 +41,6 @@ public:
     QLabel *label;
     QLabel *label_2;
     QLabel *label_3;
-    QLabel *label_26;
-    QEAnalogProgressBar *qeanalogprogressbar;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -93,16 +89,7 @@ public:
         label_2->setGeometry(QRect(130, 30, 101, 16));
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(610, 50, 241, 16));
-        label_26 = new QLabel(centralwidget);
-        label_26->setObjectName(QStringLiteral("label_26"));
-        label_26->setGeometry(QRect(370, 50, 91, 21));
-        QFont font;
-        font.setPointSize(8);
-        label_26->setFont(font);
-        qeanalogprogressbar = new QEAnalogProgressBar(centralwidget);
-        qeanalogprogressbar->setObjectName(QStringLiteral("qeanalogprogressbar"));
-        qeanalogprogressbar->setGeometry(QRect(460, 50, 131, 21));
+        label_3->setGeometry(QRect(360, 50, 241, 16));
         anachart->setCentralWidget(centralwidget);
         menubar = new QMenuBar(anachart);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -126,18 +113,18 @@ public:
         actionClose_Window->setText(QApplication::translate("anachart", "Close Tab", 0));
         qeplotter->setProperty("contextMenuEmitText", QVariant(QApplication::translate("anachart", "Export mass and pressure", 0)));
         qeplotter->setProperty("DataVariableX", QVariant(QApplication::translate("anachart", "=(S-0.5)/32", 0)));
-        qeplotter->setProperty("DataVariableA", QVariant(QApplication::translate("anachart", "chas:ANA", 0)));
-        qeplotter->setProperty("DataVariableB", QVariant(QApplication::translate("anachart", "chbs:ANA", 0)));
-        qeplotter->setProperty("DataVariableC", QVariant(QApplication::translate("anachart", "chcs:ANA", 0)));
-        qeplotter->setProperty("DataVariableD", QVariant(QApplication::translate("anachart", "chds:ANA", 0)));
+        qeplotter->setProperty("DataVariableA", QVariant(QApplication::translate("anachart", "$(RGA1):ANA", 0)));
+        qeplotter->setProperty("DataVariableB", QVariant(QApplication::translate("anachart", "$(RGA2):ANA", 0)));
+        qeplotter->setProperty("DataVariableC", QVariant(QApplication::translate("anachart", "$(RGA3):ANA", 0)));
+        qeplotter->setProperty("DataVariableD", QVariant(QApplication::translate("anachart", "$(RGA4):ANA", 0)));
         qeplotter->setProperty("DataVariableE", QVariant(QString()));
         qeplotter->setProperty("SizeVariableX", QVariant(QString()));
         qeplotter->setProperty("SizeVariableA", QVariant(QString()));
         qeplotter->setProperty("AliasNameX", QVariant(QApplication::translate("anachart", "Mass", 0)));
-        qeplotter->setProperty("AliasNameA", QVariant(QApplication::translate("anachart", "RGA1", 0)));
-        qeplotter->setProperty("AliasNameB", QVariant(QApplication::translate("anachart", "RGA2", 0)));
-        qeplotter->setProperty("AliasNameC", QVariant(QApplication::translate("anachart", "RGA3", 0)));
-        qeplotter->setProperty("AliasNameD", QVariant(QApplication::translate("anachart", "RGA4", 0)));
+        qeplotter->setProperty("AliasNameA", QVariant(QApplication::translate("anachart", "$(RGANAME1)", 0)));
+        qeplotter->setProperty("AliasNameB", QVariant(QApplication::translate("anachart", "$(RGANAME2)", 0)));
+        qeplotter->setProperty("AliasNameC", QVariant(QApplication::translate("anachart", "$(RGANAME3)", 0)));
+        qeplotter->setProperty("AliasNameD", QVariant(QApplication::translate("anachart", "$(RGANAME4)", 0)));
         qeplotter->setProperty("AliasNameE", QVariant(QString()));
         qepushbutton_27->setText(QApplication::translate("anachart", "RGA 50", 0));
         qepushbutton_27->setProperty("variable", QVariant(QString()));
@@ -148,8 +135,6 @@ public:
         label->setText(QApplication::translate("anachart", "Mass (X axis)", 0));
         label_2->setText(QApplication::translate("anachart", "Pressure (Y axis)", 0));
         label_3->setText(QApplication::translate("anachart", "Note: Drag and click to zoom axis. Dx to reset.", 0));
-        label_26->setText(QApplication::translate("anachart", "Percent scanned:", 0));
-        qeanalogprogressbar->setProperty("variable", QVariant(QApplication::translate("anachart", "chas:PERSCANNED", 0)));
     } // retranslateUi
 
 };

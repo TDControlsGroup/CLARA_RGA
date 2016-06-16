@@ -1,17 +1,14 @@
 #! [0]
 
-FORMS  = C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_epicsDisplay.ui
+FORMS  = C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_epicsDisplay.ui \
+    ../../../framework/ui/mv2_rgaDisplay.ui
 FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart.ui
-FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart_ana.ui
 FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_main_bar.ui
-
+FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_rgaDisplay.ui
+FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_stripchart.ui
 
 HEADERS     = RGA.h \
-    ui_mv2_epicsDisplay.h \
-    ui_barchart.h \
-    ui_barchart_ana.h \
-    ui_mv2_main_bar.h \
-    C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.h
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.h
 
 RESOURCES   = \
     FileList.qrc

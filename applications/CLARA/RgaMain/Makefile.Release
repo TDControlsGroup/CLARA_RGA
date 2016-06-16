@@ -54,10 +54,6 @@ OBJECTS       = release/main.o \
 		release/moc_RGA.o
 
 DIST          =  RGA.h \
-		ui_mv2_epicsDisplay.h \
-		ui_barchart.h \
-		ui_barchart_ana.h \
-		ui_mv2_main_bar.h \
 		..\..\..\framework\widgets\QEWidget\QEStringFormattingMethods.h main.cpp \
 		RGA.cpp \
 		..\..\..\framework\widgets\QEWidget\QEStringFormattingMethods.cpp
@@ -87,7 +83,7 @@ DESTDIR_TARGET = release\Rga.exe
 first: all
 all: Makefile.Release  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/lib/libQt5UiTools.a ui_mv2_epicsDisplay.h ui_barchart.h ui_barchart_ana.h ui_mv2_main_bar.h $(OBJECTS) 
+$(DESTDIR_TARGET): C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/lib/libQt5UiTools.a ui_mv2_epicsDisplay.h ui_mv2_rgaDisplay.h ui_barchart.h ui_mv2_main_bar.h ui_mv2_stripchart.h $(OBJECTS) 
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
 
 qmake: FORCE
@@ -229,11 +225,18 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qicon.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QWidget \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QTabWidget \
-		ui_mv2_epicsDisplay.h \
+		../../../framework/common/QEActionRequests.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QString \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QStringList \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QVariant \
+		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QAction \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qaction.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qactiongroup.h \
+		../../../framework/common/QEFormMapper.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QObject \
+		ui_mv2_epicsDisplay.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QApplication \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qapplication.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qcoreapplication.h \
@@ -269,19 +272,12 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qmenu.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qstatusbar.h \
-		../../../framework/widgets/QEBitStatus/QBitStatus.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QString \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QRect \
+		../../../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QColor \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPainter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qpen.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
-		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
-		../../../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QColor \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QObject \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QPoint \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QList \
 		../../../framework/widgets/QEAnalogProgressBar/QEAnalogProgressBar.h \
@@ -293,7 +289,6 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QTimer \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qtimer.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qbasictimer.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QStringList \
 		../../../framework/api/CaObject.h \
 		../../../framework/api/Generic.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QtGlobal \
@@ -316,7 +311,6 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qsharedmemory.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QDebug \
 		../../../framework/widgets/QEWidget/persistanceManager.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QXmlStreamWriter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qxmlstream.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtXml/QXmlDefaultHandler \
@@ -338,16 +332,11 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		../../../framework/widgets/QEWidget/contextMenu.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMenu \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSet \
-		../../../framework/common/QEActionRequests.h \
-		../../../framework/common/QEFormMapper.h \
 		../../../framework/widgets/QEWidget/standardProperties.h \
 		../../../framework/data/QEFloating.h \
 		../../../framework/data/QEFloatingFormatting.h \
 		../../../framework/data/QCaVariableNamePropertyManager.h \
 		../../../framework/widgets/QEWidget/QEStringFormattingMethods.h \
-		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
-		../../../framework/data/QEInteger.h \
-		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QEButton/QECheckBox.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QCheckBox \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qcheckbox.h \
@@ -371,35 +360,84 @@ release/moc_RGA.cpp: C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMain
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
 		../../../framework/widgets/QESimpleShape/QESimpleShape.h \
+		../../../framework/data/QEInteger.h \
+		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QESimpleShape/QSimpleShape.h \
 		../../../framework/common/QEScanTimers.h \
-		ui_mv2_main_bar.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
+		ui_mv2_rgaDisplay.h \
+		../../../framework/widgets/QEBitStatus/QBitStatus.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QRect \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
+		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
+		ui_barchart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlcdnumber.h \
+		../../../framework/widgets/QEFrame/QEFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QFrame \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotter.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QColorDialog \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qcolordialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qdialog.h \
+		../../../framework/data/QEFloatingArray.h \
+		../../../framework/common/QEExpressionEvaluation.h \
+		../../../framework/widgets/QEResizeableFrame/QEResizeableFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
+		../../../framework/common/QEGraphicNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartRangeDialog.h \
+		../../../framework/common/QEDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QDialog \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterNames.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterItemDialog.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterMenu.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterState.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterToolBar.h \
+		ui_mv2_main_bar.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
+		ui_mv2_stripchart.h \
+		../../../framework/widgets/QEStripChart/QEStripChart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QBoxLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QMouseEvent \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QPointF \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSize \
+		../../../framework/common/QEPVNameSelectDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartToolBar.h \
+		../../../framework/widgets/QEStripChart/QEStripChartTimeDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartDurationDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QTime \
+		../../../framework/widgets/QEStripChart/QEStripChartState.h \
 		RGA.h \
 		release/mocinclude.tmp
 	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 @release/mocinclude.tmp RGA.h -o release\moc_RGA.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mv2_epicsDisplay.h ui_barchart.h ui_barchart_ana.h ui_mv2_main_bar.h
+compiler_uic_make_all: ui_mv2_epicsDisplay.h ui_mv2_rgaDisplay.h ui_barchart.h ui_mv2_main_bar.h ui_mv2_rgaDisplay.h ui_mv2_stripchart.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mv2_epicsDisplay.h ui_barchart.h ui_barchart_ana.h ui_mv2_main_bar.h
+	-$(DEL_FILE) ui_mv2_epicsDisplay.h ui_mv2_rgaDisplay.h ui_barchart.h ui_mv2_main_bar.h ui_mv2_rgaDisplay.h ui_mv2_stripchart.h
 ui_mv2_epicsDisplay.h: ../../../framework/ui/mv2_epicsDisplay.ui
 	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\mv2_epicsDisplay.ui -o ui_mv2_epicsDisplay.h
+
+ui_mv2_rgaDisplay.h: ../../../framework/ui/mv2_rgaDisplay.ui
+	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\mv2_rgaDisplay.ui -o ui_mv2_rgaDisplay.h
 
 ui_barchart.h: ../../../framework/ui/barchart.ui
 	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\barchart.ui -o ui_barchart.h
 
-ui_barchart_ana.h: ../../../framework/ui/barchart_ana.ui
-	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\barchart_ana.ui -o ui_barchart_ana.h
-
 ui_mv2_main_bar.h: ../../../framework/ui/mv2_main_bar.ui
 	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\mv2_main_bar.ui -o ui_mv2_main_bar.h
+
+ui_mv2_rgaDisplay.h: ../../../framework/ui/mv2_rgaDisplay.ui
+	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\mv2_rgaDisplay.ui -o ui_mv2_rgaDisplay.h
+
+ui_mv2_stripchart.h: ../../../framework/ui/mv2_stripchart.ui
+	C:\Qt\Qt5.5.1_mingw\5.5\mingw492_32\bin\uic.exe ..\..\..\framework\ui\mv2_stripchart.ui -o ui_mv2_stripchart.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -528,11 +566,18 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qicon.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QWidget \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QTabWidget \
-		ui_mv2_epicsDisplay.h \
+		../../../framework/common/QEActionRequests.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QString \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QStringList \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QVariant \
+		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QAction \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qaction.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qactiongroup.h \
+		../../../framework/common/QEFormMapper.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QObject \
+		ui_mv2_epicsDisplay.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QButtonGroup \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qbuttongroup.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QGroupBox \
@@ -561,19 +606,12 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qmenu.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qstatusbar.h \
-		../../../framework/widgets/QEBitStatus/QBitStatus.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QString \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QRect \
+		../../../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QColor \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPainter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/qpen.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
-		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
-		../../../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QColor \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QObject \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QPoint \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QList \
 		../../../framework/widgets/QEAnalogProgressBar/QEAnalogProgressBar.h \
@@ -585,7 +623,6 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QTimer \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qtimer.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qbasictimer.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QStringList \
 		../../../framework/api/CaObject.h \
 		../../../framework/api/Generic.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QtGlobal \
@@ -608,7 +645,6 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qsharedmemory.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QDebug \
 		../../../framework/widgets/QEWidget/persistanceManager.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QXmlStreamWriter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/qxmlstream.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtXml/QXmlDefaultHandler \
@@ -630,16 +666,11 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		../../../framework/widgets/QEWidget/contextMenu.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMenu \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSet \
-		../../../framework/common/QEActionRequests.h \
-		../../../framework/common/QEFormMapper.h \
 		../../../framework/widgets/QEWidget/standardProperties.h \
 		../../../framework/data/QEFloating.h \
 		../../../framework/data/QEFloatingFormatting.h \
 		../../../framework/data/QCaVariableNamePropertyManager.h \
 		../../../framework/widgets/QEWidget/QEStringFormattingMethods.h \
-		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
-		../../../framework/data/QEInteger.h \
-		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QEButton/QECheckBox.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QCheckBox \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qcheckbox.h \
@@ -663,15 +694,58 @@ release/main.o: main.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/Q
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
 		../../../framework/widgets/QESimpleShape/QESimpleShape.h \
+		../../../framework/data/QEInteger.h \
+		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QESimpleShape/QSimpleShape.h \
 		../../../framework/common/QEScanTimers.h \
-		ui_mv2_main_bar.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
+		ui_mv2_rgaDisplay.h \
+		../../../framework/widgets/QEBitStatus/QBitStatus.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QRect \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
+		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
+		ui_barchart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QLCDNumber \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlcdnumber.h \
+		../../../framework/widgets/QEFrame/QEFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QFrame \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotter.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QColorDialog \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qcolordialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qdialog.h \
+		../../../framework/data/QEFloatingArray.h \
+		../../../framework/common/QEExpressionEvaluation.h \
+		../../../framework/widgets/QEResizeableFrame/QEResizeableFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout
+		../../../framework/common/QEGraphicNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartRangeDialog.h \
+		../../../framework/common/QEDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QDialog \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterNames.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterItemDialog.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterMenu.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterState.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterToolBar.h \
+		ui_mv2_main_bar.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
+		ui_mv2_stripchart.h \
+		../../../framework/widgets/QEStripChart/QEStripChart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QBoxLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QMouseEvent \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QPointF \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSize \
+		../../../framework/common/QEPVNameSelectDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartToolBar.h \
+		../../../framework/widgets/QEStripChart/QEStripChartTimeDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartDurationDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QTime \
+		../../../framework/widgets/QEStripChart/QEStripChartState.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o main.cpp
 
 release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtUiTools \
@@ -1137,8 +1211,12 @@ release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtU
 		RGA.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMainWindow \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QTabWidget \
-		ui_mv2_epicsDisplay.h \
+		../../../framework/common/QEActionRequests.h \
+		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QAction \
+		../../../framework/common/QEFormMapper.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
+		ui_mv2_epicsDisplay.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QApplication \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QButtonGroup \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QGroupBox \
@@ -1146,13 +1224,9 @@ release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtU
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QLabel \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMenuBar \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QStatusBar \
-		../../../framework/widgets/QEBitStatus/QBitStatus.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPainter \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
-		../../../framework/widgets/QEWidget/QEPluginLibrary_global.h \
 		../../../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QColor \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPainter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QPoint \
 		../../../framework/widgets/QEAnalogProgressBar/QEAnalogProgressBar.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QVector \
@@ -1178,7 +1252,6 @@ release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtU
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSharedMemory \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QDebug \
 		../../../framework/widgets/QEWidget/persistanceManager.h \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QHash \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QXmlStreamWriter \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtXml/QXmlDefaultHandler \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtXml/qxml.h \
@@ -1199,16 +1272,11 @@ release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtU
 		../../../framework/widgets/QEWidget/contextMenu.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QMenu \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QSet \
-		../../../framework/common/QEActionRequests.h \
-		../../../framework/common/QEFormMapper.h \
 		../../../framework/widgets/QEWidget/standardProperties.h \
 		../../../framework/data/QEFloating.h \
 		../../../framework/data/QEFloatingFormatting.h \
 		../../../framework/data/QCaVariableNamePropertyManager.h \
 		../../../framework/widgets/QEWidget/QEStringFormattingMethods.h \
-		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
-		../../../framework/data/QEInteger.h \
-		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QEButton/QECheckBox.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QCheckBox \
 		../../../framework/widgets/QEWidget/managePixmaps.h \
@@ -1225,11 +1293,48 @@ release/RGA.o: RGA.cpp C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtUiTools/QtU
 		../../../framework/widgets/QEButton/QEPushButton.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		../../../framework/widgets/QESimpleShape/QESimpleShape.h \
+		../../../framework/data/QEInteger.h \
+		../../../framework/data/QEIntegerFormatting.h \
 		../../../framework/widgets/QESimpleShape/QSimpleShape.h \
 		../../../framework/common/QEScanTimers.h \
+		ui_mv2_rgaDisplay.h \
+		../../../framework/widgets/QEBitStatus/QBitStatus.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QBrush \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QPen \
+		../../../framework/widgets/QEBitStatus/QEBitStatus.h \
+		ui_barchart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QLCDNumber \
+		../../../framework/widgets/QEFrame/QEFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QFrame \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotter.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QColorDialog \
+		../../../framework/data/QEFloatingArray.h \
+		../../../framework/common/QEExpressionEvaluation.h \
+		../../../framework/widgets/QEResizeableFrame/QEResizeableFrame.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
+		../../../framework/common/QEGraphicNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartRangeDialog.h \
+		../../../framework/common/QEDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QDialog \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterNames.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterItemDialog.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterMenu.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterState.h \
+		../../../framework/widgetsCLARA/QEPlotterCLARA/QEPlotterToolBar.h \
 		ui_mv2_main_bar.h \
 		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
-		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QVBoxLayout
+		ui_mv2_stripchart.h \
+		../../../framework/widgets/QEStripChart/QEStripChart.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QBoxLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtGui/QMouseEvent \
+		../../../framework/common/QEPVNameSelectDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartNames.h \
+		../../../framework/widgets/QEStripChart/QEStripChartToolBar.h \
+		../../../framework/widgets/QEStripChart/QEStripChartTimeDialog.h \
+		../../../framework/widgets/QEStripChart/QEStripChartDurationDialog.h \
+		C:/Qt/Qt5.5.1_mingw/5.5/mingw492_32/include/QtCore/QTime \
+		../../../framework/widgets/QEStripChart/QEStripChartState.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\RGA.o RGA.cpp
 
 release/QEStringFormattingMethods.o: ../../../framework/widgets/QEWidget/QEStringFormattingMethods.cpp ../../../framework/widgets/QEWidget/QEStringFormattingMethods.h \
