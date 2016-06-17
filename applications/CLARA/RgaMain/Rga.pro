@@ -1,33 +1,34 @@
 #! [0]
 
-FORMS  = C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_epicsDisplay.ui \
-    ../../../framework/ui/mv2_rgaDisplay.ui
-FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/barchart.ui
-FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_main_bar.ui
-FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_rgaDisplay.ui
-FORMS += C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/ui/mv2_stripchart.ui
+FORMS = ../../../framework/ui/barchart.ui
+FORMS += ../../../framework/ui/mv2_epicsDisplay.ui
+FORMS += ../../../framework/ui/mv2_rgaDisplay.ui
+FORMS += ../../../framework/ui/mv2_main_bar.ui
+FORMS += ../../../framework/ui/mv2_stripchart.ui
 
-HEADERS     = RGA.h \
-C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.h
+HEADERS  = RGA.h
+HEADERS += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.h
+HEADERS += RgaArchiver.h
 
-RESOURCES   = \
-    FileList.qrc
-SOURCES     = main.cpp\
-              RGA.cpp\
-              C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\widgets\QEWidget\QEStringFormattingMethods.cpp
+
+
+SOURCES     = main.cpp
+SOURCES     += RGA.cpp
+SOURCES     += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.cpp
+SOURCES     += RgaArchiver.cpp
 
 QT += core gui xml widgets uitools
 #! [0]
-target.path = C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaMain\
+target.path = .
 INSTALLS += target
-LIBS += -LC:\Users\zgm95989\Desktop\base-3.15.3\base-3.15.3\bin\win32-x86-mingw -lca -lCom
+LIBS += -L../../epics_libs -lca -lCom
 
 debug {
-    LIBS += -LC:\Users\zgm95989\Desktop\3.2.4-CLARA\build-framework-Desktop_Qt_5_5_1_MinGW_32bit-Debug\designer -lQEPlugin
+    LIBS += -LC:../../../build-framework-Desktop_Qt_5_5_1_MinGW_32bit-Debug\designer -lQEPlugin
 }
 
 release {
-    LIBS += -LC:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\designer -lQEPlugin
+    LIBS += -L../../../framework\designer -lQEPlugin
 }
 
 

@@ -58,17 +58,17 @@ class RGA : public QObject
     Q_OBJECT
 
     //Windows
-   // QMainWindow pWinMain ;
+    // QMainWindow pWinMain ;
 
     //Forms from designer used in the windows
 
 
-   // Ui::barchart    pbarchart  ;
-   // Ui::mainBar     pmainbar[3];
+    // Ui::barchart    pbarchart  ;
+    // Ui::mainBar     pmainbar[3];
 
 public:
 
-   RGA();
+    RGA();
     ~RGA();
     void RGAMain();
 public slots:

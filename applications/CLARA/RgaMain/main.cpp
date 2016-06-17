@@ -41,14 +41,16 @@
 
 #include <QApplication>
 #include "RGA.h"
+#include "RgaArchiver.h"
 
 
 int main(int argc, char *argv[])
 {
-    Q_INIT_RESOURCE(FileList);
+
     QApplication app(argc, argv);
 
     //Windows
+    RgaArchiver archive;
     RGA myrga;
     myrga.RGAMain();
     return app.exec();

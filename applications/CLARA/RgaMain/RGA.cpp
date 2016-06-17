@@ -56,57 +56,57 @@ RGA::RGA()
 {
 //Setup Main UI
 
- DeviceName1="rga1";
- DeviceName2="rga2";
- DeviceName3="rga3";
- DeviceName4="rga4";
+    DeviceName1="rga1";
+    DeviceName2="rga2";
+    DeviceName3="rga3";
+    DeviceName4="rga4";
 
- DeviceTitle1="Rga1";
- DeviceTitle2="Rga2";
- DeviceTitle3="Rga3";
- DeviceTitle4="Rga4";
+    DeviceTitle1="Rga1";
+    DeviceTitle2="Rga2";
+    DeviceTitle3="Rga3";
+    DeviceTitle4="Rga4";
 
- QString applicationMacros[4];
- QString mainWindowMacros;
+    QString applicationMacros[4];
+    QString mainWindowMacros;
 
- //Macro substitutions in the Ui files
- applicationMacros[0]="RGA="+DeviceName1;
- applicationMacros[1]="RGA="+DeviceName2;
- applicationMacros[2]="RGA="+DeviceName3;
- applicationMacros[3]="RGA="+DeviceName4;
+//Macro substitutions in the Ui files
+    applicationMacros[0]="RGA="+DeviceName1;
+    applicationMacros[1]="RGA="+DeviceName2;
+    applicationMacros[2]="RGA="+DeviceName3;
+    applicationMacros[3]="RGA="+DeviceName4;
 
- mainWindowMacros="RGA1="+DeviceName1+", RGA2="+DeviceName2+", RGA3="+DeviceName3+", RGA4="+DeviceName4+", GRGA=GlobalRga";
+    mainWindowMacros="RGA1="+DeviceName1+", RGA2="+DeviceName2+", RGA3="+DeviceName3+", RGA4="+DeviceName4+", GRGA=GlobalRga";
 
- ContainerProfile profile;
- //Main GUI
- profile.setupProfile( this, QStringList(), "", mainWindowMacros );
- pmain.setupUi(&mymain);
- prga.setupUi(&rgamain);
- profile.releaseProfile();
+    ContainerProfile profile;
+//Main GUI
+    profile.setupProfile( this, QStringList(), "", mainWindowMacros );
+    pmain.setupUi(&mymain);
+    prga.setupUi(&rgamain);
+    profile.releaseProfile();
 
- //Comparison barcharts
- pbar.setupUi(&mybar);
- pana.setupUi(&myana);
+//Comparison barcharts
+    pbar.setupUi(&mybar);
+    pana.setupUi(&myana);
 
- //Stripchart tool
- pstrip.setupUi(&mystrip);
+//Stripchart tool
+    pstrip.setupUi(&mystrip);
 
- //Summary bar charts
- profile.setupProfile( this, QStringList(), "", applicationMacros[0] );
- poverview1.setupUi(&ov1);
- profile.releaseProfile();
+//Summary bar charts
+    profile.setupProfile( this, QStringList(), "", applicationMacros[0] );
+    poverview1.setupUi(&ov1);
+    profile.releaseProfile();
 
- profile.setupProfile( this, QStringList(), "", applicationMacros[1] );
- poverview2.setupUi(&ov2);
- profile.releaseProfile();
+    profile.setupProfile( this, QStringList(), "", applicationMacros[1] );
+    poverview2.setupUi(&ov2);
+    profile.releaseProfile();
 
- profile.setupProfile( this, QStringList(), "", applicationMacros[2] );
- poverview3.setupUi(&ov3);
- profile.releaseProfile();
+    profile.setupProfile( this, QStringList(), "", applicationMacros[2] );
+    poverview3.setupUi(&ov3);
+    profile.releaseProfile();
 
- profile.setupProfile( this, QStringList(), "", applicationMacros[3] );
- poverview4.setupUi(&ov4);
- profile.releaseProfile();
+    profile.setupProfile( this, QStringList(), "", applicationMacros[3] );
+    poverview4.setupUi(&ov4);
+    profile.releaseProfile();
 
 }
 
@@ -115,7 +115,8 @@ RGA::~RGA()
 
 }
 
-void  RGA::RGAMain(){
+void  RGA::RGAMain()
+{
 
     //Seupup slots for main UI: Make buttons work
     QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
@@ -132,34 +133,37 @@ void  RGA::RGAMain(){
     pmain.summary3->setText("Summary "+DeviceTitle3);
     pmain.summary4->setText("Summary "+DeviceTitle4);
 
-   //Add main ui to a tabbed window
+    //Add main ui to a tabbed window
     mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());
     mytabs.addTab(&mymain, tr ("RGA startup"));
     mytabs.addTab(&rgamain, tr ("RGA settings"));
     mytabs.show();
-   //Title the overview barcharts
+    //Title the overview barcharts
     ov1.setWindowTitle(DeviceTitle1);
     ov2.setWindowTitle(DeviceTitle2);
     ov3.setWindowTitle(DeviceTitle3);
     ov4.setWindowTitle(DeviceTitle4);
- }
-void  RGA::RGAFormShowAnaPlot(){
-      pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
-      pana.qeplotter->setXRange(0,200);
-      QStringList pvs;
-      pvs << "=(S-.5)/32" << DeviceName1+":ANA" << DeviceName2+":ANA" << DeviceName3+":ANA" << DeviceName4+":ANA";
-      pana.qeplotter->setDataPvNameSet(pvs);
-      myana.show();
- }
-void  RGA::RGAFormShowBarPlot(){
+}
+void  RGA::RGAFormShowAnaPlot()
+{
+    pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
+    pana.qeplotter->setXRange(0,200);
+    QStringList pvs;
+    pvs << "=(S-.5)/32" << DeviceName1+":ANA" << DeviceName2+":ANA" << DeviceName3+":ANA" << DeviceName4+":ANA";
+    pana.qeplotter->setDataPvNameSet(pvs);
+    myana.show();
+}
+void  RGA::RGAFormShowBarPlot()
+{
     pbar.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pbar.qeplotter->setXRange(0,200);
     QStringList pvs;
     pvs << "=(S-0.5)" << DeviceName1+":BAR" << DeviceName2+":BAR" << DeviceName3+":BAR" << DeviceName4+":BAR";
     pbar.qeplotter->setDataPvNameSet(pvs);
     mybar.show();
- }
-void  RGA::RGAFormShowStripPlot(){
+}
+void  RGA::RGAFormShowStripPlot()
+{
     pstrip.qestripchart->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pstrip.qestripchart->yScaleModeSelected(QEStripChartNames::log);
 
@@ -176,16 +180,26 @@ void  RGA::RGAFormShowStripPlot(){
     pstrip.qestripchart->setPvName(10,DeviceName4+":BAR:M4");
     pstrip.qestripchart->setPvName(11,DeviceName4+":BAR:M16");
     mystrip.show();
- }
-void  RGA::RGAFormShowBarSummary(int rga){
-    switch(rga) {
-        case 1 : ov1.show(); break; // Show Bar1
-        case 2 : ov2.show(); break; // Show Bar2
-        case 3 : ov3.show(); break; // Show Bar3
-        case 4 : ov4.show(); break; // Show Bar4
+}
+void  RGA::RGAFormShowBarSummary(int rga)
+{
+    switch(rga)
+    {
+    case 1 :
+        ov1.show();
+        break; // Show Bar1
+    case 2 :
+        ov2.show();
+        break; // Show Bar2
+    case 3 :
+        ov3.show();
+        break; // Show Bar3
+    case 4 :
+        ov4.show();
+        break; // Show Bar4
 
     }
- }
+}
 
 void RGA::requestAction( const QEActionRequests& request )
 {
