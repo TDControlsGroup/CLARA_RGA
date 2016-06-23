@@ -1,11 +1,5 @@
 #include "rgaxml.h"
 
-/*
- Note: New is used here but not deleted as this is a one shot wonder and the OS
-*/
-
-
-
 rgaxml::rgaxml()
 {
 
@@ -16,151 +10,98 @@ rgaxml::~rgaxml(){
 }
 
 
-
-
-void rgaxml::build(scandata *myobj)
+void rgaxml::build(scandata *myobj, std::string myout)
 {
 
-    doc= new TiXmlDocument();
+
     myscan=myobj;
     //TiXmlDeclaration * decl;
     decl = new  TiXmlDeclaration( "1.0", "utf-8", "");
-    doc->LinkEndChild( decl );
-    //delete decl;
-
+    doc.LinkEndChild( decl );
     root = new TiXmlElement( "rga" );
-    this->gen();
-    doc->LinkEndChild( root );
-    doc->SaveFile( "madeByHand.xml" );
 
+    this->addinfo();
+    this->gen();
+    doc.LinkEndChild( root );
+    doc.SaveFile( myout.c_str() );
+
+}
+
+void rgaxml::addinfo(){
+
+    //Load info
+    infosection = new TiXmlElement ( "GENERAL_INFORMATION");
+    std::string killblanks;
+    for(int info=0 ; info < this->myscan->getInfoSize(); info ++){
+    //Element
+     this->myscan->setInfoIndex(info);
+     killblanks= this->myscan->getInfo();
+     if(killblanks.size() < 1) {continue;}; //Strip out blanks
+     _element.push_back     (new TiXmlElement(this->myscan->getElementName() ));
+     _text_element.push_back(new TiXmlText   (this->myscan->getInfo()        ));
+     //there will not be as many elements as info if we skip blanks so use size to link
+     _element[_element.size()-1]->LinkEndChild(_text_element[_element.size()-1]);
+     infosection->LinkEndChild(_element[_element.size()-1]);
+    }
+ root->LinkEndChild(infosection);
 }
 
 void rgaxml::gen(){
-    for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
-    {
-        //Build header elements
-        _buildScan(scanno);
+    //Measurement info
+     _scans.push_back( new TiXmlElement("MEASUREMENT"));
+     _scans.push_back( new TiXmlElement("CHANNEL_NAME"));
+for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
+ {
 
-        for (int massno=0;massno < myscan->getMassRange(); massno++)
+   //Build header elements
+   _buildScan(scanno);
+
+   for (int massno=0;massno < myscan->getMassRange(); massno++)
         {
-            //Build pressure elements
-            _buildPress(scanno, massno);
+   //Build pressure elements
+   _buildPress(scanno, massno);
 
-        }
-    }
+   }
+ }
+
+
+for (int scanno=0;scanno < myscan->getNumberScans(); scanno++)
+ {
+     _scans[1]->LinkEndChild(_sump[scanno]);
+     _scans[1]->LinkEndChild(_date[scanno]);
+ }
+
+    root->LinkEndChild(_scans[1]);
+    root->LinkEndChild(_scans[0]);
 }
 
 void rgaxml::_buildScan(int scanno){
+
+    //Sump and date
     char  mychar[10];
-
-    //Scan info
-    _scans.push_back( new TiXmlElement("SCAN"));
-    _scans[scanno]->SetAttribute("no",scanno+1);
-
-    //Sens
-    _sensitivity.push_back(new TiXmlElement("SENSITIVITY"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_sensitivity.push_back( new TiXmlText(mychar));
-
-    //Mult
-    _multiply.push_back(new TiXmlElement("MULT"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_multiply.push_back( new TiXmlText(mychar));
-
-    //Detector
-    _detector.push_back(new TiXmlElement("DETECTOR"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_detector.push_back( new TiXmlText(mychar));
-
-    //Channel
-    _channel_count.push_back(new TiXmlElement("CHANNEL"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_channel_count.push_back( new TiXmlText(mychar));
-
-    //Plot
-    _plot_type.push_back(new TiXmlElement("PLOT"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_plot_type.push_back( new TiXmlText(mychar));
-
-    //Filament
-    _filament.push_back(new TiXmlElement("FILAMENT"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_filament.push_back( new TiXmlText(mychar));
-
-    //Max Mass
-    _max_mass.push_back(new TiXmlElement("MAXMASS"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_max_mass.push_back( new TiXmlText(mychar));
-
-    //Gain 1
-    _gain1.push_back(new TiXmlElement("GAIN1"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_gain1.push_back( new TiXmlText(mychar));
-
-    //Gain 2
-    _gain2.push_back(new TiXmlElement("GAIN2"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_gain2.push_back( new TiXmlText(mychar));
-
-    //Gain 3
-    _gain3.push_back(new TiXmlElement("GAIN3"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_gain3.push_back( new TiXmlText(mychar));
-
-    //Name
-    _name.push_back(new TiXmlElement("NAME"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_name.push_back( new TiXmlText(mychar));
-
-    //Serial
-    _serialno.push_back(new TiXmlElement("ID"));
-    std::sprintf(mychar,"%.2e",myscan->getSumP() );
-    _text_serialno.push_back( new TiXmlText(mychar));
-
-
-    //Sump
     _sump.push_back(new TiXmlElement("SUMP"));
+    _sump[scanno]->SetAttribute("no",scanno+1);
     std::sprintf(mychar,"%.2e",myscan->getSumP() );
     _text_sump.push_back( new TiXmlText(mychar));
 
+    _date.push_back(new TiXmlElement("DATE"));
+    _date[scanno]->SetAttribute("no",scanno+1);
+    std::sprintf(mychar,"%s",myscan->getDateTime() );
+    _text_date.push_back( new TiXmlText(mychar));
 
     //Data block
-    _data.push_back(new TiXmlElement("DATA"));
+    _data.push_back(new TiXmlElement("SCAN"));
+    _data[scanno]->SetAttribute("no",scanno+1);
 
-    //Document layout of elements
+    //Document layout of pressure elements
 
-    _name[scanno]->LinkEndChild(_text_name[scanno]);
-    _serialno[scanno]->LinkEndChild(_text_serialno[scanno]);
-    _gain1[scanno]->LinkEndChild(_text_gain1[scanno]);
-    _gain2[scanno]->LinkEndChild(_text_gain2[scanno]);
-    _gain3[scanno]->LinkEndChild(_text_gain3[scanno]);
-    _max_mass[scanno]->LinkEndChild(_text_max_mass[scanno]);
-    _filament[scanno]->LinkEndChild(_text_filament[scanno]);
-    _plot_type[scanno]->LinkEndChild(_text_plot_type[scanno]);
-    _channel_count[scanno]->LinkEndChild(_text_channel_count[scanno]);
-    _detector[scanno]->LinkEndChild(_text_detector[scanno]);
-    _multiply[scanno]->LinkEndChild(_text_multiply[scanno]);
-    _sensitivity[scanno]->LinkEndChild(_text_sensitivity[scanno]);
     _sump[scanno]->LinkEndChild(_text_sump[scanno]);
+    _date[scanno]->LinkEndChild(_text_date[scanno]);
+
+    _scans[0]->LinkEndChild(_data[scanno]);
 
 
-    _scans[scanno]->LinkEndChild(_name[scanno]);
-    _scans[scanno]->LinkEndChild(_serialno[scanno]);
-    _scans[scanno]->LinkEndChild(_gain1[scanno]);
-    _scans[scanno]->LinkEndChild(_gain2[scanno]);
-    _scans[scanno]->LinkEndChild(_gain3[scanno]);
-    _scans[scanno]->LinkEndChild(_max_mass[scanno]);
-    _scans[scanno]->LinkEndChild(_filament[scanno]);
-    _scans[scanno]->LinkEndChild(_plot_type[scanno]);
-    _scans[scanno]->LinkEndChild(_channel_count[scanno]);
-    _scans[scanno]->LinkEndChild(_detector[scanno]);
-    _scans[scanno]->LinkEndChild(_multiply[scanno]);
-    _scans[scanno]->LinkEndChild(_sensitivity[scanno]);
-    _scans[scanno]->LinkEndChild(_sump[scanno]);
-    _scans[scanno]->LinkEndChild(_data[scanno]);
 
-
-    root->LinkEndChild(_scans[scanno]);
 
 }
 

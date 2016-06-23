@@ -5,51 +5,48 @@
 #include <assert.h>
 #include <string>
 #include <vector>
-#include <ctime>
-#include <time.h>
+
+
+struct mytime{
+    int year;
+    int month;
+    int day;
+    int hour;
+    int min;
+    int sec;
+};
+
 
 class scandata
 {
+
+    std::string temptime;
     std::vector<float> _mass;
     std::vector<std::vector <float>> _pressure;
     std::vector <float> _sump;
-    std::vector <tm> timeInfo;
+    std::vector <mytime> timeInfo;
     unsigned int _pindex;
     unsigned int _mindex;
     unsigned int _scan;
     char _mybuffer[];
+    std::vector<std::string> my_rege_name;
+    std::vector<std::string> my_rege_map;
+    std::vector<std::string> infoval;
+    std::vector<std::string> elenamemap;
+    int _name;
 
 public:
     scandata();
-    //Global info that will not change between scans
 
+//Global info that will not change between scans
+void setInfoIndex(int name){this->_name=name;}
+void setInfo(std::string info){this->infoval[_name]= info;}
 
-void setName(char *);
-void setSerialno();
-void setDetector();
-void setSensitivity();
-void setPlotType();
-void setGain1();
-void setGain2();
-void setGain3();
-void setMax_mass();
-void setFilament();
-void setChannel_count();
-void setMultiply();
-
-char* getName();
-char* getSerialno();
-char* getDetector();
-char* getSensitivity();
-char* getPlotType();
-float getGain1();
-float getGain2();
-float getGain3();
-int getMax_mass();
-int getFilament();
-int getChannel_count();
-int getMultiply();
-
+const char * getInfo()         {return this->infoval[_name].c_str();}
+const char * getInfoName()     {return this->my_rege_name[_name].c_str() ;}
+const char * getInfoNameRegExp(){return this->my_rege_name[_name].c_str();}
+int getInfoSize()              {return this->infoval.size()                  ;}
+const char * getElementName()  {return this->elenamemap[_name].c_str()       ;}
 
 
     //Scan level info
@@ -75,7 +72,7 @@ int getMultiply();
     void setHour(int);
     void setMin(int);
     void setSec(int);
-    char* getDateTime();
+    const char* getDateTime();
 
 
 

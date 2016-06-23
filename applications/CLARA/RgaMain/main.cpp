@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     //Windows
-    RgaArchiver archive;
+    //RgaArchiver archive;
     RGA myrga;
     myrga.RGAMain();
     return app.exec();
