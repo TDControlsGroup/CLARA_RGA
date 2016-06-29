@@ -42,19 +42,19 @@
      <string>Export mass and pressure</string>
     </property>
     <property name="DataVariableX" stdset="0">
-     <string>=S-0.5</string>
+     <string>=(S-0.5)/32</string>
     </property>
     <property name="DataVariableA" stdset="0">
-     <string extracomment="test">chas:BAR</string>
+     <string extracomment="test">rga1:ANA</string>
     </property>
     <property name="DataVariableB" stdset="0">
-     <string>chas:ANA</string>
+     <string/>
     </property>
     <property name="DataVariableC" stdset="0">
-     <string>chcs:BAR</string>
+     <string/>
     </property>
     <property name="DataVariableD" stdset="0">
-     <string>chds:BAR</string>
+     <string/>
     </property>
     <property name="SizeVariableX" stdset="0">
      <string/>
@@ -79,37 +79,6 @@
     </property>
     <property name="AliasNameE" stdset="0">
      <string/>
-    </property>
-   </widget>
-   <widget class="QEPushButton" name="qepushbutton_27">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>770</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>RGA 50</string>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-    <property name="variable" stdset="0">
-     <string/>
-    </property>
-    <property name="altReadbackVariable" stdset="0">
-     <string/>
-    </property>
-    <property name="pressText">
-     <string>1</string>
-    </property>
-    <property name="guiFile" stdset="0">
-     <string>barchart.ui</string>
-    </property>
-    <property name="creationOption" stdset="0">
-     <enum>QEPushButton::NewTab</enum>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
@@ -196,37 +165,6 @@
      <string>Note: Drag and click to zoom axis. Dx to reset.</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_26">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>50</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Percent scanned:</string>
-    </property>
-   </widget>
-   <widget class="QEAnalogProgressBar" name="qeanalogprogressbar">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>50</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="variable" stdset="0">
-     <string>chas:PERSCANNED</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -252,24 +190,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QEAnalogProgressBar</class>
-   <extends>QEAnalogIndicator</extends>
-   <header>QEAnalogProgressBar.h</header>
-  </customwidget>
-  <customwidget>
    <class>QEPlotter</class>
    <extends>QEFrame</extends>
    <header>QEPlotter.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QEPushButton</class>
-   <extends>QPushButton</extends>
-   <header>QEPushButton.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QEAnalogIndicator</class>
-   <extends>QWidget</extends>
-   <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
    <class>QEFrame</class>

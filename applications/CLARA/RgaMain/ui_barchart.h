@@ -21,11 +21,8 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
-#include "QEAnalogIndicator.h"
-#include "QEAnalogProgressBar.h"
 #include "QEFrame.h"
 #include "QEPlotter.h"
-#include "QEPushButton.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -36,15 +33,12 @@ public:
     QAction *actionClose_Window;
     QWidget *centralwidget;
     QEPlotter *qeplotter;
-    QEPushButton *qepushbutton_27;
     QGroupBox *groupBox;
     QLCDNumber *lcdNumber;
     QLCDNumber *lcdNumber_2;
     QLabel *label;
     QLabel *label_2;
     QLabel *label_3;
-    QLabel *label_26;
-    QEAnalogProgressBar *qeanalogprogressbar;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -67,11 +61,6 @@ public:
         qeplotter->setPvItemsVisible(true);
         qeplotter->setStatusVisible(false);
         qeplotter->setYLogarithmic(true);
-        qepushbutton_27 = new QEPushButton(centralwidget);
-        qepushbutton_27->setObjectName(QStringLiteral("qepushbutton_27"));
-        qepushbutton_27->setGeometry(QRect(40, 770, 81, 20));
-        qepushbutton_27->setCheckable(false);
-        qepushbutton_27->setProperty("creationOption", QVariant(QEPushButton::NewTab));
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(40, 800, 251, 111));
@@ -94,15 +83,6 @@ public:
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setGeometry(QRect(610, 50, 241, 16));
-        label_26 = new QLabel(centralwidget);
-        label_26->setObjectName(QStringLiteral("label_26"));
-        label_26->setGeometry(QRect(370, 50, 91, 21));
-        QFont font;
-        font.setPointSize(8);
-        label_26->setFont(font);
-        qeanalogprogressbar = new QEAnalogProgressBar(centralwidget);
-        qeanalogprogressbar->setObjectName(QStringLiteral("qeanalogprogressbar"));
-        qeanalogprogressbar->setGeometry(QRect(460, 50, 131, 21));
         barchart->setCentralWidget(centralwidget);
         menubar = new QMenuBar(barchart);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -125,11 +105,11 @@ public:
         actionClose->setText(QApplication::translate("barchart", " Open as Window", 0));
         actionClose_Window->setText(QApplication::translate("barchart", "Close Tab", 0));
         qeplotter->setProperty("contextMenuEmitText", QVariant(QApplication::translate("barchart", "Export mass and pressure", 0)));
-        qeplotter->setProperty("DataVariableX", QVariant(QApplication::translate("barchart", "=S-0.5", 0)));
-        qeplotter->setProperty("DataVariableA", QVariant(QApplication::translate("barchart", "chas:BAR", 0)));
-        qeplotter->setProperty("DataVariableB", QVariant(QApplication::translate("barchart", "chas:ANA", 0)));
-        qeplotter->setProperty("DataVariableC", QVariant(QApplication::translate("barchart", "chcs:BAR", 0)));
-        qeplotter->setProperty("DataVariableD", QVariant(QApplication::translate("barchart", "chds:BAR", 0)));
+        qeplotter->setProperty("DataVariableX", QVariant(QApplication::translate("barchart", "=(S-0.5)/32", 0)));
+        qeplotter->setProperty("DataVariableA", QVariant(QApplication::translate("barchart", "rga1:ANA", 0)));
+        qeplotter->setProperty("DataVariableB", QVariant(QString()));
+        qeplotter->setProperty("DataVariableC", QVariant(QString()));
+        qeplotter->setProperty("DataVariableD", QVariant(QString()));
         qeplotter->setProperty("SizeVariableX", QVariant(QString()));
         qeplotter->setProperty("SizeVariableA", QVariant(QString()));
         qeplotter->setProperty("AliasNameX", QVariant(QApplication::translate("barchart", "Mass", 0)));
@@ -138,17 +118,10 @@ public:
         qeplotter->setProperty("AliasNameC", QVariant(QApplication::translate("barchart", "RGA3", 0)));
         qeplotter->setProperty("AliasNameD", QVariant(QApplication::translate("barchart", "RGA4", 0)));
         qeplotter->setProperty("AliasNameE", QVariant(QString()));
-        qepushbutton_27->setText(QApplication::translate("barchart", "RGA 50", 0));
-        qepushbutton_27->setProperty("variable", QVariant(QString()));
-        qepushbutton_27->setProperty("altReadbackVariable", QVariant(QString()));
-        qepushbutton_27->setPressText(QApplication::translate("barchart", "1", 0));
-        qepushbutton_27->setProperty("guiFile", QVariant(QApplication::translate("barchart", "barchart.ui", 0)));
         groupBox->setTitle(QApplication::translate("barchart", "Right click to read mass and pressure", 0));
         label->setText(QApplication::translate("barchart", "Mass (X axis)", 0));
         label_2->setText(QApplication::translate("barchart", "Pressure (Y axis)", 0));
         label_3->setText(QApplication::translate("barchart", "Note: Drag and click to zoom axis. Dx to reset.", 0));
-        label_26->setText(QApplication::translate("barchart", "Percent scanned:", 0));
-        qeanalogprogressbar->setProperty("variable", QVariant(QApplication::translate("barchart", "chas:PERSCANNED", 0)));
     } // retranslateUi
 
 };
