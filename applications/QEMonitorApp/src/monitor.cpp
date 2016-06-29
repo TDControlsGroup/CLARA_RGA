@@ -49,24 +49,6 @@ monitor::monitor( QString pvIn )
                       this, SLOT( log( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
 #endif
 
-#ifdef MONITOR_INTEGERS
-    // Integer only output
-    source = new QEInteger( pv, this, &integerFormatting, 0, &messages );
-    QObject::connect( source, SIGNAL( integerChanged( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ),
-                      this, SLOT( log( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
-#endif
-
-#ifdef MONITOR_FLOATING
-    // Floating only output
-    source = new QEFloating( pv, this, &floatingFormatting, 0, &messages );
-    QObject::connect( source, SIGNAL( floatingChanged( const double&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ),
-                      this, SLOT( log( const double&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
-    QObject::connect( source, SIGNAL( floatingArrayChanged( const QVector<double>&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ),
-                      this, SLOT( log( const QVector<double>&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
-    QObject::connect( source, SIGNAL( connectionChanged( QCaConnectionInfo& ) ),
-                      this, SLOT( connectionChanged( QCaConnectionInfo& ) ) );
-#endif
-
     source->subscribe();
 }
 
@@ -86,32 +68,6 @@ void monitor::connectionChanged( QCaConnectionInfo& connectionInfo )
 void monitor::log( const QString& data, QCaAlarmInfo&, QCaDateTime& timeStamp, const unsigned int & )
 {
     *stream << QString( "%1: %2   %3\n").arg( timeStamp.text() ).arg( pv ).arg( data );
-    stream->flush();
-}
-
-// Integer only output
-void monitor::log( const long& data, QCaAlarmInfo&, QCaDateTime& timeStamp, const unsigned int & )
-{
-    *stream << QString( "%1: %2   %3\n").arg( timeStamp.text() ).arg( pv ).arg( data );
-    stream->flush();
-}
-
-// Floating only output
-void monitor::log( const double& data, QCaAlarmInfo&, QCaDateTime& timeStamp, const unsigned int & )
-{
-    *stream << QString( "%1: %2   %3\n").arg( timeStamp.text() ).arg( pv ).arg( data );
-    stream->flush();
-}
-
-// Floating array only output
-void monitor::log( const QVector<double>& data, QCaAlarmInfo&, QCaDateTime& timeStamp, const unsigned int & )
-{
-    QString array;
-    for( int i = 0; i < data.count(); i++ )
-    {
-        array.append( QString().number( data.at(i) ) ).append( " " );
-    }
-    *stream << QString( "%1: %2   %3\n").arg( timeStamp.text() ).arg( pv ).arg( array );
     stream->flush();
 }
 

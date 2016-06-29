@@ -60,9 +60,7 @@ private:
 private slots:
     void connectionChanged( QCaConnectionInfo& );
     void log( const QString& data, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int & );
-    void log( const long& data, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int & );
-    void log( const double& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int & );
-    void log( const QVector<double>& values, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int & );
+
 };
 
 #endif // MONITOR_H
