@@ -45,6 +45,9 @@ DEFINES += _MINGW=TRUE
 #===========================================================
 # Project configuration
 
+EPICS_BASE = "C:\Users\rfc\Desktop\3.2.4-CLARA\dependencies\epics"
+
+
 # Qt 4 configuration
 equals( QT_MAJOR_VERSION, 4 ) {
     CONFIG += plugin uitools designer qwt
@@ -225,7 +228,7 @@ isEmpty( _QWT_INCLUDE_PATH ) {
 # When installed as a Qt 'feature' all that is needed is CONFIG += qwt (above)
 INCLUDEPATH += $$(QWT_INCLUDE_PATH)
 #win32:LIBS += -LC:/qwt-6.0.1/lib
-win32:LIBS += -LC:\Users\zgm95989\Desktop\qwt-6.1.2\lib
+win32:LIBS += -L$$(QWT_LIB_PATH)
 #win32:LIBS += -LC:/qwt-6.1.1/lib
 
 # Depending on build, the qwt library below may need to be -lqwt or -lqwt6
