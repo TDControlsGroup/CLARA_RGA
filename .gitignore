@@ -59,3 +59,5 @@ applications/XML/xml_generator/outfile_bar.txt.xml
 .pro.user
 *.pro
 applications/CLARA/build-Rga-Desktop_Qt_5_5_1_MinGW_32bit-Debug/
+dependencies/
+framework_debug/

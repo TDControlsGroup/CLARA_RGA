@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QETable.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -13,7 +13,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QETable.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -259,24 +259,28 @@ void QETable::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
             typedef void (QETable::*_t)(int );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QETable::selectionChanged)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (QETable::*_t)(const QStringList & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QETable::pvNameSetChanged)) {
                 *result = 1;
+                return;
             }
         }
         {
             typedef void (QETable::*_t)(const QStringList & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QETable::titlesChanged)) {
                 *result = 2;
+                return;
             }
         }
         {
             typedef void (QETable::*_t)(const QVector<double> & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QETable::dbValueChanged)) {
                 *result = 3;
+                return;
             }
         }
     }

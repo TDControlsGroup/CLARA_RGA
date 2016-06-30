@@ -45,7 +45,6 @@ DEFINES += _MINGW=TRUE
 #===========================================================
 # Project configuration
 
-EPICS_BASE = "C:\Users\rfc\Desktop\3.2.4-CLARA\dependencies\epics"
 
 
 # Qt 4 configuration

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mv2_main_bar.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -94,77 +94,77 @@ public:
         font.setWeight(50);
         qelabel_51->setFont(font);
         qelabel_51->setTextFormat(Qt::AutoText);
-        qelabel_51->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_51->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_51);
 
         qelabel_53 = new QELabel(layoutWidget_6);
         qelabel_53->setObjectName(QStringLiteral("qelabel_53"));
         qelabel_53->setFont(font);
-        qelabel_53->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_53->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_53);
 
         qelabel_54 = new QELabel(layoutWidget_6);
         qelabel_54->setObjectName(QStringLiteral("qelabel_54"));
         qelabel_54->setFont(font);
-        qelabel_54->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_54->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_54);
 
         qelabel_55 = new QELabel(layoutWidget_6);
         qelabel_55->setObjectName(QStringLiteral("qelabel_55"));
         qelabel_55->setFont(font);
-        qelabel_55->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_55->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_55);
 
         qelabel_56 = new QELabel(layoutWidget_6);
         qelabel_56->setObjectName(QStringLiteral("qelabel_56"));
         qelabel_56->setFont(font);
-        qelabel_56->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_56->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_56);
 
         qelabel_57 = new QELabel(layoutWidget_6);
         qelabel_57->setObjectName(QStringLiteral("qelabel_57"));
         qelabel_57->setFont(font);
-        qelabel_57->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_57->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_57);
 
         qelabel_58 = new QELabel(layoutWidget_6);
         qelabel_58->setObjectName(QStringLiteral("qelabel_58"));
         qelabel_58->setFont(font);
-        qelabel_58->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_58->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_58);
 
         qelabel_59 = new QELabel(layoutWidget_6);
         qelabel_59->setObjectName(QStringLiteral("qelabel_59"));
         qelabel_59->setFont(font);
-        qelabel_59->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_59->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_59);
 
         qelabel_109 = new QELabel(layoutWidget_6);
         qelabel_109->setObjectName(QStringLiteral("qelabel_109"));
         qelabel_109->setFont(font);
-        qelabel_109->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_109->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_109);
 
         qelabel_110 = new QELabel(layoutWidget_6);
         qelabel_110->setObjectName(QStringLiteral("qelabel_110"));
         qelabel_110->setFont(font);
-        qelabel_110->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_110->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_110);
 
         qelabel_111 = new QELabel(layoutWidget_6);
         qelabel_111->setObjectName(QStringLiteral("qelabel_111"));
         qelabel_111->setFont(font);
-        qelabel_111->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_111->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_14->addWidget(qelabel_111);
 
@@ -177,77 +177,77 @@ public:
         qelabel_112 = new QELabel(layoutWidget_6);
         qelabel_112->setObjectName(QStringLiteral("qelabel_112"));
         qelabel_112->setFont(font);
-        qelabel_112->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_112->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_112);
 
         qelabel_113 = new QELabel(layoutWidget_6);
         qelabel_113->setObjectName(QStringLiteral("qelabel_113"));
         qelabel_113->setFont(font);
-        qelabel_113->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_113->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_113);
 
         qelabel_114 = new QELabel(layoutWidget_6);
         qelabel_114->setObjectName(QStringLiteral("qelabel_114"));
         qelabel_114->setFont(font);
-        qelabel_114->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_114->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_114);
 
         qelabel_115 = new QELabel(layoutWidget_6);
         qelabel_115->setObjectName(QStringLiteral("qelabel_115"));
         qelabel_115->setFont(font);
-        qelabel_115->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_115->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_115);
 
         qelabel_116 = new QELabel(layoutWidget_6);
         qelabel_116->setObjectName(QStringLiteral("qelabel_116"));
         qelabel_116->setFont(font);
-        qelabel_116->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_116->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_116);
 
         qelabel_117 = new QELabel(layoutWidget_6);
         qelabel_117->setObjectName(QStringLiteral("qelabel_117"));
         qelabel_117->setFont(font);
-        qelabel_117->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_117->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_117);
 
         qelabel_118 = new QELabel(layoutWidget_6);
         qelabel_118->setObjectName(QStringLiteral("qelabel_118"));
         qelabel_118->setFont(font);
-        qelabel_118->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_118->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_118);
 
         qelabel_119 = new QELabel(layoutWidget_6);
         qelabel_119->setObjectName(QStringLiteral("qelabel_119"));
         qelabel_119->setFont(font);
-        qelabel_119->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_119->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_119);
 
         qelabel_120 = new QELabel(layoutWidget_6);
         qelabel_120->setObjectName(QStringLiteral("qelabel_120"));
         qelabel_120->setFont(font);
-        qelabel_120->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_120->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_120);
 
         qelabel_121 = new QELabel(layoutWidget_6);
         qelabel_121->setObjectName(QStringLiteral("qelabel_121"));
         qelabel_121->setFont(font);
-        qelabel_121->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_121->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_121);
 
         qelabel_122 = new QELabel(layoutWidget_6);
         qelabel_122->setObjectName(QStringLiteral("qelabel_122"));
         qelabel_122->setFont(font);
-        qelabel_122->setProperty("notation", QVariant(QELabel::Scientific));
+        qelabel_122->setProperty("notation", QVariant::fromValue(QELabel::Scientific));
 
         verticalLayout_15->addWidget(qelabel_122);
 

@@ -1,13 +1,13 @@
 /****************************************************************************
 ** Resource object code
 **
-** Created by: The Resource Compiler for Qt version 5.5.1
+** Created by: The Resource Compiler for Qt version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
 static const unsigned char qt_resource_data[] = {
-  // C:/Users/rfc/Desktop/3.2.4-CLARA/framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.png
+  // C:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.png
   0x0,0x0,0x4,0x58,
   0x89,
   0x50,0x4e,0x47,0xd,0xa,0x1a,0xa,0x0,0x0,0x0,0xd,0x49,0x48,0x44,0x52,0x0,

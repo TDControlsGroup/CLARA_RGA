@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QEStripChartToolBar.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QEStripChartToolBar.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -291,54 +291,63 @@ void QEStripChartToolBar::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
             typedef void (QEStripChartToolBar::*_t)(const QEStripChartNames::StateModes );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::stateSelected)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const QEStripChartNames::VideoModes );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::videoModeSelected)) {
                 *result = 1;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const QEStripChartNames::YScaleModes );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::yScaleModeSelected)) {
                 *result = 2;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const QEStripChartNames::ChartYRanges );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::yRangeSelected)) {
                 *result = 3;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const int );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::durationSelected)) {
                 *result = 4;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::selectDuration)) {
                 *result = 5;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const Qt::TimeSpec );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::timeZoneSelected)) {
                 *result = 6;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)(const QEStripChartNames::PlayModes );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::playModeSelected)) {
                 *result = 7;
+                return;
             }
         }
         {
             typedef void (QEStripChartToolBar::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEStripChartToolBar::readArchiveSelected)) {
                 *result = 8;
+                return;
             }
         }
     }

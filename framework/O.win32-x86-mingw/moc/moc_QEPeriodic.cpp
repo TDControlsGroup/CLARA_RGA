@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QEPeriodic.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QEPeriodic.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -244,24 +244,28 @@ void QEPeriodic::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             typedef void (QEPeriodic::*_t)(const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEPeriodic::userElementChanged)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (QEPeriodic::*_t)(const double & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEPeriodic::dbValueChanged)) {
                 *result = 1;
+                return;
             }
         }
         {
             typedef void (QEPeriodic::*_t)(const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEPeriodic::dbElementChanged)) {
                 *result = 2;
+                return;
             }
         }
         {
             typedef void (QEPeriodic::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEPeriodic::requestResend)) {
                 *result = 3;
+                return;
             }
         }
     }

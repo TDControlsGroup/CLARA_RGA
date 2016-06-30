@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mv2_rgaDisplay.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -318,7 +318,7 @@ public:
         qesimpleshape_19->setShape(QSimpleShape::ellipse);
         qesimpleshape_19->setProperty("colour3", QVariant(QColor(0, 255, 0)));
         qesimpleshape_19->setProperty("colour7", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_19->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_19->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_20 = new QESimpleShape(Mode_3);
         qesimpleshape_20->setObjectName(QStringLiteral("qesimpleshape_20"));
         qesimpleshape_20->setGeometry(QRect(90, 20, 16, 16));
@@ -327,14 +327,14 @@ public:
         qesimpleshape_20->setShape(QSimpleShape::ellipse);
         qesimpleshape_20->setProperty("colour0", QVariant(QColor(0, 255, 0)));
         qesimpleshape_20->setProperty("colour1", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_20->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_20->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_21 = new QESimpleShape(Mode_3);
         qesimpleshape_21->setObjectName(QStringLiteral("qesimpleshape_21"));
         qesimpleshape_21->setGeometry(QRect(90, 80, 16, 16));
         qesimpleshape_21->setShape(QSimpleShape::ellipse);
         qesimpleshape_21->setProperty("colour2", QVariant(QColor(0, 255, 0)));
         qesimpleshape_21->setProperty("colour6", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_21->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_21->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_22 = new QESimpleShape(Mode_3);
         qesimpleshape_22->setObjectName(QStringLiteral("qesimpleshape_22"));
         qesimpleshape_22->setGeometry(QRect(90, 60, 16, 16));
@@ -345,7 +345,7 @@ public:
         qesimpleshape_22->setProperty("colour5", QVariant(QColor(200, 200, 200)));
         qesimpleshape_22->setProperty("flash0", QVariant(false));
         qesimpleshape_22->setProperty("flash1", QVariant(false));
-        qesimpleshape_22->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_22->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         status_2 = new QGroupBox(centralwidget);
         status_2->setObjectName(QStringLiteral("status_2"));
         status_2->setGeometry(QRect(0, 490, 511, 161));
@@ -479,21 +479,21 @@ public:
         qesimpleshape_31->setProperty("colour5", QVariant(QColor(200, 200, 200)));
         qesimpleshape_31->setProperty("flash0", QVariant(false));
         qesimpleshape_31->setProperty("flash1", QVariant(false));
-        qesimpleshape_31->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_31->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_32 = new QESimpleShape(Mode_7);
         qesimpleshape_32->setObjectName(QStringLiteral("qesimpleshape_32"));
         qesimpleshape_32->setGeometry(QRect(90, 100, 16, 16));
         qesimpleshape_32->setShape(QSimpleShape::ellipse);
         qesimpleshape_32->setProperty("colour3", QVariant(QColor(0, 255, 0)));
         qesimpleshape_32->setProperty("colour7", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_32->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_32->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_33 = new QESimpleShape(Mode_7);
         qesimpleshape_33->setObjectName(QStringLiteral("qesimpleshape_33"));
         qesimpleshape_33->setGeometry(QRect(90, 80, 16, 16));
         qesimpleshape_33->setShape(QSimpleShape::ellipse);
         qesimpleshape_33->setProperty("colour2", QVariant(QColor(0, 255, 0)));
         qesimpleshape_33->setProperty("colour6", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_33->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_33->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_34 = new QESimpleShape(Mode_7);
         qesimpleshape_34->setObjectName(QStringLiteral("qesimpleshape_34"));
         qesimpleshape_34->setGeometry(QRect(90, 20, 16, 16));
@@ -502,7 +502,7 @@ public:
         qesimpleshape_34->setShape(QSimpleShape::ellipse);
         qesimpleshape_34->setProperty("colour0", QVariant(QColor(0, 255, 0)));
         qesimpleshape_34->setProperty("colour1", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_34->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_34->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         status_3 = new QGroupBox(centralwidget);
         status_3->setObjectName(QStringLiteral("status_3"));
         status_3->setGeometry(QRect(0, 170, 511, 161));
@@ -636,21 +636,21 @@ public:
         qesimpleshape_23->setProperty("colour5", QVariant(QColor(200, 200, 200)));
         qesimpleshape_23->setProperty("flash0", QVariant(false));
         qesimpleshape_23->setProperty("flash1", QVariant(false));
-        qesimpleshape_23->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_23->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_24 = new QESimpleShape(Mode_9);
         qesimpleshape_24->setObjectName(QStringLiteral("qesimpleshape_24"));
         qesimpleshape_24->setGeometry(QRect(90, 100, 16, 16));
         qesimpleshape_24->setShape(QSimpleShape::ellipse);
         qesimpleshape_24->setProperty("colour3", QVariant(QColor(0, 255, 0)));
         qesimpleshape_24->setProperty("colour7", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_24->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_24->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_25 = new QESimpleShape(Mode_9);
         qesimpleshape_25->setObjectName(QStringLiteral("qesimpleshape_25"));
         qesimpleshape_25->setGeometry(QRect(90, 80, 16, 16));
         qesimpleshape_25->setShape(QSimpleShape::ellipse);
         qesimpleshape_25->setProperty("colour2", QVariant(QColor(0, 255, 0)));
         qesimpleshape_25->setProperty("colour6", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_25->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_25->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_26 = new QESimpleShape(Mode_9);
         qesimpleshape_26->setObjectName(QStringLiteral("qesimpleshape_26"));
         qesimpleshape_26->setGeometry(QRect(90, 20, 16, 16));
@@ -659,7 +659,7 @@ public:
         qesimpleshape_26->setShape(QSimpleShape::ellipse);
         qesimpleshape_26->setProperty("colour0", QVariant(QColor(0, 255, 0)));
         qesimpleshape_26->setProperty("colour1", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_26->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_26->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         status_4 = new QGroupBox(centralwidget);
         status_4->setObjectName(QStringLiteral("status_4"));
         status_4->setGeometry(QRect(0, 330, 511, 161));
@@ -793,21 +793,21 @@ public:
         qesimpleshape_27->setProperty("colour5", QVariant(QColor(200, 200, 200)));
         qesimpleshape_27->setProperty("flash0", QVariant(false));
         qesimpleshape_27->setProperty("flash1", QVariant(false));
-        qesimpleshape_27->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_27->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_28 = new QESimpleShape(Mode_11);
         qesimpleshape_28->setObjectName(QStringLiteral("qesimpleshape_28"));
         qesimpleshape_28->setGeometry(QRect(90, 100, 16, 16));
         qesimpleshape_28->setShape(QSimpleShape::ellipse);
         qesimpleshape_28->setProperty("colour3", QVariant(QColor(0, 255, 0)));
         qesimpleshape_28->setProperty("colour7", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_28->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_28->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_29 = new QESimpleShape(Mode_11);
         qesimpleshape_29->setObjectName(QStringLiteral("qesimpleshape_29"));
         qesimpleshape_29->setGeometry(QRect(90, 80, 16, 16));
         qesimpleshape_29->setShape(QSimpleShape::ellipse);
         qesimpleshape_29->setProperty("colour2", QVariant(QColor(0, 255, 0)));
         qesimpleshape_29->setProperty("colour6", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_29->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_29->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         qesimpleshape_30 = new QESimpleShape(Mode_11);
         qesimpleshape_30->setObjectName(QStringLiteral("qesimpleshape_30"));
         qesimpleshape_30->setGeometry(QRect(90, 20, 16, 16));
@@ -816,7 +816,7 @@ public:
         qesimpleshape_30->setShape(QSimpleShape::ellipse);
         qesimpleshape_30->setProperty("colour0", QVariant(QColor(0, 255, 0)));
         qesimpleshape_30->setProperty("colour1", QVariant(QColor(200, 200, 200)));
-        qesimpleshape_30->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        qesimpleshape_30->setProperty("displayAlarmStateOption", QVariant::fromValue(QESimpleShape::Never));
         rgaWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(rgaWindow);
         menubar->setObjectName(QStringLiteral("menubar"));

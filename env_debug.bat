@@ -1,0 +1,2 @@
+call %TOP%\env.bat
+

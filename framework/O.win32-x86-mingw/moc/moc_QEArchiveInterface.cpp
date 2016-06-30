@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QEArchiveInterface.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QEArchiveInterface.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -153,24 +153,28 @@ void QEArchiveInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
             typedef void (QEArchiveInterface::*_t)(const QObject * , const bool , const int , const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterface::infoResponse)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (QEArchiveInterface::*_t)(const QObject * , const bool , const QEArchiveInterface::ArchiveList & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterface::archivesResponse)) {
                 *result = 1;
+                return;
             }
         }
         {
             typedef void (QEArchiveInterface::*_t)(const QObject * , const bool , const QEArchiveInterface::PVNameList & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterface::pvNamesResponse)) {
                 *result = 2;
+                return;
             }
         }
         {
             typedef void (QEArchiveInterface::*_t)(const QObject * , const bool , const QEArchiveInterface::ResponseValueList & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterface::valuesResponse)) {
                 *result = 3;
+                return;
             }
         }
     }
@@ -335,12 +339,14 @@ void QEArchiveInterfaceAgent::qt_static_metacall(QObject *_o, QMetaObject::Call 
             typedef void (QEArchiveInterfaceAgent::*_t)(const QEArchiveInterface::Context & , const QVariant & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterfaceAgent::xmlRpcResponse)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (QEArchiveInterfaceAgent::*_t)(const QEArchiveInterface::Context & , int , const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEArchiveInterfaceAgent::xmlRpcFault)) {
                 *result = 1;
+                return;
             }
         }
     }
