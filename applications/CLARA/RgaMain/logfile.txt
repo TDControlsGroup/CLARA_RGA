@@ -1,219 +1,111 @@
 mingw32-make.exe -f Makefile.Debug
-mingw32-make.exe[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\uic.exe ..\..\..\framework\ui\barchart.ui -o ui_barchart.h
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\uic.exe ..\..\..\framework\ui\mv2_epicsDisplay.ui -o ui_mv2_epicsDisplay.h
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\uic.exe ..\..\..\framework\ui\mv2_rgaDisplay.ui -o ui_mv2_rgaDisplay.h
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\uic.exe ..\..\..\framework\ui\mv2_main_bar.ui -o ui_mv2_main_bar.h
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\uic.exe ..\..\..\framework\ui\mv2_stripchart.ui -o ui_mv2_stripchart.h
-g++ -c -pipe -fno-keep-inline-dllexport -g -std=gnu++11 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtGui -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtANGLE -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtXml -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.7.0\5.7\mingw53_32\mkspecs\win32-g++  -o debug\QEStringFormattingMethods.o ..\..\..\framework\widgets\QEWidget\QEStringFormattingMethods.cpp
-g++ -c -pipe -fno-keep-inline-dllexport -g -std=gnu++11 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtGui -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtANGLE -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtXml -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.7.0\5.7\mingw53_32\mkspecs\win32-g++  -o debug\RgaArchiver.o RgaArchiver.cpp
-C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\moc.exe -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -D__GNUC__ -DWIN32 @debug/mocinclude.opt RGA.h -o debug\moc_RGA.cpp
-g++ -c -pipe -fno-keep-inline-dllexport -g -std=gnu++11 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtGui -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtANGLE -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtXml -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.7.0\5.7\mingw53_32\mkspecs\win32-g++  -o debug\main.o main.cpp
-g++ -c -pipe -fno-keep-inline-dllexport -g -std=gnu++11 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtGui -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtANGLE -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtXml -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.7.0\5.7\mingw53_32\mkspecs\win32-g++  -o debug\RGA.o RGA.cpp
-g++ -c -pipe -fno-keep-inline-dllexport -g -std=gnu++11 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtGui -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtANGLE -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtXml -IC:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.7.0\5.7\mingw53_32\mkspecs\win32-g++  -o debug\moc_RGA.o debug\moc_RGA.cpp
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qcoreapplication.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qapplication.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QApplication:1,
+mingw32-make.exe[1]: Entering directory 'C:/Users/rfc/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
+g++ -c -pipe -fno-keep-inline-dllexport -g -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiTools -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\mkspecs\win32-g++  -o debug\main.o main.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -g -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiTools -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\mkspecs\win32-g++  -o debug\RGA.o RGA.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -g -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_UITOOLS_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -I. -I. -I./include -I..\..\..\framework\adaptation_parameters -I..\..\..\framework\common -I..\..\..\framework\api -I..\..\..\framework\data -I..\..\..\framework\archive -I..\..\..\framework\widgets\QEWidget -I..\..\..\framework\widgets\QEAbstractWidget -I..\..\..\framework\widgetsCLARA\QEAnalogIndicatorCLARA -I..\..\..\framework\widgets\QEAnalogProgressBar -I..\..\..\framework\widgets\QEAnalogSlider -I..\..\..\framework\widgets\QEBitStatus -I..\..\..\framework\widgets\QEButton -I..\..\..\framework\widgets\QEComboBox -I..\..\..\framework\widgets\QEConfiguredLayout -I..\..\..\framework\widgets\QEFileBrowser -I..\..\..\framework\widgets\QEFileImage -I..\..\..\framework\widgets\QEForm -I..\..\..\framework\widgets\QEFormGrid -I..\..\..\framework\widgets\QEFrame -I..\..\..\framework\widgets\QEGeneralEdit -I..\..\..\framework\widgets\QEGroupBox -I..\..\..\framework\widgets\QEHistogram -I..\..\..\framework\widgets\QEImage -I..\..\..\framework\widgets\QELabel -I..\..\..\framework\widgets\QELineEdit -I..\..\..\framework\widgets\QELink -I../../../framework/widgets/QELog/QEog -I..\..\..\framework\widgets\QELogin -I..\..\..\framework\widgets\QEMenuButton -I..\..\..\framework\widgets\QENumericEdit -I..\..\..\framework\widgets\QEPeriodic -I..\..\..\framework\widgets\QEPlot -I..\..\..\framework\widgetsCLARA\QEPlotterCLARA -I..\..\..\framework\widgets\QEPvLoadSave -I..\..\..\framework\widgets\QEPvProperties -I..\..\..\framework\widgets\QERadioGroup -I..\..\..\framework\widgets\QERecipe -I..\..\..\framework\widgets\QEResizeableFrame -I..\..\..\framework\widgets\QEScratchPad -I..\..\..\framework\widgets\QEScript -I..\..\..\framework\widgets\QEShape -I..\..\..\framework\widgets\QESimpleShape -I..\..\..\framework\widgets\QESlider -I..\..\..\framework\widgets\QESpinBox -I..\..\..\framework\widgets\QEStripChart -I..\..\..\framework\widgets\QESubstitutedLabel -I..\..\..\framework\widgets\QETable -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiTools -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore -Idebug -I. -IC:\Qt\Qt5.5.1min\5.5\mingw492_32\mkspecs\win32-g++  -o debug\moc_RGA.o debug\moc_RGA.cpp
+In file included from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qcoreapplication.h:37:0,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets/qapplication.h:37,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets/QApplication:1,
                  from main.cpp:42:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
 ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qcoreapplication.h:46,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qapplication.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QApplication:1,
-                 from main.cpp:42:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QESimpleShape::DisplayAlarmStateOptions>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qcoreapplication.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qapplication.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QApplication:1,
-                 from main.cpp:42:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QELabel::Notations]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
 ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qcoreapplication.h:46,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qapplication.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QApplication:1,
-                 from main.cpp:42:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
-ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QELabel::Notations>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-Makefile.Debug:3785: recipe for target 'debug/main.o' failed
+Makefile.Debug:4243: recipe for target 'debug/main.o' failed
 mingw32-make.exe[1]: *** [debug/main.o] Error 1
 mingw32-make.exe[1]: *** Waiting for unfinished jobs....
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtGui/qwindowdefs.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtWidgets/qwidget.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qmainwindow.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QMainWindow:1,
+In file included from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtGui/qwindowdefs.h:37:0,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtWidgets/qwidget.h:37,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets/qmainwindow.h:37,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtWidgets/QMainWindow:1,
                  from debug\../RGA.h:44,
                  from debug\moc_RGA.cpp:9:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
 debug\../ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtWidgets/qwidget.h:44,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qmainwindow.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QMainWindow:1,
-                 from debug\../RGA.h:44,
-                 from debug\moc_RGA.cpp:9:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-debug\../ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QESimpleShape::DisplayAlarmStateOptions>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtGui/qwindowdefs.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtWidgets/qwidget.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qmainwindow.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QMainWindow:1,
-                 from debug\../RGA.h:44,
-                 from debug\moc_RGA.cpp:9:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QELabel::Notations]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
 debug\../ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtWidgets/qwidget.h:44,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/qmainwindow.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtWidgets/QMainWindow:1,
-                 from debug\../RGA.h:44,
-                 from debug\moc_RGA.cpp:9:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
-debug\../ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QELabel::Notations>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-Makefile.Debug:4421: recipe for target 'debug/moc_RGA.o' failed
+Makefile.Debug:5013: recipe for target 'debug/moc_RGA.o' failed
 mingw32-make.exe[1]: *** [debug/moc_RGA.o] Error 1
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qnamespace.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobjectdefs.h:48,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:46,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qabstractanimation.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/QtCore:4,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtUiTools/QtUiToolsDepends:3,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools/QtUiTools:3,
+In file included from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qnamespace.h:37:0,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qobjectdefs.h:41,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qobject.h:40,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qabstractanimation.h:37,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/QtCore:4,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtUiTools/QtUiToolsDepends:3,
+                 from C:\Qt\Qt5.5.1min\5.5\mingw492_32\include\QtUiTools/QtUiTools:3,
                  from RGA.cpp:43:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
 ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qabstractanimation.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/QtCore:4,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtUiTools/QtUiToolsDepends:3,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools/QtUiTools:3,
-                 from RGA.cpp:43:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QESimpleShape::DisplayAlarmStateOptions]'
-ui_mv2_epicsDisplay.h:184:106:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QESimpleShape::DisplayAlarmStateOptions>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QESimpleShape::DisplayAlarmStateOptions]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qnamespace.h:43:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobjectdefs.h:48,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:46,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qabstractanimation.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/QtCore:4,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtUiTools/QtUiToolsDepends:3,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools/QtUiTools:3,
-                 from RGA.cpp:43:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'constexpr int qMetaTypeId() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h: In instantiation of 'int qMetaTypeId() [with T = QELabel::Notations]':
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:496:36:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qvariant.h:350:37:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
 ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qglobal.h:746:47: error: static assertion failed: Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system
- #define Q_STATIC_ASSERT_X(Condition, Message) static_assert(bool(Condition), Message)
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:703:85: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                     ^
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1745:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+C:\Qt\Qt5.5.1min\5.5\mingw492_32\include/QtCore/qmetatype.h:1725:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
      Q_STATIC_ASSERT_X(QMetaTypeId2<T>::Defined, "Type is not registered, please use the Q_DECLARE_METATYPE macro to make it known to Qt's meta-object system");
      ^
-In file included from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qobject.h:54:0,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qabstractanimation.h:43,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/QtCore:4,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtUiTools/QtUiToolsDepends:3,
-                 from C:\Qt\Qt5.7.0\5.7\mingw53_32\include\QtUiTools/QtUiTools:3,
-                 from RGA.cpp:43:
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h: In instantiation of 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]':
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1746:43:   required from 'constexpr int qMetaTypeId() [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:502:35:   required from 'QVariant qVariantFromValue(const T&) [with T = QELabel::Notations]'
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qvariant.h:356:31:   required from 'static QVariant QVariant::fromValue(const T&) [with T = QELabel::Notations]'
-ui_mv2_main_bar.h:97:84:   required from here
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:96: error: 'qt_metatype_id' is not a member of 'QMetaTypeId<QELabel::Notations>'
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                ^
-C:\Qt\Qt5.7.0\5.7\mingw53_32\include/QtCore/qmetatype.h:1604:100: error: body of constexpr function 'static constexpr int QMetaTypeId2<T>::qt_metatype_id() [with T = QELabel::Notations]' not a return-statement
-     static inline Q_DECL_CONSTEXPR int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
-                                                                                                    ^
-Makefile.Debug:4250: recipe for target 'debug/RGA.o' failed
+Makefile.Debug:4832: recipe for target 'debug/RGA.o' failed
 mingw32-make.exe[1]: *** [debug/RGA.o] Error 1
-mingw32-make.exe[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
-Makefile:34: recipe for target 'debug' failed
+mingw32-make.exe[1]: Leaving directory 'C:/Users/rfc/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
+makefile:34: recipe for target 'debug' failed
 mingw32-make.exe: *** [debug] Error 2
