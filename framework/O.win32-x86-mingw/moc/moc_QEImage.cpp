@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QEImage.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QEImage.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.7.0. It"
+#error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -1196,21 +1196,18 @@ void QEImage::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
             typedef void (QEImage::*_t)(const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEImage::dbValueChanged)) {
                 *result = 0;
-                return;
             }
         }
         {
             typedef void (QEImage::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEImage::requestResend)) {
                 *result = 1;
-                return;
             }
         }
         {
             typedef void (QEImage::*_t)(const QEActionRequests & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QEImage::componentHostRequest)) {
                 *result = 2;
-                return;
             }
         }
     }

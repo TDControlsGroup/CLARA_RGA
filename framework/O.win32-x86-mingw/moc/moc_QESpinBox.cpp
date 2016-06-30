@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QESpinBox.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QESpinBox.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.7.0. It"
+#error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -201,14 +201,12 @@ void QESpinBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
             typedef void (QESpinBox::*_t)(const double & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESpinBox::dbValueChanged)) {
                 *result = 0;
-                return;
             }
         }
         {
             typedef void (QESpinBox::*_t)(const QString & , const QString & , const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESpinBox::userChange)) {
                 *result = 1;
-                return;
             }
         }
     }

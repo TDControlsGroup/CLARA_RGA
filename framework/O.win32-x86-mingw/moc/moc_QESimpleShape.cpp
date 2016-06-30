@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'QESimpleShape.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'QESimpleShape.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.7.0. It"
+#error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -212,49 +212,42 @@ void QESimpleShape::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
             typedef void (QESimpleShape::*_t)(const QString & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 0;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const int & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 1;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const long & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 2;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const qlonglong & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 3;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const double & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 4;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const bool & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbValueChanged)) {
                 *result = 5;
-                return;
             }
         }
         {
             typedef void (QESimpleShape::*_t)(const bool & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QESimpleShape::dbConnectionChanged)) {
                 *result = 6;
-                return;
             }
         }
     }
