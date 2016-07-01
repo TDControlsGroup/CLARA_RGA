@@ -1,8 +1,12 @@
 call %TOP%\env.bat
 
+set OLDPATH=%PATH%
 set EPICS_CA_ADDR_LIST=192.168.82.10
 set EPICS_CA_MAX_ARRAY_BYTES=1000000
-set DESIGNER=%TOP%\framework\designer
 set EPICS_LIBS=%EPICS_BASE%\lib\%EPICS_HOST_ARCH%
 
-PATH=%PATH%;%DESIGNER%;%EPICS_LIBS%;%QWT_LIB_PATH%
+REM Both needed for loading dll and runtime
+set DESIGNER=%TOP%\framework\designer
+set QT_PLUGIN_PATH=%DESIGNER%\..
+
+PATH=%OLDPATH%;%DESIGNER%;%EPICS_LIBS%;%QWT_LIB_PATH%

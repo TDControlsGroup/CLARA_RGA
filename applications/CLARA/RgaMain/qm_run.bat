@@ -2,7 +2,7 @@ REM ###############
 REM Run version
 REM ###############
 set TOP=%CD%\..\..\..
-call ..\..\..\env_run.bat
+call %TOP%\env_run.bat
 
 cd release
 REM To run add QEPlugin

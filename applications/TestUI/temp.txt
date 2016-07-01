@@ -1,0 +1,10 @@
+C:/Qt/Qt5.5.1/Tools/mingw492_32/bin/mingw32-make -f Makefile.Release clean
+mingw32-make[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI'
+del ui_mv2_epicsDisplay.h
+del release\main.o
+mingw32-make[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI'
+C:/Qt/Qt5.5.1/Tools/mingw492_32/bin/mingw32-make -f Makefile.Debug clean
+mingw32-make[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI'
+del ui_mv2_epicsDisplay.h
+del debug\main.o
+mingw32-make[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI'

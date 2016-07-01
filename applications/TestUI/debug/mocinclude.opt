@@ -1,7 +1,7 @@
 -IC:/Qt/Qt5.7.0/5.7/mingw53_32/mkspecs/win32-g++
--IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain
--IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain
--IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain/include
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/TestUI/include
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/adaptation_parameters
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/common
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/api

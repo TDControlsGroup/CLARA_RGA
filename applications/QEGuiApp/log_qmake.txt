@@ -1,0 +1,6 @@
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\QEGuiApp\..\..\dependencies\epics
+Project MESSAGE: Integration with PSI's caQtDM will NOT be included in QEGui. If you want caQtDM integrated, download and build it and define the environment variable QE_CAQTDM to point to the caQtDM_Project directory.
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\QEGuiApp\..\..\dependencies\epics
+Project MESSAGE: Integration with PSI's caQtDM will NOT be included in QEGui. If you want caQtDM integrated, download and build it and define the environment variable QE_CAQTDM to point to the caQtDM_Project directory.
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\QEGuiApp\..\..\dependencies\epics
+Project MESSAGE: Integration with PSI's caQtDM will NOT be included in QEGui. If you want caQtDM integrated, download and build it and define the environment variable QE_CAQTDM to point to the caQtDM_Project directory.

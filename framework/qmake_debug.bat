@@ -8,10 +8,8 @@ cd
 
 mkdir ..\framework_debug
 cd ..\framework_debug
-
-%QTBIN%\qmake.exe ..\framework\framework.pro -r -spec win32-g++ "CONFIG+=debug" "CONFIG+=force_debug_info" "CONFIG+=separate_debug_info"
-%QTEXE%\mingw32-make.exe -j > logfile.txt 2>&1 
-copy logfile.txt ..\framework
+set MYPRO=..\framework\framework.pro
+call ..\make_debug.bat
+copy log_debug.txt ..\framework\log_debug.txt
 cd ..\framework
-type logfile.txt
 pause

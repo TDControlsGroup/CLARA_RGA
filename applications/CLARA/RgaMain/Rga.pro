@@ -23,13 +23,8 @@ target.path = .
 INSTALLS += target
 LIBS += -L../../epics_libs -lca -lCom
 
-debug {
-    LIBS += -LC:../../../build-framework-Desktop_Qt_5_5_1_MinGW_32bit-Debug\designer -lQEPlugin
-}
 
-release {
-    LIBS += -L../../../framework\designer -lQEPlugin
-}
+    LIBS += -L $$(QEDESLIB) -lQEPlugin
 
 
 
@@ -82,4 +77,5 @@ INCLUDEPATH += . \
      ../../../framework/widgets/QEStripChart/ \
      ../../../framework/widgets/QESubstitutedLabel/ \
      ../../../framework/widgets/QETable/
+
 

@@ -1,5 +1,7 @@
-call env_run.bat
+call %TOP%\env_run.bat
 REM Remake path for debug
-set QT_PLUGIN_PATH=""
+REM Both needed for loading dll and runtime
 set DESIGNER=%TOP%\framework_debug\designer
-PATH=%EPICS_BASE%;%QWT_LIB_PATH%;%QT5%
+set QT_PLUGIN_PATH=%DESIGNER%\..
+
+PATH=%OLDPATH%;%DESIGNER%;%EPICS_LIBS%;%QWT_LIB_PATH%

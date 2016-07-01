@@ -1,0 +1,23 @@
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\..\dependencies\epics
+Project MESSAGE: Since QE_TARGET_DIR is not defined 'make install' will not install the QE plugin library. It was built in  designer  and can be accessed there.
+Project MESSAGE: Applications may need to load the framework library as a Qt plugin. To ensure this can happen one option is to set up QT_PLUGIN_PATH to include the directory . QT_PLUGIN_PATH is currently ""
+Project MESSAGE: MPEG viewer will NOT be included in QEImage. If you want MPEG support install FFmpeg and define environment variable QE_FFMPEG. This can be defined as anything on linux, but must point to the FFmpeg directory on windows
+Project WARNING: QE_ARCHIVE_LIST is not defined. That's OK, but if you want to be able to access the PV Channel Archive data, e.g. to backfill
+Project WARNING: the QEStripChart widget from you should define this environment variable to be a space delimited list of your archiver URLs.
+Project WARNING: For example: 'archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer1.cgi archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer2.cgi'
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\..\dependencies\epics
+Project MESSAGE: Since QE_TARGET_DIR is not defined 'make install' will not install the QE plugin library. It was built in  designer  and can be accessed there.
+Project MESSAGE: Applications may need to load the framework library as a Qt plugin. To ensure this can happen one option is to set up QT_PLUGIN_PATH to include the directory . QT_PLUGIN_PATH is currently ""
+Project MESSAGE: MPEG viewer will NOT be included in QEImage. If you want MPEG support install FFmpeg and define environment variable QE_FFMPEG. This can be defined as anything on linux, but must point to the FFmpeg directory on windows
+Project WARNING: QE_ARCHIVE_LIST is not defined. That's OK, but if you want to be able to access the PV Channel Archive data, e.g. to backfill
+Project WARNING: the QEStripChart widget from you should define this environment variable to be a space delimited list of your archiver URLs.
+Project WARNING: For example: 'archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer1.cgi archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer2.cgi'
+Project MESSAGE: Using qwt (not qwtd) for this release build
+Project MESSAGE: QE_EPICS_BASE is not defined. Using EPICS_BASE instead - currently C:\Users\zgm95989\Desktop\3.2.4-CLARA\framework\..\dependencies\epics
+Project MESSAGE: Since QE_TARGET_DIR is not defined 'make install' will not install the QE plugin library. It was built in  designer  and can be accessed there.
+Project MESSAGE: Applications may need to load the framework library as a Qt plugin. To ensure this can happen one option is to set up QT_PLUGIN_PATH to include the directory . QT_PLUGIN_PATH is currently ""
+Project MESSAGE: MPEG viewer will NOT be included in QEImage. If you want MPEG support install FFmpeg and define environment variable QE_FFMPEG. This can be defined as anything on linux, but must point to the FFmpeg directory on windows
+Project WARNING: QE_ARCHIVE_LIST is not defined. That's OK, but if you want to be able to access the PV Channel Archive data, e.g. to backfill
+Project WARNING: the QEStripChart widget from you should define this environment variable to be a space delimited list of your archiver URLs.
+Project WARNING: For example: 'archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer1.cgi archiver.synchrotron.org.au:80/cgi-bin/ArchiveDataServer2.cgi'
+Project MESSAGE: Using qwtd (not qwt) for this debug build
