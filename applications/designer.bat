@@ -5,4 +5,3 @@ set TOP=%CD%\..
 call ..\env_run.bat
 
 %QTBIN%\designer.exe
-pause
