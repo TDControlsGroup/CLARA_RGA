@@ -24,26 +24,26 @@ HEADERS += \
     archive/maiaFault.h \
     archive/maiaObject.h \
     archive/maiaXmlRpcClient.h \
-    archive/QEArchiveInterface.h \
+#    archive/QEArchiveInterface.h \
     archive/QEArchiveManager.h \
     archive/QEArchiveStatus.h  \
     archive/QEArchiveStatusManager.h \
     archive/QEArchiveNameSearch.h  \
-    archive/QEArchiveNameSearchManager.h
-
+    archive/QEArchiveNameSearchManager.h\
+    widgetsCLARA\QEArchiverInterfaceJSON\QEArchiveInterfaceJSON.h
 
 
 SOURCES += \
     archive/maiaFault.cpp \
     archive/maiaObject.cpp \
     archive/maiaXmlRpcClient.cpp \
-    archive/QEArchiveInterface.cpp \
+#    archive/QEArchiveInterface.cpp \
     archive/QEArchiveManager.cpp \
     archive/QEArchiveStatus.cpp  \
     archive/QEArchiveStatusManager.cpp  \
     archive/QEArchiveNameSearch.cpp  \
-    archive/QEArchiveNameSearchManager.cpp
-
+    archive/QEArchiveNameSearchManager.cpp\
+    widgetsCLARA\QEArchiverInterfaceJSON\QEArchiveInterfaceJSON.cpp
 
 INCLUDEPATH += \
     archive

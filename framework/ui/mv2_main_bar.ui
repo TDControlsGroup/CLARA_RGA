@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>687</height>
+    <width>1017</width>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>30</x>
       <y>60</y>
       <width>933</width>
-      <height>571</height>
+      <height>642</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -66,6 +66,18 @@
          </property>
          <property name="text">
           <string>HE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string> Carbon</string>
          </property>
         </widget>
        </item>
@@ -230,6 +242,46 @@
         </widget>
        </item>
        <item>
+        <widget class="QELabel" name="qelabel_126">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M55.DESC</string>
+         </property>
+         <property name="notation" stdset="0">
+          <enum>QELabel::Scientific</enum>
+         </property>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QELabel" name="qelabel_127">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M57.DESC</string>
+         </property>
+         <property name="notation" stdset="0">
+          <enum>QELabel::Scientific</enum>
+         </property>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QELabel" name="qelabel_111">
          <property name="font">
           <font>
@@ -287,6 +339,26 @@
          </property>
          <property name="variable" stdset="0">
           <string>$(RGA):BAR:M4</string>
+         </property>
+         <property name="notation" stdset="0">
+          <enum>QELabel::Scientific</enum>
+         </property>
+         <property name="text">
+          <string>8.045e-11 mbar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QELabel" name="qelabel_123">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M12</string>
          </property>
          <property name="notation" stdset="0">
           <enum>QELabel::Scientific</enum>
@@ -457,6 +529,46 @@
         </widget>
        </item>
        <item>
+        <widget class="QELabel" name="qelabel_124">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M55</string>
+         </property>
+         <property name="notation" stdset="0">
+          <enum>QELabel::Scientific</enum>
+         </property>
+         <property name="text">
+          <string>7.313e-12 mbar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QELabel" name="qelabel_125">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M57</string>
+         </property>
+         <property name="notation" stdset="0">
+          <enum>QELabel::Scientific</enum>
+         </property>
+         <property name="text">
+          <string>7.313e-12 mbar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QELabel" name="qelabel_122">
          <property name="font">
           <font>
@@ -548,6 +660,43 @@
          </property>
          <property name="variable" stdset="0">
           <string>$(RGA):BAR:M4</string>
+         </property>
+         <property name="useDbDisplayLimits">
+          <bool>true</bool>
+         </property>
+         <property name="precision">
+          <number>11</number>
+         </property>
+         <property name="useDbPrecision">
+          <bool>true</bool>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>0.000000000010000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_67">
+         <property name="minimumSize">
+          <size>
+           <width>700</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="showText">
+          <bool>false</bool>
+         </property>
+         <property name="showScale">
+          <bool>true</bool>
+         </property>
+         <property name="logScale">
+          <bool>true</bool>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M12</string>
          </property>
          <property name="useDbDisplayLimits">
           <bool>true</bool>
@@ -860,6 +1009,80 @@
         </widget>
        </item>
        <item>
+        <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_68">
+         <property name="minimumSize">
+          <size>
+           <width>700</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="showText">
+          <bool>false</bool>
+         </property>
+         <property name="showScale">
+          <bool>true</bool>
+         </property>
+         <property name="logScale">
+          <bool>true</bool>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M55</string>
+         </property>
+         <property name="useDbDisplayLimits">
+          <bool>true</bool>
+         </property>
+         <property name="precision">
+          <number>11</number>
+         </property>
+         <property name="useDbPrecision">
+          <bool>true</bool>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>0.000000000010000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_69">
+         <property name="minimumSize">
+          <size>
+           <width>700</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="showText">
+          <bool>false</bool>
+         </property>
+         <property name="showScale">
+          <bool>true</bool>
+         </property>
+         <property name="logScale">
+          <bool>true</bool>
+         </property>
+         <property name="variable" stdset="0">
+          <string>$(RGA):BAR:M57</string>
+         </property>
+         <property name="useDbDisplayLimits">
+          <bool>true</bool>
+         </property>
+         <property name="precision">
+          <number>11</number>
+         </property>
+         <property name="useDbPrecision">
+          <bool>true</bool>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>0.000000000010000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QEAnalogProgressBar" name="qeanalogprogressbar_66">
          <property name="minimumSize">
           <size>
@@ -906,7 +1129,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>992</width>
+     <width>1017</width>
      <height>21</height>
     </rect>
    </property>

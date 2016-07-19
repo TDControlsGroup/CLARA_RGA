@@ -6,8 +6,8 @@ REM set QTMIN=mingw53_32
 REM set QTMIN_TOOLS=mingw530_32
 REM set QTVER=5.7
 
-Rem set QT_ROOT=C:\Qt\Qt5.5.1
-set QT_ROOT=C:\Qt\Qt5.5.1min
+set QT_ROOT=C:\Qt\Qt5.5.1
+Rem set QT_ROOT=C:\Qt\Qt5.5.1min
 set QTMIN=mingw492_32
 set QTMIN_TOOLS=mingw492_32
 set QTVER=5.5
