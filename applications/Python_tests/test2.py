@@ -10,6 +10,7 @@ import numpy as np
 import urllib.request
 import json
 
-response = urllib.request.urlopen("http://192.168.56.102:17668/retrieval/data/getData.json?pv=rga1%3ABAR%3AM1&donotchunk")
+response = urllib.request.urlopen("http://148.79.130.52:17668/retrieval/data/getData.json?pv=rga1%3ABAR%3AM1&donotchunk")
 content = response.read()
 data = json.loads(content.decode("utf8"))
+print (data)

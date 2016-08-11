@@ -78,6 +78,8 @@ public slots:
     void RGAFormShowBarSummary(int);
     void requestAction( const QEActionRequests& requests );
 private:
+    QString ArchiverName;
+
     QString DeviceName1;
     QString DeviceName2;
     QString DeviceName3;

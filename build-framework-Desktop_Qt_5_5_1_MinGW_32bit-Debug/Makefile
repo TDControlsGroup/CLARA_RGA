@@ -179,6 +179,7 @@ Makefile: ../framework/framework.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32
 		../framework/common/common.pri \
 		../framework/api/api.pri \
 		../framework/data/data.pri \
+		../framework/archive/archive.pri \
 		../framework/widgets/QEWidget/QEWidget.pri \
 		../framework/widgets/QEAbstractWidget/QEAbstractWidget.pri \
 		../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.pri \
@@ -221,7 +222,6 @@ Makefile: ../framework/framework.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32
 		../framework/widgets/QEStripChart/QEStripChart.pri \
 		../framework/widgets/QESubstitutedLabel/QESubstitutedLabel.pri \
 		../framework/widgets/QETable/QETable.pri \
-		../framework/widgetsCLARA/QEArchiverInterfaceJSON/archiveJSON.pri \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds_post.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_post.prf \
@@ -368,6 +368,7 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf:
 ../framework/common/common.pri:
 ../framework/api/api.pri:
 ../framework/data/data.pri:
+../framework/archive/archive.pri:
 ../framework/widgets/QEWidget/QEWidget.pri:
 ../framework/widgets/QEAbstractWidget/QEAbstractWidget.pri:
 ../framework/widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.pri:
@@ -410,7 +411,6 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf:
 ../framework/widgets/QEStripChart/QEStripChart.pri:
 ../framework/widgets/QESubstitutedLabel/QESubstitutedLabel.pri:
 ../framework/widgets/QETable/QETable.pri:
-../framework/widgetsCLARA/QEArchiverInterfaceJSON/archiveJSON.pri:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds_post.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_post.prf:

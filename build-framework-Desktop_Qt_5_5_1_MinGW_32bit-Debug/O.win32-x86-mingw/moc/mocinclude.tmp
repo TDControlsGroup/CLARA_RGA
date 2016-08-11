@@ -6,6 +6,7 @@
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/common
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/api
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/data
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/archive
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgets/QEWidget
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgets/QEAbstractWidget
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgetsCLARA/QEAnalogIndicatorCLARA
@@ -48,7 +49,6 @@
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgets/QEStripChart
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgets/QESubstitutedLabel
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/widgets/QETable
--IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/archive
 -IC:/Users/zgm95989/Desktop/base-3.15.3/base-3.15.3/include/os/WIN32
 -IC:/Users/zgm95989/Desktop/base-3.15.3/base-3.15.3/include
 -I/Users/zgm95989/Desktop/qwt-6.1.2/src

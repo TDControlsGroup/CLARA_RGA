@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>499</height>
+    <width>543</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,7 +95,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>RGA Analogue Scan</string>
+      <string>RGA Analog Scan</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -284,7 +284,7 @@
        <string>Bar Chart</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qepushbutton_34">
+     <widget class="QEPushButton" name="archAna">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -312,7 +312,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qebutton50">
+     <widget class="QEPushButton" name="arch50">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -340,7 +340,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qebutton200">
+     <widget class="QEPushButton" name="arch200">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -381,7 +381,7 @@
        <string>Analog Scan (32 ppp)</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_3">
+     <widget class="QECheckBox" name="archSS">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -418,7 +418,7 @@
        <string>0</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qebutton100">
+     <widget class="QEPushButton" name="arch100">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -446,7 +446,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qepushbutton_30">
+     <widget class="QEPushButton" name="archStop">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -468,7 +468,7 @@
        <string/>
       </property>
       <property name="clickText">
-       <string>Stop</string>
+       <string>0</string>
       </property>
       <property name="clickCheckedText">
        <string/>
@@ -1449,18 +1449,18 @@
      <rect>
       <x>10</x>
       <y>330</y>
-      <width>301</width>
-      <height>131</height>
+      <width>511</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="title">
      <string>Archive</string>
     </property>
-    <widget class="QESimpleShape" name="qesimpleshape_19">
+    <widget class="QESimpleShape" name="archOn">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>30</y>
+       <x>260</x>
+       <y>10</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -1490,8 +1490,8 @@
      </property>
      <property name="colour2" stdset="0">
       <color>
-       <red>0</red>
-       <green>255</green>
+       <red>255</red>
+       <green>0</green>
        <blue>0</blue>
       </color>
      </property>
@@ -1512,7 +1512,7 @@
       <enum>QESimpleShape::Never</enum>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_31">
+    <widget class="QEPushButton" name="archStop2">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1540,7 +1540,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QEPushButton" name="qepushbutton_32">
+    <widget class="QEPushButton" name="archStart">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1568,11 +1568,225 @@
       <string/>
      </property>
     </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_20">
+    <widget class="QESimpleShape" name="archAnaOn">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>90</y>
+       <x>370</x>
+       <y>10</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::ellipse</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>205</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="colour2" stdset="0">
+      <color>
+       <red>0</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour3" stdset="0">
+      <color>
+       <red>0</red>
+       <green>255</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="variable" stdset="0">
+      <string>$(GRGA):MODE</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string/>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QELabel" name="archTime">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="variable" stdset="0">
+      <string>GRGA:ANAT</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>10</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Archiver running</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>40</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Seconds until Analog scan</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>10</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Analog scan</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>70</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Filament mismatch</string>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="archFil">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>70</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="shape">
+      <enum>QSimpleShape::ellipse</enum>
+     </property>
+     <property name="colour0" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="colour1" stdset="0">
+      <color>
+       <red>200</red>
+       <green>200</green>
+       <blue>200</blue>
+      </color>
+     </property>
+     <property name="colour2" stdset="0">
+      <color>
+       <red>0</red>
+       <green>136</green>
+       <blue>255</blue>
+      </color>
+     </property>
+     <property name="colour3" stdset="0">
+      <color>
+       <red>255</red>
+       <green>247</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour4" stdset="0">
+      <color>
+       <red>200</red>
+       <green>164</green>
+       <blue>32</blue>
+      </color>
+     </property>
+     <property name="colour6" stdset="0">
+      <color>
+       <red>200</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="colour15" stdset="0">
+      <color>
+       <red>200</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </property>
+     <property name="flash15" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="variable" stdset="0">
+      <string>$(GRGA):MODE</string>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string/>
+     </property>
+     <property name="displayAlarmStateOption" stdset="0">
+      <enum>QESimpleShape::Never</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>70</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Scan mismatch</string>
+     </property>
+    </widget>
+    <widget class="QESimpleShape" name="archScan">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>70</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -1607,52 +1821,10 @@
        <blue>0</blue>
       </color>
      </property>
-     <property name="variable" stdset="0">
-      <string>$(GRGA):MODE</string>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string/>
-     </property>
-     <property name="displayAlarmStateOption" stdset="0">
-      <enum>QESimpleShape::Never</enum>
-     </property>
-    </widget>
-    <widget class="QESimpleShape" name="qesimpleshape_21">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>60</y>
-       <width>21</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
-     </property>
-     <property name="shape">
-      <enum>QSimpleShape::ellipse</enum>
-     </property>
-     <property name="colour0" stdset="0">
+     <property name="colour15" stdset="0">
       <color>
        <red>200</red>
-       <green>200</green>
-       <blue>200</blue>
-      </color>
-     </property>
-     <property name="colour1" stdset="0">
-      <color>
-       <red>200</red>
-       <green>200</green>
-       <blue>200</blue>
-      </color>
-     </property>
-     <property name="colour2" stdset="0">
-      <color>
-       <red>0</red>
-       <green>255</green>
+       <green>0</green>
        <blue>0</blue>
       </color>
      </property>
@@ -1666,12 +1838,25 @@
       <enum>QESimpleShape::Never</enum>
      </property>
     </widget>
-    <widget class="QELabel" name="qelabel_2">
+    <widget class="QLabel" name="lablex">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>90</y>
-       <width>41</width>
+       <x>110</x>
+       <y>100</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Analog timout secs</string>
+     </property>
+    </widget>
+    <widget class="QELabel" name="archFailC">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>40</y>
+       <width>31</width>
        <height>21</height>
       </rect>
      </property>
@@ -1679,56 +1864,81 @@
       <string>GRGA:ANAT</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_7">
+    <widget class="QEPushButton" name="archFailR">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>30</y>
+       <x>280</x>
+       <y>130</y>
        <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Archiver running</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>60</y>
-       <width>101</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Time until Bar Scan</string>
+      <string>Reset</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>$(GRGA):ARCH</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string/>
+     </property>
+     <property name="clickText">
+      <string>0</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="label_9">
+    <widget class="QLabel" name="label_14">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>90</y>
-       <width>101</width>
+       <x>290</x>
+       <y>40</y>
+       <width>81</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Time until Ana Scan</string>
+      <string>Analog scan fail</string>
      </property>
     </widget>
-    <widget class="QELabel" name="qelabel_3">
+    <widget class="QELabel" name="archTO">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>60</y>
-       <width>41</width>
+       <x>370</x>
+       <y>100</y>
+       <width>31</width>
        <height>21</height>
       </rect>
      </property>
      <property name="variable" stdset="0">
-      <string>$(GRGA):BART</string>
+      <string>GRGA:ANAT</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>100</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Analog timouts</string>
+     </property>
+    </widget>
+    <widget class="QELineEdit" name="archTOVal">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>100</y>
+       <width>61</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -1738,7 +1948,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>550</width>
+     <width>543</width>
      <height>21</height>
     </rect>
    </property>
@@ -1760,6 +1970,11 @@
    <class>QELabel</class>
    <extends>QLabel</extends>
    <header>QELabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QELineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>QELineEdit.h</header>
   </customwidget>
   <customwidget>
    <class>QEPushButton</class>

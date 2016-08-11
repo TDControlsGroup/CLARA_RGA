@@ -54,7 +54,7 @@
 //! [1]
 RGA::RGA()
 {
-//Setup Main UI
+//Setup Main UI devices
 
     DeviceName1="rga1";
     DeviceName2="rga2";
@@ -65,6 +65,8 @@ RGA::RGA()
     DeviceTitle2="Rga2";
     DeviceTitle3="Rga3";
     DeviceTitle4="Rga4";
+
+    ArchiverName="rga-arch";
 
     QString applicationMacros[4];
     QString mainWindowMacros;
@@ -132,6 +134,21 @@ void  RGA::RGAMain()
     pmain.summary2->setText("Summary "+DeviceTitle2);
     pmain.summary3->setText("Summary "+DeviceTitle3);
     pmain.summary4->setText("Summary "+DeviceTitle4);
+
+    //Correct PVs for the archiver
+    pmain.archStart-> setProperty ("variable", ArchiverName+":ArchiveOn"  );
+    pmain.archStop->setProperty   ("variable", ArchiverName+":Off" );
+    pmain.archStop2->setProperty  ("variable", ArchiverName+":Off" );
+    pmain.archOn->setProperty     ("variable", ArchiverName+":TimerRaw" );
+    pmain.archTime->setProperty   ("variable", ArchiverName+":sectime" );
+    pmain.archFil->setProperty    ("variable", ArchiverName+":FilPow" );
+    pmain.archScan->setProperty   ("variable", ArchiverName+":Head" );
+    pmain.archAnaOn->setProperty  ("variable", ArchiverName+":ANADone" );
+    pmain.archFailR->setProperty  ("variable", ArchiverName+":ANARst" );
+    pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
+    pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
+    pmain.archTO->setProperty     ("variable", ArchiverName+":ANATmO"  );
+    pmain.archTOVal->setProperty  ("variable", ArchiverName+":TmO"  );
 
     //Add main ui to a tabbed window
     mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());

@@ -139,7 +139,7 @@ include (adaptation_parameters/adaptation_parameters.pri)
 include (common/common.pri)
 include (api/api.pri)
 include (data/data.pri)
-#include (archive/archive.pri)
+include (archive/archive.pri)
 include (widgets/QEWidget/QEWidget.pri)
 include (widgets/QEAbstractWidget/QEAbstractWidget.pri)
 include (widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.pri)
@@ -182,7 +182,8 @@ include (widgets/QESpinBox/QESpinBox.pri)
 include (widgets/QEStripChart/QEStripChart.pri)
 include (widgets/QESubstitutedLabel/QESubstitutedLabel.pri)
 include (widgets/QETable/QETable.pri)
-include (widgetsCLARA/QEArchiverInterfaceJSON/archiveJSON.pri)
+#This was too complex in this framework. Will try to build a JSON/XML server to convert this
+#include (widgetsCLARA/QEArchiverInterfaceJSON/archiveJSON.pri)
 
 OTHER_FILES += analogindicator.json
 

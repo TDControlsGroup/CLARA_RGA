@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
+    <width>545</width>
     <height>688</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>0</x>
       <y>10</y>
-      <width>511</width>
+      <width>441</width>
       <height>161</height>
      </rect>
     </property>
@@ -97,24 +97,6 @@
       </property>
       <property name="text">
        <string>Fail</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>6</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>On/Off</string>
       </property>
      </widget>
      <widget class="QEBitStatus" name="qebitstatus">
@@ -260,15 +242,15 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>81</width>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Filament Power</string>
+       <string>On</string>
       </property>
       <property name="checkable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="variable" stdset="0">
        <string>$(RGA1):FILCON</string>
@@ -276,8 +258,69 @@
       <property name="altReadbackVariable" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
       <property name="pressText">
        <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_3">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA1):FILCON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -515,43 +558,6 @@
        <string>Ana</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Single Scan</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):SETSCAN</string>
-      </property>
-      <property name="writeOnPress">
-       <bool>false</bool>
-      </property>
-      <property name="writeOnClick">
-       <bool>true</bool>
-      </property>
-      <property name="pressText">
-       <string>0</string>
-      </property>
-      <property name="releaseText">
-       <string>1</string>
-      </property>
-      <property name="clickText">
-       <string>1</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>0</string>
-      </property>
-     </widget>
      <widget class="QEPushButton" name="qebutton100_2">
       <property name="geometry">
        <rect>
@@ -608,6 +614,156 @@
        <string/>
       </property>
      </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_15">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>120</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::ellipse</enum>
+      </property>
+      <property name="colour0" stdset="0">
+       <color>
+        <red>0</red>
+        <green>255</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="colour1" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA1):SCAN</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_13">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>On</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA1):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_14">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA1):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Single S.</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="Mode_3">
      <property name="geometry">
@@ -642,11 +798,14 @@
       <property name="variableSubstitutions" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
       <property name="clickText">
        <string>1</string>
       </property>
       <property name="clickCheckedText">
-       <string/>
+       <string>1</string>
       </property>
      </widget>
      <widget class="QEPushButton" name="qebutton200_4">
@@ -670,11 +829,14 @@
       <property name="variableSubstitutions" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
       <property name="clickText">
        <string>3</string>
       </property>
       <property name="clickCheckedText">
-       <string/>
+       <string>3</string>
       </property>
      </widget>
      <widget class="QEPushButton" name="qebutton100_4">
@@ -698,11 +860,14 @@
       <property name="variableSubstitutions" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
       <property name="clickText">
        <string>2</string>
       </property>
       <property name="clickCheckedText">
-       <string/>
+       <string>2</string>
       </property>
      </widget>
      <widget class="QEPushButton" name="qepushbutton_33">
@@ -726,11 +891,14 @@
       <property name="variableSubstitutions" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
       <property name="clickText">
        <string>0</string>
       </property>
       <property name="clickCheckedText">
-       <string/>
+       <string>0</string>
       </property>
      </widget>
      <widget class="QESimpleShape" name="qesimpleshape_19">
@@ -901,7 +1069,7 @@
      <rect>
       <x>0</x>
       <y>490</y>
-      <width>511</width>
+      <width>441</width>
       <height>161</height>
      </rect>
     </property>
@@ -1142,15 +1310,15 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>81</width>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Filament Power</string>
+       <string>On</string>
       </property>
       <property name="checkable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="variable" stdset="0">
        <string>$(RGA4):FILCON</string>
@@ -1158,8 +1326,69 @@
       <property name="altReadbackVariable" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
       <property name="pressText">
        <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_12">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA4):FILCON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -1397,43 +1626,6 @@
        <string>Ana</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_7">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Single Scan</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA4):SETSCAN</string>
-      </property>
-      <property name="writeOnPress">
-       <bool>false</bool>
-      </property>
-      <property name="writeOnClick">
-       <bool>true</bool>
-      </property>
-      <property name="pressText">
-       <string>0</string>
-      </property>
-      <property name="releaseText">
-       <string>1</string>
-      </property>
-      <property name="clickText">
-       <string>1</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>0</string>
-      </property>
-     </widget>
      <widget class="QEPushButton" name="qebutton100_7">
       <property name="geometry">
        <rect>
@@ -1488,6 +1680,156 @@
       </property>
       <property name="clickCheckedText">
        <string/>
+      </property>
+     </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_36">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>120</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::ellipse</enum>
+      </property>
+      <property name="colour0" stdset="0">
+       <color>
+        <red>0</red>
+        <green>255</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="colour1" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA4):SCAN</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Single S.</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_19">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>On</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA4):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_20">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA4):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -1783,7 +2125,7 @@
      <rect>
       <x>0</x>
       <y>170</y>
-      <width>511</width>
+      <width>441</width>
       <height>161</height>
      </rect>
     </property>
@@ -2019,20 +2361,20 @@
        <string>1</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="qepushbutton_8">
+     <widget class="QEPushButton" name="qepushbutton_4">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>81</width>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Filament Power</string>
+       <string>On</string>
       </property>
       <property name="checkable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="variable" stdset="0">
        <string>$(RGA2):FILCON</string>
@@ -2040,8 +2382,69 @@
       <property name="altReadbackVariable" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
       <property name="pressText">
        <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_8">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA2):FILCON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -2279,43 +2682,6 @@
        <string>Ana</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_8">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Single Scan</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA2):SETSCAN</string>
-      </property>
-      <property name="writeOnPress">
-       <bool>false</bool>
-      </property>
-      <property name="writeOnClick">
-       <bool>true</bool>
-      </property>
-      <property name="pressText">
-       <string>0</string>
-      </property>
-      <property name="releaseText">
-       <string>1</string>
-      </property>
-      <property name="clickText">
-       <string>1</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>0</string>
-      </property>
-     </widget>
      <widget class="QEPushButton" name="qebutton100_9">
       <property name="geometry">
        <rect>
@@ -2370,6 +2736,156 @@
       </property>
       <property name="clickCheckedText">
        <string/>
+      </property>
+     </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_35">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>120</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::ellipse</enum>
+      </property>
+      <property name="colour0" stdset="0">
+       <color>
+        <red>0</red>
+        <green>255</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="colour1" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA2):SCAN</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Single S.</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_15">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>On</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA2):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_16">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA2):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -2665,7 +3181,7 @@
      <rect>
       <x>0</x>
       <y>330</y>
-      <width>511</width>
+      <width>441</width>
       <height>161</height>
      </rect>
     </property>
@@ -2906,15 +3422,15 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>81</width>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Filament Power</string>
+       <string>On</string>
       </property>
       <property name="checkable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="variable" stdset="0">
        <string>$(RGA3):FILCON</string>
@@ -2922,8 +3438,69 @@
       <property name="altReadbackVariable" stdset="0">
        <string/>
       </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
       <property name="pressText">
        <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_11">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA3):FILCON</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -3161,43 +3738,6 @@
        <string>Ana</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="qecheckbox_9">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Single Scan</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA3):SETSCAN</string>
-      </property>
-      <property name="writeOnPress">
-       <bool>false</bool>
-      </property>
-      <property name="writeOnClick">
-       <bool>true</bool>
-      </property>
-      <property name="pressText">
-       <string>0</string>
-      </property>
-      <property name="releaseText">
-       <string>1</string>
-      </property>
-      <property name="clickText">
-       <string>1</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>0</string>
-      </property>
-     </widget>
      <widget class="QEPushButton" name="qebutton100_11">
       <property name="geometry">
        <rect>
@@ -3252,6 +3792,156 @@
       </property>
       <property name="clickCheckedText">
        <string/>
+      </property>
+     </widget>
+     <widget class="QESimpleShape" name="qesimpleshape_39">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>120</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="shape">
+       <enum>QSimpleShape::ellipse</enum>
+      </property>
+      <property name="colour0" stdset="0">
+       <color>
+        <red>0</red>
+        <green>255</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="colour1" stdset="0">
+       <color>
+        <red>200</red>
+        <green>200</green>
+        <blue>200</blue>
+       </color>
+      </property>
+      <property name="flash0" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA3):SCAN</string>
+      </property>
+      <property name="displayAlarmStateOption" stdset="0">
+       <enum>QESimpleShape::Never</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Single S.</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_17">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>On</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA3):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnRelease">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>1</string>
+      </property>
+      <property name="releaseText">
+       <string>0</string>
+      </property>
+      <property name="clickText">
+       <string>0</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QEPushButton" name="qepushbutton_18">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>6</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(RGA3):SETSCAN</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="format" stdset="0">
+       <enum>QEPushButton::Integer</enum>
+      </property>
+      <property name="writeOnPress">
+       <bool>false</bool>
+      </property>
+      <property name="writeOnClick">
+       <bool>true</bool>
+      </property>
+      <property name="pressText">
+       <string>Off</string>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string>Off</string>
       </property>
      </widget>
     </widget>
@@ -3548,7 +4238,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>529</width>
+     <width>545</width>
      <height>21</height>
     </rect>
    </property>
@@ -3560,11 +4250,6 @@
    <class>QEBitStatus</class>
    <extends>QBitStatus</extends>
    <header>QEBitStatus.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QECheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>QECheckBox.h</header>
   </customwidget>
   <customwidget>
    <class>QELabel</class>
