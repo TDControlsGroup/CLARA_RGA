@@ -1,16 +1,36 @@
-#import os
-#import epics
-#import numpy as np
+import sys
+from PyQt4 import QtGui, QtCore
 
-#os.environ['EPICS_CA_ADDR_LIST'] = "192.168.82.101"
-#os.environ['EPICS_CA_MAX_ARRAY_BYTES'] = "1000000"
 
-#print (epics.caget('VM-EBT-INJ-MAG-SOL-01:RI'))
-import numpy as np
-import urllib.request
-import json
+class Example(QtGui.QWidget):
+    
+    def __init__(self):
+        super(Example, self).__init__()
+        
+        self.initUI()
+        
+    def initUI(self):
+        
+        lcd = QtGui.QLCDNumber(self)
+        sld = QtGui.QSlider(QtCore.Qt.Horizontal, self)
 
-response = urllib.request.urlopen("http://148.79.130.52:17668/retrieval/data/getData.json?pv=rga1%3ABAR%3AM1&donotchunk")
-content = response.read()
-data = json.loads(content.decode("utf8"))
-print (data)
+        vbox = QtGui.QVBoxLayout()
+        vbox.addWidget(lcd)
+        vbox.addWidget(sld)
+
+        self.setLayout(vbox)
+        sld.valueChanged.connect(lcd.display)
+        
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Signal & slot')
+        self.show()
+        
+def main():
+    
+    app = QtGui.QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

@@ -149,6 +149,7 @@ void  RGA::RGAMain()
     pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
     pmain.archTO->setProperty     ("variable", ArchiverName+":ANATmO"  );
     pmain.archTOVal->setProperty  ("variable", ArchiverName+":TmO"  );
+    pmain.archDT->setProperty  ("variable", ArchiverName+":TimerRaw:T"  );
 
     //Add main ui to a tabbed window
     mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());
