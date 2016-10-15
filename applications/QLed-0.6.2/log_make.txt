@@ -1,0 +1,69 @@
+C:/Qt/Qt5.5.1/Tools/mingw492_32/bin/mingw32-make -f Makefile.Release
+mingw32-make[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/QLed-0.6.2'
+g++ -c -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtSvg -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore -Irelease -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++  -o release\qled.o qled.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtSvg -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore -Irelease -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++  -o release\qledplugin.o qledplugin.cpp
+C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\rcc.exe -name qled qled.qrc -o release\qrc_qled.cpp
+C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\moc.exe -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -D__GNUC__ -DWIN32 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++ -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/QLed-0.6.2 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtSvg -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtDesigner -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtUiPlugin -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtANGLE -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtXml -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore qled.h -o release\moc_qled.cpp
+C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\moc.exe -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -D__GNUC__ -DWIN32 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++ -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/QLed-0.6.2 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtSvg -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtDesigner -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtUiPlugin -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtANGLE -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtXml -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore qledplugin.h -o release\moc_qledplugin.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtSvg -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore -Irelease -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++  -o release\qrc_qled.o release\qrc_qled.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtSvg -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore -Irelease -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++  -o release\moc_qledplugin.o release\moc_qledplugin.cpp
+g++ -c -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads -DUNICODE -DQT_NO_DEBUG -DQT_PLUGIN -DQT_SVG_LIB -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtSvg -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtUiPlugin -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtWidgets -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtGui -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtANGLE -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtXml -IC:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore -Irelease -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++  -o release\moc_qled.o release\moc_qled.cpp
+In file included from qled.h:21:0,
+                 from qledplugin.cpp:16:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtDesigner/QDesignerExportWidget:4:4: warning: #warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead.
+    ^
+In file included from qledplugin.h:19:0,
+                 from qledplugin.cpp:17:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner/QDesignerCustomWidgetInterface:4:4: warning: #warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead.
+    ^
+In file included from release\../qledplugin.h:19:0,
+                 from release\moc_qledplugin.cpp:9:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtDesigner/QDesignerCustomWidgetInterface:4:4: warning: #warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerCustomWidgetInterface> is deprecated. Please include <QtUiPlugin/QDesignerCustomWidgetInterface> instead.
+    ^
+In file included from release\../qled.h:21:0,
+                 from release\moc_qled.cpp:9:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtDesigner/QDesignerExportWidget:4:4: warning: #warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead.
+    ^
+In file included from C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore/qnamespace.h:37:0,
+                 from C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore/Qt:1,
+                 from qled.h:19,
+                 from qledplugin.cpp:16:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtCore/qglobal.h:703:121: error: invalid application of 'sizeof' to incomplete type 'QStaticAssertFailure<false>'
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                                                         ^
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
+                                               ^
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore/qplugin.h:136:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+     Q_STATIC_ASSERT_X(false, "Old plugin system used")
+     ^
+qledplugin.cpp:113:1: note: in expansion of macro 'Q_EXPORT_PLUGIN2'
+ Q_EXPORT_PLUGIN2(customwidgetplugin, QLedPlugin)
+ ^
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtCore/qglobal.h:703:122: error: expected unqualified-id at end of input
+     enum {Q_STATIC_ASSERT_PRIVATE_JOIN(q_static_assert_result, __COUNTER__) = sizeof(QStaticAssertFailure<!!(Condition)>)}
+                                                                                                                          ^
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtCore/qglobal.h:708:47: note: in expansion of macro 'Q_STATIC_ASSERT'
+ #define Q_STATIC_ASSERT_X(Condition, Message) Q_STATIC_ASSERT(Condition)
+                                               ^
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include\QtCore/qplugin.h:136:5: note: in expansion of macro 'Q_STATIC_ASSERT_X'
+     Q_STATIC_ASSERT_X(false, "Old plugin system used")
+     ^
+qledplugin.cpp:113:1: note: in expansion of macro 'Q_EXPORT_PLUGIN2'
+ Q_EXPORT_PLUGIN2(customwidgetplugin, QLedPlugin)
+ ^
+Makefile.Release:951: recipe for target 'release/qledplugin.o' failed
+mingw32-make[1]: *** [release/qledplugin.o] Error 1
+mingw32-make[1]: *** Waiting for unfinished jobs....
+In file included from qled.h:21:0,
+                 from qled.cpp:23:
+C:\Qt\Qt5.5.1\5.5\mingw492_32\include/QtDesigner/QDesignerExportWidget:4:4: warning: #warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead. [-Wcpp]
+ #  warning Header <QtDesigner/QDesignerExportWidget> is deprecated. Please include <QtUiPlugin/QDesignerExportWidget> instead.
+    ^
+mingw32-make[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/QLed-0.6.2'
+makefile:34: recipe for target 'release' failed
+mingw32-make: *** [release] Error 2
