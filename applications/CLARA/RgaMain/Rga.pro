@@ -1,21 +1,24 @@
 #! [0]
 
+
 FORMS = ../../../framework/ui/barchart.ui
-FORMS += ../../../framework/ui/mv2_epicsDisplay.ui
+FORMS += ../../../framework/ui/mv2_epicsDisplay_v2.ui
 FORMS += ../../../framework/ui/mv2_rgaDisplay.ui
 FORMS += ../../../framework/ui/mv2_main_bar.ui
 FORMS += ../../../framework/ui/mv2_stripchart.ui
-
-HEADERS  = RGA.h
+DEFINES += "_MINGW=TRUE"
+HEADERS = RGA.h
 HEADERS += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.h
-HEADERS += RgaArchiver.h
+HEADERS += RgaCA.h
 
+#Let us see the terminal as well
+CONFIG   += console
 
 
 SOURCES     = main.cpp
 SOURCES     += RGA.cpp
 SOURCES     += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.cpp
-SOURCES     += RgaArchiver.cpp
+SOURCES     += RgaCA.cpp
 
 QT += core gui xml widgets uitools
 #! [0]
@@ -29,6 +32,9 @@ LIBS += -L../../epics_libs -lca -lCom
 
 
 INCLUDEPATH += . \
+    $(EPICS_BASE)/include \
+	$(EPICS_BASE)/include/os/WIN32 \
+	$(EPICS_BASE)/include/compiler/gcc \
     ./include \
      ../../../framework/adaptation_parameters/ \
      ../../../framework/common/ \

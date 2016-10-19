@@ -1,6 +1,9 @@
 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain/$(EPICS_BASE)/include
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain/$(EPICS_BASE)/include/os/WIN32
+-IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain/$(EPICS_BASE)/include/compiler/gcc
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain/include
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/adaptation_parameters
 -IC:/Users/zgm95989/Desktop/3.2.4-CLARA/framework/common

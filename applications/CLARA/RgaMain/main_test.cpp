@@ -40,15 +40,21 @@
 
 
 #include <QApplication>
-#include "RGA.h"
+#include <stdio.h>
+#include <QMainWindow>
+#include <QWidget>
+#include <QTabWidget>
+#include "QEActionRequests.h"
+using namespace Ui;
+#include "rgaled.h"
+#include "ui_mv2_epicsDisplay_v2.h"
 
 
 
 int main(int argc, char *argv[])
 {
+
     QApplication app(argc, argv);
-    //GUI
-    RGA myrga;
-    myrga.RGAMain();
+//   RgaLed *groupBox_1;
     return app.exec();
 }

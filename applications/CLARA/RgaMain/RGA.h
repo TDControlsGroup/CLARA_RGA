@@ -41,15 +41,17 @@
 #ifndef RGAFORM_H
 #define RGAFORM_H
 #include <stdio.h>
+#include <vector>
 #include <QMainWindow>
 #include <QWidget>
 #include <QTabWidget>
 #include "QEActionRequests.h"
-#include "ui_mv2_epicsDisplay.h"
+#include "ui_mv2_epicsDisplay_v2.h"
 #include "ui_mv2_rgaDisplay.h"
 #include "ui_barchart.h"
 #include "ui_mv2_main_bar.h"
 #include "ui_mv2_stripchart.h"
+
 
 //! [0]
 
@@ -80,16 +82,10 @@ public slots:
 private:
     QString ArchiverName;
 
-    QString DeviceName1;
-    QString DeviceName2;
-    QString DeviceName3;
-    QString DeviceName4;
+std::vector<QString> DeviceName;	
+std::vector<QString> DeviceTitle;
 
-    QString DeviceTitle1;
-    QString DeviceTitle2;
-    QString DeviceTitle3;
-    QString DeviceTitle4;
-
+	
     //*******
     //Windows
     //*******

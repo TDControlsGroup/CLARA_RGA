@@ -182,8 +182,6 @@ include (widgets/QESpinBox/QESpinBox.pri)
 include (widgets/QEStripChart/QEStripChart.pri)
 include (widgets/QESubstitutedLabel/QESubstitutedLabel.pri)
 include (widgets/QETable/QETable.pri)
-#This was too complex in this framework. Will try to build a JSON/XML server to convert this
-#include (widgetsCLARA/QEArchiverInterfaceJSON/archiveJSON.pri)
 
 OTHER_FILES += analogindicator.json
 

@@ -1,48 +1,16 @@
 /****************************************************************************
-**
-** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
+V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
+
 ****************************************************************************/
 
 //! [0]
 #include <iostream>
+#include <stdio.h>
 #include <QtUiTools>
 #include <QString>
 #include <QStringList>
+#include <cadef.h>
+#include "RgaCA.h"
 #define MIN_YPRESSURE 1e-13
 #define MAX_YPRESSURE 0.1
 
@@ -55,29 +23,41 @@
 RGA::RGA()
 {
 //Setup Main UI devices
+    //CA
+	RgaCA myCA;
 
-    DeviceName1="rga1";
-    DeviceName2="rga2";
-    DeviceName3="rga3";
-    DeviceName4="rga4";
+    DeviceName.push_back(QString("rga1"));
+    DeviceName.push_back(QString("rga2"));
+    DeviceName.push_back(QString("rga3"));
+    DeviceName.push_back(QString("rga4"));
+    DeviceName.push_back(QString("rga5"));
+	DeviceName.push_back(QString("rga6"));
+    ArchiverName="rga-arch";	
 
-    DeviceTitle1="Rga1";
-    DeviceTitle2="Rga2";
-    DeviceTitle3="Rga3";
-    DeviceTitle4="Rga4";
+	for (unsigned int i = 0; i < DeviceName.size(); i++)
+{
+    DeviceTitle.push_back(DeviceName[i]+":GETNAME");
+	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
+    DeviceTitle[i]=myCA.GetData(DeviceTitle[i].toStdString().c_str());
+	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
+}
 
-    ArchiverName="rga-arch";
+	
+//    DeviceTitle2=DeviceName2+":GETNAME";
+//    DeviceTitle2=myCA.GetData(DeviceTitle2.toStdString().c_str());
+
+
 
     QString applicationMacros[4];
     QString mainWindowMacros;
 
 //Macro substitutions in the Ui files
-    applicationMacros[0]="RGA="+DeviceName1;
-    applicationMacros[1]="RGA="+DeviceName2;
-    applicationMacros[2]="RGA="+DeviceName3;
-    applicationMacros[3]="RGA="+DeviceName4;
+    applicationMacros[0]="RGA="+DeviceName[0];
+    applicationMacros[1]="RGA="+DeviceName[1];
+    applicationMacros[2]="RGA="+DeviceName[2];
+    applicationMacros[3]="RGA="+DeviceName[3];
 
-    mainWindowMacros="RGA1="+DeviceName1+", RGA2="+DeviceName2+", RGA3="+DeviceName3+", RGA4="+DeviceName4+", GRGA=GlobalRga";
+    mainWindowMacros="RGA1="+DeviceName[0]+", RGA2="+DeviceName[1]+", RGA3="+DeviceName[2]+", RGA4="+DeviceName[3]+", GRGA=GlobalRga";
 
     ContainerProfile profile;
 //Main GUI
@@ -123,51 +103,67 @@ void  RGA::RGAMain()
     //Seupup slots for main UI: Make buttons work
     QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
     QObject::connect (pmain.barscan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
-    QObject::connect (pmain.barstrip,  SIGNAL( clicked() ), this, SLOT( RGAFormShowStripPlot() ) );
-    QObject::connect (pmain.summary1,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary2,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary3,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    QObject::connect (pmain.summary4,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    //QObject::connect (pmain.barstrip,  SIGNAL( clicked() ), this, SLOT( RGAFormShowStripPlot() ) );
+    //QObject::connect (pmain.summary1,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    //QObject::connect (pmain.summary2,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    //QObject::connect (pmain.summary3,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+    //QObject::connect (pmain.summary4,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
 
-    //Correct button names
-    pmain.summary1->setText("Summary "+DeviceTitle1);
-    pmain.summary2->setText("Summary "+DeviceTitle2);
-    pmain.summary3->setText("Summary "+DeviceTitle3);
-    pmain.summary4->setText("Summary "+DeviceTitle4);
+	char catstring[40];
+	char varstring[40];	
 
+		for (unsigned int i = 0; i < DeviceName.size(); i++)
+    {
+		    //Find and correct lable names
+		
+		//Labels for buttons
+		sprintf(catstring,"name%d",i+1);
+	    printf("Buttons relabel, %s\n",catstring);
+        (mymain.findChild<QLabel *>(catstring) )->setText(DeviceTitle[i]);
+        //Title LED box titles		
+	    sprintf(catstring,"box%d",i+1);
+        (mymain.findChild<QGroupBox *>(catstring) )->setTitle(DeviceTitle[i]);
+	    //Connect the percentage scan boxes to the EPICS records
+	    sprintf(catstring,"per%d",i+1);		
+	    sprintf(varstring,"%s:PERSCANNED",DeviceName[i].toStdString().c_str());
+	    ((mymain.findChild<QGroupBox *>("percentBox") )->findChild<QEAnalogProgressBar *>(catstring) )-> setProperty ("variable", varstring );
+    }
+	
+
+	
     //Correct PVs for the archiver
-    pmain.archStart-> setProperty ("variable", ArchiverName+":ArchiveOn"  );
-    pmain.archStop->setProperty   ("variable", ArchiverName+":Off" );
-    pmain.archStop2->setProperty  ("variable", ArchiverName+":Off" );
-    pmain.archOn->setProperty     ("variable", ArchiverName+":TimerRaw" );
-    pmain.archTime->setProperty   ("variable", ArchiverName+":sectime" );
-    pmain.archFil->setProperty    ("variable", ArchiverName+":FilPow" );
-    pmain.archScan->setProperty   ("variable", ArchiverName+":Head" );
-    pmain.archAnaOn->setProperty  ("variable", ArchiverName+":ANADone" );
-    pmain.archFailR->setProperty  ("variable", ArchiverName+":ANARst" );
-    pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
-    pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
-    pmain.archTO->setProperty     ("variable", ArchiverName+":ANATmO"  );
-    pmain.archTOVal->setProperty  ("variable", ArchiverName+":TmO"  );
-    pmain.archDT->setProperty  ("variable", ArchiverName+":TimerRaw:T"  );
+    //pmain.archStart-> setProperty ("variable", ArchiverName+":ArchiveOn"  );
+    //pmain.archStop->setProperty   ("variable", ArchiverName+":Off" );
+    //pmain.archStop2->setProperty  ("variable", ArchiverName+":Off" );
+    //pmain.archOn->setProperty     ("variable", ArchiverName+":TimerRaw" );
+    //pmain.archTime->setProperty   ("variable", ArchiverName+":sectime" );
+    //pmain.archFil->setProperty    ("variable", ArchiverName+":FilPow" );
+    //pmain.archScan->setProperty   ("variable", ArchiverName+":Head" );
+    //pmain.archAnaOn->setProperty  ("variable", ArchiverName+":ANADone" );
+    //pmain.archFailR->setProperty  ("variable", ArchiverName+":ANARst" );
+    //pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
+    //pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
+    //pmain.archTO->setProperty     ("variable", ArchiverName+":ANATmO"  );
+    //pmain.archTOVal->setProperty  ("variable", ArchiverName+":TmO"  );
+    //pmain.archDT->setProperty  ("variable", ArchiverName+":TimerRaw:T"  );
 
     //Add main ui to a tabbed window
-    mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());
+    mytabs.setFixedSize(mymain.geometry().width(),mymain.geometry().height());
     mytabs.addTab(&mymain, tr ("RGA startup"));
     mytabs.addTab(&rgamain, tr ("RGA settings"));
     mytabs.show();
     //Title the overview barcharts
-    ov1.setWindowTitle(DeviceTitle1);
-    ov2.setWindowTitle(DeviceTitle2);
-    ov3.setWindowTitle(DeviceTitle3);
-    ov4.setWindowTitle(DeviceTitle4);
+    ov1.setWindowTitle(DeviceTitle[0]);
+    ov2.setWindowTitle(DeviceTitle[1]);
+    ov3.setWindowTitle(DeviceTitle[2]);
+    ov4.setWindowTitle(DeviceTitle[3]);
 }
 void  RGA::RGAFormShowAnaPlot()
 {
     pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pana.qeplotter->setXRange(0,200);
     QStringList pvs;
-    pvs << "=(S-.5)/32" << DeviceName1+":ANA" << DeviceName2+":ANA" << DeviceName3+":ANA" << DeviceName4+":ANA";
+    pvs << "=(S-.5)/32" << DeviceName[0]+":ANA" << DeviceName[1]+":ANA" << DeviceName[2]+":ANA" << DeviceName[3]+":ANA";
     pana.qeplotter->setDataPvNameSet(pvs);
     myana.show();
 }
@@ -176,7 +172,7 @@ void  RGA::RGAFormShowBarPlot()
     pbar.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pbar.qeplotter->setXRange(0,200);
     QStringList pvs;
-    pvs << "=(S-0.5)" << DeviceName1+":BAR" << DeviceName2+":BAR" << DeviceName3+":BAR" << DeviceName4+":BAR";
+    pvs << "=(S-0.5)" << DeviceName[0]+":BAR" << DeviceName[1]+":BAR" << DeviceName[2]+":BAR" << DeviceName[3]+":BAR";
     pbar.qeplotter->setDataPvNameSet(pvs);
     mybar.show();
 }
@@ -185,18 +181,18 @@ void  RGA::RGAFormShowStripPlot()
     pstrip.qestripchart->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pstrip.qestripchart->yScaleModeSelected(QEStripChartNames::log);
 
-    pstrip.qestripchart->setPvName(0,DeviceName1+":BAR:M2");
-    pstrip.qestripchart->setPvName(1,DeviceName1+":BAR:M4");
-    pstrip.qestripchart->setPvName(2,DeviceName1+":BAR:M16");
-    pstrip.qestripchart->setPvName(3,DeviceName2+":BAR:M2");
-    pstrip.qestripchart->setPvName(4,DeviceName2+":BAR:M4");
-    pstrip.qestripchart->setPvName(5,DeviceName2+":BAR:M16");
-    pstrip.qestripchart->setPvName(6,DeviceName3+":BAR:M2");
-    pstrip.qestripchart->setPvName(7,DeviceName3+":BAR:M4");
-    pstrip.qestripchart->setPvName(8,DeviceName3+":BAR:M16");
-    pstrip.qestripchart->setPvName(9,DeviceName4+":BAR:M2");
-    pstrip.qestripchart->setPvName(10,DeviceName4+":BAR:M4");
-    pstrip.qestripchart->setPvName(11,DeviceName4+":BAR:M16");
+    pstrip.qestripchart->setPvName(0,DeviceName[0]+":BAR:M2");
+    pstrip.qestripchart->setPvName(1,DeviceName[0]+":BAR:M4");
+    pstrip.qestripchart->setPvName(2,DeviceName[0]+":BAR:M16");
+    pstrip.qestripchart->setPvName(3,DeviceName[1]+":BAR:M2");
+    pstrip.qestripchart->setPvName(4,DeviceName[1]+":BAR:M4");
+    pstrip.qestripchart->setPvName(5,DeviceName[1]+":BAR:M16");
+    pstrip.qestripchart->setPvName(6,DeviceName[2]+":BAR:M2");
+    pstrip.qestripchart->setPvName(7,DeviceName[2]+":BAR:M4");
+    pstrip.qestripchart->setPvName(8,DeviceName[2]+":BAR:M16");
+    pstrip.qestripchart->setPvName(9,DeviceName[3]+":BAR:M2");
+    pstrip.qestripchart->setPvName(10,DeviceName[3]+":BAR:M4");
+    pstrip.qestripchart->setPvName(11,DeviceName[3]+":BAR:M16");
     mystrip.show();
 }
 void  RGA::RGAFormShowBarSummary(int rga)

@@ -264,7 +264,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>121</width>
+       <width>81</width>
        <height>201</height>
       </rect>
      </property>
@@ -284,201 +284,102 @@
        <string>Bar Chart</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="archAna">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>77</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>1-200</string>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):CON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string/>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="clickText">
-       <string>8</string>
-      </property>
-      <property name="clickCheckedText">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="arch50">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>77</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>1-50</string>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):CON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string/>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="clickText">
-       <string>5</string>
-      </property>
-      <property name="clickCheckedText">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QEPushButton" name="arch200">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>77</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>1-200</string>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):CON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string/>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string>)</string>
-      </property>
-      <property name="clickText">
-       <string>7</string>
-      </property>
-      <property name="clickCheckedText">
-       <string/>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>120</y>
-        <width>121</width>
+        <width>61</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Analog Scan (32 ppp)</string>
+       <string>Analog Scan</string>
       </property>
      </widget>
-     <widget class="QECheckBox" name="archSS">
+     <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>170</y>
-        <width>81</width>
-        <height>21</height>
+        <y>60</y>
+        <width>47</width>
+        <height>13</height>
        </rect>
       </property>
       <property name="text">
-       <string>Single Scan</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):SETSCAN</string>
-      </property>
-      <property name="writeOnPress">
-       <bool>false</bool>
-      </property>
-      <property name="writeOnClick">
-       <bool>true</bool>
-      </property>
-      <property name="pressText">
-       <string>0</string>
-      </property>
-      <property name="releaseText">
-       <string>1</string>
-      </property>
-      <property name="clickText">
-       <string>1</string>
-      </property>
-      <property name="clickCheckedText">
-       <string>0</string>
+       <string>1-50</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="arch100">
+     <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>77</width>
-        <height>20</height>
+        <width>47</width>
+        <height>13</height>
        </rect>
       </property>
       <property name="text">
        <string>1-100</string>
       </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):CON</string>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
       </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string/>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="clickText">
-       <string>6</string>
-      </property>
-      <property name="clickCheckedText">
-       <string/>
+      <property name="text">
+       <string>1-200</string>
       </property>
      </widget>
-     <widget class="QEPushButton" name="archStop">
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1-200</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>170</y>
+        <width>61</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Single Scan</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>77</width>
-        <height>20</height>
+        <width>47</width>
+        <height>13</height>
        </rect>
       </property>
       <property name="text">
-       <string>Stop</string>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):CON</string>
-      </property>
-      <property name="altReadbackVariable" stdset="0">
-       <string/>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="clickText">
-       <string>0</string>
-      </property>
-      <property name="clickCheckedText">
-       <string/>
+       <string>STOP</string>
       </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="RGA1">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>90</x>
        <y>20</y>
        <width>41</width>
        <height>201</height>
@@ -577,7 +478,7 @@
       <property name="colour0" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
@@ -802,7 +703,7 @@
       <property name="colour0" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
@@ -1024,7 +925,7 @@
       <property name="colour0" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
@@ -1246,7 +1147,7 @@
       <property name="colour0" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
@@ -1468,7 +1369,7 @@
       <property name="colour0" stdset="0">
        <color>
         <red>0</red>
-        <green>255</green>
+        <green>200</green>
         <blue>0</blue>
        </color>
       </property>
@@ -1785,34 +1686,6 @@
       <string/>
      </property>
     </widget>
-    <widget class="QEPushButton" name="archStart">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>81</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-     <property name="variable" stdset="0">
-      <string>$(GRGA):ARCH</string>
-     </property>
-     <property name="altReadbackVariable" stdset="0">
-      <string/>
-     </property>
-     <property name="variableSubstitutions" stdset="0">
-      <string/>
-     </property>
-     <property name="clickText">
-      <string>1</string>
-     </property>
-     <property name="clickCheckedText">
-      <string/>
-     </property>
-    </widget>
     <widget class="QESimpleShape" name="archAnaOn">
      <property name="geometry">
       <rect>
@@ -1947,6 +1820,34 @@
       <enum>QELineEdit::Default</enum>
      </property>
     </widget>
+    <widget class="QEPushButton" name="archStart">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>81</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+     <property name="variable" stdset="0">
+      <string>$(GRGA):ARCH</string>
+     </property>
+     <property name="altReadbackVariable" stdset="0">
+      <string/>
+     </property>
+     <property name="variableSubstitutions" stdset="0">
+      <string/>
+     </property>
+     <property name="clickText">
+      <string>1</string>
+     </property>
+     <property name="clickCheckedText">
+      <string/>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1966,11 +1867,6 @@
    <class>QEAnalogProgressBar</class>
    <extends>QEAnalogIndicator</extends>
    <header>QEAnalogProgressBar.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QECheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>QECheckBox.h</header>
   </customwidget>
   <customwidget>
    <class>QELabel</class>
