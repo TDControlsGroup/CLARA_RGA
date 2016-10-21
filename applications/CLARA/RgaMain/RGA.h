@@ -82,8 +82,8 @@ public slots:
 private:
     QString ArchiverName;
 
-std::vector<QString> DeviceName;	
-std::vector<QString> DeviceTitle;
+    std::vector<QString> DeviceName;	
+    std::vector<QString> DeviceTitle;
 
 	
     //*******

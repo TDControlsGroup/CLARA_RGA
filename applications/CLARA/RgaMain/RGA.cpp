@@ -111,42 +111,34 @@ void  RGA::RGAMain()
 
 	char catstring[40];
 	char varstring[40];	
+	
 
-		for (unsigned int i = 0; i < DeviceName.size(); i++)
+	for (unsigned int i = 0; i < DeviceName.size(); i++)
     {
-		    //Find and correct lable names
+		/*mainwindow*/
 		
 		//Labels for buttons
 		sprintf(catstring,"name%d",i+1);
 	    printf("Buttons relabel, %s\n",catstring);
         (mymain.findChild<QLabel *>(catstring) )->setText(DeviceTitle[i]);
-        //Title LED box titles		
-	    sprintf(catstring,"box%d",i+1);
-        (mymain.findChild<QGroupBox *>(catstring) )->setTitle(DeviceTitle[i]);
+        //Use custom widget to fill the LED and mode indicators in the main window	
+	    sprintf(catstring,"box_%d",i+1);
+        (mymain.findChild<RgaLed *>(catstring) )->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
 	    //Connect the percentage scan boxes to the EPICS records
 	    sprintf(catstring,"per%d",i+1);		
 	    sprintf(varstring,"%s:PERSCANNED",DeviceName[i].toStdString().c_str());
 	    ((mymain.findChild<QGroupBox *>("percentBox") )->findChild<QEAnalogProgressBar *>(catstring) )-> setProperty ("variable", varstring );
-    }
+
+		/*rgamainwindow*/
+		
+        //Use custom widget to fill the LED and mode indicators in the main window	
+	    sprintf(catstring,"status_%d",i+1);
+        (rgamain.findChild<RgaStatus *>(catstring))->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
+
+	}
 	
 
 	
-    //Correct PVs for the archiver
-    //pmain.archStart-> setProperty ("variable", ArchiverName+":ArchiveOn"  );
-    //pmain.archStop->setProperty   ("variable", ArchiverName+":Off" );
-    //pmain.archStop2->setProperty  ("variable", ArchiverName+":Off" );
-    //pmain.archOn->setProperty     ("variable", ArchiverName+":TimerRaw" );
-    //pmain.archTime->setProperty   ("variable", ArchiverName+":sectime" );
-    //pmain.archFil->setProperty    ("variable", ArchiverName+":FilPow" );
-    //pmain.archScan->setProperty   ("variable", ArchiverName+":Head" );
-    //pmain.archAnaOn->setProperty  ("variable", ArchiverName+":ANADone" );
-    //pmain.archFailR->setProperty  ("variable", ArchiverName+":ANARst" );
-    //pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
-    //pmain.archFailC->setProperty  ("variable", ArchiverName+":ANANumF" );
-    //pmain.archTO->setProperty     ("variable", ArchiverName+":ANATmO"  );
-    //pmain.archTOVal->setProperty  ("variable", ArchiverName+":TmO"  );
-    //pmain.archDT->setProperty  ("variable", ArchiverName+":TimerRaw:T"  );
-
     //Add main ui to a tabbed window
     mytabs.setFixedSize(mymain.geometry().width(),mymain.geometry().height());
     mytabs.addTab(&mymain, tr ("RGA startup"));

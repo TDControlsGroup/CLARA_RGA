@@ -2,6 +2,8 @@
 
 
 FORMS = ../../../framework/ui/barchart.ui
+FORMS += ../../../framework/ui/mv2_widget_led.ui
+FORMS += ../../../framework/ui/mv2_widget_status.ui
 FORMS += ../../../framework/ui/mv2_epicsDisplay_v2.ui
 FORMS += ../../../framework/ui/mv2_rgaDisplay.ui
 FORMS += ../../../framework/ui/mv2_main_bar.ui

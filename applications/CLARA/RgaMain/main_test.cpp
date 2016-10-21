@@ -45,8 +45,6 @@
 #include <QWidget>
 #include <QTabWidget>
 #include "QEActionRequests.h"
-using namespace Ui;
-#include "rgaled.h"
 #include "ui_mv2_epicsDisplay_v2.h"
 
 

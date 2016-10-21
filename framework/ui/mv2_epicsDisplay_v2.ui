@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>718</width>
-    <height>669</height>
+    <width>719</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QGroupBox" name="charts">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>310</x>
       <y>10</y>
       <width>401</width>
       <height>171</height>
@@ -54,7 +54,7 @@
       <string>barchart.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="barstrip">
+    <widget class="QEPushButton" name="barstrip1">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -209,7 +209,7 @@
       <string>Name</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="summary1_2">
+    <widget class="QEPushButton" name="summary2">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -240,7 +240,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="summary1_3">
+    <widget class="QEPushButton" name="summary3">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -271,7 +271,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="summary1_4">
+    <widget class="QEPushButton" name="summary4">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -302,7 +302,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="summary1_5">
+    <widget class="QEPushButton" name="summary5">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -333,7 +333,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="barstrip_2">
+    <widget class="QEPushButton" name="barstrip2">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -364,7 +364,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="barstrip_3">
+    <widget class="QEPushButton" name="barstrip3">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -395,7 +395,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="barstrip_4">
+    <widget class="QEPushButton" name="barstrip4">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -426,7 +426,7 @@
       <string>mv2_main_bar.ui</string>
      </property>
     </widget>
-    <widget class="QEPushButton" name="barstrip_5">
+    <widget class="QEPushButton" name="barstrip5">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -537,7 +537,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
+      <y>180</y>
       <width>701</width>
       <height>401</height>
      </rect>
@@ -740,7 +740,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="box_1">
+    <widget class="RgaLed" name="box_1">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -752,337 +752,20 @@
      <property name="title">
       <string>RGA</string>
      </property>
-     <widget class="QESimpleShape" name="ANA200_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour7" stdset="0">
-       <color>
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
-       </color>
-      </property>
-      <property name="colour8" stdset="0">
-       <color>
-        <red>0</red>
-        <green>200</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):HEADSTA</string>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="SS_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>170</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour0" stdset="0">
-       <color>
-        <red>0</red>
-        <green>200</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="colour1" stdset="0">
-       <color>
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
-       </color>
-      </property>
-      <property name="flash0" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):SCAN</string>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="BAR50_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour3" stdset="0">
-       <color>
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
-       </color>
-      </property>
-      <property name="colour4" stdset="0">
-       <color>
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
-       </color>
-      </property>
-      <property name="colour5" stdset="0">
-       <color>
-        <red>0</red>
-        <green>200</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="flash0" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="flash1" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):HEADSTA</string>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="BAR100_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour6" stdset="0">
-       <color>
-        <red>0</red>
-        <green>200</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):HEADSTA</string>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="BAR200_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour7" stdset="0">
-       <color>
-        <red>0</red>
-        <green>200</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):HEADSTA</string>
-      </property>
-      <property name="visible" stdset="0">
-       <bool>true</bool>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="STOP_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::CustomContextMenu</enum>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour0" stdset="0">
-       <color>
-        <red>255</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="colour1" stdset="0">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(RGA1):HEADSTA</string>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="Line" name="line_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>200</y>
-        <width>21</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QESimpleShape" name="archOn_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>220</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::CustomContextMenu</enum>
-      </property>
-      <property name="shape">
-       <enum>QSimpleShape::ellipse</enum>
-      </property>
-      <property name="colour0" stdset="0">
-       <color>
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
-       </color>
-      </property>
-      <property name="colour1" stdset="0">
-       <color>
-        <red>0</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="colour2" stdset="0">
-       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="colour3" stdset="0">
-       <color>
-        <red>0</red>
-        <green>255</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="variable" stdset="0">
-       <string>$(GRGA):MODE</string>
-      </property>
-      <property name="variableSubstitutions" stdset="0">
-       <string/>
-      </property>
-      <property name="displayAlarmStateOption" stdset="0">
-       <enum>QESimpleShape::Never</enum>
-      </property>
-     </widget>
-     <widget class="QELabel" name="qelabel_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>250</y>
-        <width>22</width>
-        <height>13</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QELabel" name="archTO_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>290</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="variable" stdset="0">
-       <string>GRGA:ANAT</string>
-      </property>
-     </widget>
-     <widget class="QELabel" name="archTime_1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>330</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="variable" stdset="0">
-       <string>GRGA:ANAT</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QGroupBox" name="scan_2">
      <property name="geometry">
       <rect>
        <x>530</x>
-       <y>220</y>
+       <y>260</y>
        <width>161</width>
-       <height>171</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="title">
       <string>Archiver</string>
      </property>
-     <widget class="QEPushButton" name="archStop2">
+     <widget class="QEPushButton" name="archStop">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1115,12 +798,12 @@
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>81</width>
+        <width>101</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Archiver started</string>
+       <string>Archiver start time</string>
       </property>
      </widget>
      <widget class="QELineEdit" name="archDT">
@@ -1164,6 +847,112 @@
        <string/>
       </property>
      </widget>
+     <widget class="QEPushButton" name="resetTO">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rst</string>
+      </property>
+      <property name="variable" stdset="0">
+       <string>$(GRGA):ARCH</string>
+      </property>
+      <property name="altReadbackVariable" stdset="0">
+       <string/>
+      </property>
+      <property name="variableSubstitutions" stdset="0">
+       <string/>
+      </property>
+      <property name="clickText">
+       <string>1</string>
+      </property>
+      <property name="clickCheckedText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Timeout:</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="RgaLed" name="box_2">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>71</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>RGA</string>
+     </property>
+    </widget>
+    <widget class="RgaLed" name="box_3">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>20</y>
+       <width>71</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>RGA</string>
+     </property>
+    </widget>
+    <widget class="RgaLed" name="box_4">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>20</y>
+       <width>71</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>RGA</string>
+     </property>
+    </widget>
+    <widget class="RgaLed" name="box_5">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>20</y>
+       <width>71</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>RGA</string>
+     </property>
+    </widget>
+    <widget class="RgaLed" name="box_6">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>20</y>
+       <width>71</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>RGA</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="percentBox">
@@ -1281,13 +1070,208 @@
     <zorder>per1</zorder>
     <zorder>per6</zorder>
    </widget>
+   <widget class="QGroupBox" name="IdSerial">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>271</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Device info</string>
+    </property>
+    <widget class="QLabel" name="id_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="id_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>90</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="id_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>130</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="id_1">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="id_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="id_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_3">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>70</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_4">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>90</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_6">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>130</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_1">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>50</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="sn_5">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>110</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="name1_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Device name:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="name1_5">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>10</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Serial number:</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>718</width>
+     <width>719</width>
      <height>21</height>
     </rect>
    </property>
@@ -1301,11 +1285,6 @@
    <header>QEAnalogProgressBar.h</header>
   </customwidget>
   <customwidget>
-   <class>QELabel</class>
-   <extends>QLabel</extends>
-   <header>QELabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>QELineEdit</class>
    <extends>QLineEdit</extends>
    <header>QELineEdit.h</header>
@@ -1316,19 +1295,15 @@
    <header>QEPushButton.h</header>
   </customwidget>
   <customwidget>
-   <class>QESimpleShape</class>
-   <extends>QSimpleShape</extends>
-   <header>QESimpleShape.h</header>
-  </customwidget>
-  <customwidget>
    <class>QEAnalogIndicator</class>
    <extends>QWidget</extends>
    <header>QEAnalogIndicator.h</header>
   </customwidget>
   <customwidget>
-   <class>QSimpleShape</class>
-   <extends>QWidget</extends>
-   <header>QSimpleShape.h</header>
+   <class>RgaLed</class>
+   <extends>QGroupBox</extends>
+   <header>RgaLed.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

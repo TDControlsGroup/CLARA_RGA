@@ -1,12 +1,12 @@
 C:/Qt/Qt5.5.1/Tools/mingw492_32/bin/mingw32-make -f Makefile.Release clean
 mingw32-make[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
 del release\moc_RGA.cpp
-del ui_barchart.h ui_mv2_epicsDisplay_v2.h ui_mv2_rgaDisplay.h ui_mv2_main_bar.h ui_mv2_stripchart.h
+del ui_barchart.h ui_mv2_widget_led.h ui_mv2_widget_status.h ui_mv2_epicsDisplay_v2.h ui_mv2_rgaDisplay.h ui_mv2_main_bar.h ui_mv2_stripchart.h
 del release\main.o release\RGA.o release\QEStringFormattingMethods.o release\RgaCA.o release\moc_RGA.o
 mingw32-make[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
 C:/Qt/Qt5.5.1/Tools/mingw492_32/bin/mingw32-make -f Makefile.Debug clean
 mingw32-make[1]: Entering directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
 del debug\moc_RGA.cpp
-del ui_barchart.h ui_mv2_epicsDisplay_v2.h ui_mv2_rgaDisplay.h ui_mv2_main_bar.h ui_mv2_stripchart.h
+del ui_barchart.h ui_mv2_widget_led.h ui_mv2_widget_status.h ui_mv2_epicsDisplay_v2.h ui_mv2_rgaDisplay.h ui_mv2_main_bar.h ui_mv2_stripchart.h
 del debug\main.o debug\RGA.o debug\QEStringFormattingMethods.o debug\RgaCA.o debug\moc_RGA.o
 mingw32-make[1]: Leaving directory 'C:/Users/zgm95989/Desktop/3.2.4-CLARA/applications/CLARA/RgaMain'
