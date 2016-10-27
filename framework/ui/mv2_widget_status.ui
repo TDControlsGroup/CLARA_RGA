@@ -429,9 +429,9 @@
   <widget class="QGroupBox" name="Mode_4">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>300</x>
      <y>20</y>
-     <width>281</width>
+     <width>271</width>
      <height>171</height>
     </rect>
    </property>
@@ -785,7 +785,7 @@
      <rect>
       <x>110</x>
       <y>60</y>
-      <width>61</width>
+      <width>91</width>
       <height>16</height>
      </rect>
     </property>
@@ -795,8 +795,29 @@
       <bold>false</bold>
      </font>
     </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
+    </property>
     <property name="variable" stdset="0">
-     <string>$(RGA1):FIL</string>
+     <string>rga1:FDFACT</string>
+    </property>
+    <property name="precision">
+     <number>6</number>
+    </property>
+    <property name="useDbPrecision">
+     <bool>false</bool>
+    </property>
+    <property name="leadingZero">
+     <bool>true</bool>
+    </property>
+    <property name="trailingZeros">
+     <bool>false</bool>
+    </property>
+    <property name="addUnits">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QELabel" name="FDVOLT">
@@ -823,7 +844,7 @@
      <rect>
       <x>110</x>
       <y>100</y>
-      <width>61</width>
+      <width>91</width>
       <height>16</height>
      </rect>
     </property>
@@ -861,7 +882,7 @@
      <rect>
       <x>110</x>
       <y>120</y>
-      <width>61</width>
+      <width>91</width>
       <height>16</height>
      </rect>
     </property>
@@ -899,7 +920,7 @@
      <rect>
       <x>110</x>
       <y>140</y>
-      <width>61</width>
+      <width>91</width>
       <height>16</height>
      </rect>
     </property>
@@ -938,7 +959,7 @@
     <rect>
      <x>180</x>
      <y>20</y>
-     <width>111</width>
+     <width>121</width>
      <height>171</height>
     </rect>
    </property>
@@ -1259,6 +1280,9 @@
     </property>
     <property name="text">
      <string>Single S.</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

@@ -60,15 +60,14 @@ public:
 			FMLED1   ->setProperty ("variable", base+":MLTSTA");
 			FMLED3   ->setProperty ("variable", base+":MLTSTA");
 			FMLED2   ->setProperty ("variable", base+":MLTSTA");
-
 			FDFACT   ->setProperty ("variable", base+":FDFACT");
 			FDVOLT   ->setProperty ("variable", base+":FDVOLT");
-			MU1DFACT ->setProperty ("variable", base+":MU1FACT");
-			MU1DVOLT ->setProperty ("variable", base+":MU1VOLT");
-			MU2DFACT ->setProperty ("variable", base+":MU2FACT");
-			MU2DVOLT ->setProperty ("variable", base+":MU2VOLT");
-			MU3DFACT ->setProperty ("variable", base+":MU3FACT");
-			MU3DVOLT ->setProperty ("variable", base+":MU3VOLT");
+			MU1DFACT ->setProperty ("variable", base+":MU1DFACT");
+			MU1DVOLT ->setProperty ("variable", base+":MU1DVOLT");
+			MU2DFACT ->setProperty ("variable", base+":MU2DFACT");
+			MU2DVOLT ->setProperty ("variable", base+":MU2DVOLT");
+			MU3DFACT ->setProperty ("variable", base+":MU3DFACT");
+			MU3DVOLT ->setProperty ("variable", base+":MU3DVOLT");
 			
 			STOP     ->setProperty ("variable", base+":CON");
 			M50      ->setProperty ("variable", base+":CON");

@@ -11,8 +11,9 @@ V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
 #include <QStringList>
 #include <cadef.h>
 #include "RgaCA.h"
-#define MIN_YPRESSURE 1e-13
-#define MAX_YPRESSURE 0.1
+
+//Macro
+
 
 //! [0]
 
@@ -26,70 +27,54 @@ RGA::RGA()
     //CA
 	RgaCA myCA;
 
-    DeviceName.push_back(QString("rga1"));
-    DeviceName.push_back(QString("rga2"));
-    DeviceName.push_back(QString("rga3"));
-    DeviceName.push_back(QString("rga4"));
-    DeviceName.push_back(QString("rga5"));
-	DeviceName.push_back(QString("rga6"));
+    DeviceName.push_back(QString(RGA1));
+    DeviceName.push_back(QString(RGA2));
+    DeviceName.push_back(QString(RGA3));
+    DeviceName.push_back(QString(RGA4));
+    DeviceName.push_back(QString(RGA5));
+	DeviceName.push_back(QString(RGA6));
     ArchiverName="rga-arch";	
-
-	for (unsigned int i = 0; i < DeviceName.size(); i++)
+    
+	//Masses to display on the summary plots
+	int summary_masses[]=SUMMARY_MASS_LIST;
+    summaryMasses.insert( summaryMasses.begin(), summary_masses , summary_masses + SUMMARY_SIZE ) ;
+	
+    //Masses to display on the strip plots
+	int strip_masses[]=STRIP_MASS_LIST;
+    stripMasses.insert( stripMasses.begin(), strip_masses , strip_masses + STRIP_SIZE ) ;
+	
+	for (unsigned int i = 0; i < DEVICES; i++)
 {
+	//Put the GET title commands into Device Title
     DeviceTitle.push_back(DeviceName[i]+":GETNAME");
 	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
-    DeviceTitle[i]=myCA.GetData(DeviceTitle[i].toStdString().c_str());
+
+	//Run the GET title commnad and swap the result into Device Title. This is used all over the place
+	//to label devcices so record the name in an array
+    //DeviceTitle[i]=myCA.GetData(DeviceTitle[i].toStdString().c_str());
 	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
+    //Set up summary plots
+    ov.push_back(new QMainWindow);
+	pmainBar.push_back(new Ui::mainBar);
+	pmainBar.at(i)->setupUi(ov.at(i));
+
+	//Set up strip plots
+	mystrip.push_back(new QMainWindow);
+	pstrip.push_back(new Ui::stripWindow);
+	pstrip.at(i)->setupUi(mystrip.at(i));
 }
-
-	
-//    DeviceTitle2=DeviceName2+":GETNAME";
-//    DeviceTitle2=myCA.GetData(DeviceTitle2.toStdString().c_str());
-
-
 
     QString applicationMacros[4];
     QString mainWindowMacros;
 
-//Macro substitutions in the Ui files
-    applicationMacros[0]="RGA="+DeviceName[0];
-    applicationMacros[1]="RGA="+DeviceName[1];
-    applicationMacros[2]="RGA="+DeviceName[2];
-    applicationMacros[3]="RGA="+DeviceName[3];
-
-    mainWindowMacros="RGA1="+DeviceName[0]+", RGA2="+DeviceName[1]+", RGA3="+DeviceName[2]+", RGA4="+DeviceName[3]+", GRGA=GlobalRga";
-
-    ContainerProfile profile;
 //Main GUI
-    profile.setupProfile( this, QStringList(), "", mainWindowMacros );
     pmain.setupUi(&mymain);
     prga.setupUi(&rgamain);
-    profile.releaseProfile();
+
 
 //Comparison barcharts
     pbar.setupUi(&mybar);
     pana.setupUi(&myana);
-
-//Stripchart tool
-    pstrip.setupUi(&mystrip);
-
-//Summary bar charts
-    profile.setupProfile( this, QStringList(), "", applicationMacros[0] );
-    poverview1.setupUi(&ov1);
-    profile.releaseProfile();
-
-    profile.setupProfile( this, QStringList(), "", applicationMacros[1] );
-    poverview2.setupUi(&ov2);
-    profile.releaseProfile();
-
-    profile.setupProfile( this, QStringList(), "", applicationMacros[2] );
-    poverview3.setupUi(&ov3);
-    profile.releaseProfile();
-
-    profile.setupProfile( this, QStringList(), "", applicationMacros[3] );
-    poverview4.setupUi(&ov4);
-    profile.releaseProfile();
-
 }
 
 RGA::~RGA()
@@ -104,23 +89,43 @@ void  RGA::RGAMain()
     QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
     QObject::connect (pmain.barscan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
     //QObject::connect (pmain.barstrip,  SIGNAL( clicked() ), this, SLOT( RGAFormShowStripPlot() ) );
-    //QObject::connect (pmain.summary1,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    //QObject::connect (pmain.summary2,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    //QObject::connect (pmain.summary3,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-    //QObject::connect (pmain.summary4,  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
 
 	char catstring[40];
 	char varstring[40];	
-	
 
-	for (unsigned int i = 0; i < DeviceName.size(); i++)
+    
+	
+	
+	for (unsigned int i = 0; i < DEVICES; i++)
     {
-		/*mainwindow*/
+
+		/* Main Window*/
+		//Fill in names and serial numbers of the devices
+		//Names
+
+	    sprintf(catstring,"id_%d",i+1);
+	    sprintf(varstring,"%s:GETNAME",DeviceName[i].toStdString().c_str());
+	    (mymain.findChild<QELabel *>(catstring) )-> setProperty ("variable", varstring );		
+
+
+		//Make button links from main to the summary plots
+	    sprintf(catstring,"summary%d",i+1);
+		sprintf(varstring,"%d",i);
+		mymain.findChild<QEPushButton *>(catstring)->setProperty("clickText",varstring);
+		QObject::connect (mymain.findChild<QEPushButton *>(catstring),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
 		
-		//Labels for buttons
-		sprintf(catstring,"name%d",i+1);
-	    printf("Buttons relabel, %s\n",catstring);
-        (mymain.findChild<QLabel *>(catstring) )->setText(DeviceTitle[i]);
+		//Make button links from strip to the summary plots
+	    sprintf(catstring,"barstrip%d",i+1);
+		sprintf(varstring,"%d",i);
+		mymain.findChild<QEPushButton *>(catstring)->setProperty("clickText",varstring);
+		QObject::connect (mymain.findChild<QEPushButton *>(catstring),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowStripPlot(int) ) );
+
+		//SN
+	    sprintf(catstring,"sn_%d",i+1);
+	    sprintf(varstring,"%s:GETSERIAL",DeviceName[i].toStdString().c_str());
+	    (mymain.findChild<QELabel *>(catstring) )-> setProperty ("variable", varstring );		
+
+
         //Use custom widget to fill the LED and mode indicators in the main window	
 	    sprintf(catstring,"box_%d",i+1);
         (mymain.findChild<RgaLed *>(catstring) )->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
@@ -134,22 +139,41 @@ void  RGA::RGAMain()
         //Use custom widget to fill the LED and mode indicators in the main window	
 	    sprintf(catstring,"status_%d",i+1);
         (rgamain.findChild<RgaStatus *>(catstring))->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
+printf("Fill loop %i\n", i);
+		/*Summary bar charts*/
+		for (unsigned int j=0; j< summaryMasses.size() ; j++)
+		{
+	      sprintf(catstring,"name_%02d",j+1);	
+		  sprintf(varstring,"%s:BAR:M%d.DESC \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
+	      ( (ov.at(i) )->findChild< QELabel*>(catstring)  )-> setProperty ("variable", varstring );
+	      sprintf(catstring,"pres_%02d",j+1);		 
+		  sprintf(varstring,"%s:BAR:M%d \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
+	      ( (ov.at(i) )->findChild< QELabel*>(catstring)  )-> setProperty ("variable", varstring );
+		  sprintf(catstring,"bar_%02d",j+1);
+		  ( (ov.at(i) )->findChild< QEAnalogIndicator*>(catstring)  )-> setProperty ("variable", varstring );
+		}	
 
+		
+        /*Strip Chart*/
+		( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
+        ( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )->yScaleModeSelected(QEStripChartNames::log);
+		for (unsigned int j=0; j< stripMasses.size() ; j++)
+		{
+		  sprintf(varstring,"%s:BAR:M%d \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
+	      printf("%s \n", varstring);		 
+	      ( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )-> setPvName(j, varstring );
+
+		}	
 	}
+
+  mytabs.setFixedSize(rgamain.geometry().width(),rgamain.geometry().height());
+  mytabs.addTab(&mymain, tr("RGA startup"));
+  mytabs.addTab(&rgamain, tr("RGA settings"));
+  mytabs.show(); 
+  
+}
 	
 
-	
-    //Add main ui to a tabbed window
-    mytabs.setFixedSize(mymain.geometry().width(),mymain.geometry().height());
-    mytabs.addTab(&mymain, tr ("RGA startup"));
-    mytabs.addTab(&rgamain, tr ("RGA settings"));
-    mytabs.show();
-    //Title the overview barcharts
-    ov1.setWindowTitle(DeviceTitle[0]);
-    ov2.setWindowTitle(DeviceTitle[1]);
-    ov3.setWindowTitle(DeviceTitle[2]);
-    ov4.setWindowTitle(DeviceTitle[3]);
-}
 void  RGA::RGAFormShowAnaPlot()
 {
     pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
@@ -168,84 +192,11 @@ void  RGA::RGAFormShowBarPlot()
     pbar.qeplotter->setDataPvNameSet(pvs);
     mybar.show();
 }
-void  RGA::RGAFormShowStripPlot()
+void  RGA::RGAFormShowStripPlot(int summary)
 {
-    pstrip.qestripchart->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
-    pstrip.qestripchart->yScaleModeSelected(QEStripChartNames::log);
-
-    pstrip.qestripchart->setPvName(0,DeviceName[0]+":BAR:M2");
-    pstrip.qestripchart->setPvName(1,DeviceName[0]+":BAR:M4");
-    pstrip.qestripchart->setPvName(2,DeviceName[0]+":BAR:M16");
-    pstrip.qestripchart->setPvName(3,DeviceName[1]+":BAR:M2");
-    pstrip.qestripchart->setPvName(4,DeviceName[1]+":BAR:M4");
-    pstrip.qestripchart->setPvName(5,DeviceName[1]+":BAR:M16");
-    pstrip.qestripchart->setPvName(6,DeviceName[2]+":BAR:M2");
-    pstrip.qestripchart->setPvName(7,DeviceName[2]+":BAR:M4");
-    pstrip.qestripchart->setPvName(8,DeviceName[2]+":BAR:M16");
-    pstrip.qestripchart->setPvName(9,DeviceName[3]+":BAR:M2");
-    pstrip.qestripchart->setPvName(10,DeviceName[3]+":BAR:M4");
-    pstrip.qestripchart->setPvName(11,DeviceName[3]+":BAR:M16");
-    mystrip.show();
+    (mystrip.at(summary))->show();
 }
 void  RGA::RGAFormShowBarSummary(int rga)
 {
-    switch(rga)
-    {
-    case 1 :
-        ov1.show();
-        break; // Show Bar1
-    case 2 :
-        ov2.show();
-        break; // Show Bar2
-    case 3 :
-        ov3.show();
-        break; // Show Bar3
-    case 4 :
-        ov4.show();
-        break; // Show Bar4
-
-    }
-}
-
-void RGA::requestAction( const QEActionRequests& request )
-{
-
-    /*
-        There are two ways to handle signals in EpicsQt. One is through Qt Signal/Slots and the other through EpicsQt ContainerProfile.
-        I don't use ContainerProfile for Signals/Slots but I do use it for macro substitutions. This is here to stop runtime warnings from that.
-        If you decide to use this, for example: open a Gui using a macro, then its functions will go here.
-    */
-    // Only handle file open requests
-    if( request.getKind() != QEActionRequests::KindOpenFile )
-    {
-        return;
-    }
-
-    // If there is enough arguments, open the file
-    if (request.getArguments().count () >= 1)
-    {
-        // Build the gui and load it into a dialog.
-        // Note, this is very similar to the default method that QE push buttons uses
-        // to present a gui if the application has not provided a handler to
-        // create GUIs through the ContainerProfile.
-        QDialog* d = new QDialog();
-        QEForm* gui = new QEForm( request.getArguments().first() );
-        if( gui )
-        {
-            if( gui->readUiFile())
-            {
-                gui->setParent( d );
-                d->exec();
-            }
-            else
-            {
-                delete gui;
-                gui = NULL;
-            }
-        }
-        else
-        {
-            delete d;
-        }
-    }
+    (ov.at(rga))->show();
 }

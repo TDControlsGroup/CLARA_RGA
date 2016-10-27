@@ -41,7 +41,7 @@ public:
     {
         if (rgaWindow->objectName().isEmpty())
             rgaWindow->setObjectName(QStringLiteral("rgaWindow"));
-        rgaWindow->resize(1585, 707);
+        rgaWindow->resize(1212, 707);
         centralwidget = new QWidget(rgaWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         status = new QGroupBox(centralwidget);
@@ -68,7 +68,7 @@ public:
         rgaWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(rgaWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1585, 21));
+        menubar->setGeometry(QRect(0, 0, 1212, 21));
         rgaWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(rgaWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));

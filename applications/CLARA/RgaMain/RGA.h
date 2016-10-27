@@ -40,9 +40,13 @@
 
 #ifndef RGAFORM_H
 #define RGAFORM_H
+#include <iostream>
+#include <string>
 #include <stdio.h>
 #include <vector>
 #include <QMainWindow>
+#include <QString>
+#include <QList>
 #include <QWidget>
 #include <QTabWidget>
 #include "QEActionRequests.h"
@@ -51,7 +55,26 @@
 #include "ui_barchart.h"
 #include "ui_mv2_main_bar.h"
 #include "ui_mv2_stripchart.h"
+#define MIN_YPRESSURE 1e-13
+#define MAX_YPRESSURE 0.1
+#define DEVICES 6
 
+//RGA List
+#define RGA1 "rga1"
+#define RGA2 "rga2"
+#define RGA3 "rga3"
+#define RGA4 "rga4"
+#define RGA5 "rga5"
+#define RGA6 "rga6"
+
+
+//SUMMARY_SIZE == Elements in SUMMARY_MASS_LIST
+#define SUMMARY_SIZE 14
+#define SUMMARY_MASS_LIST {2,4,12,14,15,16,18,28,32,40,44,55,57,69}
+
+//STRIP_SIZE == Elements in STRIP_MASS_LIST
+#define STRIP_SIZE 12
+#define STRIP_MASS_LIST {2,12,14,15,16,18,28,32,40,44,55,69}
 
 //! [0]
 
@@ -59,14 +82,7 @@ class RGA : public QObject
 {
     Q_OBJECT
 
-    //Windows
-    // QMainWindow pWinMain ;
 
-    //Forms from designer used in the windows
-
-
-    // Ui::barchart    pbarchart  ;
-    // Ui::mainBar     pmainbar[3];
 
 public:
 
@@ -76,16 +92,15 @@ public:
 public slots:
     void RGAFormShowAnaPlot();
     void RGAFormShowBarPlot();
-    void RGAFormShowStripPlot();
+    void RGAFormShowStripPlot(int);
     void RGAFormShowBarSummary(int);
-    void requestAction( const QEActionRequests& requests );
 private:
     QString ArchiverName;
 
-    std::vector<QString> DeviceName;	
-    std::vector<QString> DeviceTitle;
-
-	
+    std::vector<QString>        DeviceName;	
+    std::vector<QString>        DeviceTitle;
+    std::vector<int>			summaryMasses;
+	std::vector<int>			stripMasses;
     //*******
     //Windows
     //*******
@@ -102,13 +117,11 @@ private:
     QMainWindow myana;
 
     //Live stripchart tool
-    QMainWindow mystrip;
+    QList<QMainWindow *> mystrip;
 
     //Overview barcharts
-    QMainWindow ov1;
-    QMainWindow ov2;
-    QMainWindow ov3;
-    QMainWindow ov4;
+    QList<QMainWindow *> ov;
+
 
     //*****
     //Forms
@@ -117,11 +130,9 @@ private:
     Ui::rgaWindow   prga;
     Ui::barchart    pbar      ;
     Ui::barchart    pana      ;
-    Ui::stripWindow pstrip    ;
-    Ui::mainBar     poverview1;
-    Ui::mainBar     poverview2;
-    Ui::mainBar     poverview3;
-    Ui::mainBar     poverview4;
+	QList<Ui::stripWindow *> pstrip;
+	QList<Ui::mainBar *>     pmainBar;
+
 };
 //! [0]
 

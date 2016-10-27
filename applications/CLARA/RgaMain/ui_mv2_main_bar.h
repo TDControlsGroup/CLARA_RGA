@@ -15,7 +15,6 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
@@ -34,50 +33,50 @@ public:
     QWidget *layoutWidget_6;
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_14;
-    QELabel *qelabel_51;
-    QELabel *qelabel_53;
-    QLabel *label;
-    QELabel *qelabel_54;
-    QELabel *qelabel_55;
-    QELabel *qelabel_56;
-    QELabel *qelabel_57;
-    QELabel *qelabel_58;
-    QELabel *qelabel_59;
-    QELabel *qelabel_109;
-    QELabel *qelabel_110;
-    QELabel *qelabel_126;
-    QELabel *qelabel_127;
-    QELabel *qelabel_111;
+    QELabel *name_01;
+    QELabel *name_02;
+    QELabel *name_03;
+    QELabel *name_04;
+    QELabel *name_05;
+    QELabel *name_06;
+    QELabel *name_07;
+    QELabel *name_08;
+    QELabel *name_09;
+    QELabel *name_10;
+    QELabel *name_11;
+    QELabel *name_12;
+    QELabel *name_13;
+    QELabel *name_14;
     QVBoxLayout *verticalLayout_15;
-    QELabel *qelabel_112;
-    QELabel *qelabel_113;
-    QELabel *qelabel_123;
-    QELabel *qelabel_114;
-    QELabel *qelabel_115;
-    QELabel *qelabel_116;
-    QELabel *qelabel_117;
-    QELabel *qelabel_118;
-    QELabel *qelabel_119;
-    QELabel *qelabel_120;
-    QELabel *qelabel_121;
-    QELabel *qelabel_124;
-    QELabel *qelabel_125;
-    QELabel *qelabel_122;
+    QELabel *pres_01;
+    QELabel *pres_02;
+    QELabel *pres_03;
+    QELabel *pres_04;
+    QELabel *pres_05;
+    QELabel *pres_06;
+    QELabel *pres_07;
+    QELabel *pres_08;
+    QELabel *pres_09;
+    QELabel *pres_10;
+    QELabel *pres_11;
+    QELabel *pres_12;
+    QELabel *pres_13;
+    QELabel *pres_14;
     QVBoxLayout *verticalLayout_16;
-    QEAnalogProgressBar *qeanalogprogressbar_56;
-    QEAnalogProgressBar *qeanalogprogressbar_57;
-    QEAnalogProgressBar *qeanalogprogressbar_67;
-    QEAnalogProgressBar *qeanalogprogressbar_58;
-    QEAnalogProgressBar *qeanalogprogressbar_59;
-    QEAnalogProgressBar *qeanalogprogressbar_60;
-    QEAnalogProgressBar *qeanalogprogressbar_61;
-    QEAnalogProgressBar *qeanalogprogressbar_62;
-    QEAnalogProgressBar *qeanalogprogressbar_63;
-    QEAnalogProgressBar *qeanalogprogressbar_64;
-    QEAnalogProgressBar *qeanalogprogressbar_65;
-    QEAnalogProgressBar *qeanalogprogressbar_68;
-    QEAnalogProgressBar *qeanalogprogressbar_69;
-    QEAnalogProgressBar *qeanalogprogressbar_66;
+    QEAnalogProgressBar *bar_01;
+    QEAnalogProgressBar *bar_02;
+    QEAnalogProgressBar *bar_03;
+    QEAnalogProgressBar *bar_04;
+    QEAnalogProgressBar *bar_05;
+    QEAnalogProgressBar *bar_06;
+    QEAnalogProgressBar *bar_07;
+    QEAnalogProgressBar *bar_08;
+    QEAnalogProgressBar *bar_09;
+    QEAnalogProgressBar *bar_10;
+    QEAnalogProgressBar *bar_11;
+    QEAnalogProgressBar *bar_12;
+    QEAnalogProgressBar *bar_13;
+    QEAnalogProgressBar *bar_14;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -96,109 +95,108 @@ public:
         horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
         verticalLayout_14 = new QVBoxLayout();
         verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
-        qelabel_51 = new QELabel(layoutWidget_6);
-        qelabel_51->setObjectName(QStringLiteral("qelabel_51"));
+        name_01 = new QELabel(layoutWidget_6);
+        name_01->setObjectName(QStringLiteral("name_01"));
         QFont font;
         font.setPointSize(12);
         font.setBold(false);
         font.setWeight(50);
-        qelabel_51->setFont(font);
-        qelabel_51->setTextFormat(Qt::AutoText);
-        qelabel_51->setProperty("notation", QVariant(QELabel::Scientific));
+        name_01->setFont(font);
+        name_01->setTextFormat(Qt::AutoText);
+        name_01->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_51);
+        verticalLayout_14->addWidget(name_01);
 
-        qelabel_53 = new QELabel(layoutWidget_6);
-        qelabel_53->setObjectName(QStringLiteral("qelabel_53"));
-        qelabel_53->setFont(font);
-        qelabel_53->setProperty("notation", QVariant(QELabel::Scientific));
+        name_02 = new QELabel(layoutWidget_6);
+        name_02->setObjectName(QStringLiteral("name_02"));
+        name_02->setFont(font);
+        name_02->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_53);
+        verticalLayout_14->addWidget(name_02);
 
-        label = new QLabel(layoutWidget_6);
-        label->setObjectName(QStringLiteral("label"));
-        QFont font1;
-        font1.setPointSize(12);
-        label->setFont(font1);
+        name_03 = new QELabel(layoutWidget_6);
+        name_03->setObjectName(QStringLiteral("name_03"));
+        name_03->setFont(font);
+        name_03->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(label);
+        verticalLayout_14->addWidget(name_03);
 
-        qelabel_54 = new QELabel(layoutWidget_6);
-        qelabel_54->setObjectName(QStringLiteral("qelabel_54"));
-        qelabel_54->setFont(font);
-        qelabel_54->setProperty("notation", QVariant(QELabel::Scientific));
+        name_04 = new QELabel(layoutWidget_6);
+        name_04->setObjectName(QStringLiteral("name_04"));
+        name_04->setFont(font);
+        name_04->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_54);
+        verticalLayout_14->addWidget(name_04);
 
-        qelabel_55 = new QELabel(layoutWidget_6);
-        qelabel_55->setObjectName(QStringLiteral("qelabel_55"));
-        qelabel_55->setFont(font);
-        qelabel_55->setProperty("notation", QVariant(QELabel::Scientific));
+        name_05 = new QELabel(layoutWidget_6);
+        name_05->setObjectName(QStringLiteral("name_05"));
+        name_05->setFont(font);
+        name_05->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_55);
+        verticalLayout_14->addWidget(name_05);
 
-        qelabel_56 = new QELabel(layoutWidget_6);
-        qelabel_56->setObjectName(QStringLiteral("qelabel_56"));
-        qelabel_56->setFont(font);
-        qelabel_56->setProperty("notation", QVariant(QELabel::Scientific));
+        name_06 = new QELabel(layoutWidget_6);
+        name_06->setObjectName(QStringLiteral("name_06"));
+        name_06->setFont(font);
+        name_06->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_56);
+        verticalLayout_14->addWidget(name_06);
 
-        qelabel_57 = new QELabel(layoutWidget_6);
-        qelabel_57->setObjectName(QStringLiteral("qelabel_57"));
-        qelabel_57->setFont(font);
-        qelabel_57->setProperty("notation", QVariant(QELabel::Scientific));
+        name_07 = new QELabel(layoutWidget_6);
+        name_07->setObjectName(QStringLiteral("name_07"));
+        name_07->setFont(font);
+        name_07->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_57);
+        verticalLayout_14->addWidget(name_07);
 
-        qelabel_58 = new QELabel(layoutWidget_6);
-        qelabel_58->setObjectName(QStringLiteral("qelabel_58"));
-        qelabel_58->setFont(font);
-        qelabel_58->setProperty("notation", QVariant(QELabel::Scientific));
+        name_08 = new QELabel(layoutWidget_6);
+        name_08->setObjectName(QStringLiteral("name_08"));
+        name_08->setFont(font);
+        name_08->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_58);
+        verticalLayout_14->addWidget(name_08);
 
-        qelabel_59 = new QELabel(layoutWidget_6);
-        qelabel_59->setObjectName(QStringLiteral("qelabel_59"));
-        qelabel_59->setFont(font);
-        qelabel_59->setProperty("notation", QVariant(QELabel::Scientific));
+        name_09 = new QELabel(layoutWidget_6);
+        name_09->setObjectName(QStringLiteral("name_09"));
+        name_09->setFont(font);
+        name_09->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_59);
+        verticalLayout_14->addWidget(name_09);
 
-        qelabel_109 = new QELabel(layoutWidget_6);
-        qelabel_109->setObjectName(QStringLiteral("qelabel_109"));
-        qelabel_109->setFont(font);
-        qelabel_109->setProperty("notation", QVariant(QELabel::Scientific));
+        name_10 = new QELabel(layoutWidget_6);
+        name_10->setObjectName(QStringLiteral("name_10"));
+        name_10->setFont(font);
+        name_10->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_109);
+        verticalLayout_14->addWidget(name_10);
 
-        qelabel_110 = new QELabel(layoutWidget_6);
-        qelabel_110->setObjectName(QStringLiteral("qelabel_110"));
-        qelabel_110->setFont(font);
-        qelabel_110->setProperty("notation", QVariant(QELabel::Scientific));
+        name_11 = new QELabel(layoutWidget_6);
+        name_11->setObjectName(QStringLiteral("name_11"));
+        name_11->setFont(font);
+        name_11->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_110);
+        verticalLayout_14->addWidget(name_11);
 
-        qelabel_126 = new QELabel(layoutWidget_6);
-        qelabel_126->setObjectName(QStringLiteral("qelabel_126"));
-        qelabel_126->setFont(font);
-        qelabel_126->setProperty("notation", QVariant(QELabel::Scientific));
+        name_12 = new QELabel(layoutWidget_6);
+        name_12->setObjectName(QStringLiteral("name_12"));
+        name_12->setFont(font);
+        name_12->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_126);
+        verticalLayout_14->addWidget(name_12);
 
-        qelabel_127 = new QELabel(layoutWidget_6);
-        qelabel_127->setObjectName(QStringLiteral("qelabel_127"));
-        qelabel_127->setFont(font);
-        qelabel_127->setProperty("notation", QVariant(QELabel::Scientific));
+        name_13 = new QELabel(layoutWidget_6);
+        name_13->setObjectName(QStringLiteral("name_13"));
+        name_13->setFont(font);
+        name_13->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_127);
+        verticalLayout_14->addWidget(name_13);
 
-        qelabel_111 = new QELabel(layoutWidget_6);
-        qelabel_111->setObjectName(QStringLiteral("qelabel_111"));
-        qelabel_111->setFont(font);
-        qelabel_111->setProperty("notation", QVariant(QELabel::Scientific));
+        name_14 = new QELabel(layoutWidget_6);
+        name_14->setObjectName(QStringLiteral("name_14"));
+        name_14->setFont(font);
+        name_14->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_14->addWidget(qelabel_111);
+        verticalLayout_14->addWidget(name_14);
 
 
         horizontalLayout_5->addLayout(verticalLayout_14);
@@ -206,103 +204,103 @@ public:
         verticalLayout_15 = new QVBoxLayout();
         verticalLayout_15->setObjectName(QStringLiteral("verticalLayout_15"));
         verticalLayout_15->setSizeConstraint(QLayout::SetDefaultConstraint);
-        qelabel_112 = new QELabel(layoutWidget_6);
-        qelabel_112->setObjectName(QStringLiteral("qelabel_112"));
-        qelabel_112->setFont(font);
-        qelabel_112->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_01 = new QELabel(layoutWidget_6);
+        pres_01->setObjectName(QStringLiteral("pres_01"));
+        pres_01->setFont(font);
+        pres_01->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_112);
+        verticalLayout_15->addWidget(pres_01);
 
-        qelabel_113 = new QELabel(layoutWidget_6);
-        qelabel_113->setObjectName(QStringLiteral("qelabel_113"));
-        qelabel_113->setFont(font);
-        qelabel_113->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_02 = new QELabel(layoutWidget_6);
+        pres_02->setObjectName(QStringLiteral("pres_02"));
+        pres_02->setFont(font);
+        pres_02->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_113);
+        verticalLayout_15->addWidget(pres_02);
 
-        qelabel_123 = new QELabel(layoutWidget_6);
-        qelabel_123->setObjectName(QStringLiteral("qelabel_123"));
-        qelabel_123->setFont(font);
-        qelabel_123->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_03 = new QELabel(layoutWidget_6);
+        pres_03->setObjectName(QStringLiteral("pres_03"));
+        pres_03->setFont(font);
+        pres_03->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_123);
+        verticalLayout_15->addWidget(pres_03);
 
-        qelabel_114 = new QELabel(layoutWidget_6);
-        qelabel_114->setObjectName(QStringLiteral("qelabel_114"));
-        qelabel_114->setFont(font);
-        qelabel_114->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_04 = new QELabel(layoutWidget_6);
+        pres_04->setObjectName(QStringLiteral("pres_04"));
+        pres_04->setFont(font);
+        pres_04->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_114);
+        verticalLayout_15->addWidget(pres_04);
 
-        qelabel_115 = new QELabel(layoutWidget_6);
-        qelabel_115->setObjectName(QStringLiteral("qelabel_115"));
-        qelabel_115->setFont(font);
-        qelabel_115->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_05 = new QELabel(layoutWidget_6);
+        pres_05->setObjectName(QStringLiteral("pres_05"));
+        pres_05->setFont(font);
+        pres_05->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_115);
+        verticalLayout_15->addWidget(pres_05);
 
-        qelabel_116 = new QELabel(layoutWidget_6);
-        qelabel_116->setObjectName(QStringLiteral("qelabel_116"));
-        qelabel_116->setFont(font);
-        qelabel_116->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_06 = new QELabel(layoutWidget_6);
+        pres_06->setObjectName(QStringLiteral("pres_06"));
+        pres_06->setFont(font);
+        pres_06->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_116);
+        verticalLayout_15->addWidget(pres_06);
 
-        qelabel_117 = new QELabel(layoutWidget_6);
-        qelabel_117->setObjectName(QStringLiteral("qelabel_117"));
-        qelabel_117->setFont(font);
-        qelabel_117->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_07 = new QELabel(layoutWidget_6);
+        pres_07->setObjectName(QStringLiteral("pres_07"));
+        pres_07->setFont(font);
+        pres_07->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_117);
+        verticalLayout_15->addWidget(pres_07);
 
-        qelabel_118 = new QELabel(layoutWidget_6);
-        qelabel_118->setObjectName(QStringLiteral("qelabel_118"));
-        qelabel_118->setFont(font);
-        qelabel_118->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_08 = new QELabel(layoutWidget_6);
+        pres_08->setObjectName(QStringLiteral("pres_08"));
+        pres_08->setFont(font);
+        pres_08->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_118);
+        verticalLayout_15->addWidget(pres_08);
 
-        qelabel_119 = new QELabel(layoutWidget_6);
-        qelabel_119->setObjectName(QStringLiteral("qelabel_119"));
-        qelabel_119->setFont(font);
-        qelabel_119->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_09 = new QELabel(layoutWidget_6);
+        pres_09->setObjectName(QStringLiteral("pres_09"));
+        pres_09->setFont(font);
+        pres_09->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_119);
+        verticalLayout_15->addWidget(pres_09);
 
-        qelabel_120 = new QELabel(layoutWidget_6);
-        qelabel_120->setObjectName(QStringLiteral("qelabel_120"));
-        qelabel_120->setFont(font);
-        qelabel_120->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_10 = new QELabel(layoutWidget_6);
+        pres_10->setObjectName(QStringLiteral("pres_10"));
+        pres_10->setFont(font);
+        pres_10->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_120);
+        verticalLayout_15->addWidget(pres_10);
 
-        qelabel_121 = new QELabel(layoutWidget_6);
-        qelabel_121->setObjectName(QStringLiteral("qelabel_121"));
-        qelabel_121->setFont(font);
-        qelabel_121->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_11 = new QELabel(layoutWidget_6);
+        pres_11->setObjectName(QStringLiteral("pres_11"));
+        pres_11->setFont(font);
+        pres_11->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_121);
+        verticalLayout_15->addWidget(pres_11);
 
-        qelabel_124 = new QELabel(layoutWidget_6);
-        qelabel_124->setObjectName(QStringLiteral("qelabel_124"));
-        qelabel_124->setFont(font);
-        qelabel_124->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_12 = new QELabel(layoutWidget_6);
+        pres_12->setObjectName(QStringLiteral("pres_12"));
+        pres_12->setFont(font);
+        pres_12->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_124);
+        verticalLayout_15->addWidget(pres_12);
 
-        qelabel_125 = new QELabel(layoutWidget_6);
-        qelabel_125->setObjectName(QStringLiteral("qelabel_125"));
-        qelabel_125->setFont(font);
-        qelabel_125->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_13 = new QELabel(layoutWidget_6);
+        pres_13->setObjectName(QStringLiteral("pres_13"));
+        pres_13->setFont(font);
+        pres_13->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_125);
+        verticalLayout_15->addWidget(pres_13);
 
-        qelabel_122 = new QELabel(layoutWidget_6);
-        qelabel_122->setObjectName(QStringLiteral("qelabel_122"));
-        qelabel_122->setFont(font);
-        qelabel_122->setProperty("notation", QVariant(QELabel::Scientific));
+        pres_14 = new QELabel(layoutWidget_6);
+        pres_14->setObjectName(QStringLiteral("pres_14"));
+        pres_14->setFont(font);
+        pres_14->setProperty("notation", QVariant(QELabel::Scientific));
 
-        verticalLayout_15->addWidget(qelabel_122);
+        verticalLayout_15->addWidget(pres_14);
 
 
         horizontalLayout_5->addLayout(verticalLayout_15);
@@ -310,202 +308,202 @@ public:
         verticalLayout_16 = new QVBoxLayout();
         verticalLayout_16->setObjectName(QStringLiteral("verticalLayout_16"));
         verticalLayout_16->setSizeConstraint(QLayout::SetMinimumSize);
-        qeanalogprogressbar_56 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_56->setObjectName(QStringLiteral("qeanalogprogressbar_56"));
-        qeanalogprogressbar_56->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_56->setMaximum(0.01);
-        qeanalogprogressbar_56->setShowText(false);
-        qeanalogprogressbar_56->setShowScale(true);
-        qeanalogprogressbar_56->setLogScale(true);
-        qeanalogprogressbar_56->setOrientation(QEAnalogIndicator::Left_To_Right);
-        qeanalogprogressbar_56->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_56->setPrecision(3);
-        qeanalogprogressbar_56->setUseDbPrecision(true);
-        qeanalogprogressbar_56->setProperty("minimum", QVariant(1e-11));
+        bar_01 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_01->setObjectName(QStringLiteral("bar_01"));
+        bar_01->setMinimumSize(QSize(700, 40));
+        bar_01->setMaximum(0.01);
+        bar_01->setShowText(false);
+        bar_01->setShowScale(true);
+        bar_01->setLogScale(true);
+        bar_01->setOrientation(QEAnalogIndicator::Left_To_Right);
+        bar_01->setUseDbDisplayLimits(true);
+        bar_01->setPrecision(3);
+        bar_01->setUseDbPrecision(true);
+        bar_01->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_56);
+        verticalLayout_16->addWidget(bar_01);
 
-        qeanalogprogressbar_57 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_57->setObjectName(QStringLiteral("qeanalogprogressbar_57"));
-        qeanalogprogressbar_57->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_57->setMaximum(0.01);
-        qeanalogprogressbar_57->setShowText(false);
-        qeanalogprogressbar_57->setShowScale(true);
-        qeanalogprogressbar_57->setLogScale(true);
-        qeanalogprogressbar_57->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_57->setPrecision(11);
-        qeanalogprogressbar_57->setUseDbPrecision(true);
-        qeanalogprogressbar_57->setProperty("minimum", QVariant(1e-11));
+        bar_02 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_02->setObjectName(QStringLiteral("bar_02"));
+        bar_02->setMinimumSize(QSize(700, 40));
+        bar_02->setMaximum(0.01);
+        bar_02->setShowText(false);
+        bar_02->setShowScale(true);
+        bar_02->setLogScale(true);
+        bar_02->setUseDbDisplayLimits(true);
+        bar_02->setPrecision(11);
+        bar_02->setUseDbPrecision(true);
+        bar_02->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_57);
+        verticalLayout_16->addWidget(bar_02);
 
-        qeanalogprogressbar_67 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_67->setObjectName(QStringLiteral("qeanalogprogressbar_67"));
-        qeanalogprogressbar_67->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_67->setMaximum(0.01);
-        qeanalogprogressbar_67->setShowText(false);
-        qeanalogprogressbar_67->setShowScale(true);
-        qeanalogprogressbar_67->setLogScale(true);
-        qeanalogprogressbar_67->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_67->setPrecision(11);
-        qeanalogprogressbar_67->setUseDbPrecision(true);
-        qeanalogprogressbar_67->setProperty("minimum", QVariant(1e-11));
+        bar_03 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_03->setObjectName(QStringLiteral("bar_03"));
+        bar_03->setMinimumSize(QSize(700, 40));
+        bar_03->setMaximum(0.01);
+        bar_03->setShowText(false);
+        bar_03->setShowScale(true);
+        bar_03->setLogScale(true);
+        bar_03->setUseDbDisplayLimits(true);
+        bar_03->setPrecision(11);
+        bar_03->setUseDbPrecision(true);
+        bar_03->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_67);
+        verticalLayout_16->addWidget(bar_03);
 
-        qeanalogprogressbar_58 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_58->setObjectName(QStringLiteral("qeanalogprogressbar_58"));
-        qeanalogprogressbar_58->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_58->setMaximum(0.01);
-        qeanalogprogressbar_58->setShowText(false);
-        qeanalogprogressbar_58->setShowScale(true);
-        qeanalogprogressbar_58->setLogScale(true);
-        qeanalogprogressbar_58->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_58->setPrecision(11);
-        qeanalogprogressbar_58->setUseDbPrecision(true);
-        qeanalogprogressbar_58->setProperty("minimum", QVariant(1e-11));
+        bar_04 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_04->setObjectName(QStringLiteral("bar_04"));
+        bar_04->setMinimumSize(QSize(700, 40));
+        bar_04->setMaximum(0.01);
+        bar_04->setShowText(false);
+        bar_04->setShowScale(true);
+        bar_04->setLogScale(true);
+        bar_04->setUseDbDisplayLimits(true);
+        bar_04->setPrecision(11);
+        bar_04->setUseDbPrecision(true);
+        bar_04->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_58);
+        verticalLayout_16->addWidget(bar_04);
 
-        qeanalogprogressbar_59 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_59->setObjectName(QStringLiteral("qeanalogprogressbar_59"));
-        qeanalogprogressbar_59->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_59->setMaximum(0.01);
-        qeanalogprogressbar_59->setShowText(false);
-        qeanalogprogressbar_59->setShowScale(true);
-        qeanalogprogressbar_59->setLogScale(true);
-        qeanalogprogressbar_59->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_59->setPrecision(11);
-        qeanalogprogressbar_59->setUseDbPrecision(true);
-        qeanalogprogressbar_59->setProperty("minimum", QVariant(1e-11));
+        bar_05 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_05->setObjectName(QStringLiteral("bar_05"));
+        bar_05->setMinimumSize(QSize(700, 40));
+        bar_05->setMaximum(0.01);
+        bar_05->setShowText(false);
+        bar_05->setShowScale(true);
+        bar_05->setLogScale(true);
+        bar_05->setUseDbDisplayLimits(true);
+        bar_05->setPrecision(11);
+        bar_05->setUseDbPrecision(true);
+        bar_05->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_59);
+        verticalLayout_16->addWidget(bar_05);
 
-        qeanalogprogressbar_60 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_60->setObjectName(QStringLiteral("qeanalogprogressbar_60"));
-        qeanalogprogressbar_60->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_60->setMaximum(0.01);
-        qeanalogprogressbar_60->setShowText(false);
-        qeanalogprogressbar_60->setShowScale(true);
-        qeanalogprogressbar_60->setLogScale(true);
-        qeanalogprogressbar_60->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_60->setPrecision(11);
-        qeanalogprogressbar_60->setUseDbPrecision(true);
-        qeanalogprogressbar_60->setProperty("minimum", QVariant(1e-11));
+        bar_06 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_06->setObjectName(QStringLiteral("bar_06"));
+        bar_06->setMinimumSize(QSize(700, 40));
+        bar_06->setMaximum(0.01);
+        bar_06->setShowText(false);
+        bar_06->setShowScale(true);
+        bar_06->setLogScale(true);
+        bar_06->setUseDbDisplayLimits(true);
+        bar_06->setPrecision(11);
+        bar_06->setUseDbPrecision(true);
+        bar_06->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_60);
+        verticalLayout_16->addWidget(bar_06);
 
-        qeanalogprogressbar_61 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_61->setObjectName(QStringLiteral("qeanalogprogressbar_61"));
-        qeanalogprogressbar_61->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_61->setMaximum(0.01);
-        qeanalogprogressbar_61->setShowText(false);
-        qeanalogprogressbar_61->setShowScale(true);
-        qeanalogprogressbar_61->setLogScale(true);
-        qeanalogprogressbar_61->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_61->setPrecision(11);
-        qeanalogprogressbar_61->setUseDbPrecision(true);
-        qeanalogprogressbar_61->setProperty("minimum", QVariant(1e-11));
+        bar_07 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_07->setObjectName(QStringLiteral("bar_07"));
+        bar_07->setMinimumSize(QSize(700, 40));
+        bar_07->setMaximum(0.01);
+        bar_07->setShowText(false);
+        bar_07->setShowScale(true);
+        bar_07->setLogScale(true);
+        bar_07->setUseDbDisplayLimits(true);
+        bar_07->setPrecision(11);
+        bar_07->setUseDbPrecision(true);
+        bar_07->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_61);
+        verticalLayout_16->addWidget(bar_07);
 
-        qeanalogprogressbar_62 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_62->setObjectName(QStringLiteral("qeanalogprogressbar_62"));
-        qeanalogprogressbar_62->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_62->setMaximum(0.01);
-        qeanalogprogressbar_62->setShowText(false);
-        qeanalogprogressbar_62->setShowScale(true);
-        qeanalogprogressbar_62->setLogScale(true);
-        qeanalogprogressbar_62->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_62->setPrecision(11);
-        qeanalogprogressbar_62->setUseDbPrecision(true);
-        qeanalogprogressbar_62->setProperty("minimum", QVariant(1e-11));
+        bar_08 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_08->setObjectName(QStringLiteral("bar_08"));
+        bar_08->setMinimumSize(QSize(700, 40));
+        bar_08->setMaximum(0.01);
+        bar_08->setShowText(false);
+        bar_08->setShowScale(true);
+        bar_08->setLogScale(true);
+        bar_08->setUseDbDisplayLimits(true);
+        bar_08->setPrecision(11);
+        bar_08->setUseDbPrecision(true);
+        bar_08->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_62);
+        verticalLayout_16->addWidget(bar_08);
 
-        qeanalogprogressbar_63 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_63->setObjectName(QStringLiteral("qeanalogprogressbar_63"));
-        qeanalogprogressbar_63->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_63->setMaximum(0.01);
-        qeanalogprogressbar_63->setShowText(false);
-        qeanalogprogressbar_63->setShowScale(true);
-        qeanalogprogressbar_63->setLogScale(true);
-        qeanalogprogressbar_63->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_63->setPrecision(11);
-        qeanalogprogressbar_63->setUseDbPrecision(true);
-        qeanalogprogressbar_63->setProperty("minimum", QVariant(1e-11));
+        bar_09 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_09->setObjectName(QStringLiteral("bar_09"));
+        bar_09->setMinimumSize(QSize(700, 40));
+        bar_09->setMaximum(0.01);
+        bar_09->setShowText(false);
+        bar_09->setShowScale(true);
+        bar_09->setLogScale(true);
+        bar_09->setUseDbDisplayLimits(true);
+        bar_09->setPrecision(11);
+        bar_09->setUseDbPrecision(true);
+        bar_09->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_63);
+        verticalLayout_16->addWidget(bar_09);
 
-        qeanalogprogressbar_64 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_64->setObjectName(QStringLiteral("qeanalogprogressbar_64"));
-        qeanalogprogressbar_64->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_64->setMaximum(0.01);
-        qeanalogprogressbar_64->setShowText(false);
-        qeanalogprogressbar_64->setShowScale(true);
-        qeanalogprogressbar_64->setLogScale(true);
-        qeanalogprogressbar_64->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_64->setPrecision(11);
-        qeanalogprogressbar_64->setUseDbPrecision(true);
-        qeanalogprogressbar_64->setProperty("minimum", QVariant(1e-11));
+        bar_10 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_10->setObjectName(QStringLiteral("bar_10"));
+        bar_10->setMinimumSize(QSize(700, 40));
+        bar_10->setMaximum(0.01);
+        bar_10->setShowText(false);
+        bar_10->setShowScale(true);
+        bar_10->setLogScale(true);
+        bar_10->setUseDbDisplayLimits(true);
+        bar_10->setPrecision(11);
+        bar_10->setUseDbPrecision(true);
+        bar_10->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_64);
+        verticalLayout_16->addWidget(bar_10);
 
-        qeanalogprogressbar_65 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_65->setObjectName(QStringLiteral("qeanalogprogressbar_65"));
-        qeanalogprogressbar_65->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_65->setMaximum(0.01);
-        qeanalogprogressbar_65->setShowText(false);
-        qeanalogprogressbar_65->setShowScale(true);
-        qeanalogprogressbar_65->setLogScale(true);
-        qeanalogprogressbar_65->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_65->setPrecision(11);
-        qeanalogprogressbar_65->setUseDbPrecision(true);
-        qeanalogprogressbar_65->setProperty("minimum", QVariant(1e-11));
+        bar_11 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_11->setObjectName(QStringLiteral("bar_11"));
+        bar_11->setMinimumSize(QSize(700, 40));
+        bar_11->setMaximum(0.01);
+        bar_11->setShowText(false);
+        bar_11->setShowScale(true);
+        bar_11->setLogScale(true);
+        bar_11->setUseDbDisplayLimits(true);
+        bar_11->setPrecision(11);
+        bar_11->setUseDbPrecision(true);
+        bar_11->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_65);
+        verticalLayout_16->addWidget(bar_11);
 
-        qeanalogprogressbar_68 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_68->setObjectName(QStringLiteral("qeanalogprogressbar_68"));
-        qeanalogprogressbar_68->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_68->setMaximum(0.01);
-        qeanalogprogressbar_68->setShowText(false);
-        qeanalogprogressbar_68->setShowScale(true);
-        qeanalogprogressbar_68->setLogScale(true);
-        qeanalogprogressbar_68->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_68->setPrecision(11);
-        qeanalogprogressbar_68->setUseDbPrecision(true);
-        qeanalogprogressbar_68->setProperty("minimum", QVariant(1e-11));
+        bar_12 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_12->setObjectName(QStringLiteral("bar_12"));
+        bar_12->setMinimumSize(QSize(700, 40));
+        bar_12->setMaximum(0.01);
+        bar_12->setShowText(false);
+        bar_12->setShowScale(true);
+        bar_12->setLogScale(true);
+        bar_12->setUseDbDisplayLimits(true);
+        bar_12->setPrecision(11);
+        bar_12->setUseDbPrecision(true);
+        bar_12->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_68);
+        verticalLayout_16->addWidget(bar_12);
 
-        qeanalogprogressbar_69 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_69->setObjectName(QStringLiteral("qeanalogprogressbar_69"));
-        qeanalogprogressbar_69->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_69->setMaximum(0.01);
-        qeanalogprogressbar_69->setShowText(false);
-        qeanalogprogressbar_69->setShowScale(true);
-        qeanalogprogressbar_69->setLogScale(true);
-        qeanalogprogressbar_69->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_69->setPrecision(11);
-        qeanalogprogressbar_69->setUseDbPrecision(true);
-        qeanalogprogressbar_69->setProperty("minimum", QVariant(1e-11));
+        bar_13 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_13->setObjectName(QStringLiteral("bar_13"));
+        bar_13->setMinimumSize(QSize(700, 40));
+        bar_13->setMaximum(0.01);
+        bar_13->setShowText(false);
+        bar_13->setShowScale(true);
+        bar_13->setLogScale(true);
+        bar_13->setUseDbDisplayLimits(true);
+        bar_13->setPrecision(11);
+        bar_13->setUseDbPrecision(true);
+        bar_13->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_69);
+        verticalLayout_16->addWidget(bar_13);
 
-        qeanalogprogressbar_66 = new QEAnalogProgressBar(layoutWidget_6);
-        qeanalogprogressbar_66->setObjectName(QStringLiteral("qeanalogprogressbar_66"));
-        qeanalogprogressbar_66->setMinimumSize(QSize(700, 40));
-        qeanalogprogressbar_66->setMaximum(0.01);
-        qeanalogprogressbar_66->setShowText(false);
-        qeanalogprogressbar_66->setShowScale(true);
-        qeanalogprogressbar_66->setLogScale(true);
-        qeanalogprogressbar_66->setUseDbDisplayLimits(true);
-        qeanalogprogressbar_66->setPrecision(11);
-        qeanalogprogressbar_66->setUseDbPrecision(true);
-        qeanalogprogressbar_66->setProperty("minimum", QVariant(1e-11));
+        bar_14 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_14->setObjectName(QStringLiteral("bar_14"));
+        bar_14->setMinimumSize(QSize(700, 40));
+        bar_14->setMaximum(0.01);
+        bar_14->setShowText(false);
+        bar_14->setShowScale(true);
+        bar_14->setLogScale(true);
+        bar_14->setUseDbDisplayLimits(true);
+        bar_14->setPrecision(11);
+        bar_14->setUseDbPrecision(true);
+        bar_14->setProperty("minimum", QVariant(1e-11));
 
-        verticalLayout_16->addWidget(qeanalogprogressbar_66);
+        verticalLayout_16->addWidget(bar_14);
 
 
         horizontalLayout_5->addLayout(verticalLayout_16);
@@ -527,76 +525,78 @@ public:
     void retranslateUi(QMainWindow *mainBar)
     {
         mainBar->setWindowTitle(QApplication::translate("mainBar", "MainWindow", 0));
-        qelabel_51->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2.DESC", 0)));
-        qelabel_51->setText(QApplication::translate("mainBar", "H2", 0));
-        qelabel_53->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4.DESC", 0)));
-        qelabel_53->setText(QApplication::translate("mainBar", "HE", 0));
-        label->setText(QApplication::translate("mainBar", " Carbon", 0));
-        qelabel_54->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14.DESC", 0)));
-        qelabel_54->setText(QApplication::translate("mainBar", "CH2/N2++", 0));
-        qelabel_55->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15.DESC", 0)));
-        qelabel_55->setText(QApplication::translate("mainBar", "CH3", 0));
-        qelabel_56->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16.DESC", 0)));
-        qelabel_56->setText(QApplication::translate("mainBar", "CH4", 0));
-        qelabel_57->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18.DESC", 0)));
-        qelabel_57->setText(QApplication::translate("mainBar", "H2O", 0));
-        qelabel_58->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28.DESC", 0)));
-        qelabel_58->setText(QApplication::translate("mainBar", "N2/CO", 0));
-        qelabel_59->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32.DESC", 0)));
-        qelabel_59->setText(QApplication::translate("mainBar", "O2", 0));
-        qelabel_109->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40.DESC", 0)));
-        qelabel_109->setText(QApplication::translate("mainBar", "AR", 0));
-        qelabel_110->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44.DESC", 0)));
-        qelabel_110->setText(QApplication::translate("mainBar", "CO2", 0));
-        qelabel_126->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55.DESC", 0)));
-        qelabel_126->setText(QApplication::translate("mainBar", "CO2", 0));
-        qelabel_127->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57.DESC", 0)));
-        qelabel_127->setText(QApplication::translate("mainBar", "CO2", 0));
-        qelabel_111->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69.DESC", 0)));
-        qelabel_111->setText(QApplication::translate("mainBar", "CF3/C5H9", 0));
-        qelabel_112->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2", 0)));
-        qelabel_112->setText(QApplication::translate("mainBar", "4.599e-10 mbar", 0));
-        qelabel_113->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4", 0)));
-        qelabel_113->setText(QApplication::translate("mainBar", "8.045e-11 mbar", 0));
-        qelabel_123->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M12", 0)));
-        qelabel_123->setText(QApplication::translate("mainBar", "8.045e-11 mbar", 0));
-        qelabel_114->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14", 0)));
-        qelabel_114->setText(QApplication::translate("mainBar", "5.282e-11 mbar", 0));
-        qelabel_115->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15", 0)));
-        qelabel_115->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
-        qelabel_116->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16", 0)));
-        qelabel_116->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
-        qelabel_117->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18", 0)));
-        qelabel_117->setText(QApplication::translate("mainBar", "2.925e-11 mbar", 0));
-        qelabel_118->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28", 0)));
-        qelabel_118->setText(QApplication::translate("mainBar", "2.032e-11 mbar", 0));
-        qelabel_119->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32", 0)));
-        qelabel_119->setText(QApplication::translate("mainBar", "4.469e-11 mbar", 0));
-        qelabel_120->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40", 0)));
-        qelabel_120->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
-        qelabel_121->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44", 0)));
-        qelabel_121->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
-        qelabel_124->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55", 0)));
-        qelabel_124->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
-        qelabel_125->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57", 0)));
-        qelabel_125->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
-        qelabel_122->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69", 0)));
-        qelabel_122->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
-        qeanalogprogressbar_56->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2", 0)));
-        qeanalogprogressbar_56->setProperty("variableSubstitutions", QVariant(QString()));
-        qeanalogprogressbar_57->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4", 0)));
-        qeanalogprogressbar_67->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M12", 0)));
-        qeanalogprogressbar_58->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14", 0)));
-        qeanalogprogressbar_59->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15", 0)));
-        qeanalogprogressbar_60->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16", 0)));
-        qeanalogprogressbar_61->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18", 0)));
-        qeanalogprogressbar_62->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28", 0)));
-        qeanalogprogressbar_63->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32", 0)));
-        qeanalogprogressbar_64->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40", 0)));
-        qeanalogprogressbar_65->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44", 0)));
-        qeanalogprogressbar_68->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55", 0)));
-        qeanalogprogressbar_69->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57", 0)));
-        qeanalogprogressbar_66->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69", 0)));
+        name_01->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2.DESC", 0)));
+        name_01->setText(QApplication::translate("mainBar", "H2", 0));
+        name_02->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4.DESC", 0)));
+        name_02->setText(QApplication::translate("mainBar", "HE", 0));
+        name_03->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M6.DESC", 0)));
+        name_03->setProperty("variableSubstitutions", QVariant(QString()));
+        name_03->setText(QApplication::translate("mainBar", "CARBON", 0));
+        name_04->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14.DESC", 0)));
+        name_04->setText(QApplication::translate("mainBar", "CH2/N2++", 0));
+        name_05->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15.DESC", 0)));
+        name_05->setText(QApplication::translate("mainBar", "CH3", 0));
+        name_06->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16.DESC", 0)));
+        name_06->setText(QApplication::translate("mainBar", "CH4", 0));
+        name_07->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18.DESC", 0)));
+        name_07->setText(QApplication::translate("mainBar", "H2O", 0));
+        name_08->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28.DESC", 0)));
+        name_08->setText(QApplication::translate("mainBar", "N2/CO", 0));
+        name_09->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32.DESC", 0)));
+        name_09->setText(QApplication::translate("mainBar", "O2", 0));
+        name_10->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40.DESC", 0)));
+        name_10->setText(QApplication::translate("mainBar", "AR", 0));
+        name_11->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44.DESC", 0)));
+        name_11->setText(QApplication::translate("mainBar", "CO2", 0));
+        name_12->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55.DESC", 0)));
+        name_12->setText(QApplication::translate("mainBar", "CO2", 0));
+        name_13->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57.DESC", 0)));
+        name_13->setText(QApplication::translate("mainBar", "CO2", 0));
+        name_14->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69.DESC", 0)));
+        name_14->setText(QApplication::translate("mainBar", "CF3/C5H9", 0));
+        pres_01->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2", 0)));
+        pres_01->setText(QApplication::translate("mainBar", "4.599e-10 mbar", 0));
+        pres_02->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4", 0)));
+        pres_02->setText(QApplication::translate("mainBar", "8.045e-11 mbar", 0));
+        pres_03->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M12", 0)));
+        pres_03->setText(QApplication::translate("mainBar", "8.045e-11 mbar", 0));
+        pres_04->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14", 0)));
+        pres_04->setText(QApplication::translate("mainBar", "5.282e-11 mbar", 0));
+        pres_05->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15", 0)));
+        pres_05->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
+        pres_06->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16", 0)));
+        pres_06->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
+        pres_07->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18", 0)));
+        pres_07->setText(QApplication::translate("mainBar", "2.925e-11 mbar", 0));
+        pres_08->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28", 0)));
+        pres_08->setText(QApplication::translate("mainBar", "2.032e-11 mbar", 0));
+        pres_09->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32", 0)));
+        pres_09->setText(QApplication::translate("mainBar", "4.469e-11 mbar", 0));
+        pres_10->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40", 0)));
+        pres_10->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
+        pres_11->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44", 0)));
+        pres_11->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
+        pres_12->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55", 0)));
+        pres_12->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
+        pres_13->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57", 0)));
+        pres_13->setText(QApplication::translate("mainBar", "7.313e-12 mbar", 0));
+        pres_14->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69", 0)));
+        pres_14->setText(QApplication::translate("mainBar", "1.000e-14 mbar", 0));
+        bar_01->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M2", 0)));
+        bar_01->setProperty("variableSubstitutions", QVariant(QString()));
+        bar_02->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M4", 0)));
+        bar_03->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M12", 0)));
+        bar_04->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M14", 0)));
+        bar_05->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M15", 0)));
+        bar_06->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M16", 0)));
+        bar_07->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M18", 0)));
+        bar_08->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M28", 0)));
+        bar_09->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M32", 0)));
+        bar_10->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M40", 0)));
+        bar_11->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M44", 0)));
+        bar_12->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M55", 0)));
+        bar_13->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M57", 0)));
+        bar_14->setProperty("variable", QVariant(QApplication::translate("mainBar", "$(RGA):BAR:M69", 0)));
     } // retranslateUi
 
 };

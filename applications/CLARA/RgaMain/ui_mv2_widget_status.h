@@ -174,7 +174,7 @@ public:
         RGASTAT->setFont(font2);
         Mode_4 = new QGroupBox(RgaStatus);
         Mode_4->setObjectName(QStringLiteral("Mode_4"));
-        Mode_4->setGeometry(QRect(290, 20, 281, 171));
+        Mode_4->setGeometry(QRect(300, 20, 271, 171));
         M1 = new QEPushButton(Mode_4);
         M1->setObjectName(QStringLiteral("M1"));
         M1->setGeometry(QRect(10, 100, 41, 20));
@@ -242,15 +242,22 @@ public:
         label_17->setFont(font3);
         FDFACT = new QELabel(Mode_4);
         FDFACT->setObjectName(QStringLiteral("FDFACT"));
-        FDFACT->setGeometry(QRect(110, 60, 61, 16));
+        FDFACT->setGeometry(QRect(110, 60, 91, 16));
         FDFACT->setFont(font1);
+        FDFACT->setScaledContents(false);
+        FDFACT->setWordWrap(false);
+        FDFACT->setPrecision(6);
+        FDFACT->setUseDbPrecision(false);
+        FDFACT->setLeadingZero(true);
+        FDFACT->setTrailingZeros(false);
+        FDFACT->setAddUnits(true);
         FDVOLT = new QELabel(Mode_4);
         FDVOLT->setObjectName(QStringLiteral("FDVOLT"));
         FDVOLT->setGeometry(QRect(210, 60, 61, 16));
         FDVOLT->setFont(font1);
         MU1DFACT = new QELabel(Mode_4);
         MU1DFACT->setObjectName(QStringLiteral("MU1DFACT"));
-        MU1DFACT->setGeometry(QRect(110, 100, 61, 16));
+        MU1DFACT->setGeometry(QRect(110, 100, 91, 16));
         MU1DFACT->setFont(font1);
         MU1DVOLT = new QELabel(Mode_4);
         MU1DVOLT->setObjectName(QStringLiteral("MU1DVOLT"));
@@ -258,7 +265,7 @@ public:
         MU1DVOLT->setFont(font1);
         MU2DFACT = new QELabel(Mode_4);
         MU2DFACT->setObjectName(QStringLiteral("MU2DFACT"));
-        MU2DFACT->setGeometry(QRect(110, 120, 61, 16));
+        MU2DFACT->setGeometry(QRect(110, 120, 91, 16));
         MU2DFACT->setFont(font1);
         MU2DVOLT = new QELabel(Mode_4);
         MU2DVOLT->setObjectName(QStringLiteral("MU2DVOLT"));
@@ -266,7 +273,7 @@ public:
         MU2DVOLT->setFont(font1);
         MU3DFACT = new QELabel(Mode_4);
         MU3DFACT->setObjectName(QStringLiteral("MU3DFACT"));
-        MU3DFACT->setGeometry(QRect(110, 140, 61, 16));
+        MU3DFACT->setGeometry(QRect(110, 140, 91, 16));
         MU3DFACT->setFont(font1);
         MU3DVOLT = new QELabel(Mode_4);
         MU3DVOLT->setObjectName(QStringLiteral("MU3DVOLT"));
@@ -274,7 +281,7 @@ public:
         MU3DVOLT->setFont(font1);
         Mode_5 = new QGroupBox(RgaStatus);
         Mode_5->setObjectName(QStringLiteral("Mode_5"));
-        Mode_5->setGeometry(QRect(180, 20, 111, 171));
+        Mode_5->setGeometry(QRect(180, 20, 121, 171));
         label_10 = new QLabel(Mode_5);
         label_10->setObjectName(QStringLiteral("label_10"));
         label_10->setGeometry(QRect(10, 40, 47, 13));
@@ -325,6 +332,7 @@ public:
         label_12->setObjectName(QStringLiteral("label_12"));
         label_12->setGeometry(QRect(80, 100, 31, 21));
         label_12->setFont(font);
+        label_12->setWordWrap(true);
 
         retranslateUi(RgaStatus);
 
@@ -398,7 +406,7 @@ public:
         label_15->setText(QApplication::translate("RgaStatus", "Calibration", 0));
         label_16->setText(QApplication::translate("RgaStatus", "Sensitivity: A/mBar", 0));
         label_17->setText(QApplication::translate("RgaStatus", " Voltage", 0));
-        FDFACT->setProperty("variable", QVariant(QApplication::translate("RgaStatus", "$(RGA1):FIL", 0)));
+        FDFACT->setProperty("variable", QVariant(QApplication::translate("RgaStatus", "rga1:FDFACT", 0)));
         FDVOLT->setProperty("variable", QVariant(QApplication::translate("RgaStatus", "$(RGA1):FIL", 0)));
         MU1DFACT->setProperty("variable", QVariant(QApplication::translate("RgaStatus", "$(RGA1):FIL", 0)));
         MU1DVOLT->setProperty("variable", QVariant(QApplication::translate("RgaStatus", "$(RGA1):FIL", 0)));
