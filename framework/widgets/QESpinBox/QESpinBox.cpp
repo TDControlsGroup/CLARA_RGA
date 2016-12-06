@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -34,14 +34,22 @@
 /*
     Create a CA aware spin box with no variable name yet
 */
-QESpinBox::QESpinBox( QWidget *parent ) : QDoubleSpinBox( parent ), QEWidget( this ) {
+QESpinBox::QESpinBox( QWidget *parent ) :
+    QDoubleSpinBox( parent ),
+    QESingleVariableMethods ( this, 0 ),
+    QEWidget( this )
+{
     setup();
 }
 
 /*
     Create a CA aware spin box with a variable name already known
 */
-QESpinBox::QESpinBox( const QString &variableNameIn, QWidget *parent ) : QDoubleSpinBox( parent ), QEWidget( this ) {
+QESpinBox::QESpinBox( const QString &variableNameIn, QWidget *parent ) :
+    QDoubleSpinBox( parent ),
+    QESingleVariableMethods ( this, 0 ),
+    QEWidget( this )
+{
     setVariableName( variableNameIn, 0 );
 
     setup();
@@ -86,8 +94,7 @@ void QESpinBox::setup() {
 
     // Set up a connection to recieve variable name property changes
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    QObject::connect( &variableNamePropertyManager, SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int) ) );
-
+    connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 }
 
 /*
@@ -116,8 +123,15 @@ QMenu* QESpinBox::getDefaultContextMenu()
 */
 qcaobject::QCaObject* QESpinBox::createQcaItem( unsigned int variableIndex ) {
 
-    // Create the item as a QEInteger
-    return new QEFloating( getSubstitutedVariableName( variableIndex ), this, &floatingFormatting, variableIndex );
+    qcaobject::QCaObject* result = NULL;
+
+    // Create the item as a QEFloating
+    result = new QEFloating( getSubstitutedVariableName( variableIndex ), this, &floatingFormatting, variableIndex );
+
+    // Apply current array index to new QCaObject
+    setQCaArrayIndex( result );
+
+    return result;
 }
 
 /*
@@ -205,8 +219,9 @@ void QESpinBox::setValueIfNoFocus( const double& value, QCaAlarmInfo& alarmInfo,
         return;
     }
 
-    // Update the spin box only if the user is not interacting with the object.
-    if( !hasFocus() ) {
+    // Update the spin box only if the user is not interacting with the object, unless
+    // the form designer has specifically allowed updates while the widget has focus.
+    if( isAllowFocusUpdate || !hasFocus() ) {
         // Update the spin box
         programaticValueChange = true;
         setDecimalsFromPrecision( qca );
@@ -243,7 +258,7 @@ void QESpinBox::userValueChanged( double value )
     // then write the value
     if( qca ) {
         // Write the value
-        qca->writeFloating( value );
+        qca->writeFloatingElement( value );
 
         // Manage notifying user changes
         emit userChange( text(), lastUserValue, QString("%1").arg( lastValue ) );
@@ -263,7 +278,7 @@ void QESpinBox::writeNow()
     if( qca )
     {
         // Write the value
-        qca->writeFloating( value() );
+        qca->writeFloatingElement( value() );
     }
 }
 
@@ -331,7 +346,7 @@ void QESpinBox::setWriteOnChange( bool writeOnChangeIn )
 {
     writeOnChange = writeOnChangeIn;
 }
-bool QESpinBox::getWriteOnChange()
+bool QESpinBox::getWriteOnChange() const
 {
     return writeOnChange;
 }
@@ -341,7 +356,7 @@ void QESpinBox::setSubscribe( bool subscribeIn )
 {
     subscribe = subscribeIn;
 }
-bool QESpinBox::getSubscribe()
+bool QESpinBox::getSubscribe() const
 {
     return subscribe;
 }
@@ -350,7 +365,7 @@ bool QESpinBox::getSubscribe()
 // Note, for most widgets with an 'addUnits' property, the property is passed to a
 //       QEStringFormatting class where the units are added to the displayed string.
 //       In this case, the units are added as the spin box suffix.
-bool QESpinBox::getAddUnitsAsSuffix()
+bool QESpinBox::getAddUnitsAsSuffix() const
 {
     return addUnitsAsSuffix;
 }
@@ -373,8 +388,20 @@ void QESpinBox::setUseDbPrecisionForDecimals( bool useDbPrecisionForDecimalIn )
     setDecimalsFromPrecision( qca );
 }
 
-bool QESpinBox::getUseDbPrecisionForDecimals()
+bool QESpinBox::getUseDbPrecisionForDecimals() const
 {
     return useDbPrecisionForDecimal;
 }
 
+// set allow updates while widget has focus.
+void QESpinBox::setAllowFocusUpdate( bool allowFocusUpdateIn )
+{
+    isAllowFocusUpdate = allowFocusUpdateIn;
+}
+
+bool QESpinBox::getAllowFocusUpdate() const
+{
+    return isAllowFocusUpdate;
+}
+
+// end

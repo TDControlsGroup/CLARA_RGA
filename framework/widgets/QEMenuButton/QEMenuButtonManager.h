@@ -28,7 +28,7 @@
 #ifndef QE_MENU_BUTTON_MANAGER_H
 #define QE_MENU_BUTTON_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QDesignerTaskMenuExtension>
 #include <QEPluginLibrary_global.h>
 #include <QExtensionFactory>

@@ -284,9 +284,29 @@ void imageInfo::infoUpdatePaused( bool paused )
 }
 
 // Update the zoom information
-void imageInfo::infoUpdateZoom( const int zoom )
+void imageInfo::infoUpdateZoom( const int zoom, const double XStretch, const double YStretch )
 {
-    currentZoomLabel->setText( QString( "Zoom: %1%" ).arg( zoom ) );
+    QString zoomText;
+
+    // Format the zoom
+    zoomText = QString( "Zoom: %1%" ).arg( zoom );
+
+    // Add X or Y stretch factors of present
+    if( XStretch != 1.0 &&  YStretch != 1.0)
+    {
+        zoomText.append( QString( "(X %1, Y %2)").arg( XStretch ).arg( YStretch ));
+    }
+    else if( XStretch != 1.0 )
+    {
+        zoomText.append( QString( "(X %1)").arg( XStretch ));
+    }
+    else if( YStretch != 1.0 )
+    {
+        zoomText.append( QString( "(Y %1)").arg( YStretch ));
+    }
+
+    // Display the zoom text
+    currentZoomLabel->setText( zoomText );
 }
 
 // Update the 'new image' indicator

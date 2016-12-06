@@ -26,7 +26,7 @@
 #ifndef QELOGINPLUGINMANAGER_H
 #define QELOGINPLUGINMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

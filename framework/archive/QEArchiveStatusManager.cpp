@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,89 +23,13 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#include <QtPlugin>
-
 #include "QEArchiveStatus.h"
 #include "QEArchiveStatusManager.h"
 
-//------------------------------------------------------------------------------
-//
-QEArchiveStatusManager::QEArchiveStatusManager (QObject * parent):QObject (parent)
-{
-   initialized = false;
-}
-
-//------------------------------------------------------------------------------
-//
-void QEArchiveStatusManager::initialize (QDesignerFormEditorInterface *)
-{
-   if (initialized) {
-      return;
-   }
-   initialized = true;
-}
-
-//------------------------------------------------------------------------------
-//
-bool QEArchiveStatusManager::isInitialized () const
-{
-   return initialized;
-}
-
-//------------------------------------------------------------------------------
-//
-QWidget *QEArchiveStatusManager::createWidget (QWidget * parent)
-{
-   return new QEArchiveStatus (parent);
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEArchiveStatusManager::name () const
-{
-   return "QEArchiveStatus";
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEArchiveStatusManager::group () const
-{
-   return "EPICSQt Infrastructure Widgets";
-}
-
-//------------------------------------------------------------------------------
-//
-QIcon QEArchiveStatusManager::icon () const
-{
-   return QIcon (":/qe/archive/archive_status.png");
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEArchiveStatusManager::toolTip () const
-{
-   return "QE framework archive status";
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEArchiveStatusManager::whatsThis () const
-{
-   return "QE framework archive status";
-}
-
-//------------------------------------------------------------------------------
-//
-bool QEArchiveStatusManager::isContainer () const
-{
-   return false;
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEArchiveStatusManager::includeFile () const
-{
-   return "QEArchiveStatus.h";
-}
+QE_IMPLEMENT_PLUGIN_MANAGER
+   (QEArchiveStatus,
+    "EPICSQt Infrastructure Widgets",
+    ":/qe/archive/archive_status.png",
+    false)
 
 // end

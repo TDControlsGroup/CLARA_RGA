@@ -26,7 +26,7 @@
 #ifndef QESCRIPTPLUGINMANAGER_H
 #define QESCRIPTPLUGINMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

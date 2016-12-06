@@ -30,6 +30,7 @@
 #include <QtDebug>
 #include <QVariant>
 #include <QCaObject.h>
+#include <QVector>
 #include <QEStringFormatting.h>
 #include <QEPluginLibrary_global.h>
 
@@ -40,13 +41,18 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEString : public qcaobject::QCaObject {
     QEString( QString recordName, QObject *eventObject, QEStringFormatting *stringFormattingIn, unsigned int variableIndexIn );
     QEString( QString recordName, QObject *eventObject, QEStringFormatting *stringFormattingIn, unsigned int variableIndexIn, UserMessage* userMessageIn );
     bool writeString( const QString &data, QString& message );
+    bool writeStringElement( const QString &data, QString& message );
+    bool writeString( const QVector<QString> &data, QString& message );
 
   signals:
     void stringConnectionChanged( QCaConnectionInfo& connectionInfo, const unsigned int &variableIndex );
     void stringChanged( const QString& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int& variableIndex );
+    void stringArrayChanged( const QVector<QString>& values, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int& variableIndex );
 
   public slots:
-    void writeString( const QString &data );
+    void writeString( const QString& data );
+    void writeStringElement( const QString& data );
+    void writeString( const QVector<QString>& data );
 
   private:
     void initialise( QEStringFormatting* newStringFormat );

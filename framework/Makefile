@@ -172,7 +172,6 @@ Makefile: framework.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.co
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/qt_config.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.conf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_pre.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf \
@@ -220,7 +219,7 @@ Makefile: framework.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.co
 		widgets/QESimpleShape/QESimpleShape.pri \
 		widgets/QESlider/QESlider.pri \
 		widgets/QESpinBox/QESpinBox.pri \
-		widgets/QEStripChart/QEStripChart.pri \
+		widgetsCLARA/QEStripChart/QEStripChart.pri \
 		widgets/QESubstitutedLabel/QESubstitutedLabel.pri \
 		widgets/QETable/QETable.pri \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf \
@@ -362,7 +361,6 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/qt_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/qt_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.conf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/spec_post.prf:
-.qmake.stash:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_pre.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf:
@@ -410,7 +408,7 @@ widgets/QEShape/QEShape.pri:
 widgets/QESimpleShape/QESimpleShape.pri:
 widgets/QESlider/QESlider.pri:
 widgets/QESpinBox/QESpinBox.pri:
-widgets/QEStripChart/QEStripChart.pri:
+widgetsCLARA/QEStripChart/QEStripChart.pri:
 widgets/QESubstitutedLabel/QESubstitutedLabel.pri:
 widgets/QETable/QETable.pri:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf:
@@ -449,7 +447,6 @@ clean: release-clean debug-clean  FORCE
 	-$(DEL_FILE) designer\libQEPlugin.a
 distclean: release-distclean debug-distclean  FORCE
 	-$(DEL_FILE) Makefile
-	-$(DEL_FILE) .qmake.stash
 
 release-mocclean:
 	$(MAKE) -f $(MAKEFILE).Release mocclean

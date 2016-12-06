@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) Australian Synchrotron 2015
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -56,7 +56,6 @@ public:
    void processModelData ();
 
 protected:
-   bool eventFilter (QObject*, QEvent*);
 
 private:
    struct ValuePairs {
@@ -85,6 +84,7 @@ private:
 
 private slots:
    void valueChanged (const double value);
+   void mouseIndexChangedSlot (const int index);
 };
 
 #endif  // QE_PV_LOAD_SAVE_COMPARE_H

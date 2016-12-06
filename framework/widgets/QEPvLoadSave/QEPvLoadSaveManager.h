@@ -26,7 +26,7 @@
 #ifndef QEPVLOADSAVEMANAGER_H
 #define QEPVLOADSAVEMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

@@ -1,4 +1,5 @@
-/*
+/*  markupItem.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -29,8 +30,8 @@
  the underlying image and can describe markups in terms of the underlying image.
 */
 
-#ifndef MARKUPITEM_H
-#define MARKUPITEM_H
+#ifndef QE_IMAGE_MARKUP_ITEM_H
+#define QE_IMAGE_MARKUP_ITEM_H
 
 #include <QPainter>
 
@@ -56,7 +57,7 @@ protected:
     enum isOverOptions{ OVER_LINE, OVER_BORDER, OVER_AREA }; // test required to determine if pointer is over the object
     markupItem( imageMarkup* ownerIn, const isOverOptions over, const bool interactiveIn, const bool reportOnMoveIn, const QString legendIn );
 public:
-    ~markupItem();
+    virtual ~markupItem();
 
 public:
     enum markupHandles { MARKUP_HANDLE_NONE, // Over a markup, but not over any specific handle of the markup
@@ -147,4 +148,4 @@ private:
     QPoint       legendOffset;                          // Last drawn legend position
 };
 
-#endif // MARKUPITEM_H
+#endif // QE_IMAGE_MARKUP_ITEM_H

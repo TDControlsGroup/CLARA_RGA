@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016  Australian Synchrotron
  *
  *  Author:
  *    Anthony Owen
@@ -67,6 +67,7 @@ namespace qcaobject {
       bool singleShotRead();
 
 
+      static void deletingEventStatic( QCaEventUpdate* dataUpdateEvent );
       static void processEventStatic( QCaEventUpdate* dataUpdateEvent );
 
       bool dataTypeKnown();
@@ -144,6 +145,12 @@ namespace qcaobject {
 
     public slots:
       bool writeData( const QVariant& value );
+
+      // This function can be used when data is an array variable.
+      // It uses arrayIndex in order to update a particular element of the array.
+      // Also works for scaler variables.
+      bool writeDataElement( const QVariant& elementValue );
+
       void resendLastData();
 
 
@@ -169,7 +176,8 @@ namespace qcaobject {
       QCaEventItem* lastDataEvent;            // Outstanding data event
       QTimer setChannelTimer;
 
-      bool removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent );
+      void removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent );     // Ensure there is no reference to an update event in the pending list
+      bool removeNextEventFromPendingList( QCaEventUpdate* dataUpdateEvent ); // Remove the event from the pending list if it was the next expected event
 
       qcastatemachine::ConnectionQCaStateMachine *connectionMachine;
       qcastatemachine::SubscriptionQCaStateMachine *subscriptionMachine;

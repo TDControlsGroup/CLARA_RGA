@@ -23,16 +23,19 @@
  *    glenn.jackson@synchrotron.org.au
  */
 
-#ifndef QEPLOT_H
-#define QEPLOT_H
+#ifndef QE_PLOT_H
+#define QE_PLOT_H
 
 #include <qwt_plot.h>
+#include <qwt_plot_canvas.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_grid.h>
 #include <QEWidget.h>
 #include <QEFloating.h>
 #include <QEFloatingFormatting.h>
 #include <QCaVariableNamePropertyManager.h>
+#include <QEvent>
+#include <QPoint>
 #include <QVector>
 #include <QTimer>
 #include <QEPluginLibrary_global.h>
@@ -44,6 +47,7 @@
 class trace {
     public:
 
+    trace(){ waveform = false; hasCurrentPoint = false; }
     QVector<QCaDateTime> timeStamps;
     QVector<double> xdata;
     QVector<double> ydata;
@@ -53,6 +57,8 @@ class trace {
     QString legend;
     bool waveform;  // True if displaying a waveform (an array of values arriving in one update), false if displaying a strip chart (individual values arriving over time)
     QwtPlotCurve::CurveStyle style;
+
+    bool hasCurrentPoint;   // If true this the last point is repeated at the current time. this is done to ensure a trace is drawn all the way up to the current time.
 };
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEPlot : public QwtPlot, public QEWidget {
@@ -66,91 +72,95 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPlot : public QwtPlot, public QEWidget {
 
     QSize sizeHint() const;
 
-
     // Property convenience functions
 
     void setYMin( double yMin );
-    double getYMin();
+    double getYMin() const;
 
     void setYMax( double yMax );
-    double getYMax();
+    double getYMax() const;
 
     void setAutoScale( bool autoScale );
-    bool getAutoScale();
+    bool getAutoScale() const;
 
     void setAxisEnableX( bool axisEnableXIn );
-    bool getAxisEnableX();
+    bool getAxisEnableX() const;
 
     void setAxisEnableY( bool axisEnableYIn );
-    bool getAxisEnableY();
+    bool getAxisEnableY() const;
 
     // No QEPlot::setTitle() needed. Uses QwtPlot::setTitle()
-    QString getTitle();
+    QString getTitle() const;
 
     void    setBackgroundColor( QColor backgroundColor );
-    QColor getBackgroundColor();
+    QColor getBackgroundColor() const;
 
     void    setTraceStyle( QwtPlotCurve::CurveStyle traceStyle, const unsigned int variableIndex );
-    QwtPlotCurve::CurveStyle getTraceStyle( const unsigned int variableIndex );
+    QwtPlotCurve::CurveStyle getTraceStyle( const unsigned int variableIndex ) const;
 
     void    setTraceColor( QColor traceColor, const unsigned int variableIndex );
     void    setTraceColor1( QColor traceColor );
     void    setTraceColor2( QColor traceColor );
     void    setTraceColor3( QColor traceColor );
     void    setTraceColor4( QColor traceColor );
-    QColor getTraceColor( const unsigned int variableIndex );
-    QColor getTraceColor1();
-    QColor getTraceColor2();
-    QColor getTraceColor3();
-    QColor getTraceColor4();
+    QColor getTraceColor( const unsigned int variableIndex ) const;
+    QColor getTraceColor1() const;
+    QColor getTraceColor2() const;
+    QColor getTraceColor3() const;
+    QColor getTraceColor4() const;
 
     void    setTraceLegend1( QString traceLegend );
     void    setTraceLegend2( QString traceLegend );
     void    setTraceLegend3( QString traceLegend );
     void    setTraceLegend4( QString traceLegend );
 
-    QString getTraceLegend1();
-    QString getTraceLegend2();
-    QString getTraceLegend3();
-    QString getTraceLegend4();
+    QString getTraceLegend1() const;
+    QString getTraceLegend2() const;
+    QString getTraceLegend3() const;
+    QString getTraceLegend4() const;
 
     void    setXUnit( QString xUnit );
-    QString getXUnit();
+    QString getXUnit() const;
 
     void    setYUnit( QString yUnit );
-    QString getYUnit();
+    QString getYUnit() const;
 
     void setGridEnableMajorX( bool gridEnableMajorXIn );
     void setGridEnableMajorY( bool gridEnableMajorYIn );
     void setGridEnableMinorX( bool gridEnableMinorXIn );
     void setGridEnableMinorY( bool gridEnableMinorYIn );
-    bool getGridEnableMajorX();
-    bool getGridEnableMajorY();
-    bool getGridEnableMinorX();
-    bool getGridEnableMinorY();
+    bool getGridEnableMajorX() const;
+    bool getGridEnableMajorY() const;
+    bool getGridEnableMinorX() const;
+    bool getGridEnableMinorY() const;
 
     void setGridMajorColor( QColor gridMajorColorIn );
     void setGridMinorColor( QColor gridMinorColorIn );
-    QColor getGridMajorColor();
-    QColor getGridMinorColor();
+    QColor getGridMajorColor() const;
+    QColor getGridMinorColor() const;
 
     void setXStart( double xStart );
-    double getXStart();
+    double getXStart() const;
 
     void setXIncrement( double xIncrement );
-    double getXIncrement();
+    double getXIncrement() const;
 
     void setTimeSpan( unsigned int timeSpan );
-    unsigned int getTimeSpan();
+    unsigned int getTimeSpan() const;
 
     void setTickRate( unsigned int tickRate );
-    unsigned int getTickRate();
+    unsigned int getTickRate() const;
+
+  signals:
+    void mouseMove     (const QPointF& posn);
 
   protected:
     QEFloatingFormatting floatingFormatting;
     bool localEnabled;
     bool allowDrop;
 
+    void canvasMouseMove( QMouseEvent* mouseEvent );
+    bool eventFilter( QObject *obj, QEvent *event );
     void establishConnection( unsigned int variableIndex );
 
   private slots:
@@ -223,7 +233,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPlot : public QwtPlot, public QEWidget {
 
     void setCurveColor( const QColor color, const unsigned int variableIndex );
     void    setTraceLegend( QString traceLegend, const unsigned int variableIndex );
-    QString getTraceLegend( const unsigned int variableIndex );
+    QString getTraceLegend( const unsigned int variableIndex ) const;
     void setGridEnable();
 
     // Drag and Drop
@@ -471,4 +481,10 @@ public:
     Q_PROPERTY(unsigned int tickRate READ getTickRate WRITE setTickRate)
 };
 
-#endif // QEPLOT_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEPlot::UserLevels)
+Q_DECLARE_METATYPE (QEPlot::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QEPlot::TraceStyles)
+#endif
+
+#endif // QE_PLOT_H

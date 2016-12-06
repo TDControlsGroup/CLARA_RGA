@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron
+ *  Copyright (c) 2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -34,32 +34,40 @@
 #include <QPoint>
 #include <QRect>
 #include <QScrollBar>
-#include <QVBoxLayout>
+#include <QBoxLayout>
 #include <QWidget>
+#include <QEAxisPainter.h>
 
 #include <QEPluginLibrary_global.h>
 
 /// The QEHistogram class is a non-EPICS aware histogram widget.
 /// The value of, i.e. the length of each bar, and colour may be set indepedently.
 ///
-class QEPLUGINLIBRARYSHARED_EXPORT QEHistogram:public QFrame {
+class QEPLUGINLIBRARYSHARED_EXPORT QEHistogram : public QFrame {
    Q_OBJECT
 
 public:
    Q_PROPERTY (bool   autoBarGapWidths READ getAutoBarGapWidths WRITE setAutoBarGapWidths)
    Q_PROPERTY (int    barWidth         READ getBarWidth         WRITE setBarWidth)
    Q_PROPERTY (int    gap              READ getGap              WRITE setGap)
+   Q_PROPERTY (int    margin           READ getMargin           WRITE setMargin)
    Q_PROPERTY (bool   autoScale        READ getAutoScale        WRITE setAutoScale)
    Q_PROPERTY (double minimum          READ getMinimum          WRITE setMinimum)
    Q_PROPERTY (double maximum          READ getMaximum          WRITE setMaximum)
    Q_PROPERTY (double baseLine         READ getBaseLine         WRITE setBaseLine)
+   Q_PROPERTY (bool   drawAxies        READ getDrawAxies        WRITE setDrawAxies)
    Q_PROPERTY (bool   showScale        READ getShowScale        WRITE setShowScale)
+   Q_PROPERTY (int    precision        READ getPrecision        WRITE setPrecision)
    Q_PROPERTY (bool   showGrid         READ getShowGrid         WRITE setShowGrid)
    Q_PROPERTY (bool   logScale         READ getLogScale         WRITE setLogScale)
    // Where possible I spell colour properly.
    Q_PROPERTY (QColor backgroundColour READ getBackgroundColour WRITE setBackgroundColour)
    Q_PROPERTY (QColor barColour        READ getBarColour        WRITE setBarColour)
    Q_PROPERTY (bool   drawBorder       READ getDrawBorder       WRITE setDrawBorder)
+
+   /// orientation horizontal (default) or vertical. Horizontal means each element
+   /// displayed horzontally from left to right with the bar represting the value increasing
+   /// vertically from bottom to top.
    Q_PROPERTY (Qt::Orientation orientation READ getOrientation  WRITE setOrientation)
 
    // Test - used for previewing/testing - may be removed.
@@ -86,14 +94,17 @@ public:
 
    PROPERTY_ACCESS (int,    BarWidth)
    PROPERTY_ACCESS (int,    Gap)
+   PROPERTY_ACCESS (int,    Margin)
    PROPERTY_ACCESS (double, Minimum)
    PROPERTY_ACCESS (double, Maximum)
    PROPERTY_ACCESS (double, BaseLine)
    PROPERTY_ACCESS (bool,   AutoScale)
    PROPERTY_ACCESS (bool,   AutoBarGapWidths)
    PROPERTY_ACCESS (bool,   ShowScale)
+   PROPERTY_ACCESS (int,    Precision)
    PROPERTY_ACCESS (bool,   ShowGrid)
    PROPERTY_ACCESS (bool,   LogScale)
+   PROPERTY_ACCESS (bool,   DrawAxies)
    PROPERTY_ACCESS (bool,   DrawBorder)
    PROPERTY_ACCESS (QColor, BackgroundColour)
    PROPERTY_ACCESS (QColor, BarColour)
@@ -105,11 +116,17 @@ public:
    int count () const;
 
    // Returns associated data index of specified position, or -1.
-   // data position includes max value/potetial draw area, not currently
+   // data position includes max value/full draw area, not just currently
    // occupied draw area.
    //
    int indexOfPosition (const int x, const int y) const;
    int indexOfPosition (const QPoint& p) const;  // overloaded function
+
+   // Return location of index'th element with respect to the QEHistogram widget,
+   // and w.r.t. the internal histogramArea widget. The function takes account
+   // first displayed offset.
+   //
+   QRect positionOfIndex (const int index) const;
 
    void clearValue (const int index);
    void clearColour (const int index);
@@ -118,14 +135,28 @@ public:
    double value (const int index) const;
    DataArray values () const;
 
+signals:
+   // signals element index (0 .. N-1) of histogram which mouse has entered
+   // or -1 if/when no longer over the element's bar.
+   //
+   void mouseIndexChanged (const int index);
+   void mouseIndexPressed (const int index, const Qt::MouseButton button);
+
 public slots:
    void setColour (const int index, const QColor& value);
    void setValue (const int index, const double value);
    void setValues (const DataArray& values);
 
+protected:
+   bool eventFilter (QObject* obj, QEvent* event);
+   void fontChange (const QFont& f);
+
 private:
-   int   firstBarLeft () const;
-   QRect fullBarRect (const int position) const;
+   int indexOfHistogramAreaPosition (const int x, const int y) const;
+   int indexOfHistogramAreaPosition (const QPoint& p) const;
+
+   int firstBarTopLeft () const;
+   QRect fullBarRect (const int position) const;  // within histogram area
 
    QString coordinateText (const double value) const;
    int maxPaintTextWidth (QPainter& painter) const;
@@ -135,7 +166,6 @@ private:
    bool paintItem (QPainter& painter, const int position, const int index) const;
 
    void paintAllItems ();
-   bool eventFilter (QObject* obj, QEvent* event);
 
    int scrollMaximum () const;
 
@@ -156,20 +186,24 @@ private:
    //
    // Internal widgets
    //
-   QVBoxLayout* layout;
+   QBoxLayout* layoutA;   // manages histogramAxisPlusArea + scrollbar
+   QBoxLayout* layoutB;  // manages axisPainter + histogramArea
 
-   // histogramArea does nothing per se other than be size managed by the
-   // layout and provides a paint area for the QEHistogram.
+   // histogramAxisPlusArea/histogramArea do nothing per se other than be size
+   // managed by the layouts and provides a paint area for the historgram proper.
    //
+   QWidget* histogramAxisPlusArea;
    QWidget* histogramArea;
-   QRect paintArea;           // paint area last used - subset of histogramArea
    QScrollBar* scrollbar;
+   QEAxisPainter* axisPainter;
+   QRect paintArea;             // defines actual bar draw area - subset of histogramArea
 
    DataArray dataArray;
    ColourArray colourArray;
 
-   // class property member variable names start with m so as not to clash with
-   // the propery names.
+   // class member variable names associated with a property start with 'm'
+   // so as not to clash with the propery names - this is more for qtcreator
+   // user's benefit as opposed to the moc and/or c++ compiler.
    //
    QColor mBarColour;
    QColor mBackgroundColour;
@@ -179,8 +213,10 @@ private:
    double mBaseLine;
    int mBarWidth;
    int mGap;
+   int mMargin;
    bool mAutoBarGapWidths;
    bool mAutoScale;
+   bool mDrawAxies;
    bool mDrawBorder;
    bool mShowScale;
    bool mShowGrid;
@@ -188,16 +224,17 @@ private:
    Qt::Orientation mOrientation;
    int mTestSize;
 
+   int lastEmittedIndex;   // allows filtering when mouse moves within single bar
    int firstDisplayed;
    int numberDisplayed;
    double drawMinimum;
    double drawMaximum;
    double drawMajor;
    double useGap;
-   double useBarWidth;
+   double useBarWidth;     // or height if/when vertical
 
 private slots:
    void scrollBarValueChanged (int value);
 };
 
-#endif                          // QE_HISTOGRAM_H
+#endif    // QE_HISTOGRAM_H

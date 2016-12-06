@@ -113,7 +113,7 @@ QString imageProperties::getInfoText()
     about.append( QString( "\nSize (bytes) of CA data elements: %1" ).arg( imageDataSize ));
     about.append( QString( "\nWidth (pixels) taken from dimension variables or width variable: %1" ).arg( imageBuffWidth ));
     about.append( QString( "\nHeight (pixels) taken from dimension variables or height variable: %1" ).arg( imageBuffHeight ));
-    about.append( QString( "\nPixel depth taken from bit depth variable or bit depth property: %1" ).arg( bitDepth ));
+    about.append( QString( "\nPixel depth taken from data type variable, bit depth variable or bit depth property: %1" ).arg( bitDepth ));
 
     QString name;
     switch( formatOption )
@@ -151,24 +151,20 @@ QString imageProperties::getInfoText()
         }
     }
 
-    about.append( "\n\nFirst pixels of 32 bit RGBA image data (after flipping, rotating and clipping:");
-    if( imageBuff.isEmpty() )
+    about.append( "\n\nFirst pixels of first row of image (after flipping, rotating and clipping:");
+    if( image.isNull() )
     {
-        about.append( "\n   No data yet." );
+        about.append( "\n   No image yet." );
     }
     else
     {
-        int count = 20;
-        if( imageBuff.count() < count )
+        int count = std::min(image.width(),20);
+        for( int i = 0; i < count; i ++ )
         {
-            count = imageBuff.count() ;
-        }
-        for( int i = 0; i < count; i += 4 )
-        {
-            about.append( QString( "\n   [%1, %2, %3, %4]" ).arg( (unsigned char)(imageBuff[i+0]) )
-                                                            .arg( (unsigned char)(imageBuff[i+1]) )
-                                                            .arg( (unsigned char)(imageBuff[i+2]) )
-                                                            .arg( (unsigned char)(imageBuff[i+3]) ));
+            QRgb pixel = image.pixel( i, 0 );
+            about.append( QString( "\n   [%1, %2, %3]" ).arg( pixel&0xff )
+                                                        .arg( (pixel>>8)&0xff )
+                                                        .arg( (pixel>>16)&0xff ));
         }
     }
 

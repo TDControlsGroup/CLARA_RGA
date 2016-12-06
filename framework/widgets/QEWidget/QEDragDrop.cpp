@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012, 2014 Australian Synchrotron
+ *  Copyright (c) 2012, 2014, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -57,8 +57,12 @@
  */
 
 #include <QWidget>
+#include <QEWidget.h>
 #include <QMimeData>
 #include <QDrag>
+#include <QClipboard>
+#include <QApplication>
+#include <QEPlatform.h>
 #include <QEDragDrop.h>
 #include <QGraphicsOpacityEffect>
 #include <QLinearGradient>
@@ -207,6 +211,22 @@ void QEDragDrop::qcaMousePressEvent(QMouseEvent *event)
         // Carry out the drag operation
         drag->exec( Qt::CopyAction, Qt::CopyAction );
 
+    }
+
+    // Not drag drop per se, but here is where we handle button events.
+    else if (event->button() == MIDDLE_BUTTON )
+    {
+        QEWidget* ew = dynamic_cast <QEWidget*> (this);
+        if( ew )
+        {
+            // Extract pv name(s), copy to clip board and psot as information.
+            QString pvName = ew->copyVariable();
+            QClipboard* cb = QApplication::clipboard();
+            cb->setText( pvName );
+
+            message_types mt( MESSAGE_TYPE_INFO, MESSAGE_KIND_STATUS );
+            ew->sendMessage( pvName, mt );
+        }
     }
 
     // Ignore other than left button presses

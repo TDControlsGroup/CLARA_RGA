@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2013 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -23,17 +23,22 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QESPINBOX_H
-#define QESPINBOX_H
+#ifndef QE_SPIN_BOX_H
+#define QE_SPIN_BOX_H
 
 #include <QDoubleSpinBox>
 #include <QEWidget.h>
 #include <QEFloating.h>
 #include <QEFloatingFormatting.h>
+#include <QESingleVariableMethods.h>
 #include <QEPluginLibrary_global.h>
 #include <QCaVariableNamePropertyManager.h>
 
-class QEPLUGINLIBRARYSHARED_EXPORT QESpinBox : public QDoubleSpinBox, public QEWidget {
+// TODO Rebadge QEDoubleSpinBox and derive QESpinBox from QSpinBox
+class QEPLUGINLIBRARYSHARED_EXPORT QESpinBox :
+      public QDoubleSpinBox,
+      public QESingleVariableMethods,
+      public QEWidget {
     Q_OBJECT
 
   public:
@@ -44,19 +49,26 @@ class QEPLUGINLIBRARYSHARED_EXPORT QESpinBox : public QDoubleSpinBox, public QEW
 
     // write on change
     void setWriteOnChange( bool writeOnChangeIn );
-    bool getWriteOnChange();
+    bool getWriteOnChange() const;
 
     // subscribe
     void setSubscribe( bool subscribe );
-    bool getSubscribe();
+    bool getSubscribe() const;
 
     // Add units (as suffix)
     void setAddUnitsAsSuffix( bool addUnitsAsSuffixIn );
-    bool getAddUnitsAsSuffix();
+    bool getAddUnitsAsSuffix() const;
 
     // useDbPrecision (as spinbox 'decimals')
     void setUseDbPrecisionForDecimals( bool useDbPrecisionForDecimalIn );
-    bool getUseDbPrecisionForDecimals();
+    bool getUseDbPrecisionForDecimals() const;
+
+    // set/get allow focus update
+    void setAllowFocusUpdate( bool allowFocusUpdate );
+    bool getAllowFocusUpdate() const;
+
+    // write the value (of the underlying QDoubleSpinBox object) into the PV immediately
+    void writeNow();
 
   public slots:
     /// Update the default style applied to this widget.
@@ -97,6 +109,7 @@ private:
     bool isConnected;
 
     bool programaticValueChange;   // Flag set while the spin box value is being changed programatically (not by the user)
+    bool isAllowFocusUpdate;
     double lastValue;
     QString lastUserValue;
 
@@ -104,8 +117,6 @@ private:
 
     void setSuffixEgu( qcaobject::QCaObject* qca );
     void setDecimalsFromPrecision( qcaobject::QCaObject* qca );
-
-    void writeNow();
 
 protected:
     // Drag and Drop
@@ -122,37 +133,32 @@ protected:
 
     QMenu* getDefaultContextMenu();                 // Return the Qt default context menu to add to the QE context menu
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
-public:
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
+ public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
-
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
     // Standard properties
@@ -278,6 +284,10 @@ public:
     /// Sets if this widget subscribes for data updates and displays current data.
     /// Default is 'true' (subscribes for and displays data updates)
     Q_PROPERTY(bool subscribe READ getSubscribe WRITE setSubscribe)
+
+    /// Allow updated while widget has focus - defaults to false
+    ///
+    Q_PROPERTY( bool allowFocusUpdate READ getAllowFocusUpdate WRITE setAllowFocusUpdate )
 public:
     //=================================================================================
     Q_PROPERTY(bool writeOnChange READ getWriteOnChange WRITE setWriteOnChange)
@@ -292,10 +302,15 @@ public:
     //       In this case, the units are added as the QSpinBox suffix, and not as part of a string.
     Q_PROPERTY(bool addUnits READ getAddUnitsAsSuffix WRITE setAddUnitsAsSuffix)
 
-    // Make the value proerty non-designable. This both hides the property value
+    // Make the value property non-designable. This both hides the property value
     // within designer and stops the value from being written to the .ui file.
     //
     Q_PROPERTY(double value READ value  WRITE setValue  DESIGNABLE false)
 };
 
-#endif //QESPINBOX_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QESpinBox::UserLevels)
+Q_DECLARE_METATYPE (QESpinBox::DisplayAlarmStateOptions)
+#endif
+
+#endif // QE_SPIN_BOX_H

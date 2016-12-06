@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------
 //
-QEFrame::QEFrame (QWidget *parent) : QFrame (parent), QEWidget (this)
+QEFrame::QEFrame (QWidget * parent):QFrame (parent), QEWidget (this), managePixmaps ()
 {
    // These are the settings for a drag-and-dropped QFrame within designer, but
    // not set in the constructor, so we don't automatically inherit these settings.
@@ -41,89 +41,104 @@ QEFrame::QEFrame (QWidget *parent) : QFrame (parent), QEWidget (this)
    this->setVariableAsToolTip (false);
    this->setAllowDrop (false);
    this->setNumVariables (0);
+
+   this->selectedPixmapIndex = 0;    // first pixmap selected.
 }
 
 //------------------------------------------------------------------------------
 //
-QEFrame::~QEFrame () {
+QEFrame::~QEFrame ()
+{
 }
 
 //------------------------------------------------------------------------------
 //
-QSize QEFrame::sizeHint () const {
-    return QSize (120, 80);
+QSize QEFrame::sizeHint () const
+{
+   return QSize (120, 80);
 }
-
 
 //------------------------------------------------------------------------------
 // Manage background pixmap if required
-void QEFrame::paintEvent( QPaintEvent* event )
+void QEFrame::paintEvent (QPaintEvent * event)
 {
-    // Do base class paint
-    QFrame::paintEvent( event );
+   // Do base class paint
+   QFrame::paintEvent (event);
 
-    // Nothing more to do if no pixmap
-    if( pixmap.isNull() )
-    {
-        return;
-    }
+   QPixmap pixmap = this->getDataPixmap (this->selectedPixmapIndex);
 
-    // Determine the area to draw into
-    // If scaling, draw into the entire frame
-    // If not scaling, draw into a rectangle the same size as the pixmap
-    QRect area;
-    if( scaledContents )
-    {
-        area.setSize( size() );
-    }
-    else
-    {
-        area.setLeft( ( size().width() - pixmap.size().width() ) / 2 );
-        area.setTop( ( size().height() - pixmap.size().height() ) / 2 );
-        area.setSize( pixmap.size() );
-    }
+   // Nothing more to do if no pixmap
+   if (pixmap.isNull ()) {
+      return;
+   }
 
-    // Draw the pixmap
-    QPainter p( this );
-    p.setRenderHints( QPainter::Antialiasing );
-    p.drawPixmap( area, pixmap );
+   // Determine the area to draw into
+   // If scaling, draw into the entire frame
+   // If not scaling, draw into a rectangle the same size as the pixmap
+   QRect area;
+   if (this->scaledContents) {
+      area.setSize (size ());
+   } else {
+      area.setLeft ((size ().width () - pixmap.size ().width ()) / 2);
+      area.setTop ((size ().height () - pixmap.size ().height ()) / 2);
+      area.setSize (pixmap.size ());
+   }
+
+   // Draw the pixmap
+   QPainter p (this);
+   p.setRenderHints (QPainter::Antialiasing);
+   p.drawPixmap (area, pixmap);
+}
+
+
+//------------------------------------------------------------------------------
+// The base class has had the index-th pixmap update.
+//
+void QEFrame::pixmapUpdated (const int index)
+{
+   // Is the updated oixmap the selected pixmap...
+   //
+   if (index == this->selectedPixmapIndex) {
+      this->update ();
+   }
 }
 
 //------------------------------------------------------------------------------
-// Set the pixmap used for the background.
-// Operates like pixmap property for QLabel
-void QEFrame::setPixmap( QPixmap pixmapIn )
+// Set pixmap index 0-7 (or -1 for no pixmap.
+//
+void QEFrame::setSelectPixmap (const int indexIn)
 {
-    pixmap = pixmapIn;
-    update();
+   if (this->selectedPixmapIndex != indexIn) {
+      this->selectedPixmapIndex = indexIn;
+      this->update ();
+   }
 }
 
-// Get the pixmap used for the background.
-// Operates like pixmap property for QLabel
-QPixmap QEFrame::getPixmap() const
+//------------------------------------------------------------------------------
+//
+int QEFrame::getSelectedPixmap () const
 {
-    return pixmap;
-}
-
-// Set the flag used to indicate the background is to be scaled to fit the frame. Similar operation to scaledContents property for a QLabel
-void QEFrame::setScaledContents( bool scaledContentsIn )
-{
-    bool repaint = !(scaledContents == scaledContentsIn);
-
-    scaledContents = scaledContentsIn;
-
-    if( repaint )
-    {
-        update();
-    }
-}
-
-// Get the flag used to indicate the background is to be scaled to fit the frame. Similar operation to scaledContents property for a QLabel
-bool QEFrame::getScaledContents()
-{
-    return scaledContents;
+   return this->selectedPixmapIndex;
 }
 
 
+//------------------------------------------------------------------------------
+// Set the flag used to indicate the background is to be scaled to fit the frame.
+// Similar operation to scaledContents property for a QLabel
+void QEFrame::setScaledContents (bool scaledContentsIn)
+{
+   if (this->scaledContents != scaledContentsIn) {
+      this->scaledContents = scaledContentsIn;
+      this->update ();
+   }
+}
+
+//------------------------------------------------------------------------------
+// Get the flag used to indicate the background is to be scaled to fit the frame.
+// Similar operation to scaledContents property for a QLabel.
+bool QEFrame::getScaledContents () const
+{
+   return this->scaledContents;
+}
 
 // end

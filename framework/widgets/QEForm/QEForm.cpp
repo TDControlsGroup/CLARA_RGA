@@ -183,6 +183,12 @@ void QEForm::establishConnection( unsigned int variableIndex )
     }
 }
 
+// Clear names.
+void QEForm::clearUiFileNames () {
+    uiFileName = "";
+    fullUiFileName = "";
+}
+
 // Load the form once all events have been processed.
 void QEForm::reloadLater()
 {

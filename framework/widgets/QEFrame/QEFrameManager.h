@@ -26,7 +26,7 @@
 #ifndef QEFRAMEMANAGER_H
 #define QEFRAMEMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

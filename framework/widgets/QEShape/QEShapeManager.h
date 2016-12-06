@@ -24,33 +24,16 @@
 
 // CA Shape Widget Plugin Manager for designer.
 
-#ifndef QESHAPEMANAGER_H
-#define QESHAPEMANAGER_H
+#ifndef QE_SHAPE_MANAGER_H
+#define QE_SHAPE_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEShapeManager : public QObject, public QDesignerCustomWidgetInterface {
      Q_OBJECT
      Q_INTERFACES(QDesignerCustomWidgetInterface)
-
-  public:
-    QEShapeManager( QObject *parent = 0 );
-
-    bool isContainer() const;
-    bool isInitialized() const;
-    QIcon icon() const;
-    //QString domXml() const;
-    QString group() const;
-    QString includeFile() const;
-    QString name() const;
-    QString toolTip() const;
-    QString whatsThis() const;
-    QWidget *createWidget( QWidget *parent );
-    void initialize( QDesignerFormEditorInterface *core );
-
-  private:
-    bool initialized;
+     QE_DECLARE_PLUGIN_MANAGER (QEShape)
 };
 
-#endif // QESHAPEMANAGER_H
+#endif // QE_SHAPE_MANAGER_H

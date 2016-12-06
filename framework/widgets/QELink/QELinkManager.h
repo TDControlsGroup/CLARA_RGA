@@ -25,7 +25,7 @@
 #ifndef QELINKMANAGER_H
 #define QELINKMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

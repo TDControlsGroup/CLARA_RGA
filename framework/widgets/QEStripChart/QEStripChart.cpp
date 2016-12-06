@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron.
+ *  Copyright (c) 2012,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -30,6 +30,7 @@
 #include <QCursor>
 #include <QDebug>
 #include <QDockWidget>
+#include <QFileDialog>
 #include <QFont>
 #include <QIcon>
 #include <QLabel>
@@ -52,6 +53,7 @@
 
 #include <alarm.h>
 
+#include <QEAdaptationParameters.h>
 #include <QECommon.h>
 #include <QCaObject.h>
 #include <QELabel.h>
@@ -63,19 +65,26 @@
 #include "QEStripChartUtilities.h"
 
 
-#define DEBUG  qDebug () << "QEStripChart::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG  qDebug () << "QEStripChart" << __LINE__ << __FUNCTION__ << "  "
 
 static const QColor clWhite (0xFF, 0xFF, 0xFF, 0xFF);
 static const QColor clBlack (0x00, 0x00, 0x00, 0xFF);
 
 #define PV_DELTA_HEIGHT    18
-
 #define PV_FRAME_HEIGHT    (8 + (NUMBER_OF_PVS / 2) * PV_DELTA_HEIGHT)
 #define PV_SCROLL_HEIGHT   (PV_FRAME_HEIGHT + 6)
+
+// default height is for ten (as opposed to 16) PVs.
+//
+#define PV_DEFAULT_HEIGHT  (8 + (10 / 2) * PV_DELTA_HEIGHT + 6)
 
 
 #define MINIMUM_SPAN   1.0E-12    // Absolute min y range
 #define MINIMUM_RATIO  1.0E-6     // Min relative range, e.g. 1000000 to 1000001
+
+// We use a shared time for all QEPlotters.
+//
+QTimer* QEStripChart::tickTimer = NULL;
 
 
 //==============================================================================
@@ -86,14 +95,16 @@ static const QColor clBlack (0x00, 0x00, 0x00, 0xFF);
 //
 class QEPVNameLists : public QStringList {
 public:
-   explicit QEPVNameLists ();
-   virtual ~QEPVNameLists ();
+   static void constructor ();   // idempotent - constucts a sigleton class
 
    void prependOrMoveToFirst (const QString & item);
    void saveConfiguration (PMElement & parentElement);
    void restoreConfiguration (PMElement & parentElement);
 private:
    QMutex *mutex;
+   int predefined;
+   explicit QEPVNameLists ();
+   virtual ~QEPVNameLists ();
 };
 
 //------------------------------------------------------------------------------
@@ -101,7 +112,7 @@ private:
 QEPVNameLists::QEPVNameLists ()
 {
    this->mutex = new QMutex ();
-   // inititialise from container and/or environment variable?
+   this->predefined = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -119,13 +130,20 @@ void QEPVNameLists::prependOrMoveToFirst (const QString& item)
 
    int posn;
 
+   // Is item already in the list?
+   //
    posn = this->indexOf (item, 0);
    if (posn < 0) {
-      this->prepend (item);
-   } else if (posn > 0) {
-      // item in list - move to front.
-      this->swap (0, posn);
-   }  // else posn = 0 - nothing to do.
+      // Not in list
+      this->insert (this->predefined, item);
+
+   } else if (posn > this->predefined) {
+      // item in list - move to front of not quarenteened.
+      this->swap (this->predefined, posn);
+
+   }
+   // else posn in range >=0 to <=predefined - nothing to do.
+   // Either predefined or already in top undefined slot.
 
    if (this->count () > QEStripChartNames::NumberPrefefinedItems) {
       this->removeLast ();
@@ -186,6 +204,34 @@ void QEPVNameLists::restoreConfiguration (PMElement& parentElement)
 //
 static QEPVNameLists* predefinedPVNameList = NULL;
 
+void QEPVNameLists::constructor () {
+   // Construct common object if needs be.
+   //
+   if (!predefinedPVNameList) {
+      predefinedPVNameList = new QEPVNameLists ();
+
+      QEAdaptationParameters ap ("QE_");
+      QString predefined = ap.getString ("stripchart_predefined_pvs", "");
+
+      // Split input string using space as delimiter.
+      // Could extend to use regular expression and split on any white space character.
+      //
+      QStringList pvNameList = predefined.split (' ', QString::SkipEmptyParts);
+
+      // Processin reverse order (as use insert into list with prependOrMoveToFirst).
+      // We dont use append as this do not check for duplicates.
+      //
+      int number = pvNameList.count();
+      for (int j = number - 1; j >= 0; j--) {
+         QString pvName = pvNameList.value(j);
+         if (!pvName.isEmpty()) {
+            predefinedPVNameList->prependOrMoveToFirst (pvName);
+         }
+      }
+      predefinedPVNameList->predefined = predefinedPVNameList->count ();
+   }
+}
+
 
 //==============================================================================
 // QEStripChart class functions
@@ -193,8 +239,6 @@ static QEPVNameLists* predefinedPVNameList = NULL;
 //
 void QEStripChart::createInternalWidgets ()
 {
-   unsigned int slot;
-
    // Create dialog.
    // We have one dialog per strip chart (as opposed to per pv item) as this not only saves
    // resources, but a single dialog will remember filter and other state information.
@@ -234,11 +278,20 @@ void QEStripChart::createInternalWidgets ()
    QObject::connect (this->toolBar, SIGNAL (readArchiveSelected  ()),
                      this,          SLOT   (readArchiveSelected  ()));
 
+   QObject::connect (this->toolBar, SIGNAL (loadSelectedFile (const QString&)),
+                     this,          SLOT   (loadNamedWidetConfiguration (const QString&)));
+
+   QObject::connect (this->toolBar, SIGNAL (loadSelected ()),
+                     this,          SLOT   (loadWidgetConfiguration ()));
+
+   QObject::connect (this->toolBar, SIGNAL (saveAsSelected ()),
+                     this,          SLOT   (saveWidgetConfiguration ()));
+
 
    // Create user controllable resize area
    //
-   this->toolBarResize = new QEResizeableFrame (QEResizeableFrame::BottomEdge, 8, 8 + this->toolBar->designHeight, this);
-   this->toolBarResize->setFixedHeight (8 + this->toolBar->designHeight);
+   this->toolBarResize = new QEResizeableFrame (QEResizeableFrame::BottomEdge, 0, 8 + this->toolBar->designHeight (), this);
+   this->toolBarResize->setFixedHeight (8 + this->toolBar->designHeight ());
    this->toolBarResize->setFrameShape (QFrame::Panel);
    this->toolBarResize->setGrabberToolTip ("Re size tool bar display area");
    this->toolBarResize->setWidget (this->toolBar);
@@ -255,7 +308,7 @@ void QEStripChart::createInternalWidgets ()
 
    // Create widgets (parented by chart) and chart item that manages these.
    //
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
       QEStripChartItem* chartItem  = new QEStripChartItem (this, slot, this->pvFrame);
 
       // Add to grid.
@@ -273,8 +326,8 @@ void QEStripChart::createInternalWidgets ()
 
    // Create user controllable resize area
    //
-   this->pvResizeFrame = new QEResizeableFrame (QEResizeableFrame::BottomEdge, 12, PV_SCROLL_HEIGHT + 8, this);
-   this->pvResizeFrame->setFixedHeight (PV_SCROLL_HEIGHT + 8);
+   this->pvResizeFrame = new QEResizeableFrame (QEResizeableFrame::BottomEdge, 0, PV_SCROLL_HEIGHT + 8, this);
+   this->pvResizeFrame->setFixedHeight (PV_DEFAULT_HEIGHT + 8);
    this->pvResizeFrame->setFrameShape (QFrame::Panel);
    this->pvResizeFrame->setGrabberToolTip ("Re size PV display area");
    this->pvResizeFrame->setWidget (this->pvScrollArea);
@@ -285,11 +338,12 @@ void QEStripChart::createInternalWidgets ()
    this->plotFrame->setFrameShape (QFrame::Panel);
 
    this->plotArea = new QEGraphic (this->plotFrame);
+   this->plotArea->installCanvasEventFilter (this);
 
    // Select the markups available on the strip chart.
    //
    this->plotArea->setAvailableMarkups
-         (QEGraphicNames::Area | QEGraphicNames::Line |
+         (QEGraphicNames::Area | QEGraphicNames::Line | QEGraphicNames::Box |
           QEGraphicNames::VerticalLine_1 | QEGraphicNames::VerticalLine_2 |
           QEGraphicNames::HorizontalLine_1 | QEGraphicNames::HorizontalLine_2 |
           QEGraphicNames::HorizontalLine_3 | QEGraphicNames::HorizontalLine_4);
@@ -350,14 +404,14 @@ void QEStripChart::createInternalWidgets ()
 
 //------------------------------------------------------------------------------
 //
-QEStripChartItem* QEStripChart::getItem (unsigned int slot) const
+QEStripChartItem* QEStripChart::getItem (const int slot) const
 {
-   return (slot < NUMBER_OF_PVS) ? this->items [slot] : NULL;
+   return ((slot >= 0) && (slot < NUMBER_OF_PVS)) ? this->items [slot] : NULL;
 }
 
 //------------------------------------------------------------------------------
 //
-void QEStripChart::setNormalBackground (bool isNormalVideoIn)
+void QEStripChart::setNormalBackground (const bool isNormalVideoIn)
 {
    QColor background;
    QRgb gridColour;
@@ -380,7 +434,6 @@ void QEStripChart::setNormalBackground (bool isNormalVideoIn)
 //
 void QEStripChart::calcDisplayMinMax ()
 {
-   int slot;
    QEDisplayRanges tr;
    double min;
    double max;
@@ -389,16 +442,15 @@ void QEStripChart::calcDisplayMinMax ()
 
    tr.clear ();
 
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
-
-      QEStripChartItem * item = this->getItem (slot);
-      if (item->isInUse() == true) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
+      QEStripChartItem* item = this->getItem (slot);
+      if (item && (item->isInUse() == true)) {
          switch (this->chartYScale) {
-         case QEStripChartNames::operatingRange:  tr.merge (item->getLoprHopr (true));         break;
-         case QEStripChartNames::plotted:         tr.merge (item->getDisplayedMinMax (true));  break;
-         case QEStripChartNames::buffered:        tr.merge (item->getBufferedMinMax (true));   break;
-         case QEStripChartNames::dynamic:         tr.merge (item->getDisplayedMinMax (true));  break;
-         default:       DEBUG << "Well this is unexpected"; return; break;
+            case QEStripChartNames::operatingRange:  tr.merge (item->getLoprHopr (true));         break;
+            case QEStripChartNames::plotted:         tr.merge (item->getDisplayedMinMax (true));  break;
+            case QEStripChartNames::buffered:        tr.merge (item->getBufferedMinMax (true));   break;
+            case QEStripChartNames::dynamic:         tr.merge (item->getDisplayedMinMax (true));  break;
+            default:       DEBUG << "Well this is unexpected"; return; break;
          }
       }
    }
@@ -417,8 +469,56 @@ void QEStripChart::calcDisplayMinMax ()
 
 //------------------------------------------------------------------------------
 //
+const QCaDataPoint* QEStripChart::findNearestPoint (const QPointF& posn,
+                                                    int& slotOut) const
+{
+   const QCaDateTime end_time = this->getEndDateTime ();
+   const QCaDataPoint* result = NULL;
+
+   slotOut = -1;
+
+   // Convert cursor x to absolute cursor time.
+   // x is the time (in seconds) relative to the chart end time.
+   //
+   const QCaDateTime searchTime = this->timeAt (posn.x ());
+
+   int closest = 0x7FFFFFFF;
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
+      QEStripChartItem* item = this->getItem (slot);
+      if (item && (item->isInUse () == true)) {
+         const QCaDataPoint* nearest = item->findNearestPoint (searchTime);
+         if (nearest) {
+            // write a functions (t, y) <==>  QCaDataPoint
+            const QPointF nearestPoint = item->dataPointToReal (*nearest);
+            const QPoint difference = this->plotArea->pixelDistance (posn, nearestPoint);
+
+            // Close enough to even be considered.
+            // Note: 4 is the box half size when plotted.
+            //
+            if (ABS (difference.x ()) > 4)  continue;
+            if (ABS (difference.y ()) > 4)  continue;
+
+            // Closer than any previous found point?
+            //
+            int distance = difference.x ()*difference.x ()  +
+                           difference.y ()*difference.y ();
+            if (distance < closest) {
+               closest = distance;
+               slotOut = slot;
+               result = nearest;
+            }
+         }
+      }
+   }
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
 void QEStripChart::recalculateData ()
 {
+   // Place holder.
+
    // Last - clear flag.
    //
    this->recalcIsRequired = false;
@@ -428,10 +528,10 @@ void QEStripChart::recalculateData ()
 //
 void QEStripChart::plotData ()
 {
-   unsigned int slot;
+   const double oneDay = 86400.0;  // in seconds
+
    double d;
-   QString format;
-   QString times;
+   QPen pen;
    QDateTime dt;
    QString zoneTLA;
 
@@ -442,20 +542,37 @@ void QEStripChart::plotData ()
    d = this->getDuration ();
    if (d <= 1.0) {
       this->timeScale = 0.001;
-      this->timeUnits = "mS";
-   } else if (d <= 60.0) {
+      this->timeUnits = "mSec";
+   } else if (d <= 60.0) {           // <= a minute
       this->timeScale = 1.0;
       this->timeUnits = "secs";
-   } else if (d <= 3600.0) {
+   } else if (d <= 3600.0) {         // <= an hour
       this->timeScale = 60.0;
       this->timeUnits = "mins";
-   } else if (d <= 86400.0) {
+   } else if (d <= oneDay) {         // <= a day
       this->timeScale = 3600.0;
       this->timeUnits = "hrs";
-   } else {
-      this->timeScale = 86400.0;
+   } else  if (d <= 100.0*oneDay) {  // <= a 100 days
+      this->timeScale = oneDay;
       this->timeUnits = "days";
+   } else {
+      this->timeScale = 7.0*oneDay;
+      this->timeUnits = "weeks";
    }
+
+   // Get embedded canvas geometry and draw in time units.
+   // Maybe we could draw "on top of" axis.
+   //
+   QRect canGeo = this->plotArea->getEmbeddedQwtPlot ()->canvas()->geometry();
+   QPoint pixpos = QPoint (canGeo.width()/2, canGeo.height () - 8);
+
+   pen.setColor (clBlack);
+   pen.setStyle (Qt::SolidLine);
+   pen.setWidth (1);
+
+   this->plotArea->setCurvePen (pen); // current curev pen used for text.
+   this->plotArea->setTextPointSize (8);
+   this->plotArea->drawText (pixpos, this->timeUnits, QEGraphicNames::PixelPosition, true);
 
    this->plotArea->setXScale (1.0 / this->timeScale);
    this->plotArea->setXLogarithmic (false);
@@ -464,9 +581,9 @@ void QEStripChart::plotData ()
    // Update the plot for each PV.
    // Allocate curve and call curve-setSample/setData.
    //
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
       if (this->getItem (slot)->isInUse ()) {
-          this->getItem (slot)->plotData ();
+         this->getItem (slot)->plotData ();
       }
    }
 
@@ -479,10 +596,20 @@ void QEStripChart::plotData ()
    this->plotArea->setYRange (this->getYMinimum (), this->getYMaximum (), QEGraphic::SelectBySize, 40, false);
    this->plotArea->setXRange (-d/this->timeScale, 0.0, QEGraphic::SelectByValue, 5, false);
 
+   if (this->plotArea->getMarkupEnabled (QEGraphicNames::Box)) {
+      QEStripChartItem* item = this->getItem (this->selectedPointSlot);
+      if (item) {
+         QCaDataPoint nearest;
+         nearest.datetime = this->selectedPointDateTime;
+         nearest.value = this->selectedPointValue;
+         this->plotArea->setMarkupPosition (QEGraphicNames::Box, item->dataPointToReal(nearest));
+      }
+   }
+
    this->plotArea->replot ();
 
-   format = "yyyy-MM-dd hh:mm:ss";
-   times = " ";
+   QString format = "yyyy-MM-dd hh:mm:ss";
+   QString times = " ";
 
    dt = this->getStartDateTime ().toTimeSpec (this->timeZoneSpec);
    zoneTLA = QEUtilities::getTimeZoneTLA (this->timeZoneSpec, dt);
@@ -495,21 +622,19 @@ void QEStripChart::plotData ()
 
    times.append (dt.toString (format)).append (" ").append (zoneTLA);
 
-   // set on tool bar
+   // update tool bar status fields
+   //
    this->toolBar->setTimeStatus (times);
 
-   QString durationImage = QEUtilities::intervalToString ((double )this->getDuration (), 0, true);
+   QString durationImage = QEUtilities::intervalToString ((double)this->getDuration (), 0, true);
    this->toolBar->setDurationStatus (durationImage);
 
-   QEStripChartNames meta;   // allows access to enumeration meta data.
-   QString yRangeStatus;
+   this->toolBar->setYRangeStatus (this->chartYScale);
+   this->toolBar->setTimeModeStatus (this->chartTimeMode);
 
-   yRangeStatus = QEUtilities::enumToString (meta, "ChartYRanges", this->chartYScale);
-   if (this->chartYScale == QEStripChartNames::operatingRange) {
-      yRangeStatus = "operating range";
-   }
-   yRangeStatus.append (" scale");
-   this->toolBar->setYRangeStatus (yRangeStatus);
+   this->markupMove (QEGraphicNames::VerticalLine_1);  // force update (for real time)
+   this->markupMove (QEGraphicNames::HorizontalLine_1);
+   this->markupMove (QEGraphicNames::HorizontalLine_3);
 
    // Last - clear flag.
    //
@@ -579,47 +704,107 @@ void QEStripChart::setReadOut (const QString & text)
 
 //------------------------------------------------------------------------------
 //
-void QEStripChart::plotMouseMove  (const QPointF& posn)
+QDateTime QEStripChart::timeAt (const double x) const
 {
-   const QPointF real = posn;
-   qint64 mSec;
-   QDateTime t;
-   QString zoneTLA;
-   QString format;
-   QString mouseReadOut;
-   QString f;
-   QPointF slope;
+   const qint64 mSec = qint64 (1000.0 * x);
+   QDateTime result = this->getEndDateTime ().toTimeSpec (this->timeZoneSpec);
+   result = result.addMSecs (mSec);
+   return result;
+}
 
-   t = this->getEndDateTime ().toTimeSpec (this->timeZoneSpec);
+//----------------------------------------------------------------------------
+//
+bool QEStripChart::eventFilter (QObject* obj, QEvent* event)
+{
+   const QEvent::Type type = event->type ();
+   QMouseEvent* mouseEvent = NULL;
+
+   bool result = false;
+
+   switch (type) {
+      case QEvent::MouseButtonPress:
+         if (this->plotArea->isCanvasObject (obj)) {
+            mouseEvent = static_cast<QMouseEvent *> (event);
+            if (mouseEvent->buttons() & Qt::RightButton) {
+               // The right (alternate) button has been pressed - are we currently
+               // hovering over a data point?
+               //
+               if (this->plotArea->getMarkupVisible (QEGraphicNames::Box)) {
+                  this->plotArea->setMarkupEnabled (QEGraphicNames::Box, true);
+                  this->replotIsRequired = true;
+               }
+            }
+         }
+         result = false;
+         break;
+
+      case QEvent::MouseButtonRelease:
+         if (this->plotArea->isCanvasObject (obj)) {
+            mouseEvent = static_cast<QMouseEvent *> (event);
+            if (!(mouseEvent->buttons() & Qt::RightButton)) {
+               // Button released, right no lonlger pressed.
+               //
+               if (this->plotArea->getMarkupEnabled (QEGraphicNames::Box)) {
+                  this->plotArea->setMarkupEnabled (QEGraphicNames::Box, false);
+                  this->replotIsRequired = true;
+               }
+            }
+         }
+         result = false;
+         break;
+
+      default:
+         result = false;
+         break;
+   }
+
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEStripChart::plotMouseMove  (const QPointF& position)
+{
+   static const QString format = "ddd yyyy-MM-dd hh:mm:ss.zzz";
+
+   QString zoneTLA;
+   QString mouseReadOut;
+   QString f;   // temp string
+   QPointF slope;
 
    // Convert cursor x to absolute cursor time.
    // x is the time (in seconds) relative to the chart end time.
    //
-   mSec = qint64(1000.0 * real.x());
-   t = t.addMSecs (mSec);
+   const QDateTime t = this->timeAt (position.x ());
+
+   mouseReadOut = "Time: ";
 
    // Keep only most significant digit of the milli-seconds,
    // i.e. tenths of a second.
    //
-   format = "yyyy-MM-dd hh:mm:ss.zzz";
-   mouseReadOut = t.toString (format).left (format.length() - 2);
+   f = t.toString (format).left (format.length() - 2);
+   mouseReadOut.append (f);
 
    zoneTLA = QEUtilities::getTimeZoneTLA (this->timeZoneSpec, t);
    mouseReadOut.append (" ").append (zoneTLA);
 
-   f.sprintf (" %10.2f ", real.x () /this->timeScale);
+   // Show relative time form end of chart in days hours, mins and seconds.
+   //
+   mouseReadOut.append ("    ");
+   f = QEUtilities::intervalToString (position.x(), 1, true);
    mouseReadOut.append (f);
-   mouseReadOut.append (this->timeUnits);
 
-   f.sprintf ("  %+.10g", real.y ());
+   // Show y value associated with current cursor position.
+   //
+   f.sprintf ("    Value: %+.10g", position.y ());
    mouseReadOut.append (f);
 
    if (this->plotArea->getSlopeIsDefined (slope)) {
       const double dt = slope.x ();
       const double dy = slope.y ();
 
-      f.sprintf ("    dt: %.1f s ", dt);
-      mouseReadOut.append (f);
+      f = QEUtilities::intervalToString (dt, 1, false);
+      mouseReadOut.append (QString  ("    dt: %1 ").arg (f));
 
       f.sprintf ("  dy: %+.6g", dy);
       mouseReadOut.append (f);
@@ -640,14 +825,97 @@ void QEStripChart::plotMouseMove  (const QPointF& posn)
    }
 
    this->setReadOut (mouseReadOut);
+
+   // If the box markup is enabled, thean just leave the selected data point alone,
+   // otherwise check to see if we are hovering over a data point.
+   //
+   if (!this->plotArea->getMarkupEnabled (QEGraphicNames::Box)) {
+
+      const QCaDataPoint* nearest = NULL;
+
+      const bool boxWasVisible = this->plotArea->getMarkupVisible (QEGraphicNames::Box);
+
+      // Find neaerst point that is also near enough.
+      //
+      nearest = this->findNearestPoint (position, this->selectedPointSlot);
+      if (nearest) {
+         QEStripChartItem* item = this->getItem (this->selectedPointSlot);
+         if (!item) return;
+
+         this->selectedPointDateTime = nearest->datetime;
+         this->selectedPointValue = nearest->value;
+
+         this->plotArea->setMarkupVisible (QEGraphicNames::Box, true);
+         this->plotArea->setMarkupPosition (QEGraphicNames::Box, item->dataPointToReal(*nearest));
+
+         QStringList info;
+         info.append (item->getPvName());
+         info.append (QString ("%1 %2").arg (nearest->value,0, 'e', 5).arg (item->getEgu ()));
+         info.append (nearest->datetime.toString (format).left (format.length() - 2));
+
+         this->plotArea->setMarkupData (QEGraphicNames::Box, QVariant (info));
+         this->setContextMenuPolicy (Qt::NoContextMenu);
+      } else {
+         this->plotArea->setMarkupVisible (QEGraphicNames::Box, false);
+         this->setContextMenuPolicy (Qt::CustomContextMenu);
+      }
+
+      const bool boxIsVisible = this->plotArea->getMarkupVisible (QEGraphicNames::Box);
+
+      if (boxIsVisible != boxWasVisible) {
+         // Change of stae - force replot
+         this->replotIsRequired = true;
+      }
+   }
 }
 
 //------------------------------------------------------------------------------
 //
-void QEStripChart::markupMove (const QEGraphicNames::Markups /* markup */,
+void QEStripChart::markupMove (const QEGraphicNames::Markups markup,
                                const QPointF& /* position */)
 {
-   // qDebug () << markup << " at " << position;
+   double from;
+   double to;
+   QCaDateTime t1;
+   QCaDateTime t2;
+
+   switch (markup) {
+      case QEGraphicNames::HorizontalLine_1:
+      case QEGraphicNames::HorizontalLine_2:
+         from = this->plotArea->getMarkupPosition (QEGraphicNames::HorizontalLine_1).y();
+         to   = this->plotArea->getMarkupPosition (QEGraphicNames::HorizontalLine_2).y();
+         this->toolBar->setValue1Refs (from, to);
+         break;
+
+      case QEGraphicNames::HorizontalLine_3:
+      case QEGraphicNames::HorizontalLine_4:
+         from = this->plotArea->getMarkupPosition (QEGraphicNames::HorizontalLine_3).y();
+         to   = this->plotArea->getMarkupPosition (QEGraphicNames::HorizontalLine_4).y();
+         this->toolBar->setValue2Refs (from, to);
+         break;
+
+      case QEGraphicNames::VerticalLine_1:
+      case QEGraphicNames::VerticalLine_2:
+         t1 = this->timeAt (this->plotArea->getMarkupPosition (QEGraphicNames::VerticalLine_1).x());
+         t2 = this->timeAt (this->plotArea->getMarkupPosition (QEGraphicNames::VerticalLine_2).x());
+         this->toolBar->setTimeRefs (t1, t2);
+         break;
+
+      default:
+         break;
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+void QEStripChart::archiveStatus (const QEArchiveAccess::StatusList& statusList)
+{
+   int total = 0;
+   for (int j = 0; j < statusList.count (); j++) {
+      QEArchiveAccess::Status item = statusList.value (j);
+      total += item.pending;
+   }
+   this->toolBar->setNOARStatus (total);
 }
 
 //------------------------------------------------------------------------------
@@ -729,7 +997,7 @@ void QEStripChart::nextState ()
 //------------------------------------------------------------------------------
 // Constructor
 //
-QEStripChart::QEStripChart (QWidget * parent) : QEFrame (parent)
+QEStripChart::QEStripChart (QWidget * parent) : QEAbstractDynamicWidget (parent)
 {
    // Configure the panel and create contents
    //
@@ -740,7 +1008,7 @@ QEStripChart::QEStripChart (QWidget * parent) : QEFrame (parent)
 
    // Construct common object if needs be.
    //
-   if (!predefinedPVNameList) predefinedPVNameList = new QEPVNameLists ();
+   QEPVNameLists::constructor ();
 
    // Construct internal widgets for this chart.
    //
@@ -759,6 +1027,12 @@ QEStripChart::QEStripChart (QWidget * parent) : QEFrame (parent)
    this->yMinimum = 0.0;
    this->yMaximum = 100.0;
 
+   // Initialise selected point related variables.
+   //
+   this->selectedPointSlot = -1;
+   this->selectedPointValue = 0.0;
+   this->selectedPointDateTime = this->endDateTime;
+
    this->plotArea->setXScale (1.0 / this->timeScale);
    this->plotArea->setXRange (-this->duration / this->timeScale, 0.0, QEGraphic::SelectByValue, 5, true);
    this->plotArea->setYRange (this->yMinimum, this->yMaximum, QEGraphic::SelectBySize, 40, true);
@@ -774,15 +1048,29 @@ QEStripChart::QEStripChart (QWidget * parent) : QEFrame (parent)
    this->timeDialog = new QEStripChartTimeDialog (this);
    this->yRangeDialog = new QEStripChartRangeDialog (this);
 
-   // Refresh the strip chart at 1Hz.
+   // Construct access - needed for status, specifically number of outstanding requests.
    //
-   this->tickTimer = new QTimer (this);
-   this->tickTimerCount = 0;
-   this->replotIsRequired = true; // ensure process on first tick.
-   this->recalcIsRequired = false;
+   this->archiveAccess = new QEArchiveAccess (this);
+   QObject::connect (this->archiveAccess,
+                     SIGNAL     (archiveStatus (const QEArchiveAccess::StatusList&)),
+                     this, SLOT (archiveStatus (const QEArchiveAccess::StatusList&)));
 
-   connect (this->tickTimer, SIGNAL (timeout ()), this, SLOT (tickTimeout ()));
-   this->tickTimer->start (50);  // mSec = 0.05 s
+   // This info re-emitted on change, but we need to stimulate an initial update.
+   //
+   this->archiveAccess->resendStatus ();
+
+   this->recalcIsRequired = false; // part of fuuture enhancement
+
+   this->replotIsRequired = true; // ensure process on first tick.
+   this->tickTimerCount = 0;
+
+   // Create QEStripChart timer if needs be.
+   //
+   if (QEStripChart::tickTimer == NULL) {
+      QEStripChart::tickTimer = new QTimer (NULL);
+      QEStripChart::tickTimer->start (50);  // mSec == 0.05s - refresh plot check at ~20Hz.
+   }
+   QObject::connect (this->tickTimer, SIGNAL (timeout ()), this, SLOT (tickTimeout ()));
 
    // Enable drag drop onto this widget.
    //
@@ -794,10 +1082,7 @@ QEStripChart::QEStripChart (QWidget * parent) : QEFrame (parent)
 
 //------------------------------------------------------------------------------
 //
-QEStripChart::~QEStripChart ()
-{
-   this->tickTimer->stop ();
-}
+QEStripChart::~QEStripChart () { }
 
 //------------------------------------------------------------------------------
 //
@@ -808,10 +1093,10 @@ QSize QEStripChart::sizeHint () const
 
 //------------------------------------------------------------------------------
 //
-void QEStripChart::setVariableNameProperty (unsigned int slot, const QString& pvName)
+void QEStripChart::setVariableNameProperty (const int slot, const QString& pvName)
 {
-   if (slot < NUMBER_OF_PVS) {
-      QEStripChartItem * item = this->getItem (slot);
+   QEStripChartItem * item = this->getItem (slot);
+   if (item) {
       item->pvNameProperyManager.setVariableNameProperty (pvName);
    } else {
       DEBUG << "slot out of range " << slot;
@@ -820,31 +1105,31 @@ void QEStripChart::setVariableNameProperty (unsigned int slot, const QString& pv
 
 //------------------------------------------------------------------------------
 //
-QString QEStripChart::getVariableNameProperty (unsigned int slot) const
+QString QEStripChart::getVariableNameProperty (const int slot) const
 {
-   if (slot < NUMBER_OF_PVS) {
-      QEStripChartItem * item = this->getItem (slot);
-      return item->pvNameProperyManager.getVariableNameProperty ();
+   QString result;
+   QEStripChartItem * item = this->getItem (slot);
+   if (item) {
+      result = item->pvNameProperyManager.getVariableNameProperty ();
    } else {
       DEBUG << "slot out of range " << slot;
-      return "";
+      result = "";
    }
+   return result;
 }
 
 //------------------------------------------------------------------------------
 //
 void QEStripChart::setVariableNameSubstitutionsProperty (const QString& variableNameSubstitutionsIn)
 {
-   int j;
-
    // Save local copy - just for getVariableNameSubstitutionsProperty.
    //
    this->variableNameSubstitutions = variableNameSubstitutionsIn;
 
    // The same subtitutions apply to all PVs.
    //
-   for (j = 0; j < NUMBER_OF_PVS; j++ ) {
-      QEStripChartItem * item = this->getItem (j);
+   for (int j = 0; j < NUMBER_OF_PVS; j++ ) {
+      QEStripChartItem* item = this->getItem (j);
       item->pvNameProperyManager.setSubstitutionsProperty (variableNameSubstitutionsIn);
    }
 }
@@ -858,10 +1143,10 @@ QString QEStripChart::getVariableNameSubstitutionsProperty () const
 
 //------------------------------------------------------------------------------
 //
-void QEStripChart::setColourProperty (unsigned int slot, const QColor& colour)
+void QEStripChart::setColourProperty (const int slot, const QColor& colour)
 {
-   if (slot < NUMBER_OF_PVS) {
-      QEStripChartItem * item = this->getItem (slot);
+   QEStripChartItem* item = this->getItem (slot);
+   if (item) {
       item->setColour (colour);
    } else {
       DEBUG << "slot out of range " << slot;
@@ -870,10 +1155,10 @@ void QEStripChart::setColourProperty (unsigned int slot, const QColor& colour)
 
 //------------------------------------------------------------------------------
 //
-QColor QEStripChart::getColourProperty (unsigned int slot) const
+QColor QEStripChart::getColourProperty (const int slot) const
 {
-   if (slot < NUMBER_OF_PVS) {
-      QEStripChartItem * item = this->getItem (slot);
+   QEStripChartItem* item = this->getItem (slot);
+   if (item) {
       return item->getColour ();
    } else {
       DEBUG << "slot out of range " << slot;
@@ -881,10 +1166,9 @@ QColor QEStripChart::getColourProperty (unsigned int slot) const
    }
 }
 
-
 //------------------------------------------------------------------------------
 //
-void QEStripChart::setPvName (unsigned int slot, const QString& pvName)
+void QEStripChart::setPvName (const int slot, const QString& pvName)
 {
    QEStripChartItem* item = this->getItem (slot);
    if (item) {
@@ -894,7 +1178,7 @@ void QEStripChart::setPvName (unsigned int slot, const QString& pvName)
 
 //------------------------------------------------------------------------------
 //
-QString QEStripChart::getPvName (unsigned int slot) const
+QString QEStripChart::getPvName (const int slot) const
 {
    QString result = "";
    QEStripChartItem* item = this->getItem (slot);
@@ -910,7 +1194,7 @@ int QEStripChart::addPvName (const QString& pvName)
 {
    int result = -1;
 
-   for (unsigned int slot = 0; slot < NUMBER_OF_PVS; slot++) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
       QEStripChartItem * item = this->getItem (slot);
       if (item->isInUse() == false) {
          // Found an empty slot.
@@ -1000,7 +1284,6 @@ QEStripChartNames::YScaleModes QEStripChart::getYScaleMode () const
 void QEStripChart::yRangeSelected (const QEStripChartNames::ChartYRanges scale)
 {
    int n;
-   unsigned int slot;
 
    switch (scale) {
       case QEStripChartNames::manual:
@@ -1029,7 +1312,7 @@ void QEStripChart::yRangeSelected (const QEStripChartNames::ChartYRanges scale)
          this->setYRange (0.0, 100.0);
          this->chartYScale = scale;
 
-         for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
+         for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
             QEStripChartItem * item = this->getItem (slot);
             if (item->isInUse ()) {
                item->normalise ();
@@ -1174,15 +1457,14 @@ void QEStripChart::zoomInOut (const QPointF& about, const int zoomAmount)
 //
 void QEStripChart::readArchiveSelected ()
 {
-   unsigned int slot;
-
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
       QEStripChartItem* item = this->getItem (slot);
       if (item->isInUse ()) {
          item->readArchive ();
       }
    }
 }
+
 //
 // end of tool bar handlers ====================================================
 
@@ -1347,29 +1629,16 @@ QVariant QEStripChart::copyData ()
 }
 
 //----------------------------------------------------------------------------
-//
-void QEStripChart::paste (QVariant s)
-{
-   QStringList pvNameList;
-
-   pvNameList = QEUtilities::variantToStringList (s);
-   for (int j = 0; j < pvNameList.count (); j++) {
-      this->addPvName (pvNameList.value (j));
-   }
-}
-
-//----------------------------------------------------------------------------
 // Determine if user allowed to drop new PVs into this widget.
 //
 void QEStripChart::evaluateAllowDrop ()
 {
-   unsigned int slot;
    bool allowDrop;
 
    // Hypoyhesize that the strip chart is full.
    //
    allowDrop = false;
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
       QEStripChartItem* item = this->getItem (slot);
 
       if ((item) && (item->isInUse () == false)) {
@@ -1403,7 +1672,7 @@ void QEStripChart::establishConnection (unsigned int /* variableIndex */ )
 //
 void QEStripChart::saveConfiguration (PersistanceManager* pm)
 {
-   const QString formName = this->persistantName ("QEStripChart");
+   const QString formName = this->getPersistantName();
 
    // Do common stuff first.
    // How can we avoid doing this mutiple times??
@@ -1424,10 +1693,8 @@ void QEStripChart::saveConfiguration (PersistanceManager* pm)
    // Save each active PV.
    //
    PMElement pvListElement = formElement.addElement ("PV_List");
-   unsigned int slot;
-
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
-      QEStripChartItem * item = this->getItem (slot);
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
+      QEStripChartItem* item = this->getItem (slot);
       if (item) {
          item->saveConfiguration (pvListElement);
       }
@@ -1440,7 +1707,7 @@ void QEStripChart::restoreConfiguration (PersistanceManager* pm, restorePhases r
 {
    if (restorePhase != FRAMEWORK) return;
 
-   const QString formName = this->persistantName ("QEStripChart");
+   const QString formName = this->getPersistantName();
 
    // Do common stuff first.
    // How can we avoid doing this mutiple times??
@@ -1461,10 +1728,8 @@ void QEStripChart::restoreConfiguration (PersistanceManager* pm, restorePhases r
    // Restore each PV.
    //
    PMElement pvListElement = formElement.getElement ("PV_List");
-   unsigned int slot;
-
-   for (slot = 0; slot < NUMBER_OF_PVS; slot++) {
-      QEStripChartItem * item = this->getItem (slot);
+   for (int slot = 0; slot < NUMBER_OF_PVS; slot++) {
+      QEStripChartItem* item = this->getItem (slot);
       if (item) {
          item->restoreConfiguration (pvListElement);
       }

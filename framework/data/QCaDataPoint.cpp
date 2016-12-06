@@ -1,4 +1,4 @@
-/* QCaDataPoint.cpp
+/*  QCaDataPoint.cpp
  *
  *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,14 +24,19 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
+#include <QDebug>
 #include <QEArchiveInterface.h>
 #include <QCaDataPoint.h>
 #include <QECommon.h>
 
+#define DEBUG  qDebug () << "QCaDataPoint" << __LINE__ <<  __FUNCTION__  << "  "
+
 
 static const QString stdFormat = "dd/MMM/yyyy HH:mm:ss";
 
-//------------------------------------------------------------------------------
+//==============================================================================
+// QCaDataPoint methods
+//==============================================================================
 //
 QCaDataPoint::QCaDataPoint ()
 {
@@ -138,9 +143,12 @@ QString QCaDataPoint::toString (const QCaDateTime& originDateTime) const
    return result;
 }
 
+
+//==============================================================================
+// QCaDataPointList methods
 //==============================================================================
 //
-QCaDataPointList::QCaDataPointList () // : QList<QCaDataPoint> ()
+QCaDataPointList::QCaDataPointList ()
 {
    // Register type.
    //
@@ -149,17 +157,154 @@ QCaDataPointList::QCaDataPointList () // : QList<QCaDataPoint> ()
 
 //------------------------------------------------------------------------------
 //
+QCaDataPointList::~QCaDataPointList () {}  // place holder
+
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::reserve (const int size)
+{
+   this->data.reserve (size);
+}
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::clear ()
+{
+   this->data.clear ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::removeLast ()
+{
+   int c = this->data.count ();
+   if (c > 0) this->data.remove (c - 1);
+}
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::removeFirst ()
+{
+   int c = this->data.count ();
+   if (c > 0) this->data.remove (0);
+}
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::append (const QCaDataPoint& other)
+{
+   this->data.append (other);
+}
+
+//------------------------------------------------------------------------------
+//
 void  QCaDataPointList::append (const QCaDataPointList& other)
 {
-   this->data.append (other.data);
+   for (int j = 0; j < other.count(); j++) {
+      this->data.append (other.data.value (j));
+   }
+}
+
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::replace (const int i, const QCaDataPoint& t)
+{
+   this->data.replace (i, t);
+}
+
+//------------------------------------------------------------------------------
+//
+int QCaDataPointList::count () const
+{
+   return this->data.count ();
 }
 
 //------------------------------------------------------------------------------
 //
 QCaDataPoint QCaDataPointList::value (const int j) const
 {
-   return data.value (j);
+   return this->data.value (j);
 }
+
+//------------------------------------------------------------------------------
+//
+QCaDataPoint QCaDataPointList::last () const
+{
+   return this->data.last ();
+}
+
+
+//------------------------------------------------------------------------------
+//
+void QCaDataPointList::truncate (const int position)
+{
+   while (this->data.count () > position) {
+      this->removeLast ();
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+int QCaDataPointList::indexBeforeTime (const QCaDateTime& searchTime,
+                                       const int defaultIndex) const
+{
+   // Cover "corner-case" specific no answer cases.
+   //
+   if (this->data.count () <= 0) return defaultIndex;
+   if (this->data.value (0).datetime > searchTime) return defaultIndex;
+
+   // Cover no need to search case.
+   //
+   int first = 0;
+   int last = this->data.count () - 1;
+   if (this->data.value (last).datetime <= searchTime) return last;
+
+   // We know first point <= searchTime, last point > searchTime
+   // While first and last are not adjacent...
+   while (last - first  > 1) {
+      // Perform binary search to find point of iterest.
+      //
+      int midway = (first + last) / 2;
+      if (this->data.value (midway).datetime <= searchTime) {
+         first = midway;
+      } else {
+         last = midway;
+      }
+      //
+      // It is still the case that first point <= searchTime, last point > searchTime
+   }
+
+   return first;
+}
+
+
+//------------------------------------------------------------------------------
+//
+const QCaDataPoint* QCaDataPointList::findNearestPoint (const QCaDateTime& searchTime) const
+{
+   const int number = this->data.count ();
+   const int first = 0;
+   const int last = number - 1;
+
+   // Cover "corner-case" cases.
+   //
+   if (number <= 0) return NULL;
+   if (searchTime <= this->data [first].datetime) return &this->data [first];
+   if (searchTime >= this->data [last].datetime)  return &this->data [last];
+
+   // number >= 2
+   const int before = this->indexBeforeTime (searchTime, 0);
+   const int after = before + 1;
+
+   double bsdt = this->data.value (before).datetime.secondsTo (searchTime);
+   double sadt = searchTime.secondsTo (this->data.value (after).datetime);
+
+   const QCaDataPoint*  result = (bsdt < sadt) ? &this->data [before] : &this->data [after];
+   return result;
+}
+
 
 //------------------------------------------------------------------------------
 //

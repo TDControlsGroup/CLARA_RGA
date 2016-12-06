@@ -26,7 +26,7 @@
 #ifndef QECONFIGUREDLAYOUTMANAGER_H
 #define QECONFIGUREDLAYOUTMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

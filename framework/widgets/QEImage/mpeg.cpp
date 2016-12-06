@@ -1,4 +1,5 @@
-/*
+/*  mpeg.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -18,7 +19,8 @@
  *
  *  Author:
  *    Andrew Rhyder
- *    Initial code copied by Andrew Rhyder from parts of ffmpegWidget.cpp (Author anonymous, part of EPICS area detector ffmpegViwer project)
+ *    Initial code copied by Andrew Rhyder from parts of ffmpegWidget.cpp
+ *    (Author anonymous, part of EPICS area detector ffmpegViwer project)
  *
  *  Contact details:
  *    andrew.rhyder@synchrotron.org.au
@@ -52,7 +54,13 @@ static QMutex *ffmutex;
 FFBuffer::FFBuffer() {
     this->mutex = new QMutex();
     this->refs = 0;
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(56, 26, 100)
     this->pFrame = avcodec_alloc_frame();
+#else
+    this->pFrame = av_frame_alloc();
+#endif
+
     this->mem = (unsigned char *) calloc(MAXWIDTH*MAXHEIGHT*3, sizeof(unsigned char));
 }
 
@@ -145,7 +153,7 @@ void FFThread::run()
     AVCodecContext      *pCodecCtx;
     AVCodec             *pCodec;
     AVPacket            packet;
-    int                 frameFinished, len;
+    int                 frameFinished;
 
     // Open video file
 #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(53, 2, 0)
@@ -192,8 +200,30 @@ void FFThread::run()
     }
     ffmutex->unlock();
 
-    // read frames into the packets
-    while (stopping !=1 && av_read_frame(pFormatCtx, &packet) >= 0) {
+    // Read frames into the packets.
+    //
+    // NOTE, most of this thread's time is spent waiting for the next frame, so the 'stopping' flag
+    // is most likely to be set while in av_read_frame(), so it is important that the 'stopping' flag
+    // is checked after the call to av_read_frame().
+    // The 'stopping' flag is, however, also checked after other reasonably CPU expensive steps such as decoding the frame,
+    // or steps that wait on resources such as getting a free buffer,
+    //
+    // NOTE, this thread is stopped by mpegSource::stopStream(). Refer to that function to see how the 'stopping' flag is used.
+    //
+    while( true )
+    {
+        // Get the next frame
+        if( av_read_frame(pFormatCtx, &packet) < 0 )
+        {
+            break;
+        }
+
+        // If stopping, free resources and leave
+        if( stopping )
+        {
+            av_free_packet(&packet);
+            break;
+        }
 
         // Is this a packet from the video stream?
         if (packet.stream_index!=videoStream) {
@@ -201,6 +231,13 @@ void FFThread::run()
             qDebug() << "Non video packet. Shouldn't see this...";
             av_free_packet(&packet);
             continue;
+        }
+
+        // If stopping, free resources and leave
+        if( stopping )
+        {
+            av_free_packet(&packet);
+            break;
         }
 
         // grab a buffer to decode into
@@ -211,8 +248,15 @@ void FFThread::run()
             continue;
         }
         
+        // If stopping, free resources and leave
+        if( stopping )
+        {
+            av_free_packet(&packet);
+            break;
+        }
+
         // Decode video frame
-        len = avcodec_decode_video2(pCodecCtx, raw->pFrame, &frameFinished,
+        avcodec_decode_video2(pCodecCtx, raw->pFrame, &frameFinished,
             &packet);
         if (!frameFinished) {
             qDebug() << "Frame not finished. Shouldn't see this...";
@@ -221,6 +265,13 @@ void FFThread::run()
             continue;
         }
         
+        // If stopping, free resources and leave
+        if( stopping )
+        {
+            av_free_packet(&packet);
+            break;
+        }
+
         // Fill in the output buffer
         raw->pix_fmt = pCodecCtx->pix_fmt;         
         raw->height = pCodecCtx->height;
@@ -229,20 +280,27 @@ void FFThread::run()
         // Emit and free
         emit updateSignal(raw);
         av_free_packet(&packet);
+
+        // If stopping, leave
+        if( stopping )
+        {
+            break;
+        }
     }
     // tidy up
     ffmutex->lock();
     avcodec_close(pCodecCtx);
+
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(54, 20, 4)
     av_close_input_file(pFormatCtx);
+#else
+    avformat_close_input(&pFormatCtx);
+#endif
+
     pCodecCtx = NULL;
     pFormatCtx = NULL;
     ffmutex->unlock();
 }
-
-
-
-
-
 
 
 mpegSourceObject::mpegSourceObject( mpegSource* msIn )
@@ -272,6 +330,7 @@ mpegSource::~mpegSource()
 {
     // Ensure the thread is dead
     stopStream();
+    delete mso;
 }
 
 QString mpegSource::getURL()
@@ -441,3 +500,5 @@ void mpegSource::updateImage(FFBuffer *newbuf) {
     // Unlock buffer
     newbuf->release();
 }
+
+// end

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -28,12 +28,10 @@
 #include <QtCore>
 #include <QtXml>
 #include <QVariantList>
-
 #include <alarm.h>
+#include "QEArchiveInterface.h"
 
-#include <QEArchiveInterface.h>
-
-#define DEBUG qDebug () << "QEArchiveInterface:" << __FUNCTION__  << ":" << __LINE__
+#define DEBUG qDebug () << "QEArchiveInterface" << __LINE__ << __FUNCTION__  << "  "
 
 
 //------------------------------------------------------------------------------
@@ -46,6 +44,7 @@ QEArchiveInterface::QEArchiveInterface (QUrl url, QObject *parent) : QObject (pa
 
    // the maia client does not have a getUrl function - we need to cache value.
    this->mUrl = url;
+   this->pending = 0;
    this->client = new MaiaXmlRpcClient (url, this);
 
    config = this->client->sslConfiguration ();
@@ -81,16 +80,23 @@ void QEArchiveInterface::setUrl (QUrl url)
 
 //------------------------------------------------------------------------------
 //
-QUrl QEArchiveInterface::getUrl ()
+QUrl QEArchiveInterface::getUrl () const
 {
    return this->mUrl;
 }
 
 //------------------------------------------------------------------------------
 //
-QString QEArchiveInterface::getName ()
+QString QEArchiveInterface::getName () const
 {
    return this->getUrl ().toString ();
+}
+
+//------------------------------------------------------------------------------
+//
+int QEArchiveInterface::getNumberPending () const
+{
+   return this->pending;
 }
 
 //------------------------------------------------------------------------------
@@ -112,6 +118,7 @@ void QEArchiveInterface::infoRequest (QObject *userData)
    // no arguments per se.
    //
    agent->call (context, "archiver.info", args);
+   this->pending++;
 }
 
 
@@ -134,6 +141,7 @@ void QEArchiveInterface::archivesRequest (QObject *userData)
    // no arguments per se.
    //
    agent->call (context, "archiver.archives", args);
+   this->pending++;
 }
 
 
@@ -159,6 +167,7 @@ void QEArchiveInterface::namesRequest (QObject *userData, const int key, QString
    args.append (QVariant (pattern));
 
    agent->call (context, "archiver.names", args);
+   this->pending++;
 }
 
 //------------------------------------------------------------------------------
@@ -209,6 +218,7 @@ void QEArchiveInterface::valuesRequest (QObject *userData,
    args.append (QVariant ((int) how));
 
    agent->call (context, "archiver.values", args);
+   this->pending++;
 }
 
 //------------------------------------------------------------------------------
@@ -482,6 +492,8 @@ void QEArchiveInterface::processValues (const QObject* userData,
 //
 void QEArchiveInterface::xmlRpcResponse (const QEArchiveInterface::Context & context, const QVariant & response)
 {
+   this->pending--;
+
    switch (context.method) {
 
    case Information:
@@ -492,11 +504,11 @@ void QEArchiveInterface::xmlRpcResponse (const QEArchiveInterface::Context & con
       this->processArchives (context.userData, response);
       break;
 
-   case  Names:
+   case Names:
       this->processPvNames (context.userData, response);
       break;
 
-   case  Values:
+   case Values:
       this->processValues (context.userData, response, context.requested_element);
       break;
 
@@ -513,6 +525,8 @@ void QEArchiveInterface::xmlRpcFault (const QEArchiveInterface::Context & contex
    ArchiveList nullPvArchives;
    PVNameList nullPvNames;
    ResponseValueList nullPvValues;
+
+   this->pending--;
 
    switch (context.method) {
 
@@ -546,37 +560,18 @@ QString QEArchiveInterface::alarmSeverityName (enum archiveAlarmSeverity severit
    QString result;
 
    switch (severity) {
-   case archSevNone:
-   case archSevMinor:
-   case archSevMajor:
-   case archSevInvalid:
-      // use standard epics severity string
-      result = QString (epicsAlarmSeverityStrings [severity]);
-      break;
-
-   case archSevEstRepeat:
-      result.append ("Est_Repeat");
-      break;
-
-   case archSevDisconnect:
-      result.append ("Disconnect");
-      break;
-
-   case archSevStopped:
-      result.append ("Stopped");
-      break;
-
-   case archSevRepeat:
-      result.append ("Repeat");
-      break;
-
-   case archSevDisabled:
-      result.append ("Disabled");
-      break;
-
-   default:
-      result.sprintf ("Archive Invalid Sevrity (%d)", (int) severity);
-      break;
+      case archSevNone:       result = "No Alarm";   break;
+      case archSevMinor:      result = "Minor";      break;
+      case archSevMajor:      result = "Major";      break;
+      case archSevInvalid:    result = "Invalid";    break;
+      case archSevEstRepeat:  result = "Est_Repeat"; break;
+      case archSevDisconnect: result = "Disconnect"; break;
+      case archSevStopped:    result = "Stopped";    break;
+      case archSevRepeat:     result = "Repeat";     break;
+      case archSevDisabled:   result = "Disabled";   break;
+      default:
+         result = QString ("Archive Invalid Sevrity (%1)").arg ((int) severity);
+         break;
    }
    return result;
 }

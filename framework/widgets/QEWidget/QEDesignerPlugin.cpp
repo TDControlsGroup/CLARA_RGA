@@ -61,6 +61,7 @@
 #include <QEFormManager.h>
 #include <QEFormGridManager.h>
 #include <QEFrameManager.h>
+#include <QEPvFrameManager.h>
 #include <QEGeneralEditManager.h>
 #include <QEGroupBoxManager.h>
 #include <QEFileImageManager.h>
@@ -104,6 +105,7 @@ QEWidgets::QEWidgets(QObject *parent) : QObject(parent) {
     widgets.append(new QEPlotterManager(this));
     widgets.append(new QEPushButtonManager(this));
     widgets.append(new QEPvLoadSaveManager(this));
+    widgets.append(new QEPvFrameManager(this));
     widgets.append(new QEPvPropertiesManager(this));
     widgets.append(new QERadioButtonManager(this));
     widgets.append(new QERadioGroupManager(this));

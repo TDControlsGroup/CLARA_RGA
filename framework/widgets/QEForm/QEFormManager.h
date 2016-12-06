@@ -25,7 +25,7 @@
 #ifndef QEFORMMANAGER_H
 #define QEFORMMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

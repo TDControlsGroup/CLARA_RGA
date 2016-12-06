@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  */
 
@@ -35,8 +35,8 @@ QEAxisIterator::QEAxisIterator (const double minimumIn,
                                 const bool isLogarithmicIn)
 {
    this->reInitialise (minimumIn, maximumIn,
-                 minorIntervalIn, majorMinorRatioIn,
-                 isLogarithmicIn);
+                       minorIntervalIn, majorMinorRatioIn,
+                       isLogarithmicIn);
 }
 
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ void QEAxisIterator::reInitialise (const double minimumIn,
    this->minimum = minimumIn;
    this->maximum = maximumIn;
 
-   // Constrain values to be sensible.
+   // Constrain values to be at least semi-sensible.
    //
    this->minorInterval = MAX (1.0e-20, minorIntervalIn);
    this->majorMinorRatio = MAX (1, majorMinorRatioIn);
@@ -66,8 +66,8 @@ void QEAxisIterator::reInitialise (const double minimumIn,
 
    // Avoid rounding errors at boundaries, esp when logarithmic.
    //
-   this->minTolerance = 0.000000001 * ABS (this->minimum);
-   this->maxTolerance = 0.000000001 * ABS (this->maximum);
+   this->minTolerance = 1.0e-9 * ABS (this->minimum);
+   this->maxTolerance = 1.0e-9 * ABS (this->maximum);
 
    // Calculate the origin.
    //
@@ -91,10 +91,13 @@ void QEAxisIterator::reInitialise (const double minimumIn,
 
 //------------------------------------------------------------------------------
 //
-bool QEAxisIterator::firstValue (double& value, bool& isMajor)
+bool QEAxisIterator::firstValue (double& value, bool& isMajor, const int maxIterationsIn)
 {
    double realITC;
    bool result;
+
+   this->maxIterations = maxIterationsIn;
+   this->iterationCount = 0;
 
    if (this->isLogarithmic) {
       realITC = 9.0 * LOG10 (this->minimum); //
@@ -109,9 +112,11 @@ bool QEAxisIterator::firstValue (double& value, bool& isMajor)
    this->iteratorControl = int (floor (realITC) - 0.5) - 1;
 
    result = this->nextValue (value, isMajor);
-   while (result && (value < this->minimum - this->minTolerance)) {
+   while (result && (value < (this->minimum - this->minTolerance))) {
       result = this->nextValue (value, isMajor);
    }
+
+   this->iterationCount = 0;  // first calls to next value update this, so reset
 
    return result;
 }
@@ -120,22 +125,23 @@ bool QEAxisIterator::firstValue (double& value, bool& isMajor)
 //
 bool QEAxisIterator::nextValue  (double& value, bool& isMajor)
 {
-   static const int fs = 9;  //
-   bool result;
+   // sainity check.
+   //
+   this->iterationCount++;
+   if (this->iterationCount >= this->maxIterations) return false;
 
    if (this->iteratorControl == LAST_ITERATION_VALUE) return false;
 
    this->iteratorControl++;
    if (this->isLogarithmic) {
-      int d;
-      int f;
+      static const int fs = 9;
 
       // Ensure round down towards -infinity (as opposed to 0)
       // Oh how I wish C/C++ has a proper "mod" operator.
       //
-      d = iteratorControl / fs;
+      int d = iteratorControl / fs;
       if ((fs * d) > iteratorControl) d--;
-      f = iteratorControl - (fs * d);
+      int f = iteratorControl - (fs * d);
 
       value = (1.0 + f) * EXP10 (d);
       if (f == 0) {
@@ -143,7 +149,7 @@ bool QEAxisIterator::nextValue  (double& value, bool& isMajor)
          //
          isMajor = ((d % this->majorMinorRatio) == 0);
       } else {
-         // Is not an exact power of 10 - canot be major.
+         // Is not an exact power of 10 - cannot be major.
          //
          isMajor = false;
       }
@@ -152,7 +158,7 @@ bool QEAxisIterator::nextValue  (double& value, bool& isMajor)
       isMajor = ((this->iteratorControl % this->majorMinorRatio) == 0);
    }
 
-   result = (value <= this->maximum + this->maxTolerance);
+   bool result = (value <= this->maximum + this->maxTolerance);
    return result;
 }
 

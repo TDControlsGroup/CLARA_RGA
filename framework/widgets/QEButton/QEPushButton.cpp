@@ -1,4 +1,5 @@
-/*
+/*  QEPushButton.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -57,16 +58,63 @@ QEPushButton::QEPushButton( const QString &variableNameIn, QWidget *parent ) : Q
     Setup common to all constructors
 */
 void QEPushButton::setup() {
+    // Create second single variable methods object for the alt readback PV.
+    //
+    altReadback = new QESingleVariableMethods (this, VAR_READBACK);
+
     // Identify the type of button
     setText( "QEPushButton" );
 
     // For each variable name property manager, set up an index to identify it when it signals and
     // set up a connection to recieve variable name property changes.
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    for( int i = 0; i < QEGENERICBUTTON_NUM_VARIABLES; i++ ) {
-        variableNamePropertyManagers[i].setVariableIndex( i );
-        QObject::connect( &variableNamePropertyManagers[i], SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
-    }
+    connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
+    altReadback->connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
+}
+
+/*
+    Destructor function
+*/
+QEPushButton::~QEPushButton()
+{
+    if( altReadback ) delete altReadback;
+}
+
+/*
+    Set variable name substitutions.
+    Must set all - as each variable name proprty manager needs it's own copy.
+ */
+void QEPushButton::setVariableNameSubstitutionsProperty( const QString& substitutions )
+{
+    QESingleVariableMethods::setVariableNameSubstitutionsProperty (substitutions);
+    altReadback->setVariableNameSubstitutionsProperty( substitutions );
+}
+
+/*
+    Set/get alternative readback PV name.
+ */
+void QEPushButton::setAltReadbackProperty( const QString& variableName )
+{
+    altReadback->setVariableNameProperty( variableName );
+}
+
+QString QEPushButton::getAltReadbackProperty() const
+{
+    return altReadback->getVariableNameProperty();
+}
+
+
+/*
+    Set/get alternative readback PV attay index.
+ */
+void QEPushButton::setAltReadbackArrayIndex( const int arrayIndex )
+{
+    altReadback->setArrayIndex( arrayIndex );
+}
+
+int QEPushButton::getAltReadbackArrayIndex () const
+{
+    return altReadback->getArrayIndex();
 }
 
 // Slot to receiver a 'process completed' signal from the application launcher
@@ -90,3 +138,5 @@ QVariant QEPushButton::copyData()
 {
     return QVariant( getButtonText() );
 }
+
+// end

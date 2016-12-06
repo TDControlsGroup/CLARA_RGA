@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -76,10 +76,12 @@ public:
    Q_PROPERTY (bool   autoBarGapWidths READ getAutoBarGapWidths WRITE setAutoBarGapWidths)
    Q_PROPERTY (int    barWidth         READ getBarWidth         WRITE setBarWidth)
    Q_PROPERTY (int    gap              READ getGap              WRITE setGap)
+   Q_PROPERTY (int    margin           READ getMargin           WRITE setMargin)
    Q_PROPERTY (ScaleModes scaleMode    READ getScaleMode        WRITE setScaleMode)
    Q_PROPERTY (double minimum          READ getMinimum          WRITE setMinimum)
    Q_PROPERTY (double maximum          READ getMaximum          WRITE setMaximum)
    Q_PROPERTY (double baseLine         READ getBaseLine         WRITE setBaseLine)
+   Q_PROPERTY (bool   drawAxies        READ getDrawAxies        WRITE setDrawAxies)
    Q_PROPERTY (bool   showScale        READ getShowScale        WRITE setShowScale)
    Q_PROPERTY (bool   showGrid         READ getShowGrid         WRITE setShowGrid)
    Q_PROPERTY (bool   logScale         READ getLogScale         WRITE setLogScale)
@@ -103,24 +105,32 @@ public:
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, double, getBaseLine,   setBaseLine)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, int,    getGap,        setGap)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, int,    getBarWidth,   setBarWidth)
+   QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, int,    getMargin,      setMargin)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getAutoBarGapWidths, setAutoBarGapWidths)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getShowScale,  setShowScale)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getShowGrid,   setShowGrid)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getLogScale,   setLogScale)
+   QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getDrawAxies,  setDrawAxies)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, bool,   getDrawBorder, setDrawBorder)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, QColor, getBackgroundColour, setBackgroundColour)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, QColor, getBarColour,  setBarColour)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (histogram, Qt::Orientation, getOrientation, setOrientation)
 
+signals:
+   // signals element index (0 .. N-1) of histogram which mouse has entered
+   // or -1 if/when no longer over the element's bar.
+   //
+   void mouseIndexChanged (const int index);
+   void mouseIndexPressed (const int index, const Qt::MouseButton button);
+
 protected:
    qcaobject::QCaObject* createQcaItem (unsigned int variableIndex);
    void establishConnection (unsigned int variableIndex);
-   bool eventFilter (QObject* obj, QEvent* event);
 
    // Drag and Drop
-   void dragEnterEvent (QDragEnterEvent* event) { qcaDragEnterEvent (event);  }
-   void dropEvent (QDropEvent* event)           { qcaDropEvent (event);       }
-   void mousePressEvent (QMouseEvent* event)    { qcaMousePressEvent (event); }
+   void dragEnterEvent (QDragEnterEvent* event) { this->qcaDragEnterEvent (event);  }
+   void dropEvent (QDropEvent* event)           { this->qcaDropEvent (event);       }
+   void mousePressEvent (QMouseEvent* event)    { this->qcaMousePressEvent (event); }
    // This widget uses the setDrop/getDrop defined in QEWidget which is copy/paste.
 
    // Copy paste
@@ -156,6 +166,13 @@ private slots:
 
    void setChannelArrayValue (const QVector <double>& value, QCaAlarmInfo&,
                               QCaDateTime&, const unsigned int&);
+
+   void mouseIndexChangedSlot (const int index);
+   void mouseIndexPressedSlot (const int index, const Qt::MouseButton button);
 };
 
-#endif                          // QE_WAVEFORM_HISTOGRAM_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEWaveformHistogram::ScaleModes)
+#endif
+
+#endif // QE_WAVEFORM_HISTOGRAM_H

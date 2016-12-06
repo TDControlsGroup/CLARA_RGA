@@ -28,10 +28,11 @@
 #include <QColor>
 #include <QEPlatform.h>
 #include <QECommon.h>
+#include <QEScaling.h>
 #include <QEGraphic.h>
 #include "QEGraphicMarkup.h"
 
-#define DEBUG qDebug () << "QEGraphicMarkup" << __FUNCTION__ << __LINE__ << "::"
+#define DEBUG qDebug () << "QEGraphicMarkup" << __LINE__ << __FUNCTION__ << "  "
 
 // Allowable distance (in pixels) from cursor to object which will still be considered 'over'.
 // Plus default distance when not over.
@@ -49,6 +50,7 @@ QEGraphicMarkup::QEGraphicMarkup (QEGraphicNames::Markups markupIn, QEGraphic* o
 {
    this->owner = ownerIn;
    this->positon = QPointF (0.0, 0.0);
+   this->data = "";
    this->inUse = false;
    this->visible = false;
    this->enabled = false;
@@ -57,7 +59,7 @@ QEGraphicMarkup::QEGraphicMarkup (QEGraphicNames::Markups markupIn, QEGraphic* o
    this->activationButton = Qt::LeftButton;
 
    this->positon = QPointF (0.0, 0.0);
-   this->pen.setColor (QColor (0,0,0));
+   this->pen.setColor (QColor (0, 0, 0, 255));
    this->pen.setStyle (Qt::SolidLine);
    this->pen.setWidth (1);
 }
@@ -84,6 +86,20 @@ QPointF QEGraphicMarkup::getCurrentPosition () const
 
 //-----------------------------------------------------------------------------
 //
+void QEGraphicMarkup::setData (const QVariant& dataIn)
+{
+   this->data = dataIn;
+}
+
+//-----------------------------------------------------------------------------
+//
+QVariant QEGraphicMarkup::getData () const
+{
+   return this->data;
+}
+
+//-----------------------------------------------------------------------------
+//
 QCursor QEGraphicMarkup::getCursor () const
 {
    return this->cursor;
@@ -95,6 +111,13 @@ bool QEGraphicMarkup::isOver (const QPointF& /* point */, int& distance) const
 {
    distance = NOT_OVER_DISTANCE;
    return false;
+}
+
+//-----------------------------------------------------------------------------
+// virtual
+void QEGraphicMarkup::relocate ()
+{
+   // place holder
 }
 
 //-----------------------------------------------------------------------------
@@ -140,6 +163,21 @@ void QEGraphicMarkup::plotCurve (const QEGraphicNames::DoubleVector& xData,
    this->owner->setCurvePen   (this->pen);
    this->owner->setCurveBrush (this->brush);
    this->owner->plotMarkupCurveData (xData, yData);
+}
+
+//-----------------------------------------------------------------------------
+//
+QFontMetrics QEGraphicMarkup::getFontMetrics ()
+{
+   // Temporarily set canvas font to the current text font so that we can
+   // extract the appropriate font metrics. Is the a less messay way to do this?
+   //
+   QWidget* canvas = this->owner->getEmbeddedQwtPlot()->canvas ();
+   const QFont savedFont = canvas->font ();
+   canvas->setFont (this->owner->getTextFont());
+   const QFontMetrics result = canvas->fontMetrics ();
+   canvas->setFont (savedFont);   // restore font to what it was.
+   return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -303,6 +341,45 @@ void QEGraphicAreaMarkup::plotMarkup ()
    xdata << this->positon.x ();  ydata << this->positon.y ();
 
    this->plotCurve (xdata, ydata);
+
+   const int minDiff = 8;
+   const QPoint diff = this->getOwner()->pixelDistance (this->origin, this->positon);
+
+   bool xokay = ((diff.x () > minDiff) && (diff.x () > ABS (3 * diff.y ())));
+   bool yokay = ((diff.y () > minDiff) && (diff.y () > ABS (3 * diff.x ())));
+
+   if (xokay) {
+      xdata.clear();
+      ydata.clear();
+
+      xdata << this->origin.x ();   ydata << (this->origin.y () + this->positon.y ()) / 2.0;
+      xdata << this->positon.x ();  ydata << (this->origin.y () + this->positon.y ()) / 2.0;
+
+      QPen pen;
+
+      pen.setColor (QColor (0x606060));  // dark gray
+
+      this->owner->setCurvePen   (pen);
+      this->owner->setCurveBrush (this->brush);
+      this->owner->plotMarkupCurveData (xdata, ydata);
+
+   }
+
+   if (yokay) {
+      xdata.clear();
+      ydata.clear();
+
+      xdata << (this->origin.x () + this->positon.x ()) / 2.0;  ydata << this->origin.y ();
+      xdata << (this->origin.x () + this->positon.x ()) / 2.0;  ydata << this->positon.y ();
+
+      QPen pen;
+
+      pen.setColor (QColor (0x606060));  // dark gray
+
+      this->owner->setCurvePen   (pen);
+      this->owner->setCurveBrush (this->brush);
+      this->owner->plotMarkupCurveData (xdata, ydata);
+   }
 }
 
 
@@ -374,6 +451,125 @@ void QEGraphicLineMarkup::plotMarkup ()
 
 
 //=============================================================================
+// QEGraphicBoxMarkup
+//=============================================================================
+//
+QEGraphicBoxMarkup::QEGraphicBoxMarkup (QEGraphic* ownerIn) :
+   QEGraphicMarkup (QEGraphicNames::Box, ownerIn)
+{
+   this->cursor = Qt::BlankCursor;
+}
+
+//-----------------------------------------------------------------------------
+//
+bool QEGraphicBoxMarkup::isOver (const QPointF& point, int& distance) const
+{
+   return this->isOverHere (this->positon, point, distance);
+}
+
+//-----------------------------------------------------------------------------
+//
+void QEGraphicBoxMarkup::setSelected (const bool)
+{
+   this->selected = false;
+}
+
+//-----------------------------------------------------------------------------
+//
+void QEGraphicBoxMarkup::plotMarkup ()
+{
+   static const int usgap = 4;       // unscaled gap
+   static const int pointSize = 8;   // font point size
+
+   static const int a = 4;
+   static const QPoint box [5] = {
+      QPoint (+a, -a), QPoint (+a, +a), QPoint (-a, +a), QPoint (-a, -a), QPoint (+a, -a)
+   };
+
+   QPointF itemF;
+   QEGraphicNames::DoubleVector xdata;
+   QEGraphicNames::DoubleVector ydata;
+
+   // Extract point of interest.
+   //
+   const QPoint poi = this->getOwner()->realToPoint (this->positon);
+   xdata.clear (); ydata.clear ();
+   for (int j = 0; j < ARRAY_LENGTH (box); j++) {
+      itemF = this->getOwner()->pointToReal (poi + box [j]);
+      xdata << itemF.x (); ydata << itemF.y ();
+   }
+
+   this->pen.setColor (QColor (0x606060));  //  grayish
+   this->pen.setStyle (Qt::SolidLine);
+   this->pen.setWidth (1);
+
+   this->brush.setStyle (Qt::NoBrush);
+   this->plotCurve (xdata, ydata);
+
+   if (!this->isEnabled ()) return;
+
+   // Need font metircs in order to size the info box.
+   //
+   this->owner->setTextPointSize (pointSize);  // auto pointSize scaled by QEGraphic
+   const QFontMetrics fm = this->getFontMetrics ();
+
+   // Finds the maximum width required.
+   //
+   const QStringList info = this->data.toStringList ();
+   int maxTextWidth = 0;
+   for (int j = 0; j < 3; j++) {
+      int textWidth  = fm.width (info.value (j));
+      maxTextWidth = MAX (maxTextWidth, textWidth);
+   }
+
+   const int gap = QEScaling::scale (usgap);
+   const int verticalTextSpacing = QEScaling::scale (pointSize + usgap);
+
+   // Set up info box outline.
+   //
+   const int w = gap + maxTextWidth + gap;
+   const int h = gap + 3*verticalTextSpacing;
+   const QPoint pvd [5] = {
+      QPoint (0, 0), QPoint (w, 0), QPoint (w, -h), QPoint (0, -h),  QPoint (0, 0)
+   };
+
+   // The item is enabled - draw associated pop up box.
+   // Draw connector - last itemF is top right hand corner
+   // TODO: Constrain blc such that info box always on screen.
+   //
+   const QPoint blc = poi + QPoint (16, -16);  // bottom left corner
+
+   xdata.clear (); ydata.clear ();
+   xdata << itemF.x (); ydata << itemF.y ();
+   itemF = this->getOwner()->pointToReal (blc);
+   xdata << itemF.x (); ydata << itemF.y ();
+   this->brush.setStyle (Qt::NoBrush);
+   this->plotCurve (xdata, ydata);
+
+
+   xdata.clear (); ydata.clear ();
+   this->pen.setWidth (2);      // because RenderAntialiased hint is off
+   for (int j = 0; j < ARRAY_LENGTH (box); j++) {
+      itemF = this->getOwner()->pointToReal (blc + pvd [j]);
+      xdata << itemF.x (); ydata << itemF.y ();
+   }
+   this->brush.setColor (QColor ("#e0f0ff"));    // pale blue-ish
+   this->brush.setStyle (Qt::SolidPattern);
+   this->plotCurve (xdata, ydata);
+
+   this->pen.setColor (QColor (0, 0, 0, 255));  //  black
+   this->owner->setCurvePen (this->pen);
+   this->pen.setWidth (1);
+
+   QPoint textOrigin = blc + QPoint (gap, -h + verticalTextSpacing);
+   for (int j = 0; j < 3; j++) {
+      this->owner->drawText (textOrigin + QPoint (0, j*verticalTextSpacing), info.value (j),
+                             QEGraphicNames::PixelPosition, false);
+   }
+}
+
+
+//=============================================================================
 // QEGraphicCrosshairsMarkup
 //=============================================================================
 //
@@ -434,8 +630,8 @@ void QEGraphicCrosshairsMarkup::setVisible (const bool visibleIn)
    QEGraphicMarkup::setVisible (visibleIn);
 
    if (visibleIn) {
-      this->getOwner()->xAxis->getRange (xmin, xmax);
-      this->getOwner()->yAxis->getRange (ymin, ymax);
+      this->getOwner()->getXRange (xmin, xmax);
+      this->getOwner()->getYRange (ymin, ymax);
 
       middle = QPointF ((xmin + xmax)/2.0, (ymin + ymax)/2.0);
       this->positon = middle;
@@ -451,13 +647,13 @@ void QEGraphicCrosshairsMarkup::plotMarkup ()
    double min;
    double max;
 
-   this->getOwner()->yAxis->getRange (min, max);
+   this->getOwner()->getYRange (min, max);
    xdata.clear ();    ydata.clear ();
    xdata << positon.x ();  ydata << min;
    xdata << positon.x ();  ydata << max;
    this->plotCurve (xdata, ydata);
 
-   this->getOwner()->xAxis->getRange (min, max);
+   this->getOwner()->getXRange (min, max);
    xdata.clear ();  ydata.clear ();
    xdata << min;    ydata << positon.y ();
    xdata << max;    ydata << positon.y ();
@@ -607,7 +803,7 @@ bool QEGraphicHorizontalMarkup::isOver (const QPointF& point, int& distance) con
    double xmax;
    QPointF poiF;
 
-   this->getOwner()->xAxis->getRange (xmin, xmax);
+   this->getOwner()->getXRange (xmin, xmax);
    if (this->isEnabled ()) {
       // Allow any x to match.
       poiF = QPointF (point.x (), this->positon.y ());
@@ -620,9 +816,21 @@ bool QEGraphicHorizontalMarkup::isOver (const QPointF& point, int& distance) con
 
 //-----------------------------------------------------------------------------
 //
+void QEGraphicHorizontalMarkup::relocate ()
+{
+   double ymin;
+   double ymax;
+
+   this->getOwner()->getYRange (ymin, ymax);
+   if      (this->positon.y () < ymin) this->positon.setY (ymin);
+   else if (this->positon.y () > ymax) this->positon.setY (ymax);
+}
+
+//-----------------------------------------------------------------------------
+//
 void QEGraphicHorizontalMarkup::getLine (double& xmin, double& xmax, double& ymin, double& ymax)
 {
-   this->getOwner()->xAxis->getRange (xmin, xmax);
+   this->getOwner()->getXRange (xmin, xmax);
    ymin = ymax = this->positon.y ();
 }
 
@@ -664,7 +872,7 @@ bool QEGraphicVerticalMarkup::isOver (const QPointF& point, int& distance) const
    double ymax;
    QPointF poiF;
 
-   this->getOwner()->yAxis->getRange (ymin, ymax);
+   this->getOwner()->getYRange (ymin, ymax);
    if (this->isEnabled ()) {
       // Allow any y to match.
       poiF = QPointF (this->positon.x (), point.y ());
@@ -677,10 +885,22 @@ bool QEGraphicVerticalMarkup::isOver (const QPointF& point, int& distance) const
 
 //-----------------------------------------------------------------------------
 //
+void QEGraphicVerticalMarkup::relocate ()
+{
+   double xmin;
+   double xmax;
+
+   this->getOwner()->getXRange (xmin, xmax);
+   if      (this->positon.x () < xmin) this->positon.setX (xmin);
+   else if (this->positon.x () > xmax) this->positon.setX (xmax);
+}
+
+//-----------------------------------------------------------------------------
+//
 void QEGraphicVerticalMarkup::getLine (double& xmin, double& xmax, double& ymin, double& ymax)
 {
    xmin = xmax = this->positon.x ();
-   this->getOwner()->yAxis->getRange (ymin, ymax);
+   this->getOwner()->getYRange (ymin, ymax);
 }
 
 //-----------------------------------------------------------------------------

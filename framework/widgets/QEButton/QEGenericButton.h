@@ -1,4 +1,5 @@
-/*
+/*  QEGenericButton.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -22,62 +23,39 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEGENERICBUTTON_H
-#define QEGENERICBUTTON_H
+#ifndef QE_GENERIC_BUTTON_H
+#define QE_GENERIC_BUTTON_H
 
+#include <QAbstractButton>
 #include <QEWidget.h>
 #include <QEForm.h>
 #include <QEString.h>
+#include <QEInteger.h>
 #include <QEStringFormatting.h>
 #include <managePixmaps.h>
+#include <QESingleVariableMethods.h>
 #include <QEStringFormattingMethods.h>
-//#include <QProcess>
+#include <QEIntegerFormatting.h>
 #include <applicationLauncher.h>
-
-
-// Maximum number of variables.
-#define QEGENERICBUTTON_NUM_VARIABLES 2
-
-
-//// Class to manage a process started by a QE button
-//class processManager : public QProcess
-//{
-//    Q_OBJECT
-
-//public:
-//    processManager( bool logOutput )
-//    {
-//        // Catch when the process can be deleted
-//        QObject::connect( this, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( doFinished(int, QProcess::ExitStatus) ) );
-
-//        // Catch output if required
-//        if( logOutput )
-//        {
-//            QObject::connect( this, SIGNAL( readyReadStandardOutput() ), this, SLOT( doRead() ) );
-//            QObject::connect( this, SIGNAL( readyReadStandardError() ), this, SLOT( doRead() ) );
-//        }
-//    }
-
-//public slots:
-//    void doRead()
-//    {
-//        message.sendMessage( readAll() );
-//    }
-//    void doFinished( int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/ )
-//    {
-//        deleteLater();
-//    }
-
-//private:
-//    UserMessage message;
-//};
+#include <QEWidgetProperties.h>
 
 // Class common to all QE buttons
-class QEPLUGINLIBRARYSHARED_EXPORT QEGenericButton : public QEWidget, public managePixmaps, public QEStringFormattingMethods {
+class QEPLUGINLIBRARYSHARED_EXPORT QEGenericButton :
+        public QEWidget,
+        public managePixmaps,
+        public QESingleVariableMethods,
+        public QEStringFormattingMethods
+{
 
   public:
-    QEGenericButton( QWidget *owner );
+    QEGenericButton( QAbstractButton *owner );
     virtual ~QEGenericButton(){}
+
+    enum VariableAllocation { VAR_PRIMARY = 0, // Primary Contyrol PV
+                              VAR_READBACK,    // Alternative readback PV - QEPushButton only
+                              VAR_DISA,        // DISA field of primary - set iff disableWhenRecordDisabled true
+                              VAR_DISV,        // DISV field of primary - set iff disableWhenRecordDisabled true
+                              NUMBER_OF_VARIABLES };  // Maximum number of variables.
 
     enum updateOptions { UPDATE_TEXT, UPDATE_ICON, UPDATE_TEXT_AND_ICON, UPDATE_STATE };
 
@@ -176,10 +154,21 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEGenericButton : public QEWidget, public man
     void setLabelTextProperty( QString labelTextIn );
     QString getLabelTextProperty();
 
+    // disabledRecordPolicy
+    void setDisabledRecordPolicy( const QEWidgetProperties::DisabledRecordPolicy disabledRecordPolicy );
+    QEWidgetProperties::DisabledRecordPolicy getDisabledRecordPolicy() const;
+
+    // Write the click value now irrespective of whether writeOnClick property true or false.
+    // This allows programatic "clicks" even when property is false.
+    //
+    void writeClickedNow (const bool checked = false);
 
 protected:
+    void useGenericNewVariableName( const QString& variableName, const QString& variableNameSubstitutions, const unsigned int variableIndex );
     void connectionChanged( QCaConnectionInfo& connectionInfo, const unsigned int& variableIndex );
     void setGenericButtonText( const QString& text, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex );
+    void setGenericDISAvalue( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex );
+    void setGenericDISVvalue( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex );
     void userPressed();
     void userReleased();
     void userClicked( bool checked );
@@ -201,6 +190,7 @@ private:
     bool writeOnRelease;
     bool writeOnClick;
     bool confirmRequired;     // Request confirmation before acting on a button event
+    QEWidgetProperties::DisabledRecordPolicy disabledRecordPolicy;    //
     QString confirmText;      // Text presented when confirming action
     QString releaseText;      // Text to write on a button release
     QString pressText;        // Text to write on a button press
@@ -226,6 +216,9 @@ private:
     bool getIsConnected(){ return isConnected; }
     bool confirmAction();
 
+    void processConnectedDisableStates();
+    void setDisabledVariableNames ();
+
     // Drag and Drop (See specific QE button widgets for button type specific drag and drop)
 private:
     void setDrop( QVariant drop );
@@ -241,6 +234,8 @@ protected:
     void establishConnection( unsigned int variableIndex );
     void calcStyleOption();                                             // Calculate style based on the widget usage and set a dynamic propert for style options.
 
+    QESingleVariableMethods* altReadback;
+
 private:
     void dataSetup();
 //    void commandSetup();
@@ -248,6 +243,9 @@ private:
     qcaobject::QCaObject* createQcaItem( unsigned int variableIndex  );
 
     bool isConnected;
+    QEIntegerFormatting integerFormatting;
+    long disv;    // 1
+    long disa;    // 0
 
     // !! Any of these that are accessing the QWidget don't have to call back up to the specific push button
     virtual void setButtonState( bool checked ) = 0;
@@ -255,12 +253,11 @@ private:
     virtual QString getButtonText() = 0;
     virtual void setButtonIcon( QIcon& icon ) = 0;
 
-    virtual void emitDbValueChanged( QString text ) = 0;
     virtual void emitNewGui( const QEActionRequests& request ) = 0;
 
-    virtual void connectButtonDataChange( qcaobject::QCaObject* qca ) = 0;
+    virtual void connectButtonDataChange( qcaobject::QCaObject* qca );
 
-    virtual QObject* getButtonQObject() = 0;
+    virtual QAbstractButton* getButtonQObject() = 0;
     bool checkPassword();
 
     virtual void emitPressed( int pressValue ) = 0;
@@ -268,4 +265,4 @@ private:
     virtual void emitClicked( int clickValue ) = 0;
 };
 
-#endif // QEGENERICBUTTON_H
+#endif // QE_GENERIC_BUTTON_H

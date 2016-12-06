@@ -1,4 +1,5 @@
-/*
+/*  QEIntegerFormatting.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -65,6 +66,7 @@ public:
     /// Given an integer value, format it as a data value of the specified type, according to the formatting instructions held by the class.
     /// This is used when writing integer data to a QCaObject.
     QVariant formatValue( const long &integerValue, generic::generic_types valueType );
+    QVariant formatValue( const QVector<long> &integerValue, generic::generic_types valueType );
 
     // Functions to configure the formatting
     /// Set the radix used for all conversions. Default is 10.

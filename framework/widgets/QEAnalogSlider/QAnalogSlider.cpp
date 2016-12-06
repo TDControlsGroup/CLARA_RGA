@@ -98,6 +98,13 @@ void QAnalogSlider::commonSetup ()
    this->sliderLayout->addWidget (this->intSlilder);
 
    this->axisPainter = new QEAxisPainter (this);
+
+   // Reduce to 75% - this is static - do we need to be dynamic?
+   //
+   QFont apf = this->axisPainter->font();
+   apf.setPointSize ((3*apf.pointSize())/4);
+   this->axisPainter->setFont (apf);
+
    this->axisPainter->setOrientation (QEAxisPainter::Left_To_Right);
    this->axisPainter->setMinimum (this->mMinimum);
    this->axisPainter->setMaximum (this->mMaximum);

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -42,42 +42,51 @@
 #include "QEStripChartContextMenu.h"
 #include "QEStripChartStatistics.h"
 
-#define DEBUG  qDebug () <<  "QEStripChartItem::" <<  __FUNCTION__  << ":" << __LINE__
+#define DEBUG  qDebug () <<  "QEStripChartItem" << __LINE__ <<  __FUNCTION__  << "  "
 
-// Standard Channel Access archiver only support 10K points
+// Defines the maximum number of points requested to be extracted from the
+// archiver per PV. The Channel Access archiver interface itself supports upto
+// 10K points, but on a typical sized screen, we cannot sensibly use more points.
 //
-#define MAXIMUM_POINTS  10000
+#define MAXIMUM_HISTORY_POINTS   5000
+
+// Defines the number of live points to be accumulated before dropping
+// older points.
+//
+#define MAXIMUM_LIVE_POINTS      40000
+
+// Can't declare black as QColor (0x000000)
+//
+static const QColor clWhite (0xFF, 0xFF, 0xFF, 0xFF);
+static const QColor clBlack (0x00, 0x00, 0x00, 0xFF);
 
 // Define colours: essentially RGB byte triplets
 //
 static const QColor item_colours [QEStripChart::NUMBER_OF_PVS] = {
     QColor (0xFF0000), QColor (0x0000FF), QColor (0x008000), QColor (0xFF8000),
     QColor (0x4080FF), QColor (0x800000), QColor (0x008080), QColor (0x808000),
-    QColor (0x800080), QColor (0x00FF00), QColor (0x00FFFF), QColor (0xFFFF00)
+    QColor (0x800080), QColor (0x00FF00), QColor (0x00FFFF), QColor (0xFFFF00),
+    QColor (0x8F00C0), QColor (0xC0008F), QColor (0xB040B0), clBlack
 };
 
-// Can't declare black as QColor (0x000000)
-//
-static const QColor clBlack (0x00, 0x00, 0x00, 0xFF);
-static const QColor clWhite (0xFF, 0xFF, 0xFF, 0xFF);
 
 static const QString letterStyle ("QWidget { background-color: #e8e8e8; }");
 static const QString inuseStyle  ("QWidget { background-color: #e0e0e0; }");
 static const QString unusedStyle ("QWidget { background-color: #c0c0c0; }");
 
-static const QString scaledTip ("Note: this PV has been re-scaled");
-static const QString regularTip ("Use context menu to modify PV attributes or double click here.");
+static const QString scaledTip  (" Note: this PV has been re-scaled ");
+static const QString regularTip (" Use context menu to modify PV attributes or double click here. ");
 
 
 //==============================================================================
 //
 QEStripChartItem::QEStripChartItem (QEStripChart* chartIn,
-                                    unsigned int slotIn,
-                                    QWidget* parent) : QWidget (parent), QEWidget (this)
+                                    const int slotIn,
+                                    QWidget* parent) : QWidget (parent)
 {
    QColor defaultColour;
 
-   // Save abnd set input parameters.
+   // Save and set input parameters.
    //
    this->chart = chartIn;
    this->slot = slotIn;
@@ -99,11 +108,12 @@ QEStripChartItem::QEStripChartItem (QEStripChart* chartIn,
 
    this->pvName->setIndent (6);
    this->pvName->setToolTip (regularTip);
-   this->pvName->setAcceptDrops (true);
+   this->pvName->installEventFilter (this);   // for double click
 
-   // Use the chart item object as the pvName event filter object.
+   // Set the event filter for drag/dropping.
    //
-   this->pvName->installEventFilter (this);
+   this->setAcceptDrops (true);
+   this->installEventFilter (this);
 
    // Set up context menus.
    //
@@ -153,8 +163,10 @@ QEStripChartItem::QEStripChartItem (QEStripChart* chartIn,
 
    // Set up connection to archive access mamanger.
    //
-   QObject::connect (&this->archiveAccess, SIGNAL (setArchiveData (const QObject *, const bool, const QCaDataPointList &)),
-                     this,                 SLOT   (setArchiveData (const QObject *, const bool, const QCaDataPointList &)));
+   QObject::connect (&this->archiveAccess, SIGNAL (setArchiveData (const QObject*, const bool, const QCaDataPointList&,
+                                                                   const QString&, const QString&)),
+                     this,                 SLOT   (setArchiveData (const QObject*, const bool, const QCaDataPointList&,
+                                                                   const QString&, const QString&)));
 
 
    this->connect (this->pvName, SIGNAL (customContextMenuRequested (const QPoint &)),
@@ -179,10 +191,10 @@ QEStripChartItem::QEStripChartItem (QEStripChart* chartIn,
    // For example, the QEGui application can host docks and toolbars for QE widgets
    // Needed to lauch the PV Statistics window.
    //
-   if (this->isProfileDefined ()) {
+   if (this->chart && this->chart->isProfileDefined ()) {
       // Setup a signal to request component hosting.
       //
-      QObject* launcher = this->getGuiLaunchConsumer ();
+      QObject* launcher = this->chart->getGuiLaunchConsumer ();
       if (launcher) {
          this->hostSlotAvailable =
             QObject::connect (this,     SIGNAL (requestAction (const QEActionRequests& )),
@@ -246,6 +258,7 @@ void QEStripChartItem::clear ()
    this->historicalMinMax.clear ();
    this->realTimeMinMax.clear ();
    this->historicalTimeDataPoints.clear ();
+   this->dashExists = false;
    this->realTimeDataPoints.clear ();
 
    this->useReceiveTime = false;
@@ -272,7 +285,7 @@ qcaobject::QCaObject* QEStripChartItem::getQcaItem ()
 //
 void QEStripChartItem::connectQcaSignals ()
 {
-   qcaobject::QCaObject *qca;
+   qcaobject::QCaObject* qca;
 
    // Set up connection if we can/if we need to.
    //
@@ -291,7 +304,7 @@ void QEStripChartItem::connectQcaSignals ()
 
 //------------------------------------------------------------------------------
 //
-void QEStripChartItem::setPvName (QString pvName, QString substitutions)
+void QEStripChartItem::setPvName (const QString& pvName, const QString& substitutions)
 {
    QString substitutedPVName;
 
@@ -302,12 +315,17 @@ void QEStripChartItem::setPvName (QString pvName, QString substitutions)
 
    // We "know" that a QELabel has only one PV (index = 0).
    //
+   this->caLabel->deactivate();
    this->caLabel->setVariableNameAndSubstitutions (pvName.trimmed (), substitutions, 0);
-   substitutedPVName = caLabel->getSubstitutedVariableName (0);
 
    // Verify caller attempting add a potentially sensible PV?
    //
-   if (substitutedPVName  == "") return;
+   substitutedPVName = caLabel->getSubstitutedVariableName (0);
+   if (substitutedPVName.isEmpty ()) return;
+
+   // Ensure we always active irrespective of the profile DontActivateYet state.
+   //
+   this->caLabel->activate();
 
    this->caLabel->setStyleSheet (inuseStyle);
    this->dataKind = PVData;
@@ -320,9 +338,21 @@ void QEStripChartItem::setPvName (QString pvName, QString substitutions)
 
 //------------------------------------------------------------------------------
 //
-QString QEStripChartItem::getPvName ()
+QString QEStripChartItem::getPvName () const
 {
    return this->isInUse () ? this->caLabel->getSubstitutedVariableName (0) : "";
+}
+
+//------------------------------------------------------------------------------
+//
+QString QEStripChartItem::getEgu () const
+{
+   QString result = "";
+   if (this->isInUse ()) {
+      qcaobject::QCaObject* qca = this->caLabel->getQcaItem (0);
+      if (qca) result = qca->getEgu ();
+   }
+   return result;
 }
 
 //------------------------------------------------------------------------------
@@ -350,14 +380,14 @@ void QEStripChartItem::setCaption ()
 
 //------------------------------------------------------------------------------
 //
-bool QEStripChartItem::isInUse ()
+bool QEStripChartItem::isInUse () const
 {
    return ((this->dataKind == PVData) || (this->dataKind == CalculationData));
 }
 
 //------------------------------------------------------------------------------
 //
-bool QEStripChartItem::isCalculation ()
+bool QEStripChartItem::isCalculation () const
 {
    return (this->dataKind == CalculationData);
 }
@@ -426,36 +456,51 @@ QEDisplayRanges QEStripChartItem::getBufferedMinMax (bool doScale)
 }
 
 //------------------------------------------------------------------------------
-//
-void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
-                                       const bool isRealTime,
-                                       QEDisplayRanges & plottedTrackRange)
-{
-
 // macro functions to convert real-world values to a plot values, doing safe log conversion if required.
 //
 #define PLOT_T(t) (t)
 #define PLOT_Y(y) (this->scaling.value (y))
 
+//------------------------------------------------------------------------------
+//
+QPointF QEStripChartItem::dataPointToReal (const QCaDataPoint& point) const
+{
+
+   const QCaDateTime end_time = this->chart->getEndDateTime ();
+   const double t = end_time.secondsTo (point.datetime);
+   QPointF result = QPointF (PLOT_T (t), PLOT_Y (point.value));
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEStripChartItem::plotDataPoints (const QCaDataPointList& dataPoints,
+                                       const bool isRealTime,
+                                       const Qt::PenStyle penStyle,
+                                       QEDisplayRanges& plottedTrackRange)
+{
+   const QCaDateTime start_time = this->chart->getStartDateTime ();
    const QCaDateTime end_time = this->chart->getEndDateTime ();
    const double duration = this->chart->getDuration ();
    QEGraphic* graphic = this->chart->plotArea;
 
    QVector<double> tdata;
    QVector<double> ydata;
-   int count;
-   int j;
    QCaDataPoint point;
    QCaDataPoint previous;
    bool doesPreviousExist;
    bool isFirstPoint;
    double t;
+   bool extendToEnd = false;
 
    if (!graphic) return;   // sanity check
 
-   graphic->setCurveRenderHint (QwtPlotItem::RenderAntialiased);
+   graphic->setCurveRenderHint (QwtPlotItem::RenderAntialiased, false);
    graphic->setCurveStyle (QwtPlotCurve::Lines);
-   graphic->setCurvePen (this->getPen ());
+
+   QPen pen = this->getPen ();
+   pen.setStyle (penStyle);
+   graphic->setCurvePen (pen);
 
    // Both values zero is deemed to be undefined.
    //
@@ -463,8 +508,9 @@ void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
    isFirstPoint = true;
    doesPreviousExist = false;
 
-   count = dataPoints.count ();
-   for (j = 0; j < count; j++) {
+   const int first = dataPoints.indexBeforeTime (start_time, 0);
+   const int count = dataPoints.count ();
+   for (int j = first; j < count; j++) {
       point = dataPoints.value (j);
 
       // Calculate the time of this point (in seconds) relative to the end of the chart.
@@ -524,7 +570,6 @@ void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
                //
                tdata.append (PLOT_T (t));
                ydata.append (ydata.last ());   // is a copy - no PLOT_Y required.
-
                graphic->plotCurveData (tdata, ydata);
 
                tdata.clear ();
@@ -538,8 +583,9 @@ void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
 
       } else {
          // Point time is after current plot time of the chart.
-         // Move along - nothing more to see here.
+         // This this point is dispalyable, then plot upto the edge of the chart.
          //
+         extendToEnd = point.isDisplayable ();;
          break;
       }
    }
@@ -555,9 +601,9 @@ void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
    // Plot what we have accumulated.
    //
    if (ydata.count () >= 1) {
-      // Real time extention to time now required?
+      // Extention to time now required?
       //
-      if (isRealTime) {
+      if (isRealTime || extendToEnd) {
          // Replicate last value upto end of chart.
          //
          tdata.append (PLOT_T (0.0));
@@ -565,10 +611,10 @@ void QEStripChartItem::plotDataPoints (const QCaDataPointList & dataPoints,
       }
       graphic->plotCurveData (tdata, ydata);
    }
+}
 
 #undef PLOT_T
 #undef PLOT_Y
-}
 
 //------------------------------------------------------------------------------
 //
@@ -633,11 +679,20 @@ void QEStripChartItem::plotData ()
 
    if (this->lineDrawMode != QEStripChartNames::ldmHide) {
 
-      this->plotDataPoints (this->historicalTimeDataPoints, false, temp);
+      this->plotDataPoints (this->historicalTimeDataPoints, false, Qt::SolidLine, temp);
       this->displayedMinMax.merge (temp);
 
-      this->plotDataPoints (this->realTimeDataPoints, true, temp);
+      this->plotDataPoints (this->realTimeDataPoints, true, Qt::SolidLine, temp);
       this->displayedMinMax.merge (temp);
+
+      // Do historical dash special if required.
+      //
+      if (this->dashExists) {
+         QCaDataPointList dashList;
+         dashList.append (this->dashStart);
+         dashList.append (this->dashEnd);
+         this->plotDataPoints (dashList, false, Qt::DashLine, temp);
+      }
    }
 
    // Sometimes the qca Item first used is not the qca Item we end up with, due the
@@ -647,6 +702,32 @@ void QEStripChartItem::plotData ()
    //
    this->connectQcaSignals ();
 }
+
+//------------------------------------------------------------------------------
+//
+const QCaDataPoint* QEStripChartItem::findNearestPoint (const QCaDateTime& searchTime) const
+{
+   const QCaDataPoint* result = NULL;
+
+   const QCaDataPoint* historicalNearest = this->historicalTimeDataPoints.findNearestPoint (searchTime);
+   const QCaDataPoint* realTimeNearest = this->realTimeDataPoints.findNearestPoint (searchTime);
+
+   if (!historicalNearest) {
+      result = realTimeNearest;
+   } else if (!realTimeNearest) {
+      result = historicalNearest;
+   } else {
+      // Both points found.
+      //
+      double hdt = historicalNearest->datetime.secondsTo (searchTime);
+      double rdt = realTimeNearest->datetime.secondsTo (searchTime);
+
+      result = ABS (hdt) >= ABS (rdt) ? realTimeNearest : historicalNearest;
+   }
+
+   return result;
+}
+
 
 //------------------------------------------------------------------------------
 //
@@ -674,7 +755,7 @@ void QEStripChartItem::setDataConnection (QCaConnectionInfo& connectionInfo, con
       point = this->realTimeDataPoints.last ();
       point.datetime = QDateTime::currentDateTime ().toUTC ();
       this->realTimeDataPoints.append (point);
-      if (this->realTimeDataPoints.count () > MAXIMUM_POINTS) {
+      if (this->realTimeDataPoints.count () > MAXIMUM_LIVE_POINTS) {
          this->realTimeDataPoints.removeFirst ();
       }
 
@@ -682,7 +763,7 @@ void QEStripChartItem::setDataConnection (QCaConnectionInfo& connectionInfo, con
       //
       point.alarm = QCaAlarmInfo (NO_ALARM, INVALID_ALARM);
       this->realTimeDataPoints.append (point);
-      if (this->realTimeDataPoints.count () > MAXIMUM_POINTS) {
+      if (this->realTimeDataPoints.count () > MAXIMUM_LIVE_POINTS) {
          this->realTimeDataPoints.removeFirst ();
       }
 
@@ -692,7 +773,8 @@ void QEStripChartItem::setDataConnection (QCaConnectionInfo& connectionInfo, con
 
 //------------------------------------------------------------------------------
 //
-void QEStripChartItem::setDataValue (const QVariant& value, QCaAlarmInfo& alarm, QCaDateTime& datetime, const unsigned int& )
+void QEStripChartItem::setDataValue (const QVariant& value, QCaAlarmInfo& alarm,
+                                     QCaDateTime& datetime, const unsigned int& )
 {
    QVariant input;
    double y;
@@ -740,7 +822,7 @@ void QEStripChartItem::setDataValue (const QVariant& value, QCaAlarmInfo& alarm,
    }
    this->realTimeDataPoints.append (point);
 
-   if (this->realTimeDataPoints.count () > MAXIMUM_POINTS) {
+   if (this->realTimeDataPoints.count () > MAXIMUM_LIVE_POINTS) {
       this->realTimeDataPoints.removeFirst ();
    }
 
@@ -749,16 +831,17 @@ void QEStripChartItem::setDataValue (const QVariant& value, QCaAlarmInfo& alarm,
 
 //------------------------------------------------------------------------------
 //
-void QEStripChartItem::setArchiveData (const QObject *userData, const bool okay,
-                                       const QCaDataPointList & archiveData)
+void QEStripChartItem::setArchiveData (const QObject* userData, const bool okay,
+                                       const QCaDataPointList& archiveData,
+                                       const QString& pvName, const QString& supplementary)
 {
    QCaDateTime firstRealTime;
-   QCaDateTime pointTime;
    int count;
-   int j, last;
    QCaDataPoint point;
 
    if ((userData == this) && (okay)) {
+
+      this->dashExists = false;
 
       // Clear any existing data and save new data
       // Maybe would could/should do some stiching together
@@ -766,10 +849,23 @@ void QEStripChartItem::setArchiveData (const QObject *userData, const bool okay,
       this->historicalTimeDataPoints.clear ();
       this->historicalTimeDataPoints = archiveData;
 
+      // Determine number of valid points, and generate user information message.
+      //
+      count = this->historicalTimeDataPoints.count ();
+      int validCount = 0;
+      for (int j = 0; j < count; j++) {
+         QCaDataPoint p = this->historicalTimeDataPoints.value (j);
+         if (p.isDisplayable ()) {
+            validCount++;
+         }
+      }
+
+      QString message = QString ("%1: %2 out of %3 points valid")
+            .arg (pvName).arg (validCount).arg(count);
+      this->chart->setReadOut (message);
 
       // Have any data points been returned?
       //
-      count = this->historicalTimeDataPoints.count ();
       if (count > 0) {
 
          // Now throw away any historical data that overlaps with the real time data,
@@ -784,43 +880,77 @@ void QEStripChartItem::setArchiveData (const QObject *userData, const bool okay,
             firstRealTime = QDateTime::currentDateTime ().toUTC ();
          }
 
+         // Look at first historical data point.
+         //
+         point = this->historicalTimeDataPoints.value(0);
+         if (point.datetime >= firstRealTime) {
+            // Historical data adds nothing here.
+            return;
+         }
+
          // Purge all points with a time >= firstRealTime, except for the
          // the very first point after first time.
          //
-         last = count - 1;
-         for (j = last - 1; j >= 0; j--) {
-            point = this->historicalTimeDataPoints.value (j);
-            pointTime = point.datetime;
-            if (pointTime >= firstRealTime) {
-               this->historicalTimeDataPoints.removeLast ();  // i.e. j+1
+         while (this->historicalTimeDataPoints.count () >= 2) {
+            int penUltimate = this->historicalTimeDataPoints.count () - 2;
+            point = this->historicalTimeDataPoints.value(penUltimate);
+            if (point.datetime >= firstRealTime) {
+               this->historicalTimeDataPoints.removeLast ();
             } else {
                // purge complete
                break;
             }
          }
 
-         // Tuncate the time of the last point left in historicalTimeDataPoints
-         // to firstTime if needs be.
+         // Truncate last historical point so that there is no time overlap.
          //
-         last = this->historicalTimeDataPoints.count () - 1;
-         if (last >= 0) {
-            point = this->historicalTimeDataPoints.value (last);
-            if (point.datetime > firstRealTime) {
-                point.datetime = firstRealTime;
-                this->historicalTimeDataPoints.replace (last, point);
-            }
+         QCaDataPoint lastPoint = this->historicalTimeDataPoints.last ();
+         if (lastPoint.datetime > firstRealTime) {
+            lastPoint.datetime = firstRealTime;
+            int last = this->historicalTimeDataPoints.count () - 1;
+            this->historicalTimeDataPoints.replace (last, point);
+         }
+
+
+         // Because the archiver is a few minutes out of date, there may be
+         // a gap between the end of the received historical data and the start
+         // of the buffered real time data - therefore we create a virtual
+         // data points in order to 'terminate' the historical data.
+         // We also define the Dash parameters.
+         //
+         if ((lastPoint.datetime < firstRealTime) && lastPoint.isDisplayable()) {
+
+            // Create virtual invalid point at end of historical data.
+            // Limit Time to be no more than live data or or 10 seconds.
+            //
+            QCaDataPoint virtualPoint = lastPoint;
+            QCaDateTime plus10 = lastPoint.datetime.addSeconds (10.0);
+            virtualPoint.datetime = MIN (firstRealTime, plus10);
+
+            // Append virtual historical point.
+            //
+            this->historicalTimeDataPoints.append (virtualPoint);
+
+            // Set up historical to live dash parameters.
+            //
+            this->dashStart = virtualPoint;
+            this->dashEnd = virtualPoint;
+            this->dashEnd.datetime = firstRealTime;
+            this->dashExists = true;
          }
 
          // Now determine the min and max values of the remaining data points.
          //
          this->historicalMinMax.clear ();
          count = this->historicalTimeDataPoints.count ();
-         for (j = 0; j < count; j++) {
+         for (int j = 0; j < count; j++) {
             point = this->historicalTimeDataPoints.value (j);
             if (point.isDisplayable ()) {
                this->historicalMinMax.merge (point.value);
             }
          }
+      } else {
+         this->chart->setReadOut (supplementary);
       }
 
       // and replot the data
@@ -828,7 +958,7 @@ void QEStripChartItem::setArchiveData (const QObject *userData, const bool okay,
       this->chart->setReplotIsRequired ();
 
    } else {
-      DEBUG << "wrong item and/or data response not okay";
+      this->chart->setReadOut (supplementary);
    }
 }
 
@@ -836,8 +966,46 @@ void QEStripChartItem::setArchiveData (const QObject *userData, const bool okay,
 //
 void QEStripChartItem::readArchive ()
 {
-   const QDateTime startDateTime = this->chart->getStartDateTime ();
-   const QDateTime endDateTime   = this->chart->getEndDateTime ();
+   if (!this->isInUse ()) return;  // sainity check
+
+   const double chartDuration =  this->chart->getDuration();  // in seconds
+
+   // For longer time frames use selected data extractions.
+   // For short time frames, we can accomodate raw data extraction.
+   //
+   const double rawLimit = 10.0 * 60.0;
+   QEArchiveInterface::How how =
+         (chartDuration >= rawLimit) ? this->archiveReadHow : QEArchiveInterface::Raw;
+
+   // Depending on the mode, we actually request a bit more  before
+   // and/or after the displayed window in order to cashe data for when
+   // the operator pages forward or backwards.
+   //
+   // However we limit any extra size to at most one day.
+   //
+   const double aday = 24.0 * 60.0 * 60.0;
+   double extra;
+   switch (how) {
+      case QEArchiveInterface::Raw:          extra = 0.0;                        break;
+      case QEArchiveInterface::SpreadSheet:  extra = 0.0;                        break;
+      case QEArchiveInterface::Averaged:     extra = MIN (aday, chartDuration);  break;
+      case QEArchiveInterface::PlotBinning:  extra = 0.0;                        break;
+      case QEArchiveInterface::Linear:       extra = MIN (aday, chartDuration);  break;
+      default:                               extra = 0.0;                        break;
+   }
+
+   const QDateTime archiveStartDateTime = this->chart->getStartDateTime ().addSecs (-extra);
+   const QDateTime archiveEndDateTime   = this->chart->getEndDateTime ().addSecs (+extra);
+
+   // Doesn't apply to Plot_Binning which return up to the maximum
+   // supported by archiver (currently 10K).
+   //
+   int numberPoints = MAXIMUM_HISTORY_POINTS;
+
+   // Extract the array element index used to display this PV.
+   // Go with zero for now.
+   //
+   int arrayIndex = 0;
 
    // Assign the chart widget message source id the the associated archive access object.
    // We re-assign just before each read in case it has changed.
@@ -845,8 +1013,8 @@ void QEStripChartItem::readArchive ()
    this->archiveAccess.setMessageSourceId (this->chart->getMessageSourceId ());
 
    this->archiveAccess.readArchive
-         (this, this->getPvName (),  startDateTime, endDateTime,
-          4000, this->archiveReadHow, 0);
+         (this, this->getPvName (), archiveStartDateTime, archiveEndDateTime,
+          numberPoints, how, arrayIndex);
 }
 
 //------------------------------------------------------------------------------
@@ -961,6 +1129,7 @@ bool QEStripChartItem::eventFilter (QObject *obj, QEvent *event)
 {
    const QEvent::Type type = event->type ();
    QMouseEvent* mouseEvent = NULL;
+   bool selfDrop;
 
    switch (type) {
 
@@ -973,37 +1142,48 @@ bool QEStripChartItem::eventFilter (QObject *obj, QEvent *event)
          break;
 
       case QEvent::DragEnter:
-         if (obj == this->pvName) {
+         if (obj == this) {
             QDragEnterEvent* dragEnterEvent = static_cast<QDragEnterEvent*> (event);
+
+            // Avoid self drops. Only allow drop if not own caLabel, not this QEStripChartItem
+            // and not own chart.
+            //
+            selfDrop =
+                  (dragEnterEvent->source() == this->caLabel) ||
+                  (dragEnterEvent->source() == this) ||
+                  (dragEnterEvent->source() == this->chart);
 
             // Can only drop if text and not in use.
             //
-            if (dragEnterEvent->mimeData()->hasText () && !this->isInUse()) {
+            if (dragEnterEvent->mimeData()->hasText () && !this->isInUse() && !selfDrop) {
                dragEnterEvent->setDropAction (Qt::CopyAction);
                dragEnterEvent->accept ();
                this->highLight (true);
             } else {
                dragEnterEvent->ignore ();
+               this->chart->setAcceptDrops (false); // stop chart accepting this
                this->highLight (false);
             }
-            return true;
+            return true;   // we have handled drag enter event
          }
          break;
 
       case QEvent::DragLeave:
-         if (obj == this->pvName) {
+         if (obj == this) {
             this->highLight (false);
-            return true;
+            this->chart->evaluateAllowDrop ();   // allow drops if applicable
+            return true;                         // we have handled drag leave event
          }
          break;
 
 
       case QEvent::Drop:
-         if (obj == this->pvName) {
+         if (obj == this) {
             QDropEvent* dropEvent = static_cast<QDropEvent*> (event);
             this->pvNameDropEvent (dropEvent);
             this->highLight (false);
-            return true;
+            this->chart->evaluateAllowDrop ();   // allow drops if applicable
+            return true;                         // we have handled drag drop event
          }
          break;
 
@@ -1012,7 +1192,9 @@ bool QEStripChartItem::eventFilter (QObject *obj, QEvent *event)
          break;
    }
 
-   return false;
+   // we have not handled this event, pass to parent
+   //
+   return QWidget::eventFilter (obj, event);
 }
 
 //------------------------------------------------------------------------------
@@ -1114,7 +1296,7 @@ void QEStripChartItem::contextMenuRequested (const QPoint & pos)
    QPoint golbalPos;
 
    tempPos = pos;
-   tempPos.setY (2);   // align with top of label
+   tempPos.setY (-2);   // always align same wrt top of label
    golbalPos = this->mapToGlobal (tempPos);
 
    if (this->isInUse()) {
@@ -1364,13 +1546,14 @@ void QEStripChartItem::saveConfiguration (PMElement & parentElement)
 
 //------------------------------------------------------------------------------
 //
-void QEStripChartItem::restoreConfiguration (PMElement & parentElement)
+void QEStripChartItem::restoreConfiguration (PMElement& parentElement)
 {
    QString pvName;
    bool status;
 
-   PMElement pvElement = parentElement.getElement ("PV", "slot", (int) this->slot);
+   this->clear();
 
+   PMElement pvElement = parentElement.getElement ("PV", "slot", (int) this->slot);
    if (pvElement.isNull ()) return;
 
    // Attempt to extract a PV name

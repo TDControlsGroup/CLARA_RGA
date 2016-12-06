@@ -33,16 +33,15 @@ public:
     }
 
  
-	void setEPICS(const char * title, const char * pv)
+	void setEPICS(const char * pv)
 	{
-		this->setTitle(title);
 
 		QString base=pv;
 
 			FILSEL   ->setProperty ("variable", base+":SETFIL");
 
-			FILON    ->setProperty ("variable", base+":FILON");
-			FILOFF   ->setProperty ("variable", base+":FILOFF");		
+			FILON    ->setProperty ("variable", base+":FILCON");
+			FILOFF   ->setProperty ("variable", base+":FILCON");		
 			LEDFAIL  ->setProperty ("variable", base+":FILSTA");
 			LEDFIL   ->setProperty ("variable", base+":FILSTA");
 			LEDCOOL  ->setProperty ("variable", base+":FILSTA");

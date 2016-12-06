@@ -172,7 +172,6 @@ Makefile: ../framework/framework.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/qt_config.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.conf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_pre.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf \
@@ -362,7 +361,6 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/qt_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/qt_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.conf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/spec_post.prf:
-.qmake.stash:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_pre.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf:
@@ -449,7 +447,6 @@ clean: debug-clean release-clean  FORCE
 	-$(DEL_FILE) designer\libQEPlugin.a
 distclean: debug-distclean release-distclean  FORCE
 	-$(DEL_FILE) Makefile
-	-$(DEL_FILE) .qmake.stash
 
 debug-mocclean:
 	$(MAKE) -f $(MAKEFILE).Debug mocclean

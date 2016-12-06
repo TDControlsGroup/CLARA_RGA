@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013, 2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -34,7 +34,11 @@
 #include <QObject>
 #include <QTimer>
 #include <QWidget>
+#include <QVariant>
 #include <QVector>
+#include <QPen>
+#include <QBrush>
+#include <QFont>
 
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
@@ -68,7 +72,10 @@ class QEGraphicMarkup;  // differed declaration
 ///
 /// h) Provides wrapper functions to hide QWT version API changes.
 ///
-class QEPLUGINLIBRARYSHARED_EXPORT QEGraphic : public QWidget, public QEGraphicNames {
+class QEPLUGINLIBRARYSHARED_EXPORT QEGraphic :
+      public QWidget,
+      public QEGraphicNames
+{
    Q_OBJECT
 public:
    // By default, there are no markups set as in use.
@@ -95,32 +102,95 @@ public:
    void setAvailableMarkups (const MarkupFlags graphicMarkupsSet);
    MarkupFlags getAvailableMarkups () const;
 
+   // Set/Get the markup visible.
+   //
    void setMarkupVisible (const Markups markup, const bool isVisible);
    bool getMarkupVisible (const Markups markup) const;
 
-   // When a mark has only an x or y postion, the y or x value is igmored.
+   // Set/Get the markup enabled.
+   //
+   void setMarkupEnabled (const Markups markup, const bool isEnabled);
+   bool getMarkupEnabled (const Markups markup) const;
+
+   // Set/Get the markup selected.
+   //
+   void setMarkupSelected (const Markups markup, const bool selected);
+   bool getMarkupIsSelected (const Markups markup) const;
+
+   // When a mark has only an x or y postion, the y or x value is ignored.
    //
    void setMarkupPosition (const Markups markup, const QPointF& position);
    QPointF getMarkupPosition (const Markups markup) const;
 
-   // Depricated - use setMarkupPosition/setMarkupVisible instead.
+   // Set/Get the markup text.
    //
-   void setCrosshairsVisible (const bool isVisible);
-   void setCrosshairsVisible (const bool isVisible, const QPointF& position);
-   bool getCrosshairsVisible () const;
+   void setMarkupData (const Markups markup, const QVariant& text);
+   QVariant getMarkupData (const Markups markup) const;
 
-   // Allocates a curve, sets current curve attibutes and attaches to plot.
+   // NOTE: Depricated - use setMarkupPosition/setMarkupVisible instead.
    //
-   void plotCurveData (const DoubleVector& xData, const DoubleVector& yData);
+   void setCrosshairsVisible (const bool isVisible);                            ///< Depricated
+   void setCrosshairsVisible (const bool isVisible, const QPointF& position);   ///< Depricated
+   bool getCrosshairsVisible () const;                                          ///< Depricated
 
-   // Draw text centred on specified position.
-   // Position may be real world coordinates or pixel coordates.
-   //
-   void drawText (const QPointF& posn, const QString& text, const TextPositions option);
-   void drawText (const QPoint& posn,  const QString& text, const TextPositions option);
+   /**
+    * Allocates a curve, sets current curve attibutes and attaches to plot.
+    *
+    * @param xData Vector of X axis values
+    * @param yData Vector of Y axis values
+    * @param yAxis Which Y axis should the yData be plotted against. If not
+    * provided left axis is used by default
+    */
+   void plotCurveData (const DoubleVector& xData,
+                       const DoubleVector& yData,
+                       const QwtPlot::Axis yAxis = QwtPlot::yLeft);
 
-   void setXRange (const double min, const double max, const AxisMajorIntervalModes mode, const int value, const bool immediate);
-   void setYRange (const double min, const double max, const AxisMajorIntervalModes mode, const int value, const bool immediate);
+   /**
+    * Draw text at position specifying centre of bottom left corner.
+    * Position may be real world coordinates or pixel coordates.
+    *
+    * @param posn  The postion to draw text
+    * @param text  The text to draw
+    * @param option  Specifies if position is in cavas pixels or real world co-ordinates
+    * @param pointSize Defines text point size. Honors QEScaling parameters.
+    * @param isCentred  When true text is centered about point, otherwise point
+    *                   defines bottom left corner of the generated text
+    */
+   void drawText (const QPointF& posn,
+                  const QString& text,
+                  const TextPositions option,
+                  bool isCentred = true);
+
+   void drawText (const QPoint& posn,
+                  const QString& text,
+                  const TextPositions option,
+                  bool isCentred = true);
+
+
+   void setXRange (const double min, const double max, const AxisMajorIntervalModes mode,
+                   const int value, const bool immediate);
+
+   /**
+    * Returns the range of X axis
+    *
+    * @param min Minimum X value
+    * @param max Maximum X value
+    */
+   void getXRange (double& min, double& max) const;
+
+   void setYRange (const double min, const double max, const AxisMajorIntervalModes mode,
+                   const int value, const bool immediate,
+                   const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
+
+   /**
+    * Returns the rance of either left or right Y axis
+    *
+    * @param min              Reference to variable to be used to store minimum value
+    * @param max              Reference to variable to be used to store maximumSize() value
+    * @param selectedYAxis    Range for which Y axis is required. If not provided left
+    *                         axis is used by default
+    */
+   void getYRange (double& min, double& max, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
 
    // Last call - renders all curves defined since call to releaseCurves.
    // Calls inner QwtPlot replot.
@@ -141,33 +211,93 @@ public:
 
    // Set and get axis attribute functions
    //
-   void setAxisEnableX (const bool enable) { this->xAxis->setAxisEnable (enable);  }
-   bool getAxisEnableX () const            { return this->xAxis->getAxisEnable (); }
+   void setAxisEnableX (const bool enable);
+   bool getAxisEnableX () const;
 
-   void setAxisEnableY (const bool enable) { this->xAxis->setAxisEnable (enable);  }
-   bool getAxisEnableY () const            { return this->yAxis->getAxisEnable (); }
+   /**
+    * Enables or disables left or right Y axis
+    *
+    * @param enable        Enable/disable Y axis
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    */
+   void setAxisEnableY (const bool enable, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
+
+   /**
+    * Is left/right Y axis enabled/disabled
+    *
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    * @return              Boolean signaling if axis is enabled/disabled
+    */
+   bool getAxisEnableY (const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
 
    // Scale and offset scale the x and y data before ploting, i.e. allows different
    // axis and data coordinates. For example, with X scale set to 1/60, data could be
    // expressed in seconds, but (more conviently) have time axis is minutes.
    //
-   void setXScale (const double scale) { this->xAxis->setScale (scale);    }
-   double getXScale () const           { return this->xAxis->getScale ();  }
+   void setXScale (const double scale);
+   double getXScale () const;
 
-   void setXOffset (const double offset) { this->xAxis->setOffset (offset);   }
-   double getXOffset () const            { return this->xAxis->getOffset ();  }
+   void setXOffset (const double offset);
+   double getXOffset () const;
 
-   void setXLogarithmic (const bool isLog) { this->xAxis->setLogarithmic (isLog);   }
-   bool getXLogarithmic () const           { return this->xAxis->getLogarithmic (); }
+   void setXLogarithmic (const bool isLog);
+   bool getXLogarithmic () const;
 
-   void setYScale (const double scale) { this->yAxis->setScale (scale);    }
-   double getYScale () const           { return this->yAxis->getScale ();  }
+   /**
+    * Sets scale on either left or right Y axis
+    *
+    * @param scale         Scale to be set
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    */
+   void setYScale (const double scale, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
 
-   void setYOffset (const double offset) { this->yAxis->setOffset (offset);   }
-   double getYOffset () const            { return this->yAxis->getOffset ();  }
+   /**
+    * Returns the scale set on left/right Y axis.
+    *
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default.
+    * @return              Scale set
+    */
+   double getYScale (const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
 
-   void setYLogarithmic (const bool isLog) { this->yAxis->setLogarithmic (isLog);   }
-   bool getYLogarithmic () const           { return this->yAxis->getLogarithmic (); }
+   /**
+    * Sets offset on either left or right Y axis
+    *
+    * @param offset        Offset to be set
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    */
+   void setYOffset (const double offset, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
+
+   /**
+    * Returns the offset set on left/right Y axis.
+    *
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default.
+    * @return              Offset set
+    */
+   double getYOffset (const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
+
+   /**
+    * Sets the scale on Y axis to be logarithmic or not
+    *
+    * @param isLog         Boolean flag defining if the scale is to be logarithmic
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    */
+   void setYLogarithmic (const bool isLog, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
+
+   /**
+    * Is the scale set to be logarithmic or not on left/right axis
+    *
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    * @return              Boolean flag defining if the scale set is logarithmic
+    */
+   bool getYLogarithmic (const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
+
+   /**
+    * Sets the color of left/right Y axis
+    *
+    * @param color         Color to be set
+    * @param selectedYAxis Left/right Y axis. If not provided left axis is used by default
+    */
+   void setYColor (const QColor color, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
 
    // Set and get current curve attributes.
    // These are used for internally allocated curves.
@@ -178,8 +308,22 @@ public:
    void setCurveBrush (const QBrush& brush);
    QBrush getCurveBrush () const;
 
-   void setCurveRenderHint (const QwtPlotItem::RenderHint hint);
-   QwtPlotItem::RenderHint getCurveRenderHint ();
+   // Set and get current text font attributes.
+   // These are used for internally allocated curves.
+   //
+   void setTextFont (const QFont& font);
+   QFont getTextFont () const;
+
+   // Point size of current text font.
+   //
+   void setTextPointSize (const int pointSize);
+   int getTextPointSize () const;
+
+   // The RenderAntialiased hint is off by default.
+   //
+   void setCurveRenderHint (const QwtPlotItem::RenderHint hint, const bool on = true);
+   QwtPlotItem::RenderHint getCurveRenderHint () const;
+   bool getCurveRenderHintOn () const;
 
    void setCurveStyle (const QwtPlotCurve::CurveStyle style);
    QwtPlotCurve::CurveStyle getCurveStyle ();
@@ -187,17 +331,31 @@ public:
    // Utility functions.
    //
    // Converts between pixel coords to real world coords taking into
-   // account any scaling and/or logarithic scaling.
+   // account any scaling and/or logarithic scaling. This can be done for either
+   // left or right Y axis
    //
-   QPointF pointToReal (const QPoint& pos) const;
-   QPointF pointToReal (const QPointF& pos) const;   // overloaded form
-   QPoint realToPoint (const QPointF& pos) const;
+   QPointF pointToReal (const QPoint& pos,  const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
+   QPointF pointToReal (const QPointF& pos, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;   // overloaded form
+   QPoint  realToPoint (const QPointF& pos, const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft) const;
+
+   // Embedded qwt plot manipulation functions.
+   //
+   void enableAxis (int axisId, bool tf = true);
+   void setAxisScale (int axisId, double min, double max, double step = 0);
+   void installCanvasEventFilter (QObject* filter);
+   bool isCanvasObject (QObject* obj) const;
+   QRect getEmbeddedCanvasGeometry () const;
+
+   // Use with care - allows direct manipulation of the plot object.
+   // for functions not covered above.
+   //
+   QwtPlot* getEmbeddedQwtPlot () const;
 
 signals:
    void mouseMove     (const QPointF& posn);
    void wheelRotate   (const QPointF& posn, const int delta);
 
-   // For left and right buttons respectively, provides down (from) mouse
+   // For middle and right buttons respectively, provides down (from) mouse
    // position and current (to) mouse position in user coordinates.
    //
    void areaDefinition (const QPointF& from, const QPointF& to);
@@ -242,6 +400,8 @@ private:
       void setScale (const double scale);
       double getScale () const;
 
+      void setAxisColor (const QColor axisColor) const;
+
       void setOffset (const double offset);
       double getOffset () const;
 
@@ -279,22 +439,36 @@ private:
                                                const QEDisplayRanges& finish,
                                                const int step);
 
-   // Progresses any on-going dynamic axis rescaling.
+   // Progresses any on-going dynamic axis rescaling for left/right Y axis.
    // Return true when this is in progress.
    //
-   bool doDynamicRescaling ();
+   bool doDynamicRescaling (const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
 
-   QEGraphicMarkup* mouseIsOverMarkup (); // uses cursor position to find closest, if any markup
-   void plotMarkups ();     // calls each markup's plot functions which call plotMarkupCurveData.
+   // Uses cursor position to find closest, if any markup calls
+   // each markup's plot functions which call plotMarkupCurveData.
+   QEGraphicMarkup* mouseIsOverMarkup ();
+   void plotMarkups ();
+
    void plotMarkupCurveData (const DoubleVector& xData, const DoubleVector& yData);
-   QwtPlotCurve* createCurveData (const DoubleVector& xData, const DoubleVector& yData);
-   void graphicReplot ();   // relases and replots markups, then calls QwtPlot replot
+
+   // Creates curve data using left/right Y axis
+   QwtPlotCurve* createCurveData (const DoubleVector& xData, const DoubleVector& yData,
+                                  const QwtPlot::Axis selectedYAxis = QwtPlot::yLeft);
+
+   // Relases and replots markups, then calls QwtPlot replot
+   void graphicReplot ();
+
    void drawTexts (QPainter* painter);    // called from OwnPlot
 
-   Axis* xAxis;
-   Axis* yAxis;
+   //Axis position to actual QEGraphic::Axis conversion
+   Axis* axisFromPosition (const QwtPlot::Axis axis) const;
 
-   // We use a map (as oppsed to a hash) because the iteration order is predictable
+   Axis* xAxis;       // bottom
+   Axis* yAxisLeft;
+   Axis* yAxisRight;
+
+   // Provide a mapping from Markups enum to actual mark up object.
+   // We use a map (as opposed to a hash) because the iteration order is predictable
    // and consistant.
    //
    typedef QMap <Markups, QEGraphicMarkup*> QEGraphicMarkupSets;
@@ -309,15 +483,17 @@ private:
    // Keep a list of allocated curves so that we can track and delete them.
    //
    typedef QList<QwtPlotCurve*> CurveLists;
-   CurveLists userCurveList;
-   CurveLists markupCurveList;
+   CurveLists userCurveList;                    // for user curves
+   CurveLists markupCurveList;                  // for internal markup curves
    void releaseCurveList (CurveLists& list);
 
    // Keep a list of drawn texts.
    //
    struct TextItems {
-      QPointF position;   // stored in pixel cooredinates.
+      QPointF position;   // stored in real world coordinates.
       QString text;
+      bool isCentred;     // when true text is centred about the given position
+      QFont font;
       QPen pen;
    };
 
@@ -325,15 +501,18 @@ private:
    TextItemLists textItemList;
    void releaseTextItemList (TextItemLists& list);
 
-   // Curve attributes.
+   // Curve/text attributes.
    //
    QPen pen;
    QBrush brush;
+   QFont textFont;
+
    QwtPlotItem::RenderHint hint;
+   bool hintOn;
    QwtPlotCurve::CurveStyle style;
    QPointF realMousePosition;
 
-   bool   rightIsDefined;          // true when right button pressed
+   bool rightButtonIsPressed;
 
 private slots:
    void tickTimeout ();

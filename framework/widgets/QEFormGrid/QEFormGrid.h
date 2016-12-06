@@ -23,8 +23,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEFORMGRID_H
-#define QEFORMGRID_H
+#ifndef QE_FORM_GRID_H
+#define QE_FORM_GRID_H
 
 #include <QGridLayout>
 #include <QString>
@@ -323,4 +323,8 @@ private slots:
    void setNewUiFile (QString variableNameIn, QString variableNameSubstitutionsIn, unsigned int variableIndex);
 };
 
-#endif // QEFORMGRID_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEFormGrid::GridOrders)
+#endif
+
+#endif // QE_FORM_GRID_H

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2012 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -33,7 +33,10 @@
 //------------------------------------------------------------------------------
 // Constructor with no initialisation
 //
-QEGenericEdit::QEGenericEdit( QWidget *parent ) : QLineEdit( parent ), QEWidget( this )
+QEGenericEdit::QEGenericEdit( QWidget *parent ) :
+    QLineEdit( parent ),
+    QESingleVariableMethods( this, 0 ),
+    QEWidget( this )
 {
     setup ();
 }
@@ -42,7 +45,10 @@ QEGenericEdit::QEGenericEdit( QWidget *parent ) : QLineEdit( parent ), QEWidget(
 //------------------------------------------------------------------------------
 // Constructor with known variable
 //
-QEGenericEdit::QEGenericEdit( const QString &variableNameIn, QWidget *parent) : QLineEdit( parent ), QEWidget( this )
+QEGenericEdit::QEGenericEdit( const QString &variableNameIn, QWidget *parent) :
+    QLineEdit( parent ),
+    QESingleVariableMethods( this, 0 ),
+    QEWidget( this )
 {
     setup ();
     setVariableName( variableNameIn, 0 );
@@ -67,6 +73,7 @@ void QEGenericEdit::setup()
     writeOnEnter = true;
     writeOnFinish = true;
     confirmWrite = false;
+    isAllowFocusUpdate = false;
     isFirstUpdate = false;
 
     setAllowDrop( false );
@@ -89,9 +96,7 @@ void QEGenericEdit::setup()
     // The variable name property manager class only delivers an updated
     // variable name after the user has stopped typing.
     //
-    QObject::connect( &variableNamePropertyManager,
-                      SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ),
-                      this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int) ) );
+    connectNewVariableNameProperty( SLOT( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 
 }
 
@@ -148,7 +153,9 @@ void QEGenericEdit::setDataIfNoFocus( const QVariant& value, QCaAlarmInfo& alarm
     // If the user is editing the object then updates will be
     // inapropriate, unless it is the first update and the
     // user has not started changing the text.
-    if(( !hasFocus() && !messageDialogPresent ) ||
+    // Update alays allowed iff isAllowFocusUpdate has been set true.
+    if(( isAllowFocusUpdate ) ||
+       ( !hasFocus() && !messageDialogPresent ) ||
        (  hasFocus() && !isModified() && isFirstUpdate ))
     {
         setValue( value );
@@ -486,6 +493,18 @@ void QEGenericEdit::setConfirmWrite( bool confirmWriteIn )
 bool QEGenericEdit::getConfirmWrite()
 {
     return confirmWrite;
+}
+
+//------------------------------------------------------------------------------
+// set allow updatws while widget has focus.
+void QEGenericEdit::setAllowFocusUpdate( bool allowFocusUpdateIn )
+{
+    isAllowFocusUpdate = allowFocusUpdateIn;
+}
+
+bool QEGenericEdit::getAllowFocusUpdate() const
+{
+    return isAllowFocusUpdate;
 }
 
 // end

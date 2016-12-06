@@ -35,9 +35,6 @@
 #include <QFrame>
 #include <QCheckBox>
 #include <QLineEdit>
-#include <QDesignerFormWindowInterface>
-#include <QDesignerFormWindowCursorInterface>
-
 
 // Create the dialog
 PeriodicSetupDialog::PeriodicSetupDialog(QWidget *parent) :
@@ -178,10 +175,7 @@ void PeriodicSetupDialog::on_buttonBox_accepted()
             }
         }
 
-        if (QDesignerFormWindowInterface *formWindow = QDesignerFormWindowInterface::findFormWindow(plugin))
-        {
-            formWindow->cursor()->setProperty("userInfo", plugin->getUserInfo() );
-        }
+        plugin->updateUserInfoSource();
 
         accept();
 

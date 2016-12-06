@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2012 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -23,53 +23,52 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEGENERICEDIT_H
-#define QEGENERICEDIT_H
+#ifndef QE_GENERIC_EDIT_H
+#define QE_GENERIC_EDIT_H
 
 #include <QLineEdit>
 #include <QVariant>
 #include <QEWidget.h>
+#include <QESingleVariableMethods.h>
 #include <QCaVariableNamePropertyManager.h>
-
 #include <QEPluginLibrary_global.h>
 
-// Provides the base class for QELineEdit/QENumericEdit
+// Provides the base class for QELineEdit
 //
-class QEPLUGINLIBRARYSHARED_EXPORT QEGenericEdit : public QLineEdit, public QEWidget {
-
-Q_OBJECT
+class QEPLUGINLIBRARYSHARED_EXPORT QEGenericEdit :
+    public QLineEdit,
+    public QESingleVariableMethods,
+    public QEWidget
+{
+    Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText DESIGNABLE false)
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
 public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
 
     //=================================================================================
@@ -94,6 +93,8 @@ public:
     /// Sets if this widget will ask for confirmation (using a dialog box) prior to writing data.
     /// Default is 'false' (will not ask for confirmation (using a dialog box) prior to writing data).
     Q_PROPERTY(bool confirmWrite READ getConfirmWrite WRITE setConfirmWrite)
+    /// Allow updated while widget has focus - defaults to false
+    Q_PROPERTY(bool allowFocusUpdate READ getAllowFocusUpdate WRITE setAllowFocusUpdate)
 public:
     //=================================================================================
 
@@ -264,6 +265,14 @@ public:
     ///
     bool getConfirmWrite();
 
+    // set/get allow focus update
+    /// Sets if this widget configured to allow updates while it has focus.
+    /// Default is 'false'.
+    void setAllowFocusUpdate( bool allowFocusUpdate );
+
+    /// Returns 'true' if this widget configured to allow updates while it has focus.
+    bool getAllowFocusUpdate() const;
+
     // subscribe
     /// Sets if this widget subscribes for data updates and displays current data.
     /// Default is 'true' (subscribes for and displays data updates)
@@ -284,6 +293,7 @@ private:
     bool writeOnEnter;            // Write changed value to database when enter is pressed with focus on the widget
     bool writeOnFinish;           // Write changed value to database when user finishes editing (leaves a widget)
     bool confirmWrite;            // Request confirmation before writing a value
+    bool isAllowFocusUpdate;      // Controls whether updated while widger has focus allowed.
     bool allowDrop;
     bool isFirstUpdate;
 
@@ -349,4 +359,9 @@ private:
 
 };
 
-#endif // QEGENERICEDIT_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEGenericEdit::UserLevels)
+Q_DECLARE_METATYPE (QEGenericEdit::DisplayAlarmStateOptions)
+#endif
+
+#endif // QE_GENERIC_EDIT_H

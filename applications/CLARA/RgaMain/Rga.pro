@@ -1,28 +1,26 @@
 #! [0]
 
 
-FORMS = ../../../framework/ui/barchart.ui
-FORMS += ../../../framework/ui/mv2_widget_led.ui
-FORMS += ../../../framework/ui/mv2_widget_status.ui
-FORMS += ../../../framework/ui/mv2_epicsDisplay_v2.ui
-FORMS += ../../../framework/ui/mv2_rgaDisplay.ui
-FORMS += ../../../framework/ui/mv2_main_bar.ui
-FORMS += ../../../framework/ui/mv2_stripchart.ui
+FORMS =  ./ui/barchart.ui
+FORMS += ./ui/mv2_widget_led.ui
+FORMS += ./ui/mv2_widget_status.ui
+FORMS += ./ui/mv2_epicsDisplay_v2.ui
+FORMS += ./ui/mv2_rgaDisplay.ui
+FORMS += ./ui/mv2_main_bar.ui
+FORMS += ./ui/mv2_stripchart.ui
 DEFINES += "_MINGW=TRUE"
 HEADERS = RGA.h
-HEADERS += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.h
 HEADERS += RgaCA.h
 
 #Let us see the terminal as well
 CONFIG   += console
-
+DEFINES += _MINGW=TRUE
 
 SOURCES     = main.cpp
 SOURCES     += RGA.cpp
-SOURCES     += ../../../framework\widgets\QEWidget\QEStringFormattingMethods.cpp
-SOURCES     += RgaCA.cpp
 
-QT += core gui xml widgets uitools
+
+QT += core gui xml widgets uitools network
 #! [0]
 target.path = .
 INSTALLS += target

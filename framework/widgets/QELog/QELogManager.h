@@ -26,7 +26,7 @@
 #ifndef QELOGMANAGER_H
 #define QELOGMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

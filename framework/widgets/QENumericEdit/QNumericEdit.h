@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -54,15 +54,46 @@
 class QEPLUGINLIBRARYSHARED_EXPORT QNumericEdit : public QWidget {
    Q_OBJECT
 public:
+   /// \enum Notations
+   /// User friendly enumerations for notation property.
+   enum Notations { Fixed,        ///< Fixed point:   +ddd.ddd
+                    Scientific    ///< Scienctific:   +d.ddddde+nn
+               };
+   Q_ENUMS (Notations)
+
+
+   /// This property holds whether the numeric edit draws itself with a frame.
+   /// If enabled (the default) the numeric edit draws itself inside a frame,
+   /// otherwise the line edit draws itself without any frame.
+   ///
    Q_PROPERTY (bool    frame           READ hasFrame       WRITE setFrame)
+
+   /// This property holds any fixed text (default is "") displayed after the numeric value.
+   ///
    Q_PROPERTY (QString suffix          READ getSuffix      WRITE setSuffix)
+
+   /// This property holds any fixed text (default is "") displayed before the numeric value.
+   ///
    Q_PROPERTY (QString prefix          READ getPrefix      WRITE setPrefix)
+
+   /// This property holds the alignment of the numeric edit.
+   /// Both horizontal and vertical alignment is allowed here, Qt::AlignJustify will map to Qt::AlignLeft.
+   /// By default, this property contains a combination of Qt::AlignRight and Qt::AlignVCenter.
+   ///
    Q_PROPERTY (Qt::Alignment alignment READ alignment      WRITE setAlignment)
+
+   /// This property holds the displayed text. Not a property available to designer.
+   /// It exludes any prefix/suffix.
+   //
    Q_PROPERTY (QString cleanText       READ getCleanText)
 
    // Note: the order of declaration affects the order in which these are applied
    //       which is important given the nature of how radix, leading zeros,
    //       precision, min and max are related.
+   /// Notation used for formatting/editing. Default is fixed.
+   ///
+   Q_PROPERTY(Notations notation     READ getNotation       WRITE setNotation)
+
    /// Specify radix, default is Decimal.
    Q_PROPERTY (QEFixedPointRadix::Radicies radix        READ getRadix          WRITE setRadix)
 
@@ -75,15 +106,15 @@ public:
 
    /// Precision used for the display and editing of numbers. The default is 4.
    /// Strictly speaking, this should be an unsigned int, but designer int properties editor much 'nicer'.
-   Q_PROPERTY(int  precision         READ getPrecision      WRITE setPrecision)
+   Q_PROPERTY (int  precision        READ getPrecision      WRITE setPrecision)
 
-   /// Speficies the mimimum allowed value.
+   /// Specify the mimimum allowed value.
    Q_PROPERTY (double minimum        READ getMinimum        WRITE setMinimum)
 
-   /// Speficies the maximum allowed value.
+   /// Specify the maximum allowed value.
    Q_PROPERTY (double maximum        READ getMaximum        WRITE setMaximum)
 
-   /// Speficies the value.
+   /// Specify the value after min/max
    Q_PROPERTY (double value          READ getValue          WRITE setValue)
 
 public:
@@ -115,6 +146,9 @@ public:
    void setPrecision (const int value);
    int getPrecision () const;
 
+   void setNotation (const Notations notation);
+   Notations getNotation () const;
+
    void setMinimum (const double value);
    double getMinimum () const;
 
@@ -137,6 +171,7 @@ signals:
    void editingFinished ();
 
 protected:
+   void focusInEvent (QFocusEvent* event);
    bool eventFilter (QObject *obj, QEvent *event);
 
    QEFixedPointRadix fpr;   // holds radix and separator
@@ -151,8 +186,9 @@ private:
    QString mSuffix;
    double mMinimum;
    double mMaximum;
-   int mPrecision;
    int mLeadingZeros;
+   int mPrecision;
+   Notations mNotation;
    double mValue;
 
    // Other values
@@ -176,17 +212,15 @@ private:
    //
    int maximumSignificance () const;
 
-   QString imageOfValue () const;  // Generate image of the current value - inclue prefix and suffix.
+   QString imageOfValue () const;  // Generate image of the current value - include prefix and suffix.
 
-   // Extract value of given image. If image does not produce a valid value, then
-   // the function returns the widget's current value.
-   //
-   double valueOfImage (const QString& image) const;
    bool showSign () const;
-   bool cursorOverSign () const;
+   bool cursorOverSign () const;      // Cursor is over the leading sign char
+   bool cursorOverExpSign () const;   // Cursor is over the exponent sign char
+   bool cursorOverExponent () const;  // Cursor is over the exponent nunber
 
-   void redisplayText ();           // Calls embedded lineEdit's setText using string from imageOfValue.
-   void setDigitSelection ();       // High-lights selected digit
+   void redisplayText ();             // Calls embedded lineEdit's setText using string from imageOfValue.
+   void setDigitSelection ();         // High-lights selected digit
 
    void setCursor (const int value);
    int getCursor () const;
@@ -199,6 +233,21 @@ private:
    double calcUpper () const;             // Max maximum value (based on leading zeros and precsion)
    double calcLower () const;             // Min minimum value (based on leading zeros and precsion)
    void applyLimits ();                   // Ensure minMin <= min < value < max < maxMax
+
+   // Extract value of given image. If image does not produce a valid value, then
+   // the function returns the widget's current value.
+   //
+   double valueOfImage (const QString& image) const;
+
+   // Format the given value using define radix, separators, leading zeros and precsion.
+   //
+   QString getFormattedText (const double value) const;
+
+   friend class QENumericEdit;
 };
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QNumericEdit::Notations)
+#endif
 
 #endif  // Q_NUMERIC_EDIT_H

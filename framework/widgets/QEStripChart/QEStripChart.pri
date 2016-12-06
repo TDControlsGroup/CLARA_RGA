@@ -12,13 +12,15 @@ OTHER_FILES += \
     widgets/QEStripChart/linear_scale.png \
     widgets/QEStripChart/log_scale.png \
     widgets/QEStripChart/normal_video.png \
+    widgets/QEStripChart/open_file.png \
     widgets/QEStripChart/page_backward.png \
     widgets/QEStripChart/page_forward.png \
     widgets/QEStripChart/pause.png \
     widgets/QEStripChart/play.png \
     widgets/QEStripChart/powered_by_asp.png \
     widgets/QEStripChart/reverse_video.png  \
-    widgets/QEStripChart/select_date_times.png  \
+    widgets/QEStripChart/save_file.png \
+    widgets/QEStripChart/select_date_times.png \
     widgets/QEStripChart/select_time.png
 
 RESOURCES += \
@@ -46,6 +48,7 @@ SOURCES += \
     widgets/QEStripChart/QEStripChartContextMenu.cpp \
     widgets/QEStripChart/QEStripChartDurationDialog.cpp \
     widgets/QEStripChart/QEStripChartItem.cpp \
+    widgets/QEStripChart/QEStripChartNames.cpp \
     widgets/QEStripChart/QEStripChartRangeDialog.cpp \
     widgets/QEStripChart/QEStripChartTimeDialog.cpp \
     widgets/QEStripChart/QEStripChartToolBar.cpp \

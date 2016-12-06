@@ -29,16 +29,23 @@
  */
 
 #include <QEGenericButton.h>
+#include <QDebug>
 #include <QMessageBox>
 #include <QIcon>
 #include <QInputDialog>
 #include <QStyle>
+#include <QERecordFieldName.h>
+
+#define DEBUG qDebug () << "QEGenericButton" << __LINE__ << __FUNCTION__ << "  "
 
 // Style option dynamic property name.
 #define STYLE_OPTION  "StyleOption"
 
-QEGenericButton::QEGenericButton( QWidget *owner ) : QEWidget( owner )
+QEGenericButton::QEGenericButton( QAbstractButton *owner ) :
+    QEWidget( owner ),
+    QESingleVariableMethods( this, (unsigned int) VAR_PRIMARY )
 {
+    altReadback = NULL;
 }
 
 /*
@@ -46,7 +53,7 @@ QEGenericButton::QEGenericButton( QWidget *owner ) : QEWidget( owner )
 */
 void QEGenericButton::setup() {
     dataSetup();
-//    commandSetup();
+//  commandSetup();
     guiSetup();
 
     // Use push button signals
@@ -61,10 +68,15 @@ void QEGenericButton::setup() {
 void QEGenericButton::dataSetup()
 {
     // Set up data
-    // This control uses two data sources, the first is written to and (by default) read from. The second is the alternative read back
-    setNumVariables(QEGENERICBUTTON_NUM_VARIABLES);
+    // This control uses two data sources, the first is written to and (by default) read from.
+    // The second is the alternative read back
+    // The third and forth are the records DISA and DISV fields respectively.
+    setNumVariables( NUMBER_OF_VARIABLES );
 
     // Set up default properties
+    disabledRecordPolicy = QEWidgetProperties::ignore;
+    disa = 0;
+    disv = 1;
     writeOnPress = false;
     writeOnRelease = false;
     writeOnClick = true;
@@ -144,8 +156,33 @@ void QEGenericButton::guiSetup()
 */
 qcaobject::QCaObject* QEGenericButton::createQcaItem( unsigned int variableIndex ) {
 
+    qcaobject::QCaObject* result = NULL;
+
+    // Fetch reference to the target button widget and get pv name.
+    QString pvName = getSubstitutedVariableName( variableIndex );
+    QAbstractButton* target = getButtonQObject();
+
     // Create the item as a QEString
-    return new QEString( getSubstitutedVariableName( variableIndex ), getButtonQObject(), &stringFormatting, variableIndex );
+    switch (variableIndex) {
+    case VAR_PRIMARY:
+        result = new QEString( pvName, target, &stringFormatting, variableIndex );
+        // Apply currently defined array index.
+        setQCaArrayIndex( result );
+        break;
+
+    case VAR_READBACK:
+        result = new QEString( pvName, target, &stringFormatting, variableIndex );
+        if( altReadback ) altReadback->setQCaArrayIndex( result );
+        break;
+
+    case VAR_DISA:
+    case VAR_DISV:
+        if( disabledRecordPolicy == QEWidgetProperties::grayout ) {
+           return new QEInteger( pvName, target, &integerFormatting, variableIndex );
+        }
+        break;
+    }
+    return result;
 }
 
 /*
@@ -156,19 +193,40 @@ qcaobject::QCaObject* QEGenericButton::createQcaItem( unsigned int variableIndex
 void QEGenericButton::establishConnection( unsigned int variableIndex ) {
 
     // Create a connection.
-    // If successfull, the QCaObject object that will supply data update signals will be returned
-    qcaobject::QCaObject* qca = createConnection( variableIndex );
+    // If successfull, the QCaObject object that will supply data update signals will be returned.
+    qcaobject::QCaObject* qca = NULL;
+    switch (variableIndex) {
+
+    case VAR_PRIMARY:
+    case VAR_READBACK:
+        qca = createConnection( variableIndex );
+        break;
+
+    case VAR_DISA:
+    case VAR_DISV:
+        // We always subscribe for DISA/DISV irrsepective of the subscribe property
+        qca = createConnection( variableIndex, true );
+        break;
+
+    default:
+        qca = NULL;
+        break;
+    }
+
+    if( !qca )return;
+
+    // Limit tool tip to excdude DISA/DISV variables.
+    setNumberToolTipVariables( 2 );
+
+    // Fetch reference to the target button widget.
+    QAbstractButton* target = getButtonQObject();
 
     // If a QCaObject object is now available to supply data update signals, connect it to the appropriate slots
-    if(  qca ) {
-        // Get updates if subscribing and if this is the alternate read back, or if this is the primary readback and there is no alternate read back.
-        if( subscribe &&
-            (
-              ( variableIndex == 1 /*1=Alternate readback variable*/ ) ||
-              ( variableIndex == 0 /*0=Primary readback variable*/ && getSubstitutedVariableName(1/*1=Alternate readback variable*/ ).isEmpty() )
-            )
-          )
-        {
+    switch (variableIndex) {
+
+    case VAR_PRIMARY:     // Primary readback variable
+        // Get updates if subscribing and  there is no alternate read back.
+        if( subscribe && getSubstitutedVariableName( 1/*1=Alternate readback variable*/ ).isEmpty() ){
             if( updateOption == UPDATE_TEXT || updateOption == UPDATE_TEXT_AND_ICON)
             {
                 setButtonText( "" );
@@ -177,9 +235,138 @@ void QEGenericButton::establishConnection( unsigned int variableIndex ) {
         }
 
         // Get conection status changes always (subscribing or not)
-        QObject::connect( qca,  SIGNAL( stringConnectionChanged( QCaConnectionInfo&, const unsigned int& ) ),
-                          getButtonQObject(), SLOT( connectionChanged( QCaConnectionInfo&, const unsigned int&) ) );
+        QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo&, const unsigned int& ) ),
+                          target, SLOT( connectionChanged( QCaConnectionInfo&, const unsigned int&) ) );
+        break;
+
+    case VAR_READBACK:     // Alternate readback variable
+        // Get updates if subscribing.
+        if( subscribe ){
+            if( updateOption == UPDATE_TEXT || updateOption == UPDATE_TEXT_AND_ICON)
+            {
+                setButtonText( "" );
+            }
+            connectButtonDataChange( qca );
+        }
+
+        // Get conection status changes always (subscribing or not)
+        QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo&, const unsigned int& ) ),
+                          target, SLOT( connectionChanged( QCaConnectionInfo&, const unsigned int&) ) );
+        break;
+
+    case VAR_DISA:     // DISA
+        QObject::connect (qca, SIGNAL( integerChanged( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )),
+                          target,  SLOT( setDISAvalue( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )));
+        QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo&, const unsigned int& ) ),
+                          target, SLOT( connectionChanged( QCaConnectionInfo&, const unsigned int&) ) );
+        break;
+
+    case VAR_DISV:     // DISV
+        QObject::connect (qca, SIGNAL( integerChanged( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )),
+                          target,  SLOT( setDISVvalue( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )));
+        QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo&, const unsigned int& ) ),
+                          target, SLOT( connectionChanged( QCaConnectionInfo&, const unsigned int&) ) );
+        break;
+
+    default:
+        break;
     }
+}
+
+/*
+ Manages setting u variable names for slots 2 and 3. These names are based upon
+ the primary variable name.
+ Note: the assumption here is that the PV is hosted on an IOC and has an underlying record.
+ */
+void QEGenericButton::setDisabledVariableNames ()
+{
+    QString pvName;
+    switch (disabledRecordPolicy) {
+
+    case QEWidgetProperties::ignore:
+        // Not being used - clear the name
+        setVariableNameAndSubstitutions( "", "", 2 );
+        setVariableNameAndSubstitutions( "", "", 3 );
+        break;
+
+    case QEWidgetProperties::grayout:
+        pvName = getSubstitutedVariableName (0);
+        setVariableNameAndSubstitutions( QERecordFieldName::fieldPvName (pvName, "DISA"), "", 2 );
+        setVariableNameAndSubstitutions( QERecordFieldName::fieldPvName (pvName, "DISV"), "", 3 );
+        break;
+    }
+}
+
+/*
+ Set/get disabledRecordPolicy state.
+ */
+void QEGenericButton::setDisabledRecordPolicy( const QEWidgetProperties::DisabledRecordPolicy policyIn )
+{
+   disabledRecordPolicy = policyIn;
+   setDisabledVariableNames ();
+}
+
+QEWidgetProperties::DisabledRecordPolicy QEGenericButton::getDisabledRecordPolicy() const
+{
+   return disabledRecordPolicy;
+}
+
+/*
+ Common handler for setting variable names.
+ */
+void QEGenericButton::useGenericNewVariableName( const QString& variableNameIn,
+                                                 const QString& variableNameSubstitutionsIn,
+                                                 const unsigned int variableIndex )
+{
+    setVariableNameAndSubstitutions( variableNameIn, variableNameSubstitutionsIn, variableIndex );
+
+    // Update the labelText property with itself.
+    // This will apply any macro substitutions changes since the labelText property was last changed
+    setLabelTextProperty( getLabelTextProperty() );
+    calcStyleOption();
+
+    // If variable 0, the main variable, has changed then set up the DISA/DISV variables if needs be.
+    if( variableIndex == VAR_PRIMARY )
+        setDisabledVariableNames();
+}
+
+/*
+ * Update the "connection" style baed on connection state and the record disable policy.
+ */
+void QEGenericButton::processConnectedDisableStates()
+{
+    bool active = true;
+
+    switch( disabledRecordPolicy ) {
+    case QEWidgetProperties::ignore:
+        // based on pv connection only.
+        active = isConnected;
+        break;
+
+    case QEWidgetProperties::grayout:
+        // based on pv connection stats and disabled state
+        active = isConnected && ( disa != disv );
+        break;
+    }
+    updateConnectionStyle( active );
+}
+
+/*
+ Record's DISA field has changed.
+ */
+void QEGenericButton::setGenericDISAvalue( const long& value, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )
+{
+    disa = value;
+    processConnectedDisableStates();
+}
+
+/*
+ Record's DISV field has changed.
+ */
+void QEGenericButton::setGenericDISVvalue( const long& value, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )
+{
+    disv = value;
+    processConnectedDisableStates();
 }
 
 /*
@@ -195,15 +382,26 @@ void QEGenericButton::connectionChanged( QCaConnectionInfo& connectionInfo, cons
     if( getSubstitutedVariableName( variableIndex ).isEmpty() )
         return;
 
-    // Note the connected state
-    isConnected = connectionInfo.isChannelConnected();
+    // Note the connected state for primary PV only.
+    //
+    if( variableIndex  == VAR_PRIMARY ) {
+       isConnected = connectionInfo.isChannelConnected();
+    }
 
     // Display the connected state
     updateToolTipConnection( isConnected, variableIndex );
-    updateConnectionStyle( isConnected );
+
+    // connection style update also factors in the disabled record policy.
+    processConnectedDisableStates();
 
     // set cursor to indicate access mode
     setAccessCursorStyle();
+
+    // Signal channel connection change to any Link  (or other) widgets,
+    // using signal dbConnectionChanged.
+    if( variableIndex  == VAR_PRIMARY ) {
+        emitDbConnectionChanged( variableIndex );
+    }
 }
 
 /*
@@ -214,7 +412,7 @@ void QEGenericButton::setGenericButtonText( const QString& text, QCaAlarmInfo& a
 {
     // If not subscribing, or subscribing but update is not for the readback variable, then do nothing.
     //
-    // Note, This will still be called even if not subscribing as there may be an initial sing shot read
+    // Note, This will still be called even if not subscribing as there may be an initial single shot read
     // to ensure we have valid information about the variable when it is time to do a write.
     //
     // Note, variableIndex = 0 = Primary readback variable, variableIndex = 1 = Alternate readback variable,
@@ -223,9 +421,6 @@ void QEGenericButton::setGenericButtonText( const QString& text, QCaAlarmInfo& a
     {
         return;
     }
-
-    // Signal a database value change to any Link widgets
-    emitDbValueChanged( text );
 
     // Update the button state if required
     // Display checked if text matches what is written when checked
@@ -250,6 +445,12 @@ void QEGenericButton::setGenericButtonText( const QString& text, QCaAlarmInfo& a
 
     // Invoke common alarm handling processing.
     processAlarmInfo( alarmInfo, variableIndex );
+
+    // Signal a database value change to any Link (or other) widgets using one
+    // of the dbValueChanged.
+    if( variableIndex == VAR_PRIMARY ) {
+        emitDbValueChanged( text, variableIndex );
+    }
 }
 
 /*
@@ -298,7 +499,7 @@ void QEGenericButton::userPressed()
     if( qca )
     {
         QString error;
-        if( !qca->writeString( writeText, error ) )
+        if( !qca->writeStringElement( writeText, error ) )
         {
             QMessageBox::warning( (QWidget*)getButtonQObject(), QString( "Write failed" ), error, QMessageBox::Cancel );
         }
@@ -328,7 +529,7 @@ void QEGenericButton::userReleased()
     if( qca )
     {
         QString error;
-        if( !qca->writeString( writeText, error ) )
+        if( !qca->writeStringElement( writeText, error ) )
         {
             QMessageBox::warning( (QWidget*)getButtonQObject(), QString( "Write failed" ), error, QMessageBox::Cancel );
         }
@@ -374,7 +575,7 @@ void QEGenericButton::userClicked( bool checked )
         if( qca )
         {
             QString error;
-            if( !qca->writeString( writeText, error ) )
+            if( !qca->writeStringElement( writeText, error ) )
             {
                 QMessageBox::warning( (QWidget*)getButtonQObject(), QString( "Write failed" ), error, QMessageBox::Cancel );
             }
@@ -391,6 +592,29 @@ void QEGenericButton::userClicked( bool checked )
 
         // Start the GUI
         emitNewGui( QEActionRequests( substituteThis( guiName ), customisationName, creationOption ) );
+    }
+}
+
+/*
+   Replicates, to a certain extents part of userClicked, save that there is no reference to writeOnClick
+ */
+void QEGenericButton::writeClickedNow (const bool checked)
+{
+    // Get the variable to write to (if any).
+    QEString* qca = (QEString*)getQcaItem(0);
+
+    if( qca ) {
+        QString writeText;
+        writeText = checked ? clickCheckedText : clickText;
+
+        // Write to the variable
+        QString error;
+        if( !qca->writeStringElement( writeText, error ) )
+        {
+            message_types mt( MESSAGE_TYPE_WARNING, MESSAGE_KIND_EVENT | MESSAGE_KIND_STATUS );
+            error.prepend( qca->getRecordName() + ": " );
+            this->sendMessage( error, mt );
+        }
     }
 }
 
@@ -428,13 +652,26 @@ void QEGenericButton::processWriteNow ( const bool checked )
 
         // Write to the variable
         QString error;
-        if( !qca->writeString( writeText, error ) )
+        if( !qca->writeStringElement( writeText, error ) )
         {
             message_types mt( MESSAGE_TYPE_WARNING, MESSAGE_KIND_EVENT | MESSAGE_KIND_STATUS );
             error.prepend( qca->getRecordName() + ": " );
             this->sendMessage( error, mt );
         }
     }
+}
+
+/*
+ Provides default functionality.
+ */
+void QEGenericButton::connectButtonDataChange( qcaobject::QCaObject* qca )
+{
+    QAbstractButton* target = getButtonQObject();
+
+    QObject::connect( qca,  SIGNAL( stringChanged( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ),
+                      target, SLOT( setButtonText( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ) );
+    QObject::connect( target, SIGNAL( requestResend() ),
+                      qca, SLOT( resendLastData() ) );
 }
 
 /*
@@ -745,7 +982,6 @@ QString QEGenericButton::getLabelTextProperty()
 {
     return labelText;
 }
-
 
 // Calculate style based on the widget usage and set a dynamic propert for style options.
 // When the dynamic property is set it can be used in style sheets to target a style at

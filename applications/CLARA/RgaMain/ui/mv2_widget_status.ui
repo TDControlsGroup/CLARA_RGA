@@ -1,0 +1,1324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RgaStatus</class>
+ <widget class="QGroupBox" name="RgaStatus">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>579</width>
+    <height>201</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>GroupBox</string>
+  </property>
+  <property name="title">
+   <string>RgaStatus</string>
+  </property>
+  <widget class="QGroupBox" name="Filament">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>20</y>
+     <width>181</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Filament Status</string>
+   </property>
+   <widget class="QEBitStatus" name="LEDFAIL">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="numberOfBits">
+     <number>1</number>
+    </property>
+    <property name="shift">
+     <number>3</number>
+    </property>
+    <property name="shape">
+     <enum>QBitStatus::Circle</enum>
+    </property>
+    <property name="invalidColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="onColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>4</blue>
+     </color>
+    </property>
+    <property name="offColour">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FILSTA</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>16</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Fail</string>
+    </property>
+   </widget>
+   <widget class="QEBitStatus" name="LEDFIL">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>30</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="numberOfBits">
+     <number>1</number>
+    </property>
+    <property name="shape">
+     <enum>QBitStatus::Circle</enum>
+    </property>
+    <property name="invalidColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="offColour">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FILSTA</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>10</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Cool/Warm</string>
+    </property>
+   </widget>
+   <widget class="QEBitStatus" name="LEDCOOL">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="numberOfBits">
+     <number>1</number>
+    </property>
+    <property name="shift">
+     <number>1</number>
+    </property>
+    <property name="shape">
+     <enum>QBitStatus::Circle</enum>
+    </property>
+    <property name="invalidColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="onColour">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="offColour">
+     <color>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FILSTA</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="STATE">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>60</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="FILSEL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Filament select</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):SETFIL</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="pressText">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="FILON">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>On</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FILCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="writeOnPress">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnRelease">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnClick">
+     <bool>true</bool>
+    </property>
+    <property name="pressText">
+     <string>1</string>
+    </property>
+    <property name="releaseText">
+     <string>0</string>
+    </property>
+    <property name="clickText">
+     <string>1</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="FILOFF">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Off</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FILCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="writeOnPress">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnClick">
+     <bool>true</bool>
+    </property>
+    <property name="pressText">
+     <string>Off</string>
+    </property>
+    <property name="clickText">
+     <string>0</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>Off</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="RGAstat_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>130</y>
+     <width>181</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>RGA Status</string>
+   </property>
+   <widget class="QEBitStatus" name="IMG">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="numberOfBits">
+     <number>1</number>
+    </property>
+    <property name="shape">
+     <enum>QBitStatus::Circle</enum>
+    </property>
+    <property name="invalidColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="onColour">
+     <color>
+      <red>255</red>
+      <green>0</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="offColour">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):ILK</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>IMG Interlock</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_26">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Control</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="RGASTAT">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>30</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):HEADSTA</string>
+    </property>
+    <property name="text">
+     <string>Analog 1-200</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="Mult">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>20</y>
+     <width>271</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Faraday/Mult: status and calibration</string>
+   </property>
+   <widget class="QEPushButton" name="M1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>M1</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="clickText">
+     <string>1</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="M3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>M3</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="clickText">
+     <string>3</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>3</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="M2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>M2</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="clickText">
+     <string>2</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>2</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="FARA">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Faraday</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTCON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="clickText">
+     <string>0</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QESimpleShape" name="FMLED4">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>140</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="shape">
+     <enum>QSimpleShape::ellipse</enum>
+    </property>
+    <property name="colour3" stdset="0">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colour7" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTSTA</string>
+    </property>
+    <property name="displayAlarmStateOption" stdset="0">
+     <enum>QESimpleShape::Never</enum>
+    </property>
+   </widget>
+   <widget class="QESimpleShape" name="FMLED1">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>60</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::CustomContextMenu</enum>
+    </property>
+    <property name="shape">
+     <enum>QSimpleShape::ellipse</enum>
+    </property>
+    <property name="colour0" stdset="0">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colour1" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTSTA</string>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="displayAlarmStateOption" stdset="0">
+     <enum>QESimpleShape::Never</enum>
+    </property>
+   </widget>
+   <widget class="QESimpleShape" name="FMLED3">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>120</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="shape">
+     <enum>QSimpleShape::ellipse</enum>
+    </property>
+    <property name="colour2" stdset="0">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colour6" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTSTA</string>
+    </property>
+    <property name="displayAlarmStateOption" stdset="0">
+     <enum>QESimpleShape::Never</enum>
+    </property>
+   </widget>
+   <widget class="QESimpleShape" name="FMLED2">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>100</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="shape">
+     <enum>QSimpleShape::ellipse</enum>
+    </property>
+    <property name="colour1" stdset="0">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colour3" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="colour4" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="colour5" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="flash0" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="flash1" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):MLTSTA</string>
+    </property>
+    <property name="displayAlarmStateOption" stdset="0">
+     <enum>QESimpleShape::Never</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>10</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Calibration</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sensitivity: A/mBar</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string> Voltage</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="FDFACT">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>60</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>rga1:FDFACT</string>
+    </property>
+    <property name="precision">
+     <number>6</number>
+    </property>
+    <property name="useDbPrecision">
+     <bool>false</bool>
+    </property>
+    <property name="leadingZero">
+     <bool>true</bool>
+    </property>
+    <property name="trailingZeros">
+     <bool>false</bool>
+    </property>
+    <property name="addUnits">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QELabel" name="FDVOLT">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>60</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU1DFACT">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>100</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU1DVOLT">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>100</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU2DFACT">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>120</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU2DVOLT">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>120</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU3DFACT">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>140</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+   <widget class="QELabel" name="MU3DVOLT">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>140</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):FIL</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="Mode">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>20</y>
+     <width>121</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Mode</string>
+   </property>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bar Chart</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="ANA">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>60</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1-200</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):CON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="clickText">
+     <string>8</string>
+    </property>
+    <property name="clickCheckedText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="M50">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1-50</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):CON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="clickText">
+     <string>5</string>
+    </property>
+    <property name="clickCheckedText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="M200">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1-200</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):CON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="clickText">
+     <string>7</string>
+    </property>
+    <property name="clickCheckedText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>40</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ana</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="M100">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1-100</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):CON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="clickText">
+     <string>6</string>
+    </property>
+    <property name="clickCheckedText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="STOP">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):CON</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="variableSubstitutions" stdset="0">
+     <string/>
+    </property>
+    <property name="clickText">
+     <string>Stop</string>
+    </property>
+    <property name="clickCheckedText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QESimpleShape" name="LEDSS">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>120</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="shape">
+     <enum>QSimpleShape::ellipse</enum>
+    </property>
+    <property name="colour0" stdset="0">
+     <color>
+      <red>0</red>
+      <green>255</green>
+      <blue>0</blue>
+     </color>
+    </property>
+    <property name="colour1" stdset="0">
+     <color>
+      <red>200</red>
+      <green>200</green>
+      <blue>200</blue>
+     </color>
+    </property>
+    <property name="flash0" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):SCAN</string>
+    </property>
+    <property name="displayAlarmStateOption" stdset="0">
+     <enum>QESimpleShape::Never</enum>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="SS_ON">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>On</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):SETSCAN</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="writeOnPress">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnRelease">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnClick">
+     <bool>true</bool>
+    </property>
+    <property name="pressText">
+     <string>1</string>
+    </property>
+    <property name="releaseText">
+     <string>0</string>
+    </property>
+    <property name="clickText">
+     <string>0</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QEPushButton" name="SS_OFF">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>120</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Off</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="variable" stdset="0">
+     <string>$(RGA1):SETSCAN</string>
+    </property>
+    <property name="altReadbackVariable" stdset="0">
+     <string/>
+    </property>
+    <property name="format" stdset="0">
+     <enum>QEPushButton::Integer</enum>
+    </property>
+    <property name="writeOnPress">
+     <bool>false</bool>
+    </property>
+    <property name="writeOnClick">
+     <bool>true</bool>
+    </property>
+    <property name="pressText">
+     <string>Off</string>
+    </property>
+    <property name="clickText">
+     <string>1</string>
+    </property>
+    <property name="clickCheckedText">
+     <string>Off</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>100</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>6</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Single S.</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QEBitStatus</class>
+   <extends>QBitStatus</extends>
+   <header>QEBitStatus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QELabel</class>
+   <extends>QLabel</extends>
+   <header>QELabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QEPushButton</class>
+   <extends>QPushButton</extends>
+   <header>QEPushButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QESimpleShape</class>
+   <extends>QSimpleShape</extends>
+   <header>QESimpleShape.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QBitStatus</class>
+   <extends>QWidget</extends>
+   <header>QBitStatus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSimpleShape</class>
+   <extends>QWidget</extends>
+   <header>QSimpleShape.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

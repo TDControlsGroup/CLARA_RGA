@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011, 2013 Australian Synchrotron
+ *  Copyright (c) 2011,2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -41,20 +41,25 @@
 
 #define PV_VARIABLE_INDEX      0
 
-/* ----------------------------------------------------------------------------
-    Constructor with no initialisation
-*/
-QEBitStatus::QEBitStatus (QWidget * parent):QBitStatus (parent), QEWidget ( this )
+//------------------------------------------------------------------------------
+//  Constructor with no initialisation
+//
+QEBitStatus::QEBitStatus (QWidget * parent) :
+   QBitStatus (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX),
+   QEWidget (this)
 {
    this->setup ();
 }
 
 
-/* ----------------------------------------------------------------------------
-    Constructor with known variable
-*/
-QEBitStatus::QEBitStatus (const QString & variableNameIn,
-                            QWidget * parent):QBitStatus (parent), QEWidget ( this )
+//------------------------------------------------------------------------------
+// Constructor with known variable
+//
+QEBitStatus::QEBitStatus (const QString & variableNameIn, QWidget * parent) :
+   QBitStatus (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX),
+   QEWidget (this)
 {
    this->setup ();
    this->setVariableName (variableNameIn, 0);
@@ -62,9 +67,9 @@ QEBitStatus::QEBitStatus (const QString & variableNameIn,
 }
 
 
-/* ----------------------------------------------------------------------------
-    Setup common to all constructors
-*/
+//------------------------------------------------------------------------------
+// Setup common to all constructors
+//
 void QEBitStatus::setup ()
 {
    QCaAlarmInfo invalid (NO_ALARM, INVALID_ALARM);
@@ -78,7 +83,6 @@ void QEBitStatus::setup ()
    // Set up default properties
    //
    this->setAllowDrop (false);
-   this->arrayIndex = 0;
 
    // Set the initial state
    // Widget is inactive until connected.
@@ -95,17 +99,15 @@ void QEBitStatus::setup ()
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   QObject::connect (&variableNamePropertyManager,
-                     SIGNAL (newVariableNameProperty (QString, QString, unsigned int)),
-                     this, SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->connectNewVariableNameProperty (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 }
 
 
-/* ----------------------------------------------------------------------------
-    Implementation of QEWidget's virtual funtion to create the specific type
-    of QCaObject required. For a Bit Status widget a QCaObject that streams
-    integers is required.
-*/
+//------------------------------------------------------------------------------
+// Implementation of QEWidget's virtual funtion to create the specific type
+// of QCaObject required. For a Bit Status widget a QCaObject that streams
+// integers is required.
+//
 qcaobject::QCaObject* QEBitStatus::createQcaItem (unsigned int variableIndex)
 {
    qcaobject::QCaObject* result = NULL;
@@ -120,18 +122,18 @@ qcaobject::QCaObject* QEBitStatus::createQcaItem (unsigned int variableIndex)
 
    // Apply currently defined array index.
    //
-   result->setArrayIndex (this->arrayIndex);
+   this->setQCaArrayIndex (result);
 
    return result;
 }
 
 
-/* ----------------------------------------------------------------------------
-    Start updating.
-    Implementation of VariableNameManager's virtual funtion to establish a
-    connection to a PV as the variable name has changed.
-    This function may also be used to initiate updates when loaded as a plugin.
-*/
+//------------------------------------------------------------------------------
+// Start updating.
+// Implementation of VariableNameManager's virtual funtion to establish a
+// connection to a PV as the variable name has changed.
+// This function may also be used to initiate updates when loaded as a plugin.
+//
 void QEBitStatus::establishConnection (unsigned int variableIndex)
 {
    if (variableIndex != PV_VARIABLE_INDEX) {
@@ -143,7 +145,7 @@ void QEBitStatus::establishConnection (unsigned int variableIndex)
    // If successfull, the QCaObject object that will supply data update signals will be returned
    // Note createConnection creates the connection and returns reference to existing QCaObject.
    //
-   qcaobject::QCaObject* qca = createConnection (variableIndex);
+   qcaobject::QCaObject* qca = this->createConnection (variableIndex);
 
    // If a QCaObject object is now available to supply data update signals,
    // connect it to the appropriate slots.
@@ -158,19 +160,19 @@ void QEBitStatus::establishConnection (unsigned int variableIndex)
 }
 
 
-/* ----------------------------------------------------------------------------
-    Act on a connection change.
-    Change how the progress bar looks and change the tool tip
-    This is the slot used to recieve connection updates from a QCaObject based class.
- */
+//------------------------------------------------------------------------------
+// Act on a connection change.
+// Change how the progress bar looks and change the tool tip
+// This is the slot used to recieve connection updates from a QCaObject based class.
+//
 void QEBitStatus::connectionChanged (QCaConnectionInfo& connectionInfo, const unsigned int& variableIndex)
 {
     // Note the connected state
     bool isConnected = connectionInfo.isChannelConnected();
 
     // Display the connected state
-    updateToolTipConnection (isConnected, variableIndex);
-    updateConnectionStyle (isConnected);
+    this->updateToolTipConnection (isConnected, variableIndex);
+    this->updateConnectionStyle (isConnected);
 
     this->setIsActive (isConnected);
 
@@ -181,10 +183,10 @@ void QEBitStatus::connectionChanged (QCaConnectionInfo& connectionInfo, const un
 }
 
 
-/* ----------------------------------------------------------------------------
-    Update the progress bar value
-    This is the slot used to recieve data updates from a QCaObject based class.
- */
+//------------------------------------------------------------------------------
+// Update the progress bar value
+// This is the slot used to recieve data updates from a QCaObject based class.
+//
 void QEBitStatus::setBitStatusValue (const long &valueIn,
                                      QCaAlarmInfo & alarmInfo,
                                      QCaDateTime &, const unsigned int &variableIndex)
@@ -209,9 +211,9 @@ void QEBitStatus::setBitStatusValue (const long &valueIn,
 }
 
 
-/* ----------------------------------------------------------------------------
-    This is the slot used to recieve new PV information.
- */
+//------------------------------------------------------------------------------
+// This is the slot used to recieve new PV information.
+//
 void QEBitStatus::useNewVariableNameProperty( QString variableNameIn,
                                               QString variableNameSubstitutionsIn,
                                               unsigned int variableIndex )
@@ -219,33 +221,12 @@ void QEBitStatus::useNewVariableNameProperty( QString variableNameIn,
    this->setVariableNameAndSubstitutions(variableNameIn, variableNameSubstitutionsIn, variableIndex);
 }
 
-//------------------------------------------------------------------------------
-//
-void QEBitStatus::setArrayIndex (const int arrayIndexIn)
-{
-   this->arrayIndex = MAX (0, arrayIndexIn);
-
-   qcaobject::QCaObject* qca = getQcaItem (0);
-   if (qca) {
-      // Apply to qca object and force update
-      qca->setArrayIndex (this->arrayIndex);
-      qca->resendLastData ();
-   }
-}
-
-//------------------------------------------------------------------------------
-//
-int QEBitStatus::getArrayIndex () const
-{
-   return this->arrayIndex;
-}
-
 //==============================================================================
 // Copy (no paste)
 //
 QString QEBitStatus::copyVariable()
 {
-   return getSubstitutedVariableName (0);
+   return this->getSubstitutedVariableName (0);
 }
 
 QVariant QEBitStatus::copyData()

@@ -51,7 +51,6 @@ class imagePropertiesCore
 {
 public:
     imagePropertiesCore( QByteArray imageDataIn,
-                         QByteArray imageBuffIn,
                          unsigned long imageBuffWidthIn,
                          unsigned long imageBuffHeightIn,
                          int scanOptionIn,
@@ -69,7 +68,6 @@ public:
     QImage buildImageCore();
 private:
     QByteArray imageData;             // Buffer to hold original image data.
-    QByteArray imageBuff;             // Buffer to hold data converted to format for generating QImage.
     unsigned long imageBuffWidth;     // Original image width (may be generated directly from a width variable, or selected from the relevent dimension variable)
     unsigned long imageBuffHeight;    // Original image height (may be generated directly from a width variable, or selected from the relevent dimension variable)
     int scanOption;
@@ -77,7 +75,6 @@ private:
     int pixelLow;
     int pixelHigh;
     unsigned int bitDepth;
-    unsigned int bins[HISTOGRAM_BINS]; // Bins used for generating a pixel histogram
     imageDisplayProperties::rgbPixel* pixelLookup;
     imageDataFormats::formatOptions formatOption;
     unsigned long imageDataSize;      // Size of elements in image data (originating from CA data type)
@@ -161,9 +158,7 @@ protected:
     QByteArray imageData;                 // Buffer to hold original image data.
     unsigned long receivedImageSize;  // Size as received on last CA update.
     QString previousMessageText;      // Previous message text - avoid repeats.
-    QByteArray imageBuff;             // Buffer to hold data converted to format for generating QImage. This is only used within the imagePropertiesCore class, but it is coppied from here each time a class is created so the same buffer is reused and to keep the buffer until QImages created from it no longer need it
-    QByteArray lastImageBuff;         // Previous imageBuff (before a resize) kept untill all QImages generated from it ( and still referencing its data) are gone
-    QImage image;                     // Last image generated. Kept as the widget may aask for it again. For example, if the user is saving it.
+    QImage image;                     // Last image generated. Kept as the widget may ask for it again. For example, if the user is saving it.
 #define IMAGEBUFF_BYTES_PER_PIXEL 4   // 4 bytes for Format_RGB32
     unsigned long imageBuffWidth;     // Original image width (may be generated directly from a width variable, or selected from the relevent dimension variable)
     unsigned long imageBuffHeight;    // Original image height (may be generated directly from a width variable, or selected from the relevent dimension variable)

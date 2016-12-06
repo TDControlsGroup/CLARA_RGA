@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2015 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QELABEL_H
-#define QELABEL_H
+#ifndef QE_LABEL_H
+#define QE_LABEL_H
 
 #include <QLabel>
 #include <QEWidget.h>
@@ -32,6 +32,7 @@
 #include <QEStringFormatting.h>
 #include <QEPluginLibrary_global.h>
 #include <managePixmaps.h>
+#include <QESingleVariableMethods.h>
 #include <QEStringFormattingMethods.h>
 #include <QCaVariableNamePropertyManager.h>
 
@@ -40,7 +41,12 @@
   When a variable is defined, the label text (or optionally the background pixmap) will be updated. The label will be disabled if the variable is invalid.
   It is tighly integrated with the base class QEWidget which provides generic support such as macro substitutions, drag/drop, and standard properties.
  */
-class QEPLUGINLIBRARYSHARED_EXPORT QELabel : public QLabel, public QEWidget, private managePixmaps, public QEStringFormattingMethods {
+class QEPLUGINLIBRARYSHARED_EXPORT QELabel :
+        public QLabel,
+        public QEWidget,
+        private managePixmaps,
+        public QESingleVariableMethods,
+        public QEStringFormattingMethods {
     Q_OBJECT
 
   public:
@@ -128,36 +134,32 @@ private:
     QVariant copyData();
     void paste( QVariant s );
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
-public:
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
+ public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
     // Standard properties
@@ -405,10 +407,6 @@ public:
     /// \li APPEND - treat array as an array of numbers and format a string containing them all with a space between each. For example, an array of three numbers 10, 11 and 12 will be formatted as '10 11 12'.
     /// \li INDEX - Extract a single item from the array. The item is then formatted as any other non array data would be. The item selected is determined by the arrayIndex property. For example, if arrayIndex property is 1, an array of three numbers 10, 11 and 12 will be formatted as '11'.
     Q_PROPERTY(ArrayActions arrayAction READ getArrayActionProperty WRITE setArrayActionProperty)
-
-    /// Index used to select a single item of data for formatting from an array of data. Default is 0.
-    /// Only used when the arrayAction property is INDEX. Refer to the arrayAction property for more details.
-    Q_PROPERTY(unsigned int arrayIndex READ getArrayIndex WRITE setArrayIndex)
 public:
     // END-STRING-FORMATTING-PROPERTIES ===============================================
 
@@ -459,40 +457,16 @@ public:
     ///
     Q_PROPERTY(QPixmap pixmap7 READ getPixmap7Property WRITE setPixmap7Property)
 
-
-    /// 'Set' access function for #pixmap0 properties. Refer to #pixmap0 property for details
-    void setPixmap0Property( QPixmap pixmap ){ setDataPixmap( pixmap, 0 ); }
-    /// 'Set' access function for #pixmap1 properties. Refer to #pixmap1 property for details
-    void setPixmap1Property( QPixmap pixmap ){ setDataPixmap( pixmap, 1 ); }
-    /// 'Set' access function for #pixmap2 properties. Refer to #pixmap2 property for details
-    void setPixmap2Property( QPixmap pixmap ){ setDataPixmap( pixmap, 2 ); }
-    /// 'Set' access function for #pixmap3 properties. Refer to #pixmap3 property for details
-    void setPixmap3Property( QPixmap pixmap ){ setDataPixmap( pixmap, 3 ); }
-    /// 'Set' access function for #pixmap4 properties. Refer to #pixmap4 property for details
-    void setPixmap4Property( QPixmap pixmap ){ setDataPixmap( pixmap, 4 ); }
-    /// 'Set' access function for #pixmap5 properties. Refer to #pixmap5 property for details
-    void setPixmap5Property( QPixmap pixmap ){ setDataPixmap( pixmap, 5 ); }
-    /// 'Set' access function for #pixmap6 properties. Refer to #pixmap6 property for details
-    void setPixmap6Property( QPixmap pixmap ){ setDataPixmap( pixmap, 6 ); }
-    /// 'Set' access function for #pixmap7 properties. Refer to #pixmap7 property for details
-    void setPixmap7Property( QPixmap pixmap ){ setDataPixmap( pixmap, 7 ); }
-
-    /// 'Get' access function for #pixmap0 properties. Refer to #pixmap0 property for details
-    QPixmap getPixmap0Property(){ return getDataPixmap( 0 ); }
-    /// 'Get' access function for #pixmap1 properties. Refer to #pixmap1 property for details
-    QPixmap getPixmap1Property(){ return getDataPixmap( 1 ); }
-    /// 'Get' access function for #pixmap2 properties. Refer to #pixmap2 property for details
-    QPixmap getPixmap2Property(){ return getDataPixmap( 2 ); }
-    /// 'Get' access function for #pixmap3 properties. Refer to #pixmap3 property for details
-    QPixmap getPixmap3Property(){ return getDataPixmap( 3 ); }
-    /// 'Get' access function for #pixmap4 properties. Refer to #pixmap4 property for details
-    QPixmap getPixmap4Property(){ return getDataPixmap( 4 ); }
-    /// 'Get' access function for #pixmap5 properties. Refer to #pixmap5 property for details
-    QPixmap getPixmap5Property(){ return getDataPixmap( 5 ); }
-    /// 'Get' access function for #pixmap6 properties. Refer to #pixmap6 property for details
-    QPixmap getPixmap6Property(){ return getDataPixmap( 6 ); }
-    /// 'Get' access function for #pixmap7 properties. Refer to #pixmap7 property for details
-    QPixmap getPixmap7Property(){ return getDataPixmap( 7 ); }
 };
 
-#endif // QELABEL_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QELabel::UserLevels)
+Q_DECLARE_METATYPE (QELabel::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QELabel::Formats)
+Q_DECLARE_METATYPE (QELabel::Separators)
+Q_DECLARE_METATYPE (QELabel::Notations)
+Q_DECLARE_METATYPE (QELabel::ArrayActions)
+Q_DECLARE_METATYPE (QELabel::UpdateOptions)
+#endif
+
+#endif // QE_LABEL_H

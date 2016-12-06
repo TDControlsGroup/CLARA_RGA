@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011 Australian Synchrotron
+ *  Copyright (c) 2011,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -42,33 +42,40 @@
 #define NO_ALARM_SATURATION    32
 
 
-/* ----------------------------------------------------------------------------
-    Constructor with no initialisation
-*/
+#define PV_VARIABLE_INDEX      0
+
+//------------------------------------------------------------------------------
+// Constructor with no initialisation
+//
 QEAnalogProgressBar::QEAnalogProgressBar (QWidget * parent):
-   QEAnalogIndicator (parent), QEWidget (this), QEStringFormattingMethods ()
+   QEAnalogIndicator (parent),
+   QEWidget (this),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX),
+   QEStringFormattingMethods ()
 {
    this->setup ();
 }
 
 
-/* ----------------------------------------------------------------------------
-    Constructor with known variable
-*/
+//------------------------------------------------------------------------------
+// Constructor with known variable
+//
 QEAnalogProgressBar::QEAnalogProgressBar (const QString & variableNameIn,
                                           QWidget * parent) :
-   QEAnalogIndicator (parent), QEWidget (this), QEStringFormattingMethods ()
+   QEAnalogIndicator (parent),
+   QEWidget (this),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX),
+   QEStringFormattingMethods ()
 {
-
    this->setup ();
-   this->setVariableName (variableNameIn, 0);
+   this->setVariableName (variableNameIn, PV_VARIABLE_INDEX);
    this->activate ();
 }
 
 
-/* ----------------------------------------------------------------------------
-    Setup common to all constructors
-*/
+//------------------------------------------------------------------------------
+// Setup common to all constructors
+//
 void QEAnalogProgressBar::setup ()
 {
    // Set up data
@@ -76,7 +83,6 @@ void QEAnalogProgressBar::setup ()
    this->setNumVariables (1);
 
    // Set up default properties
-   this->arrayIndex = 0;
    this->setArrayAction (QEStringFormatting::INDEX);
    this->useDbDisplayLimits = false;
    this->alarmSeverityDisplayMode = background;
@@ -96,27 +102,24 @@ void QEAnalogProgressBar::setup ()
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   QObject::connect (&this->variableNamePropertyManager,
-                     SIGNAL (newVariableNameProperty (QString, QString, unsigned int)),
-                     this, SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
-
+   this->connectNewVariableNameProperty (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 }
 
-/* ----------------------------------------------------------------------------
-    Implementation of QEWidget's virtual funtion to create the specific type of QCaObject required.
-    For a progress bar a QCaObject that streams integers is required.
-*/
+//------------------------------------------------------------------------------
+// Implementation of QEWidget's virtual funtion to create the specific type of QCaObject required.
+// For a progress bar a QCaObject that streams integers is required.
+//
 qcaobject::QCaObject* QEAnalogProgressBar::createQcaItem (unsigned int variableIndex)
 {
    qcaobject::QCaObject* result = NULL;
 
-   if (variableIndex == 0) {
+   if (variableIndex == PV_VARIABLE_INDEX) {
       result = new QEFloating (getSubstitutedVariableName (variableIndex), this,
                                &this->floatingFormatting, variableIndex);
 
       // Apply currently defined array index.
       //
-      result->setArrayIndex (this->arrayIndex);
+      this->setQCaArrayIndex (result);
 
    } else {
       result = NULL;            // Unexpected
@@ -126,23 +129,23 @@ qcaobject::QCaObject* QEAnalogProgressBar::createQcaItem (unsigned int variableI
 }
 
 
-/* ----------------------------------------------------------------------------
-    Start updating.
-    Implementation of VariableNameManager's virtual funtion to establish a
-    connection to a PV as the variable name has changed.
-    This function may also be used to initiate updates when loaded as a plugin.
-*/
+//------------------------------------------------------------------------------
+// Start updating.
+// Implementation of VariableNameManager's virtual funtion to establish a
+// connection to a PV as the variable name has changed.
+// This function may also be used to initiate updates when loaded as a plugin.
+//
 void QEAnalogProgressBar::establishConnection (unsigned int variableIndex)
 {
    // Create a connection.
    // If successfull, the QCaObject object that will supply data update signals will be returned
    // Note createConnection creates the connection and returns reference to existing QCaObject.
    //
-   qcaobject::QCaObject * qca = createConnection (variableIndex);
+   qcaobject::QCaObject* qca = this->createConnection (variableIndex);
 
    // If a QCaObject object is now available to supply data update signals, connect it to the appropriate slots.
    //
-   if ((qca) && (variableIndex == 0)) {
+   if ((qca) && (variableIndex == PV_VARIABLE_INDEX)) {
       QObject::connect (qca,  SIGNAL (floatingChanged   (const double &, QCaAlarmInfo &, QCaDateTime &, const unsigned int &)),
                         this, SLOT (setProgressBarValue (const double &, QCaAlarmInfo &, QCaDateTime &, const unsigned int &)));
 
@@ -155,11 +158,11 @@ void QEAnalogProgressBar::establishConnection (unsigned int variableIndex)
 }
 
 
-/* ----------------------------------------------------------------------------
-    Act on a connection change.
-    Change how the progress bar looks and change the tool tip
-    This is the slot used to recieve connection updates from a QCaObject based class.
- */
+//------------------------------------------------------------------------------
+// Act on a connection change.
+// Change how the progress bar looks and change the tool tip
+// This is the slot used to recieve connection updates from a QCaObject based class.
+//
 void QEAnalogProgressBar::connectionChanged (QCaConnectionInfo& connectionInfo,
                                              const unsigned int& variableIndex)
 {
@@ -188,7 +191,9 @@ void QEAnalogProgressBar::connectionChanged (QCaConnectionInfo& connectionInfo,
 }
 
 /* ----------------------------------------------------------------------------
-    Provide image, e.g. with EGU if appropriate
+//------------------------------------------------------------------------------
+// Provide image, e.g. with EGU if appropriate
+//
  */
 QString QEAnalogProgressBar::getTextImage ()
 {
@@ -197,7 +202,9 @@ QString QEAnalogProgressBar::getTextImage ()
 
 
 /* ----------------------------------------------------------------------------
-    Create a single thresholds and colour band item.
+//------------------------------------------------------------------------------
+// Create a single thresholds and colour band item.
+//
  */
 QEAnalogIndicator::Band QEAnalogProgressBar::createBand (const double lower,
                                                          const double upper,
@@ -217,8 +224,10 @@ QEAnalogIndicator::Band QEAnalogProgressBar::createBand (const double lower,
 }
 
 /* ----------------------------------------------------------------------------
-    Create a list of alarm thresholds and colours.
- */
+//------------------------------------------------------------------------------
+// Create a list of alarm thresholds and colours.
+//
+*/
 QEAnalogIndicator::BandList QEAnalogProgressBar::getBandList ()
 {
    BandList result;
@@ -282,9 +291,11 @@ QEAnalogIndicator::BandList QEAnalogProgressBar::getBandList ()
 
 
 /* ----------------------------------------------------------------------------
-    Update the progress bar value
-    This is the slot used to recieve data updates from a QCaObject based class.
- */
+//------------------------------------------------------------------------------
+// Update the progress bar value
+// This is the slot used to recieve data updates from a QCaObject based class.
+//
+*/
 void QEAnalogProgressBar::setProgressBarValue (const double &value,
                                                QCaAlarmInfo & alarmInfo,
                                                QCaDateTime &,
@@ -335,7 +346,7 @@ void QEAnalogProgressBar::setProgressBarValue (const double &value,
 
    // Form and save the image - must do before call to setValue.
    //
-   this->theImage = this->stringFormatting.formatString (value);
+   this->theImage = this->stringFormatting.formatString (value, this->getArrayIndex());
 
    // Update the progress bar
    //
@@ -381,8 +392,10 @@ void QEAnalogProgressBar::setProgressBarValue (const double &value,
 }
 
 /* ----------------------------------------------------------------------------
-    Update variable name etc.
- */
+//------------------------------------------------------------------------------
+// Update variable name etc.
+//
+*/
 void QEAnalogProgressBar::useNewVariableNameProperty (QString variableNameIn,
                                                       QString variableNameSubstitutionsIn,
                                                       unsigned int variableIndex)
@@ -420,34 +433,6 @@ QVariant QEAnalogProgressBar::copyData ()
    return QVariant (this->getValue ());
 }
 
-
-//------------------------------------------------------------------------------
-//
-void QEAnalogProgressBar::setArrayIndex (const unsigned int arrayIndexIn)
-{
-   this->arrayIndex = MAX (0, (int) arrayIndexIn);
-
-   qcaobject::QCaObject* qca = this->getQcaItem (0);
-   if (qca) {
-      // Apply to qca object and force update (if it exists yet)
-      qca->setArrayIndex (this->arrayIndex);
-      qca->resendLastData ();
-   }
-
-   // This function hides the function defined in the standard properties.
-   // The array index within the string formatting not used per se (so far) but
-   // might as well set here to keep the two in step.
-   //
-   this->stringFormatting.setArrayIndex (this->arrayIndex);
-}
-
-//------------------------------------------------------------------------------
-//
-unsigned int QEAnalogProgressBar::getArrayIndex () const
-{
-   return this->arrayIndex;
-}
-
 //------------------------------------------------------------------------------
 // useDbDisplayLimits
 void QEAnalogProgressBar::setUseDbDisplayLimits (bool useDbDisplayLimitsIn)
@@ -460,7 +445,6 @@ bool QEAnalogProgressBar::getUseDbDisplayLimits ()
 {
    return this->useDbDisplayLimits;
 }
-
 
 //------------------------------------------------------------------------------
 void QEAnalogProgressBar::setAlarmSeverityDisplayMode (AlarmSeverityDisplayModes value)

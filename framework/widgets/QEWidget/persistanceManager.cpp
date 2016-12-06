@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -121,10 +121,12 @@
  */
 
 #include <persistanceManager.h>
+#include <QDebug>
 #include <QFile>
 #include <QByteArray>
 #include <QBuffer>
 #include <QMessageBox>
+#include <QEWidget.h>
 
 #define CONFIG_COMPONENT_KEY "Component"
 
@@ -142,44 +144,54 @@ PersistanceManager::PersistanceManager()
 
 //=========================================================
 
-// Save the current configuration
-void PersistanceManager::save( const QString fileName, const QString rootName, const QString configName )
+// Save the current configuration - set up
+//
+void PersistanceManager::saveProlog( const QString fileName, const QString rootName, const QString configName, const bool warnUser )
 {
     // Try to read the configuration file we are saving to
     // If OK, remove the configuration we are overwriting if present.
-    if( openRead( fileName, rootName, false ) )
+    if( openRead( fileName, rootName, false, warnUser ) )
     {
+        // Get the 'Config' elements
         QDomNodeList configNodes = docElem.elementsByTagName( "Config" );
         QDomElement oldConfig;
+
+        // Look for the configuration with a name matching what we want to save
         int i;
         for( i = 0; i < configNodes.count(); i++ )
         {
             oldConfig = configNodes.at(i).toElement();
             if( oldConfig.attribute( "Name" ) == configName )
             {
+                // A matching config name has been found
                 break;
             }
         }
 
+        // If a matching name was found...
         if( i < configNodes.count() )
         {
-            // Saving will overwrite previous configuration, check with the user this is OK
-            QMessageBox msgBox;
-            msgBox.setText( "A previous configuration will be overwritten. Do you want to continue?" );
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-            msgBox.setDefaultButton(QMessageBox::Cancel);
-            switch ( msgBox.exec() )
+            // If interacting with the user, check it is OK to overwrite
+            if( warnUser )
             {
-               case QMessageBox::Yes:
-                    // Yes, continue
-                    break;
+                // Saving will overwrite previous configuration, check with the user this is OK
+                QMessageBox msgBox;
+                msgBox.setText( "A previous configuration will be overwritten. Do you want to continue?" );
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+                msgBox.setDefaultButton(QMessageBox::Cancel);
+                switch ( msgBox.exec() )
+                {
+                   case QMessageBox::Yes:
+                        // Yes, continue
+                        break;
 
-                case QMessageBox::No:
-                case QMessageBox::Cancel:
-                default:
-                    // No, do nothing
-                    return;
-             }
+                    case QMessageBox::No:
+                    case QMessageBox::Cancel:
+                    default:
+                        // No, do nothing
+                        return;
+                 }
+            }
 
             // Remove the old configuration
             docElem.removeChild( oldConfig );
@@ -200,27 +212,71 @@ void PersistanceManager::save( const QString fileName, const QString rootName, c
     config = doc.createElement( "Config" );
     config.setAttribute( "Name", configName );
     docElem.appendChild( config );
+}
+
+// Save the current configuration
+void PersistanceManager::save( const QString fileName, const QString rootName, const QString configName, const bool warnUser )
+{
+    // Initialise saving
+    saveProlog( fileName, rootName, configName, warnUser );
 
     // Notify any interested objects to contribute their persistant data
     signal.save();
 
+    // Finalise saving
+    saveEpilog( fileName, warnUser );
+}
+
+// Save the current configuration of a single widget
+void PersistanceManager::saveWidget( QEWidget* qewidget, const QString fileName,
+                                     const QString rootName, const QString configName )
+{
+    if( !qewidget ) return;
+
+    // Initialise saving
+    saveProlog( fileName, rootName, configName, true );
+
+    // Request object save its persistant data
+    qewidget->saveConfiguration( this );
+
+    // Finalise saving
+    saveEpilog( fileName, true );
+}
+
+// Save the current configuration - tidy up
+void PersistanceManager::saveEpilog( const QString fileName, const bool warnUser )
+{
     QFile file( fileName );
+
+    // Write the configuration file
     if ( file.open( QIODevice::WriteOnly ) )
     {
         QTextStream ts( &file );
         ts << doc.toString() ;
         file.close();
     }
+
+    // Handle not writing configuration file
     else
     {
-        QMessageBox::warning( 0, "Configuration management", QString( "Could not save configuration. Could not open configuration file ").append( fileName ) );
+        QString message = QString( "Could not save configuration. Could not open configuration file ").append( fileName );
+        if( warnUser )
+        {
+            QMessageBox::warning( 0, "Configuration management", message );
+        }
+        else
+        {
+            qDebug() << "Configuration management: " << message;
+        }
     }
 }
 
+//=========================================================
+
 // Restore a configuration
-void PersistanceManager::restore( const QString fileName, const QString rootName, const QString configName  )
+void PersistanceManager::restore( const QString fileName, const QString rootName, const QString configName )
 {
-    if( !openRead( fileName, rootName, true ) )
+    if( !openRead( fileName, rootName, true, true ) )
     {
         return;
     }
@@ -230,6 +286,25 @@ void PersistanceManager::restore( const QString fileName, const QString rootName
     // Notify any interested objects to collect their persistant data
     restoring = true;
     signal.restore();
+    restoring = false;
+}
+
+// Restore a configuration of a single widget
+// Unlike saving, there is no prolog/epilog
+void PersistanceManager::restoreWidget( QEWidget* qewidget, const QString fileName,
+                                        const QString rootName, const QString configName )
+{
+    if( !qewidget ) return;
+
+    if( !openRead( fileName, rootName, true, true ) )
+    {
+        return;
+    }
+    config = getElement( docElem, "Config", "Name", configName );
+
+    // Request object restore its persistant data
+    restoring = true;
+    qewidget->restoreConfiguration( this, QEWidget::FRAMEWORK );
     restoring = false;
 }
 
@@ -259,21 +334,37 @@ void SaveRestoreSignal::restore()
 }
 
 // Open and read the configuration file
-bool PersistanceManager::openRead( QString fileName, QString rootName, bool fileExpected )
+bool PersistanceManager::openRead( const QString fileName, const QString rootName, const bool fileExpected, const bool warnUser )
 {
     QFile file( fileName );
     if (!file.open(QIODevice::ReadOnly))
     {
         if( fileExpected )
         {
-            QMessageBox::warning( 0, "Configuration management", QString( "Could not open configuration file for reading: ").append( fileName ) );
+            QString message = QString( "Could not open configuration file for reading: ").append( fileName );
+            if( warnUser )
+            {
+                QMessageBox::warning( 0, "Configuration management", message );
+            }
+            else
+            {
+                qDebug() << "Configuration management: " << message;
+            }
         }
         return false;
     }
 
     if ( !doc.setContent( &file ) )
     {
-        QMessageBox::warning( 0, "Configuration management", QString( "Could not parse the XML in the config file: ").append( fileName ) );
+        QString message = QString( "Could not parse the XML in the config file: ").append( fileName );
+        if( warnUser )
+        {
+            QMessageBox::warning( 0, "Configuration management", message );
+        }
+        else
+        {
+            qDebug() << "Configuration management: " << message ;
+        }
         file.close();
         return false;
     }
@@ -283,7 +374,15 @@ bool PersistanceManager::openRead( QString fileName, QString rootName, bool file
 
     if( docElem.nodeName().compare( rootName ) )
     {
-        QMessageBox::warning( 0, "Configuration management", QString( "XML did not contain the expected root element " ).append( rootName ).append( " in the config file: ").append( fileName ) );
+        QString message = QString( "XML did not contain the expected root element " ).append( rootName ).append( " in the config file: ").append( fileName );
+        if( warnUser )
+        {
+            QMessageBox::warning( 0, "Configuration management", message );
+        }
+        else
+        {
+            qDebug() << "Configuration management: " << message;
+        }
         return false;
     }
     return true;
@@ -309,6 +408,13 @@ PMElement PersistanceManager::getNamedConfiguration( QString name )
 
 //=========================================================
 
+// Determine if a configuration is present
+bool PersistanceManager::isConfigurationPresent( const QString fileName, const QString rootName, const QString configName )
+{
+    QStringList nameList = getConfigNames( fileName, rootName );
+    return nameList.contains( configName );
+}
+
 // Get a list of the existing configurations
 QStringList PersistanceManager::getConfigNames( QString fileName, QString rootName )
 {
@@ -322,8 +428,8 @@ QStringList PersistanceManager::getConfigNames( QString fileName, QString rootNa
     hasDefault = false;
     QStringList nameList;
 
-    // Return the empty list if cant read file
-    if( !openRead( fileName, rootName, false ) )
+    // Return the empty list if can't read file
+    if( !openRead( fileName, rootName, false, true ) )
     {
         return nameList;
     }
@@ -347,37 +453,43 @@ QStringList PersistanceManager::getConfigNames( QString fileName, QString rootNa
     return nameList;
 }
 
-// Delete a list of configurations
-void PersistanceManager::deleteConfigs( QString fileName, QString rootName, QStringList names )
+// Delete a list of configurations, confirming deletions with the user if appropriate
+void PersistanceManager::deleteConfigs( const QString fileName, const QString rootName, const QStringList names, const bool warnUser )
 {
-    // Deleting configurations, check with the user this is OK
-    QMessageBox msgBox;
-    if( names.count()==1 && names.at(0) == PersistanceManager::defaultName )
+    // Deleting configurations. If appropriate check with the user this is OK
+    if( warnUser )
     {
-        msgBox.setText( QString( "The default configuration used at startup will be deleted. Do you want to continue?" ) );
-    }
-    else
-    {
-        msgBox.setText( QString( "%1 configuration%2 will be deleted. Do you want to continue?" ).arg( names.count() ).arg( names.count()>1?QString("s"):QString("") ));
-    }
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Cancel);
-    switch ( msgBox.exec() )
-    {
-       case QMessageBox::Yes:
-            // Yes, continue
-            break;
+        QMessageBox msgBox;
+        QString message;
+        if( names.count()==1 && names.at(0) == PersistanceManager::defaultName )
+        {
+            message = QString( "The default configuration used at startup will be deleted. Do you want to continue?" );
+        }
+        else
+        {
+            message = QString( "%1 configuration%2 will be deleted. Do you want to continue?" ).arg( names.count() ).arg( names.count()>1?QString("s"):QString("") );
+        }
 
-        case QMessageBox::No:
-        case QMessageBox::Cancel:
-        default:
-            // No, do nothing
-            return;
-     }
+        msgBox.setText( message );
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        switch ( msgBox.exec() )
+        {
+           case QMessageBox::Yes:
+                // Yes, continue
+                break;
+
+            case QMessageBox::No:
+            case QMessageBox::Cancel:
+            default:
+                // No, do nothing
+                return;
+         }
+    }
 
     // Try to read the configuration file we are saving to
     // If OK, remove the configuration we are overwriting if present.
-    if( openRead( fileName, rootName, true ) )
+    if( openRead( fileName, rootName, true, warnUser ) )
     {
         QDomNodeList nodeList = docElem.elementsByTagName( "Config" );
         for( int i = 0; i < names.count(); i++ )
@@ -403,7 +515,15 @@ void PersistanceManager::deleteConfigs( QString fileName, QString rootName, QStr
     }
     else
     {
-        QMessageBox::warning( 0, "Configuration management", QString( "Could not save the configuration to configuration file ").append( fileName ) );
+        QString message = QString( "Could not save remaining configurations to configuration file ").append( fileName );
+        if( warnUser )
+        {
+            QMessageBox::warning( 0, "Configuration management", message );
+        }
+        else
+        {
+            qDebug() << "Configuration management: " << message;
+        }
     }
 }
 

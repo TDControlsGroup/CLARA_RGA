@@ -25,13 +25,13 @@ QT_BEGIN_NAMESPACE
 class Ui_RgaLed
 {
 public:
-    QESimpleShape *archOn_1;
+    QESimpleShape *ARMOD;
     QESimpleShape *STOP_1;
-    QELabel *archTO_1;
-    QELabel *archTime_1;
+    QELabel *ANATO;
+    QELabel *TIMER;
     QESimpleShape *ANA200_1;
     QESimpleShape *BAR50_1;
-    QELabel *mode_1;
+    QELabel *ARCSTA;
     QESimpleShape *BAR200_1;
     QESimpleShape *BAR100_1;
     QFrame *line_2;
@@ -42,17 +42,17 @@ public:
         if (RgaLed->objectName().isEmpty())
             RgaLed->setObjectName(QStringLiteral("RgaLed"));
         RgaLed->resize(92, 367);
-        archOn_1 = new QESimpleShape(RgaLed);
-        archOn_1->setObjectName(QStringLiteral("archOn_1"));
-        archOn_1->setGeometry(QRect(10, 220, 16, 16));
-        archOn_1->setFocusPolicy(Qt::NoFocus);
-        archOn_1->setContextMenuPolicy(Qt::CustomContextMenu);
-        archOn_1->setShape(QSimpleShape::ellipse);
-        archOn_1->setProperty("colour0", QVariant(QColor(200, 200, 200)));
-        archOn_1->setProperty("colour1", QVariant(QColor(0, 255, 0)));
-        archOn_1->setProperty("colour2", QVariant(QColor(255, 0, 0)));
-        archOn_1->setProperty("colour3", QVariant(QColor(0, 255, 0)));
-        archOn_1->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
+        ARMOD = new QESimpleShape(RgaLed);
+        ARMOD->setObjectName(QStringLiteral("ARMOD"));
+        ARMOD->setGeometry(QRect(10, 220, 16, 16));
+        ARMOD->setFocusPolicy(Qt::NoFocus);
+        ARMOD->setContextMenuPolicy(Qt::CustomContextMenu);
+        ARMOD->setShape(QSimpleShape::ellipse);
+        ARMOD->setProperty("colour0", QVariant(QColor(200, 200, 200)));
+        ARMOD->setProperty("colour1", QVariant(QColor(0, 255, 0)));
+        ARMOD->setProperty("colour2", QVariant(QColor(255, 0, 0)));
+        ARMOD->setProperty("colour3", QVariant(QColor(0, 255, 0)));
+        ARMOD->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
         STOP_1 = new QESimpleShape(RgaLed);
         STOP_1->setObjectName(QStringLiteral("STOP_1"));
         STOP_1->setGeometry(QRect(10, 20, 16, 16));
@@ -62,12 +62,12 @@ public:
         STOP_1->setProperty("colour0", QVariant(QColor(255, 255, 0)));
         STOP_1->setProperty("colour1", QVariant(QColor(255, 0, 0)));
         STOP_1->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
-        archTO_1 = new QELabel(RgaLed);
-        archTO_1->setObjectName(QStringLiteral("archTO_1"));
-        archTO_1->setGeometry(QRect(10, 290, 31, 21));
-        archTime_1 = new QELabel(RgaLed);
-        archTime_1->setObjectName(QStringLiteral("archTime_1"));
-        archTime_1->setGeometry(QRect(10, 330, 31, 21));
+        ANATO = new QELabel(RgaLed);
+        ANATO->setObjectName(QStringLiteral("ANATO"));
+        ANATO->setGeometry(QRect(10, 290, 31, 21));
+        TIMER = new QELabel(RgaLed);
+        TIMER->setObjectName(QStringLiteral("TIMER"));
+        TIMER->setGeometry(QRect(10, 330, 31, 21));
         ANA200_1 = new QESimpleShape(RgaLed);
         ANA200_1->setObjectName(QStringLiteral("ANA200_1"));
         ANA200_1->setGeometry(QRect(10, 140, 16, 16));
@@ -85,9 +85,9 @@ public:
         BAR50_1->setProperty("flash0", QVariant(false));
         BAR50_1->setProperty("flash1", QVariant(false));
         BAR50_1->setProperty("displayAlarmStateOption", QVariant(QESimpleShape::Never));
-        mode_1 = new QELabel(RgaLed);
-        mode_1->setObjectName(QStringLiteral("mode_1"));
-        mode_1->setGeometry(QRect(10, 250, 60, 16));
+        ARCSTA = new QELabel(RgaLed);
+        ARCSTA->setObjectName(QStringLiteral("ARCSTA"));
+        ARCSTA->setGeometry(QRect(10, 250, 60, 16));
         BAR200_1 = new QESimpleShape(RgaLed);
         BAR200_1->setObjectName(QStringLiteral("BAR200_1"));
         BAR200_1->setGeometry(QRect(10, 100, 16, 16));
@@ -124,14 +124,15 @@ public:
     {
         RgaLed->setWindowTitle(QApplication::translate("RgaLed", "GroupBox", 0));
         RgaLed->setTitle(QApplication::translate("RgaLed", "RGA", 0));
-        archOn_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(GRGA):MODE", 0)));
-        archOn_1->setProperty("variableSubstitutions", QVariant(QString()));
+        ARMOD->setProperty("variable", QVariant(QString()));
+        ARMOD->setProperty("variableSubstitutions", QVariant(QString()));
         STOP_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):HEADSTA", 0)));
         STOP_1->setProperty("variableSubstitutions", QVariant(QString()));
-        archTO_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "GRGA:ANAT", 0)));
-        archTime_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "GRGA:ANAT", 0)));
+        ANATO->setProperty("variable", QVariant(QApplication::translate("RgaLed", "GRGA:ANAT", 0)));
+        TIMER->setProperty("variable", QVariant(QApplication::translate("RgaLed", "GRGA:ANAT", 0)));
         ANA200_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):HEADSTA", 0)));
         BAR50_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):HEADSTA", 0)));
+        ARCSTA->setProperty("variable", QVariant(QString()));
         BAR200_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):HEADSTA", 0)));
         BAR100_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):HEADSTA", 0)));
         SS_1->setProperty("variable", QVariant(QApplication::translate("RgaLed", "$(RGA1):SCAN", 0)));

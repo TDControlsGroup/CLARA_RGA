@@ -137,6 +137,7 @@ void QRadioGroup::commonSetup ()
    this->cols = 2;
    this->space = 4;
    this->buttonStyle = Radio;
+   this->buttonOrder = rowMajor;
    this->strings.clear ();
 
    // Set the initial state
@@ -251,10 +252,17 @@ void QRadioGroup::setButtonLayout ()
       QAbstractButton *button = this->buttonList.value (j, NULL);
       if (button) {
 
-         // Find row and col - row major.
-         //
-         row = j / MAX (this->cols, 1);
-         col = j % MAX (this->cols, 1);
+         if (this->buttonOrder == colMajor) {
+            // Find row and col - col major.
+            //
+            row = j % MAX (this->rows, 1);
+            col = j / MAX (this->rows, 1);
+         } else {
+            // Find row and col - row major.
+            //
+            row = j / MAX (this->cols, 1);
+            col = j % MAX (this->cols, 1);
+         }
 
          this->buttonLayout->addWidget (button, row, col);
       }
@@ -409,6 +417,23 @@ void QRadioGroup::setButtonStyle (const ButtonStyles buttonStyleIn)
 QRadioGroup::ButtonStyles QRadioGroup::getButtonStyle () const
 {
    return this->buttonStyle;
+}
+
+//------------------------------------------------------------------------------
+//
+void QRadioGroup::setButtonOrder (const ButtonOrders buttonOrderIn)
+{
+   if (this->buttonOrder != buttonOrderIn) {
+      this->buttonOrder = buttonOrderIn;
+      this->setButtonLayout ();
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+QRadioGroup::ButtonOrders QRadioGroup::getButtonOrder () const
+{
+   return this->buttonOrder;
 }
 
 // end

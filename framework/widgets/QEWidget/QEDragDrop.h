@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEDragDrop_H
-#define QEDragDrop_H
+#ifndef QE_DRAG_DROP_H
+#define QE_DRAG_DROP_H
 
 #include <QDragEnterEvent>
 #include <QDropEvent>
@@ -52,7 +52,11 @@ protected:
     // text is dropped.
     void qcaDropEvent(QDropEvent *event, const bool allText = false);
 
-    // initiates drag-drop
+    // left button: initiates drag-drop
+    // middle botton: performs copy variable name to paste buffer.
+    // Notre: while the middle button processing is not part of drag/drop per se,
+    // this is the location of the standard qcaMousePressEvent function.
+    //
     void qcaMousePressEvent(QMouseEvent *event);
 
     // Virtual functions to allow this class to get and set the QE widgets drag/drop text
@@ -63,7 +67,6 @@ protected:
 private:
     QWidget* owner;
     bool allowDrop;
-
 };
 
-#endif // QEDragDrop_H
+#endif // QE_DRAG_DROP_H

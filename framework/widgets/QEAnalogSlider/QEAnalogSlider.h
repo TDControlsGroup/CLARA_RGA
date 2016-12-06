@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013, 2014 Australian Synchrotron
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -35,31 +35,56 @@
 #include <QEFloatingFormatting.h>
 #include <QEString.h>
 #include <QEStringFormatting.h>
+#include <QESingleVariableMethods.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <QAnalogSlider.h>
 #include <QEPluginLibrary_global.h>
 
 // QEAbstractWidget provides all standard QEWidget properties
 //
-class QEPLUGINLIBRARYSHARED_EXPORT QEAnalogSlider : public QAnalogSlider, public QEWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QEAnalogSlider :
+      public QAnalogSlider,
+      public QESingleVariableMethods,
+      public QEWidget {
 
    Q_OBJECT
+
+   // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
+   // Single Variable properties
+   // These properties should be identical for every widget using a single variable.
+   // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+   // directory.
+   //
+   // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
+   // A property name ending with 'Name' results in some sort of string a variable being displayed,
+   // but will only accept alphanumeric and won't generate callbacks on change.
+public:
+   /// EPICS variable name (CA PV)
+   ///
+   Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
+
+   /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+   /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+   /// These substitutions are applied to variable names for all QE widgets.
+   /// In some widgets are are also used for other purposes.
+   ///
+   Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+
+   /// Index used to select a single item of data for processing. The default is 0.
+   ///
+   Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+   //
+   // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
+
 
    // QEAnalogSlider specific properties ===============================================
    // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
    // A property name ending with 'Name' results in some sort of string a variable being displayed,
    // but will only accept alphanumeric and won't generate callbacks on change.
 
-   /// EPICS variable name (CA PV)
-   ///
-   Q_PROPERTY (QString variable            READ getVariableNameProperty WRITE setVariableNameProperty)
    Q_PROPERTY (QString readbackVariable    READ getReadbackNameProperty WRITE setReadbackNameProperty)
 
-   /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
-   /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-   /// These substitutions are applied to variable names for all QE widgets.
-   /// In some widgets are are also used for other purposes.
-   Q_PROPERTY (QString variableSubstitutions READ getSubstitutionsProperty WRITE setSubstitutionsProperty)
+   Q_PROPERTY(int readbackArrayIndex READ getReadbackArrayIndex WRITE setReadbackArrayIndex)
 
    /// If true the widget writes to the PV as the slider is moved.
    /// If false (default) a write only occurs when apply button click.
@@ -80,7 +105,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEAnalogSlider : public QAnalogSlider, public
    Q_PROPERTY (QString leftText      READ getLeftText     WRITE setLeftText    DESIGNABLE false)
    Q_PROPERTY (QString centreText    READ getCentreText   WRITE setCentreText  DESIGNABLE false)
    Q_PROPERTY (QString rightText     READ getRightText    WRITE setRightText   DESIGNABLE false)
-
    //
    // End of QEAnalogSlider specific properties =========================================
 
@@ -217,16 +241,21 @@ public:
                             QWidget* parent = 0);
 
    /// Destruction
-   virtual ~QEAnalogSlider(){}
+   virtual ~QEAnalogSlider();
 
    void activated ();
    void writeNow ();
 
-   void setVariableNameProperty (const QString& variableName);
-   QString getVariableNameProperty () const;
+   // Override single variable property methods' function of same name.
+   // Must apply to both PV substitutions.
+   //
+   void setVariableNameSubstitutionsProperty (const QString& substitutions);
 
    void setReadbackNameProperty (const QString& variableName);
    QString getReadbackNameProperty () const;
+
+   void setReadbackArrayIndex (const int arrayIndex);
+   int getReadbackArrayIndex () const;
 
    void setSubstitutionsProperty (const QString& substitutions);
    QString getSubstitutionsProperty () const;
@@ -277,9 +306,7 @@ private:
 
    QEFloatingFormatting floatingFormatting;
    QEStringFormatting   stringFormatting;
-
-   QCaVariableNamePropertyManager vnpmSP;
-   QCaVariableNamePropertyManager vnpmRB;
+   QESingleVariableMethods* readback;
 
    bool autoValuesAreDefined;
    bool isConnected;
@@ -311,5 +338,10 @@ private slots:
    void valueChanged (const double value);
    void applyButtonClicked (bool);  // override parent class
 };
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEAnalogSlider::UserLevels)
+Q_DECLARE_METATYPE (QEAnalogSlider::DisplayAlarmStateOptions)
+#endif
 
 #endif // QE_ANALOG_SLIDER_H

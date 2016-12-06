@@ -26,7 +26,12 @@
 #define QCADESIGNERPLUGIN_H
 
 #include <QtPlugin>
-#include <QDesignerCustomWidgetCollectionInterface>
+#include <QtGlobal>
+#if QT_VERSION >= 0x050500
+    #include <QtUiPlugin/QDesignerCustomWidgetCollectionInterface>
+#else
+    #include <QDesignerCustomWidgetCollectionInterface>
+#endif
 
 class QEWidgets: public QObject, public QDesignerCustomWidgetCollectionInterface {
     Q_OBJECT

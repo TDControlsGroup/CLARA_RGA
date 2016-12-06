@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2015 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -152,17 +152,6 @@ void QEStringFormattingMethods::setArrayAction( QEStringFormatting::arrayActions
 QEStringFormatting::arrayActions QEStringFormattingMethods::getArrayAction() const
 {
     return stringFormatting.getArrayAction();
-}
-
-// arrayIndex
-void QEStringFormattingMethods::setArrayIndex( unsigned int arrayIndex )
-{
-    stringFormatting.setArrayIndex( arrayIndex );
-    stringFormattingChange();
-}
-unsigned int QEStringFormattingMethods::getArrayIndex() const
-{
-    return stringFormatting.getArrayIndex();
 }
 
 // local enuerations

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -28,8 +28,8 @@
  snapshot of the current image in another application.
  */
 
-#ifndef APPLICATIONLAUNCHER_H
-#define APPLICATIONLAUNCHER_H
+#ifndef QE_APPLICATION_LAUNCHER_H
+#define QE_APPLICATION_LAUNCHER_H
 
 #include <QImage>
 #include <QString>
@@ -37,10 +37,11 @@
 #include <QTemporaryFile>
 #include <VariableNameManager.h>
 #include <UserMessage.h>
+#include <QEPluginLibrary_global.h>
 
 
 // Class to manage a process started by a QE button/image
-class processManager : public QProcess
+class QEPLUGINLIBRARYSHARED_EXPORT processManager : public QProcess
 {
     Q_OBJECT
 
@@ -64,7 +65,7 @@ private:
 };
 
 
-class applicationLauncher
+class QEPLUGINLIBRARYSHARED_EXPORT applicationLauncher
 {
 public:
 
@@ -104,4 +105,4 @@ private:
     UserMessage message;
 };
 
-#endif // APPLICATIONLAUNCHER_H
+#endif // QE_APPLICATION_LAUNCHER_H

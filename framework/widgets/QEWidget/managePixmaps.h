@@ -1,4 +1,5 @@
-/*
+/*  managePixmaps.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011 Australian Synchrotron
+ *  Copyright (c) 2011,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -22,30 +23,51 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef MANAGEPIXMAP_H
-#define MANAGEPIXMAP_H
+#ifndef MANAGE_PIXMAP_H
+#define MANAGE_PIXMAP_H
 
 #include <QList>
 #include <QPixmap>
+#include <QEPluginLibrary_global.h>
 
 #define NUM_PIXMAPS_MANAGED 8
 
-class managePixmaps {
+class QEPLUGINLIBRARYSHARED_EXPORT managePixmaps {
 
-  public:
+public:
     managePixmaps();
     // Property convenience functions
 
     // Pixmaps
-    void setDataPixmap( const QPixmap& Pixmap, const unsigned int index );
-    QPixmap getDataPixmap( const unsigned int index ) const;
+    void setDataPixmap( const QPixmap& Pixmap, const int index );
+    QPixmap getDataPixmap( const int index ) const;
     QPixmap getDataPixmap( const QString value ) const;
 
-  protected:
+    // Access function for pixmap properties.
+    // Currently used by QELabel, QEPushButton etc. and QEFrame.
+    //
+#define PIXMAP_ACCESS(n)                                                                   \
+    void setPixmap##n##Property( const QPixmap& pixmap ) { setDataPixmap( pixmap, n ); }   \
+    QPixmap getPixmap##n##Property() const { return getDataPixmap( n ); }
 
-  private:
+
+    PIXMAP_ACCESS (0)
+    PIXMAP_ACCESS (1)
+    PIXMAP_ACCESS (2)
+    PIXMAP_ACCESS (3)
+    PIXMAP_ACCESS (4)
+    PIXMAP_ACCESS (5)
+    PIXMAP_ACCESS (6)
+    PIXMAP_ACCESS (7)
+
+#undef PIXMAP_ACCESS
+
+protected:
+    // Called when a specific pix map is updated.
+    virtual void pixmapUpdated( const int index );
+
+private:
     QList<QPixmap> pixmaps;
-
 };
 
-#endif // MANAGEPIXMAP_H
+#endif // MANAGE_PIXMAP_H

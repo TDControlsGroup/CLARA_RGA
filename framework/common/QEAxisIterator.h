@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -36,7 +36,7 @@
 ///
 /// For a linear iteration, the set of values are always an integer multiple of
 /// the given minorInterval. The major interval indication occures when the value
-/// an interger multip;e of the major interval (minorInterval * majorMinorRatio).
+/// an interger multiple of the major interval (minorInterval * majorMinorRatio).
 ///
 /// The class constructor will contstrain the minorInterval to be >= 1.0e-20 and
 /// the majorMinorRatio to be >= 1 if needs be.
@@ -68,7 +68,7 @@ public:
                             const double minorInterval,
                             const int majorMinorRatio,
                             const bool isLogarithmic);
-   ~QEAxisIterator ();
+   virtual ~QEAxisIterator ();
 
    /// Re-initialise iterator parameters. If the iterator parameters are updated,
    /// the next call to  nextValue () will always return false.
@@ -79,10 +79,10 @@ public:
                       const int majorMinorRatio,
                       const bool isLogarithmic);
 
-   /// Resets the iterator and returns first value if available indicated by return
-   /// value being true.
-   //
-   bool firstValue (double& value, bool& isMajor);
+   /// Resets the iterator and returns first iteration value if available (return value is true).
+   /// The maxIterations parameter is a belts and braces safety check to avoid infinite looping.
+   ///
+   bool firstValue (double& value, bool& isMajor, const int maxIterations = 10000);
 
    /// Returns next value if available indicated by return value being true.
    //
@@ -103,8 +103,10 @@ private:
 
    double origin;             // choosen such that iteratorControl does not overflow.
    int    iteratorControl;    // value = (iteratorControl * minorInterval) + origin
-   double minTolerance;       // accoundate rounding errors at lower limit
-   double maxTolerance;       // accoundate rounding errors at upper limit
+   double minTolerance;       // accomodate rounding errors at lower limit
+   double maxTolerance;       // accomodate rounding errors at upper limit
+   int    iterationCount;     // iteration count
+   int    maxIterations;      // max allowed iteration
 };
 
 #endif  // QE_AXIS_ITERATOR_H

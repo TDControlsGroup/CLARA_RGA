@@ -25,10 +25,11 @@
 
 // Manage CA alarm and severity information
 
-#ifndef QCAALARMINFO_H
-#define QCAALARMINFO_H
+#ifndef QCA_ALARM_INFO_H
+#define QCA_ALARM_INFO_H
 
 #include <QString>
+#include <QStringList>
 #include <QEPluginLibrary_global.h>
 
 #define QCAALARMINFO_SEVERITY unsigned short
@@ -58,14 +59,32 @@ public:
     QString getStyleColorName() const; // Return 'standard' style colour for the alarm state.
     QString getColorName() const;      // Return 'standard' colour for the alarm state.
 
-
     static QCAALARMINFO_SEVERITY getInvalidSeverity(); // Return a severity that will not match any valid severity
     QCAALARMINFO_SEVERITY getSeverity() const; // Return the current severity
+
+    // The following fuunctions take or return a QStringList with four elements indexed
+    // by alarm severity, i.e. no alarm, minor, major and invalid.
+    //
+    static void setStyleColorNames( const QStringList& styleColorNames ); // Set prefered style colour names
+    static QStringList getStyleColorNames();                              // Return prefered style colour names
+
+    static void setColorNames( const QStringList& colorNames );           // Set prefered colour names
+    static QStringList getColorNames();                                   // Return prefered colour names
+
+    static QStringList getDefaultStyleColorNames();                       // Return default/standard style colour names
+    static QStringList getDefaultColorNames();                            // Return default/standard colour names
 
 private:
     unsigned short status;      // Alarm state
     unsigned short severity;    // Alarm severity
 
+    // default constant colour names
+    static const QStringList defaultStyleColorNames;
+    static const QStringList defaultColorNames;
+
+    // current dynamic colour names
+    static QStringList styleColorNames;
+    static QStringList colorNames;
 };
 
-#endif // QCAALARMINFO_H
+#endif // QCA_ALARM_INFO_H

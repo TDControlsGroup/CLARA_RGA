@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef CONTAINERPROFILE_H
-#define CONTAINERPROFILE_H
+#ifndef CONTAINER_PROFILE_H
+#define CONTAINER_PROFILE_H
 
 #include <QSharedMemory>
 #include <QObject>
@@ -313,4 +313,8 @@ private:
     bool localProfileWasPublished;
 };
 
-#endif // CONTAINERPROFILE_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (userLevelTypes::userLevels)
+#endif
+
+#endif // CONTAINER_PROFILE_H

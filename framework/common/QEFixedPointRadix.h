@@ -88,4 +88,9 @@ private:
    Separators separator;
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEFixedPointRadix::Radicies)
+Q_DECLARE_METATYPE (QEFixedPointRadix::Separators)
+#endif
+
 #endif // QE_FIXED_POINT_RADIX_H

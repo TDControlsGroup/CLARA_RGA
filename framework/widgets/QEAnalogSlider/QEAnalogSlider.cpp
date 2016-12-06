@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013,2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016, Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -47,7 +47,9 @@
 // Constructor with no initialisation
 //
 QEAnalogSlider::QEAnalogSlider (QWidget* parent) :
-   QAnalogSlider (parent), QEWidget (this)
+   QAnalogSlider (parent),
+   QESingleVariableMethods (this, SET_POINT_VARIABLE_INDEX),
+   QEWidget (this)
 {
    this->commonSetup ();
 }
@@ -58,7 +60,9 @@ QEAnalogSlider::QEAnalogSlider (QWidget* parent) :
 QEAnalogSlider::QEAnalogSlider (const QString& variableNameIn,
                                 const QString& readbackNameIn,
                                 QWidget* parent) :
-   QAnalogSlider (parent), QEWidget (this)
+   QAnalogSlider (parent),
+   QESingleVariableMethods (this, SET_POINT_VARIABLE_INDEX),
+   QEWidget (this)
 {
    this->commonSetup ();
    this->setVariableName (variableNameIn, SET_POINT_VARIABLE_INDEX);
@@ -72,6 +76,10 @@ QEAnalogSlider::QEAnalogSlider (const QString& variableNameIn,
 //
 void QEAnalogSlider::commonSetup ()
 {
+   // Create second single variable methods object for the readback PV.
+   //
+   this->readback = new QESingleVariableMethods (this, READ_BACK_VARIABLE_INDEX);
+
    // Connect inherited valueChanged signal to own valueChanged slot.
    // Use virtual function in stread?
    //
@@ -116,15 +124,18 @@ void QEAnalogSlider::commonSetup ()
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   this->vnpmSP.setVariableIndex (SET_POINT_VARIABLE_INDEX);
-   QObject::connect
-         (&this->vnpmSP, SIGNAL (newVariableNameProperty  (QString, QString, unsigned int)),
-          this,          SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->connectNewVariableNameProperty
+         (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 
-   this->vnpmRB.setVariableIndex (READ_BACK_VARIABLE_INDEX);
-   QObject::connect
-         (&this->vnpmRB, SIGNAL (newVariableNameProperty  (QString, QString, unsigned int)),
-          this,          SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->readback->connectNewVariableNameProperty
+         (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+}
+
+//------------------------------------------------------------------------------
+//
+QEAnalogSlider::~QEAnalogSlider()
+{
+   if (this->readback) delete this->readback;
 }
 
 //------------------------------------------------------------------------------
@@ -139,11 +150,19 @@ qcaobject::QCaObject* QEAnalogSlider::createQcaItem (unsigned int variableIndex)
       case SET_POINT_VARIABLE_INDEX:
          result = new QEFloating (this->getSubstitutedVariableName (variableIndex),
                                   this, &this->floatingFormatting, variableIndex);
+
+         // Apply currently defined array index.
+         //
+         this->setQCaArrayIndex (result);
          break;
 
       case READ_BACK_VARIABLE_INDEX:
          result = new QEString (this->getSubstitutedVariableName (variableIndex),
                                 this, &this->stringFormatting, variableIndex);
+
+         // Apply currently defined array index.
+         //
+         this->readback->setQCaArrayIndex (result);
          break;
 
       default:
@@ -396,7 +415,7 @@ void QEAnalogSlider::stringChanged (const QString& value,
 {
    qcaobject::QCaObject* qca = NULL;
 
-   // Only the main control PV sets alream related style changes.
+   // Only the main control PV sets alarm related style changes.
    //
    switch (variableIndex) {
 
@@ -445,7 +464,7 @@ void QEAnalogSlider::writeNow ()
     if (qca) { // sanity check
       // Write the value: update database to reflect current slider position.
       //
-      qca->writeFloating (this->getValue ());
+      qca->writeFloatingElement (this->getValue ());
    }
 }
 
@@ -463,49 +482,42 @@ void QEAnalogSlider::useNewVariableNameProperty (QString variableName,
 // Properties
 // Update variable name etc.
 //
-void QEAnalogSlider::setVariableNameProperty (const QString& variableName)
-{
-   this->vnpmSP.setVariableNameProperty (variableName);
-}
-
-//------------------------------------------------------------------------------
-//
-QString QEAnalogSlider::getVariableNameProperty () const
-{
-   return this->vnpmSP.getVariableNameProperty ();
-}
-
 //------------------------------------------------------------------------------
 //
 void QEAnalogSlider::setReadbackNameProperty (const QString& variableName)
 {
-   this->vnpmRB.setVariableNameProperty (variableName);
+   this->readback->setVariableNameProperty (variableName);
 }
 
 //------------------------------------------------------------------------------
 //
 QString QEAnalogSlider::getReadbackNameProperty () const
 {
-   return this->vnpmRB.getVariableNameProperty ();
+   return this->readback->getVariableNameProperty ();
 }
 
 //------------------------------------------------------------------------------
 //
-void QEAnalogSlider::setSubstitutionsProperty (const QString& substitutions)
+void QEAnalogSlider::setReadbackArrayIndex (const int arrayIndex)
 {
-   // Use same (default) substitutions for both variables.
-   //
-   this->vnpmSP.setSubstitutionsProperty (substitutions);
-   this->vnpmRB.setSubstitutionsProperty (substitutions);
+   this->readback->setArrayIndex (arrayIndex);
 }
 
 //------------------------------------------------------------------------------
 //
-QString QEAnalogSlider::getSubstitutionsProperty () const
+int QEAnalogSlider::getReadbackArrayIndex () const
 {
-   // Either variable name propety manager will do.
+   return this->readback->getArrayIndex ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEAnalogSlider::setVariableNameSubstitutionsProperty (const QString& substitutions)
+{
+   // Must set both - as each variable name proprty manager needs it's own copy.
    //
-   return this->vnpmSP.getSubstitutionsProperty ();
+   QESingleVariableMethods::setVariableNameSubstitutionsProperty (substitutions);
+   this->readback->setVariableNameSubstitutionsProperty (substitutions);
 }
 
 //------------------------------------------------------------------------------

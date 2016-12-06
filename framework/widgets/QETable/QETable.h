@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron
+ *  Copyright (c) 2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -38,7 +38,7 @@
 #include <QVector>
 
 #include <QECommon.h>
-#include <QEAbstractWidget.h>
+#include <QEAbstractDynamicWidget.h>
 #include <QEFloatingArray.h>
 #include <QEFloatingFormatting.h>
 #include <persistanceManager.h>
@@ -58,7 +58,7 @@
    class which provides generic support such as macro substitutions, drag/drop,
    and standard properties. QEAbstractWidget provides all standard properties.
  */
-class QEPLUGINLIBRARYSHARED_EXPORT QETable : public QEAbstractWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QETable : public QEAbstractDynamicWidget {
 
    Q_OBJECT
 
@@ -142,7 +142,7 @@ public:
    explicit QETable (QWidget* parent = 0);
 
    /// Destruction
-   virtual ~QETable() { }
+   virtual ~QETable ();
 
    // Single function for all set/get PV properties.
    //
@@ -162,6 +162,8 @@ public:
 
    void setOrientation (const Qt::Orientation orientation);
    Qt::Orientation getOrientation () const;
+
+   int addPvName (const QString& pvName);
 
    // Property access READ and WRITE functions. We can define the access functions
    // using a macro.  Alas, due to SDK limitation, we cannot embedded the property
@@ -249,7 +251,7 @@ protected:
 
    // Context menu
    //
-   enum OwnContextMenuOptions { CM_HORIZONTAL_TABLE = CM_SPECIFIC_WIDGETS_START_HERE,
+   enum OwnContextMenuOptions { CM_HORIZONTAL_TABLE = ADWCM_SUB_CLASS_WIDGETS_START_HERE,
                                 CM_VERTICAL_TABLE };
 
    QMenu* buildContextMenu ();                        // Build the QETable specific context menu
@@ -267,14 +269,12 @@ protected:
    //
    QString copyVariable ();
    QVariant copyData ();
-   void paste (QVariant s);
 
    void saveConfiguration (PersistanceManager* pm);
    void restoreConfiguration (PersistanceManager* pm, restorePhases restorePhase);
 
 private:
    bool isVertical () const;  // True iff the orientation is Qt::Vertical
-   void addVariableName (const QString& pvName);  // Add name to first availble slot.
    void resizeCoulumns ();    // Resizes colums to fit available space
    int numberInUse () const;  // Calculate the required number of cols (or rows when horizontal).
    int dataSize () const;     // Calculate the required number of rows (or cols when horizontal).

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012, 2013 Australian Synchrotron.
+ *  Copyright (c) 2012,2013,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -30,16 +30,18 @@
 #include <QFrame>
 #include <QHeaderView>
 
+#include <ContainerProfile.h>
 #include <QEScaling.h>
 #include <QECommon.h>
 #include <QEAdaptationParameters.h>
 #include <QELabel.h>
 #include <QEStringFormatting.h>
+#include <QERecordFieldName.h>
 
 #include "QEPvProperties.h"
 #include "QEPvPropertiesUtilities.h"
 
-#define DEBUG qDebug() << "QEPvProperties::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG qDebug() << "QEPvProperties" << __LINE__ << __FUNCTION__ << "  "
 
 // INP/OUT and CALC fields are 80, 120 should cover it.
 //
@@ -220,7 +222,6 @@ void QEPvProperties::createInternalWidgets ()
    // Mainly want enough to make it look sensible in designer.
    //
    this->table = new QTableWidget (40, NUNBER_COLS, this);
-   this->tableContextMenu = new QMenu (this);
 
    this->vlayout = new QVBoxLayout (this);
    this->vlayout->setMargin (4);
@@ -232,7 +233,9 @@ void QEPvProperties::createInternalWidgets ()
 
 //------------------------------------------------------------------------------
 //
-QEPvProperties::QEPvProperties (QWidget* parent) : QEFrame (parent)
+QEPvProperties::QEPvProperties (QWidget* parent) :
+   QEFrame (parent),
+   QEQuickSort ()
 {
    this->recordBaseName = "";
    this->common_setup ();
@@ -241,7 +244,8 @@ QEPvProperties::QEPvProperties (QWidget* parent) : QEFrame (parent)
 //------------------------------------------------------------------------------
 //
 QEPvProperties::QEPvProperties (const QString& variableName, QWidget* parent) :
-      QEFrame (parent)
+   QEFrame (parent),
+   QEQuickSort ()
 {
    this->recordBaseName = QERecordFieldName::recordName (variableName);
    this->common_setup ();
@@ -288,7 +292,7 @@ QSize QEPvProperties::sizeHint () const {
 //
 void QEPvProperties::common_setup ()
 {
-   QTableWidgetItem * item;
+   QTableWidgetItem* item;
    QString style;
    int j;
    QLabel *enumLabel;
@@ -297,7 +301,9 @@ void QEPvProperties::common_setup ()
    //
    initialiseRecordSpecs ();
 
+   this->fieldsAreSorted = false;
    this->fieldChannels.clear ();
+   this->variableIndexTableRowMap.clear ();
 
    this->standardRecordType = NULL;
    this->alternateRecordType = NULL;
@@ -319,6 +325,7 @@ void QEPvProperties::common_setup ()
    this->box->setAutoCompletion (true);
    this->box->setAutoCompletionCaseSensitivity (Qt::CaseSensitive);
 #endif
+
    this->box->setEditable (true);
    this->box->setMaxCount (36);
    this->box->setMaxVisibleItems (20);
@@ -411,17 +418,25 @@ void QEPvProperties::common_setup ()
 
    // Use standard context menu for overall widget.
    //
-   this->setupContextMenu();
+   this->setupContextMenu ();
 
-   // Do special context for the table.
+   // High-jack the value context menu, we want to do a special with it.
+   //
+   this->valueLabel->clearContextMenuRequestHandling ();
+   this->valueLabel->setContextMenuPolicy (Qt::CustomContextMenu);
+   QObject::connect (this->valueLabel, SIGNAL (customContextMenuRequested      (const QPoint&)),
+                     this,             SLOT   (customValueContextMenuRequested (const QPoint&)));
+
+   // Table related signals.
+   // Do context menu for the table (this exludes the headings).
    //
    this->table->setContextMenuPolicy (Qt::CustomContextMenu);
+   QObject::connect (this->table, SIGNAL (customContextMenuRequested      (const QPoint&)),
+                     this,        SLOT   (customTableContextMenuRequested (const QPoint&)));
 
-   QObject::connect (this->table, SIGNAL (customContextMenuRequested (const QPoint &)),
-                     this,        SLOT   (customContextMenuRequested (const QPoint &)));
-
-   QObject::connect (this->tableContextMenu, SIGNAL (triggered                  (QAction* )),
-                     this,                   SLOT   (customContextMenuTriggered (QAction* )));
+   QHeaderView* header = this->table->horizontalHeader ();
+   QObject::connect (header, SIGNAL (sectionClicked     (int)),
+                     this,   SLOT   (tableHeaderClicked (int)));
 
 
    // Set up a connection to recieve variable name property changes
@@ -431,11 +446,12 @@ void QEPvProperties::common_setup ()
    QObject::connect (
          &variableNamePropertyManager, SIGNAL (newVariableNameProperty    (QString, QString, unsigned int)),
          this,                         SLOT   (useNewVariableNameProperty (QString, QString, unsigned int)));
+
 }
 
 //------------------------------------------------------------------------------
 //
-void  QEPvProperties::resizeEvent (QResizeEvent *)
+void QEPvProperties::resizeEvent (QResizeEvent *)
 {
    QRect g;
    QLabel *enumLabel;
@@ -478,6 +494,8 @@ void QEPvProperties::clearFieldChannels ()
       qca = this->fieldChannels.takeFirst ();
       delete qca;
    }
+   this->fieldsAreSorted = false;
+   this->variableIndexTableRowMap.clear ();
 
    for (j = 0; j < this->table->rowCount (); j++) {
       item = table->verticalHeaderItem (j);
@@ -490,6 +508,64 @@ void QEPvProperties::clearFieldChannels ()
          item->setText ("");
       }
    }
+}
+
+//------------------------------------------------------------------------------
+// Compare two table rows
+//
+bool QEPvProperties::itemLessThan (const int a, const int b, QObject* context) const
+{
+   bool result = (a < b);
+
+   if (context == &this->sortContext) {
+      // Sort by field name
+      //
+      QTableWidgetItem* ai = this->table->item (a, FIELD_COL);
+      QTableWidgetItem* bi = this->table->item (b, FIELD_COL);
+
+      if (ai && bi) {
+         result = ai->text() < bi->text();
+      }
+
+   } else if (context == &this->resetContext) {
+      // Sort by variable index.
+      //
+      unsigned int avi = this->variableIndexTableRowMap.valueI (a);
+      unsigned int bvi = this->variableIndexTableRowMap.valueI (b);
+      result = avi < bvi;
+   }
+
+   return result;
+}
+
+//------------------------------------------------------------------------------
+// Swap two table rows
+//
+void QEPvProperties::swapItems (const int a, const int b, QObject*)
+{
+   QTableWidgetItem* ai;
+   QTableWidgetItem* bi;
+
+   ai = this->table->takeItem (a, FIELD_COL);
+   bi = this->table->takeItem (b, FIELD_COL);
+   this->table->setItem       (a, FIELD_COL, bi);
+   this->table->setItem       (b, FIELD_COL, ai);
+
+   ai = this->table->takeItem (a, VALUE_COL);
+   bi = this->table->takeItem (b, VALUE_COL);
+   this->table->setItem       (a, VALUE_COL, bi);
+   this->table->setItem       (b, VALUE_COL, ai);
+
+   // Now update the variableIndex to table row mapping.
+   //
+   unsigned int avi = this->variableIndexTableRowMap.valueI (a);
+   unsigned int bvi = this->variableIndexTableRowMap.valueI (b);
+
+   this->variableIndexTableRowMap.removeF (avi);
+   this->variableIndexTableRowMap.removeF (bvi);
+
+   this->variableIndexTableRowMap.insertF (avi, b);
+   this->variableIndexTableRowMap.insertF (bvi, a);
 }
 
 //------------------------------------------------------------------------------
@@ -646,7 +722,9 @@ void QEPvProperties::setUpLabelChannel ()
 
    // Set PV name of internal QELabel.
    //
+   this->valueLabel->deactivate ();
    this->valueLabel->setVariableNameAndSubstitutions (pvName, "", 0);
+   this->valueLabel->activate ();
 }
 
 //------------------------------------------------------------------------------
@@ -679,22 +757,9 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
 {
    const PVReadModes readMode = (PVReadModes) variableIndex;
 
-   int j;
-   QERecordSpec *pRecordSpec;
-   int numberOfFields;
-   bool mayUseCharArray;
-   bool fieldUsingCharArray;
-   QString readField;
-   QString pvField;
-   QString displayField;
-
-   QTableWidgetItem* item;
-   QString pvName;
-   QEString *qca;
-
    // Look for the record spec for the given record type if it exists.
    //
-   pRecordSpec = recordSpecList.find (rtypeValue);
+   const QERecordSpec* pRecordSpec = recordSpecList.find (rtypeValue);
 
    // If we didn't find the specific record type, use the default record spec.
    //
@@ -715,13 +780,19 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
    //
    this->clearFieldChannels ();
 
-   numberOfFields = pRecordSpec->size ();
+   const int numberOfFields = pRecordSpec->size ();
 
    this->table->setRowCount (numberOfFields);
-   for (j = 0; j < numberOfFields; j++) {
+   for (int j = 0; j < numberOfFields; j++) {
 
-      readField = pRecordSpec->getFieldName (j);
-      mayUseCharArray = readField.endsWith ('$');
+      const QString readField = pRecordSpec->getFieldName (j);
+
+      // Field names ending with $ inducate that the ling string mode is applicable.
+      //
+      const bool mayUseCharArray = readField.endsWith ('$');
+
+      QString displayField;
+      QString pvField;
 
       if (mayUseCharArray) {
          displayField = readField;
@@ -730,7 +801,7 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
          displayField = readField;    // use as is.
       }
 
-      fieldUsingCharArray = (readMode == ReadAsCharArray) && mayUseCharArray;
+      const bool fieldUsingCharArray = (readMode == ReadAsCharArray) && mayUseCharArray;
 
       if (fieldUsingCharArray) {
          pvField = displayField;
@@ -741,9 +812,9 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
 
       // Ensure vertical header exists and set it.
       //
-      item = this->table->item (j, FIELD_COL);
+      QTableWidgetItem* item = this->table->item (j, FIELD_COL);
       if (!item) {
-         // We need to allocate iteem and inset into the table.
+         // We need to allocate item and insert into the table.
          item = new QTableWidgetItem ();
          this->table->setItem (j, FIELD_COL, item);
       }
@@ -753,16 +824,17 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
       //
       item = this->table->item (j, VALUE_COL);
       if (!item) {
-         // We need to allocate item and inset into the table.
+         // We need to allocate item and insert into the table.
          item = new QTableWidgetItem ();
          this->table->setItem (j, VALUE_COL, item);
       }
 
       // Form the required PV name.
       //
-      pvName = this->recordBaseName + "." + pvField;
+      const QString pvName = this->recordBaseName + "." + pvField;
 
-      qca = new QEString (pvName, this, &this->fieldStringFormatting, j);
+      const unsigned int vi = (unsigned int) j;
+      QEString* qca = new QEString (pvName, this, &this->fieldStringFormatting, vi);
 
       if (fieldUsingCharArray) {
          qca->setRequestedElementCount (MAX_FIELD_DATA_SIZE);
@@ -776,9 +848,10 @@ void QEPvProperties::setRecordTypeValue (const QString& rtypeValue,
       QObject::connect (qca, SIGNAL (stringChanged (const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )),
                         this,  SLOT (setFieldValue (const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& )));
 
-      qca->subscribe();
+      qca->subscribe ();
 
       this->fieldChannels.append (qca);
+      this->variableIndexTableRowMap.insertF (vi, j);
    }
 
    // The alarmInfo not really applicabe to the RTYP field.
@@ -893,6 +966,7 @@ void QEPvProperties::setValueValue (const QVariant&,
       this->enumerationFrame->setFixedHeight (h);
 
       // Set and expand to new max height.
+      //
       this->enumerationResize->setAllowedMaximum (ENUMERATIONS_MIN_HEIGHT + h);
       this->enumerationResize->setFixedHeight (ENUMERATIONS_MIN_HEIGHT + h);
 
@@ -909,12 +983,11 @@ void QEPvProperties::setValueValue (const QVariant&,
 void QEPvProperties::setFieldConnection (QCaConnectionInfo& connectionInfo,
                                          const unsigned int &variableIndex)
 {
-   int numberOfRows;
-   QTableWidgetItem *item;
+   const int row = this->variableIndexTableRowMap.valueF (variableIndex);
+   const int numberOfRows = this->table->rowCount ();
 
-   numberOfRows = this->table->rowCount ();
-   if ((int) variableIndex < numberOfRows) {
-      item = this->table->item (variableIndex, VALUE_COL);
+   if ((row >= 0) && (row < numberOfRows)) {
+      QTableWidgetItem* item = this->table->item (row, VALUE_COL);
 
       if (connectionInfo.isChannelConnected ()) {
          // connected
@@ -925,24 +998,24 @@ void QEPvProperties::setFieldConnection (QCaConnectionInfo& connectionInfo,
          item->setForeground (QColor (160, 160, 160));
       }
    } else {
-      DEBUG << "variableIndex =" << variableIndex
+      DEBUG << "variableIndex/row =" << variableIndex << row
             << ", out of range - must be <" << numberOfRows;
    }
 }
 
 //------------------------------------------------------------------------------
 //
-void QEPvProperties::setFieldValue (const QString &value,
-                                    QCaAlarmInfo &,
-                                    QCaDateTime &,
-                                    const unsigned int & variableIndex)
+void QEPvProperties::setFieldValue (const QString& value,
+                                    QCaAlarmInfo&,
+                                    QCaDateTime&,
+                                    const unsigned int& variableIndex)
 {
-   int numberOfRows;
-   QTableWidgetItem *item;
+   const int row = this->variableIndexTableRowMap.valueF (variableIndex);
+   const int numberOfRows = this->table->rowCount ();
 
-   numberOfRows = this->table->rowCount ();
-   if ((int) variableIndex < numberOfRows) {
-      item = this->table->item (variableIndex, VALUE_COL);
+   if ((row >= 0) && (row < numberOfRows)) {
+      QTableWidgetItem* item = this->table->item (row, VALUE_COL);
+
       if (value.length () < MAX_FIELD_DATA_SIZE) {
          item->setText  (" " + value);
       } else {
@@ -950,7 +1023,7 @@ void QEPvProperties::setFieldValue (const QString &value,
          item->setText  (" " + value + "...");
       }
    } else {
-      DEBUG << "variableIndex =" << variableIndex
+      DEBUG << "variableIndex/row =" << variableIndex << row
             << ", out of range - must be <" << numberOfRows;
    }
 }
@@ -1014,24 +1087,122 @@ void QEPvProperties::insertIntoDropDownList (const QString& pvName)
 }
 
 //==============================================================================
-// Conextext menu.
+// Context menu.
 //
-void QEPvProperties::customContextMenuRequested (const QPoint & posIn)
+void QEPvProperties::addEditPvToMenu (QMenu* menu)
+{
+   // Allow the edit PV context menu entry irrespective of user level.
+   //
+   const userLevelTypes::userLevels userLevel = this->valueLabel->getUserLevel ();
+   if (userLevel != userLevelTypes::USERLEVEL_ENGINEER) {
+      // Cribbed from contextMenu - we need to refactor the code.
+      //
+      menu->addSeparator();
+      QAction* a = new QAction ("Edit PV", menu);
+      a->setCheckable (false);
+      a->setData (CM_GENERAL_PV_EDIT);
+      menu->addAction (a);
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+QMenu* QEPvProperties::buildContextMenu ()
+{
+   const int number = this->fieldChannels.count ();
+
+   QMenu* menu = ParentWidgetClass::buildContextMenu ();  // build parent context menu
+
+   menu->addSeparator ();
+   QAction* action;
+   action = new QAction ("Sort By Field Name", menu);
+   action->setCheckable (false);
+   action->setEnabled ((number > 0) && !this->fieldsAreSorted);
+   action->setData (QEPvProperties::PVPROP_SORT_FIELD_NAMES);
+   menu->addAction (action);
+
+   action = new QAction ("Reset Field Order", menu);
+   action->setCheckable (false);
+   action->setEnabled ((number > 0) && this->fieldsAreSorted);
+   action->setData (QEPvProperties::PVPROP_RESET_FIELD_NAMES);
+   menu->addAction (action);
+
+   this->addEditPvToMenu (menu);
+   return menu;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEPvProperties::contextMenuTriggered (int selectedItemNum)
+{
+   const int lastRow = this->fieldChannels.count () - 1;
+
+   switch (selectedItemNum) {
+      case QEPvProperties::PVPROP_SORT_FIELD_NAMES:
+         this->sort (0, lastRow, &this->sortContext);
+         this->fieldsAreSorted = true;
+         break;
+
+      case QEPvProperties::PVPROP_RESET_FIELD_NAMES:
+         this->sort (0, lastRow, &this->resetContext);
+         this->fieldsAreSorted = false;
+         break;
+
+      default:
+         // process parent context menu
+         //
+         ParentWidgetClass::contextMenuTriggered (selectedItemNum);
+         break;
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+void QEPvProperties::tableHeaderClicked (int index)
+{
+   if (index == FIELD_COL) {
+      const int lastRow = this->fieldChannels.count () - 1;
+      if (this->fieldsAreSorted) {
+         this->sort (0, lastRow, &this->resetContext);
+         this->fieldsAreSorted = false;
+      } else {
+         this->sort (0, lastRow, &this->sortContext);
+         this->fieldsAreSorted = true;
+      }
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+void QEPvProperties::customValueContextMenuRequested (const QPoint& pos)
+{
+   // First build the default menu, and then allow the edit PV context menu
+   // entry irrespective of user level.
+   //
+   QMenu* menu = this->valueLabel->buildContextMenu ();
+   this->addEditPvToMenu (menu);
+
+   const QPoint golbalPos = this->valueLabel->mapToGlobal (pos);
+   menu->exec (golbalPos);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEPvProperties::customTableContextMenuRequested (const QPoint& posIn)
 {
    QTableWidgetItem* item = NULL;
    QString trimmed;
    int row;
    qcaobject::QCaObject* qca = NULL;
-   QString newPV;
-   QAction *action;
-   QPoint pos = posIn;
-   QPoint golbalPos;
+   QString newPV = "";
+
+   this->contextMenuPvName.clear ();
 
    // Find the associated item
    //
    item = this->table->itemAt (posIn);
    if (!item) {
-      return;  // just in case
+      return;  // sainity check, just in case
    }
 
    switch (item->column ()) {
@@ -1040,8 +1211,6 @@ void QEPvProperties::customContextMenuRequested (const QPoint & posIn)
          qca = this->fieldChannels.value (row, NULL);
          if (qca) {
             newPV = qca->getRecordName ();
-         } else {
-            newPV = "";
          }
          break;
 
@@ -1052,35 +1221,25 @@ void QEPvProperties::customContextMenuRequested (const QPoint & posIn)
 
       default:
          DEBUG << "unexpected column number:" << item->column () << trimmed;
-         newPV = "";
          return;
    }
 
-   action = new QAction ("Properties", this->tableContextMenu);
-   action->setCheckable (false);
-   action->setData (QVariant (newPV));
-   action->setEnabled (!newPV.isEmpty ());
-   this->tableContextMenu->clear ();
-   this->tableContextMenu->addAction (action);
+   if (!newPV.isEmpty ()) {
+      QPoint pos = posIn;
+      pos.setY (pos.y () + DEFAULT_SECTION_SIZE);  // A feature of QTableWiget (because header visible maybe?).
+      QPoint golbalPos = this->table->mapToGlobal (pos);
+      QMenu* menu = this->buildContextMenu ();
 
-   pos.setY (pos.y () + DEFAULT_SECTION_SIZE);  // A feature of QTableWiget (because header visible maybe?).
-   golbalPos = table->mapToGlobal (pos);
-   this->tableContextMenu->exec (golbalPos, 0);
-}
-
-//------------------------------------------------------------------------------
-//
-void QEPvProperties::customContextMenuTriggered (QAction* action)
-{
-   QString newPV;
-
-   if (action) {
-      newPV = action->data ().toString ();
-
-      this->setVariableName (newPV , 0);
-      this->establishConnection (0);
+      // Any trailing '$' is really for local usage only.
+      //
+      if (newPV.endsWith ("$")) {
+         newPV.chop (1);
+      }
+      this->contextMenuPvName = newPV;
+      menu->exec (golbalPos);
    }
 }
+
 
 //==============================================================================
 // Save / restore
@@ -1090,12 +1249,11 @@ void QEPvProperties::saveConfiguration (PersistanceManager* pm)
    const QString formName = this->persistantName ("QEPvProperties");
    PMElement formElement = pm->addNamedConfiguration (formName);
 
-   // qDebug () << "\nQEPvProperties " << __FUNCTION__ << formName << "\n";
+   // DEBUG << "\nQEPvProperties " << __FUNCTION__ << formName << "\n";
 
    // Note: we save the subsituted name (as opposed to template name and any macros).
    //
    formElement.addValue ("Name", this->getSubstitutedVariableName (0));
-
 }
 
 //------------------------------------------------------------------------------
@@ -1109,7 +1267,7 @@ void QEPvProperties::restoreConfiguration (PersistanceManager* pm, restorePhases
    bool status;
    QString pvName;
 
-   // qDebug () << "\nQEPvProperties " << __FUNCTION__ << formName <<  restorePhase << "\n";
+   // DEBUG << "\nQEPvProperties " << __FUNCTION__ << formName <<  restorePhase << "\n";
 
    if ((restorePhase == FRAMEWORK) && !formElement.isNull ()) {
       status = formElement.getValue ("Name", pvName);
@@ -1133,14 +1291,24 @@ void QEPvProperties::setPvName (const QString& pvNameIn)
 //
 QString QEPvProperties::copyVariable ()
 {
-   return this->getSubstitutedVariableName (0);
+   QString result;
+
+   if (!this->contextMenuPvName.isEmpty ()) {
+      result = this->contextMenuPvName;
+      this->contextMenuPvName.clear ();
+   } else {
+      result = this->getSubstitutedVariableName (0);
+   }
+
+   return result;
 }
 
 //------------------------------------------------------------------------------
 //
 QVariant QEPvProperties::copyData ()
 {
-   QTableWidgetItem *f, *v;
+   QTableWidgetItem* f;
+   QTableWidgetItem* v;
    QString fieldList;
    QString field;
    QString value;
@@ -1179,7 +1347,7 @@ void QEPvProperties::paste (QVariant v)
 
    pvNameList = QEUtilities::variantToStringList (v);
 
-   // Insert all suppled names into the drop down list (in reverse order)
+   // Insert all supplied names into the drop down list (in reverse order)
    // and select the first PV name (if it exists of course).
    //
    for (int j = pvNameList.count () - 1; j >= 0 ;j--) {

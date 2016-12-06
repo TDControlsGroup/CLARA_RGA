@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2014 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2014, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -25,8 +25,8 @@
 
 // Handles variable name sets.
 
-#ifndef QCAVARIABLENAMEPROPERTYMANAGER_H
-#define QCAVARIABLENAMEPROPERTYMANAGER_H
+#ifndef QCA_VARIABLE_NAME_PROPERTY_MANAGER_H
+#define QCA_VARIABLE_NAME_PROPERTY_MANAGER_H
 
 #include <QTimer>
 #include <QString>
@@ -45,6 +45,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QCaVariableNamePropertyManager : public QTime
     void setSubstitutionsProperty( QString substitutionsPropertyIn );
 
     void setVariableIndex( unsigned int variableIndexIn );
+    unsigned int getVariableIndex() const;
 
 signals:
     void newVariableNameProperty( QString variable, QString Substitutions, unsigned int variableIndex );
@@ -61,4 +62,4 @@ private:
     bool interactive;   // If set, there is a user typing new variable names and macro substitutions. Use timers to wait for typing to finish.
 };
 
-#endif // QCAVARIABLENAMEPROPERTYMANAGER_H
+#endif // QCA_VARIABLE_NAME_PROPERTY_MANAGER_H

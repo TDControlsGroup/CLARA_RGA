@@ -1,4 +1,5 @@
-/*
+/*  QEPushButton.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -22,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEPUSHBUTTON_H
-#define QEPUSHBUTTON_H
+#ifndef QE_PUSH_BUTTON_H
+#define QE_PUSH_BUTTON_H
 
 #include <QPushButton>
 #include <QEWidget.h>
@@ -51,6 +52,9 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPushButton : public QPushButton, public QEG
     /// If macro substitutions are required, create without a variable and set the variable and macro substitutions after creation.
     QEPushButton( const QString& variableName, QWidget *parent = 0 );
 
+    /// Destructor
+    ~QEPushButton();
+
     // write the click/clockChecked/press/release text value (of the associated button object) into the PV immediately
     void writeNow() { processWriteNow( isChecked () ); }
 
@@ -60,6 +64,8 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPushButton : public QPushButton, public QEG
     void userPressed() { QEGenericButton::userPressed(); }
     void userReleased() { QEGenericButton::userReleased(); }
     void userClicked( bool checked ) { QEGenericButton::userClicked( checked ); }
+    void setDISAvalue( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timestamp, const unsigned int& variableIndex ) { setGenericDISAvalue( value, alarmInfo, timestamp, variableIndex); }
+    void setDISVvalue( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timestamp, const unsigned int& variableIndex ) { setGenericDISVvalue( value, alarmInfo, timestamp, variableIndex); }
 
 public slots:
     // Note, keep in sync. The text below is repeated in QEPushButton.h, QERadioButton.h and QECheckBox.h
@@ -80,10 +86,20 @@ private slots:
 signals:
     // Note, the following signals are common to many QE widgets,
     // if changing the doxygen comments, ensure relevent changes are migrated to all instances
+    // These signals are emitted using the QEEmitter::emitDbValueChanged function.
     /// Sent when the widget is updated following a data change
     /// Can be used to pass on EPICS data (as presented in this widget) to other widgets.
     /// For example a QList widget could log updates from this widget.
-    void dbValueChanged( const QString& out );
+    void dbValueChanged( const QString& out );   // signal as formatted text
+    void dbValueChanged( const int& out );       // signal as int if applicable
+    void dbValueChanged( const long& out );      // signal as long if applicable
+    void dbValueChanged( const qlonglong& out ); // signal as qlonglong if applicable
+    void dbValueChanged( const double& out );    // signal as floating if applicable
+    void dbValueChanged( const bool& out );      // signal as bool: value != 0 if applicable
+
+    // This signal is emitted using the QEEmitter::emitDbConnectionChanged function.
+    /// Sent when the widget state updated following a channel connection change
+    void dbConnectionChanged( const bool& isConnected );
 
     /// Internal use only. Used when changing a property value to force a re-display to reflect the new property value.
     void requestResend();
@@ -116,19 +132,9 @@ private:
     QString getButtonText(){ return text(); }
     void setButtonIcon( QIcon& icon ) {setIcon( icon ); }
 
-    void emitDbValueChanged( QString text ){ emit dbValueChanged( text ); }
-
     void emitNewGui( const QEActionRequests& request ){ emit newGui( request ); }
 
-    void connectButtonDataChange( qcaobject::QCaObject* qca )
-    {
-                QObject::connect( qca,  SIGNAL( stringChanged( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ),
-                                  this, SLOT( setButtonText( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ) );
-                QObject::connect( this, SIGNAL( requestResend() ),
-                                  qca, SLOT( resendLastData() ) );
-    }
-
-    QObject* getButtonQObject(){ return this; }
+    QAbstractButton* getButtonQObject(){ return this; }
 
     void stringFormattingChange(){ requestResend(); }
 
@@ -148,62 +154,64 @@ private:
     QVariant copyData();
 
 public:
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
+    // Single Variable properties
+    // These properties should be identical for every widget using a single variable.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
+    //
+    // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
+public:
+    /// EPICS variable name (CA PV)
+    ///
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
+
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
+
 
     //=================================================================================
     // Multiple Variable properties
     // These properties should be similar for every widget using multiple variables (The number of variables may vary).
     // WHEN MAKING CHANGES: search for MULTIPLEVARIABLEPROPERTIESBASE and change all occurances.
-    private:
-        QCaVariableNamePropertyManager variableNamePropertyManagers[QEGENERICBUTTON_NUM_VARIABLES];
     public:
 
-    // Define a variable
-    // Note, the QPROPERTY declaration itself can't be in this macro
-#define VARIABLE_PROPERTY_ACCESS(VAR_INDEX) \
-    void    setVariableName##VAR_INDEX##Property( QString variableName ){ \
-      variableNamePropertyManagers[VAR_INDEX].setVariableNameProperty( variableName ); } \
-    QString getVariableName##VAR_INDEX##Property(){ return variableNamePropertyManagers[VAR_INDEX].getVariableNameProperty(); }
-
-    VARIABLE_PROPERTY_ACCESS(0)
-    /// EPICS variable name (CA PV).
-    /// This variable is used for both writing (on button press), and reading if subscribed and no alternate readback variable is provided.
-    Q_PROPERTY(QString variable READ getVariableName0Property WRITE setVariableName0Property)
-
-    VARIABLE_PROPERTY_ACCESS(1)
     /// EPICS variable name (CA PV).
     /// This variable is used to provide a readback value when different to the variable written to by a button press.
-    Q_PROPERTY(QString altReadbackVariable READ getVariableName1Property WRITE setVariableName1Property)
+    Q_PROPERTY(QString altReadbackVariable READ getAltReadbackProperty WRITE setAltReadbackProperty)
+    Q_PROPERTY (int altReadbackArrayIndex READ getAltReadbackArrayIndex WRITE setAltReadbackArrayIndex)
 
-#undef VARIABLE_PROPERTY_ACCESS
 
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    // Override single variable property methods' function of same name.
+    // Must apply to all PV substitutions.
+    //
+    void setVariableNameSubstitutionsProperty( const QString& substitutions );
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions )
-    {
-        for( int i = 0; i < QEGENERICBUTTON_NUM_VARIABLES; i++ )
-        {
-            variableNamePropertyManagers[i].setSubstitutionsProperty( variableNameSubstitutions );
-        }
-    }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty()
-    {
-        return variableNamePropertyManagers[0].getSubstitutionsProperty();
-    }
+    void setAltReadbackProperty( const QString& variableName );
+    QString getAltReadbackProperty() const;
+
+    void setAltReadbackArrayIndex( const int arrayIndex );
+    int getAltReadbackArrayIndex () const;
+
 public:
+    // End Multiple Variable properties
 
 private slots:
   void useNewVariableNameProperty( QString variableNameIn, QString variableNameSubstitutionsIn, unsigned int variableIndex )
   {
-      setVariableNameAndSubstitutions(variableNameIn, variableNameSubstitutionsIn, variableIndex);
-
-      // Update the labelText property with itself.
-      // This will apply any macro substitutions changes since the labelText property was last changed
-      setLabelTextProperty( getLabelTextProperty() );
-      calcStyleOption();
+      useGenericNewVariableName( variableNameIn, variableNameSubstitutionsIn, variableIndex );
   }
 
 public:
@@ -451,18 +459,21 @@ public:
     /// \li APPEND - treat array as an array of numbers and format a string containing them all with a space between each. For example, an array of three numbers 10, 11 and 12 will be formatted as '10 11 12'.
     /// \li INDEX - Extract a single item from the array. The item is then formatted as any other non array data would be. The item selected is determined by the arrayIndex property. For example, if arrayIndex property is 1, an array of three numbers 10, 11 and 12 will be formatted as '11'.
     Q_PROPERTY(ArrayActions arrayAction READ getArrayActionProperty WRITE setArrayActionProperty)
-
-    /// Index used to select a single item of data for formatting from an array of data. Default is 0.
-    /// Only used when the arrayAction property is INDEX. Refer to the arrayAction property for more details.
-    Q_PROPERTY(unsigned int arrayIndex READ getArrayIndex WRITE setArrayIndex)
 public:
-    //=================================================================================
+    // END-STRING-FORMATTING-PROPERTIES ===============================================
 
-    //=================================================================================
+    // BEGIN-GENERIC-BUTTON-PROPERTIES ================================================
     // Generic button properties
-    // These properties should be identical for specif button wigets (QEPushButton, QERadioButton and QECheckBox
-    // WHEN MAKING CHANGES: search for BUTTONPROPERTIES and change all occurances.
+    // These properties should be identical for specific button wigets (QEPushButton, QERadioButton and QECheckBox)
+    // WHEN MAKING CHANGES: search for GENERIC-BUTTON-PROPERTIES  and change all occurances.
 public:
+
+    /// Set the widget's disabled record policy, i.e. the action to be taken when the under lying record is disabled,
+    /// i.e. when the assiociated record's DISA and DISV field values are equal. Note: this is only applicable IOC process variables.
+    /// When the policy is ignore, then no special action is taken. This is the default policy.
+    /// When the policy is grayout, the widget is style is set as if disconnected when the record is disabled.
+    ///
+    Q_PROPERTY(QEWidgetProperties::DisabledRecordPolicy disabledRecordPolicy READ getDisabledRecordPolicy WRITE setDisabledRecordPolicy)
 
     /// Set the buttons text alignment.
     /// Left justification is particularly useful when displaying quickly changing numeric data updates.
@@ -640,7 +651,7 @@ public:
     Q_PROPERTY(QString customisationName READ getCustomisationName WRITE setCustomisationName)
 
 public:
-    //=================================================================================
+    // END-GENERIC-BUTTON-PROPERTIES ==================================================
 
     // Widget specific properties
     // ----none----
@@ -657,27 +668,17 @@ private:
     // Access function for creationOption property
     void setCreationOptionProperty( CreationOptionNames creationOptionIn ){ setCreationOption( (QEActionRequests::Options)creationOptionIn ); }
     CreationOptionNames getCreationOptionProperty(){ return (CreationOptionNames)getCreationOption(); }
-
-    // Access function for pixmap properties
-    void setPixmap0Property( QPixmap pixmap ){ setDataPixmap( pixmap, 0 ); }
-    void setPixmap1Property( QPixmap pixmap ){ setDataPixmap( pixmap, 1 ); }
-    void setPixmap2Property( QPixmap pixmap ){ setDataPixmap( pixmap, 2 ); }
-    void setPixmap3Property( QPixmap pixmap ){ setDataPixmap( pixmap, 3 ); }
-    void setPixmap4Property( QPixmap pixmap ){ setDataPixmap( pixmap, 4 ); }
-    void setPixmap5Property( QPixmap pixmap ){ setDataPixmap( pixmap, 5 ); }
-    void setPixmap6Property( QPixmap pixmap ){ setDataPixmap( pixmap, 6 ); }
-    void setPixmap7Property( QPixmap pixmap ){ setDataPixmap( pixmap, 7 ); }
-
-    // Access function for pixmap properties
-    QPixmap getPixmap0Property(){ return getDataPixmap( 0 ); }
-    QPixmap getPixmap1Property(){ return getDataPixmap( 1 ); }
-    QPixmap getPixmap2Property(){ return getDataPixmap( 2 ); }
-    QPixmap getPixmap3Property(){ return getDataPixmap( 3 ); }
-    QPixmap getPixmap4Property(){ return getDataPixmap( 4 ); }
-    QPixmap getPixmap5Property(){ return getDataPixmap( 5 ); }
-    QPixmap getPixmap6Property(){ return getDataPixmap( 6 ); }
-    QPixmap getPixmap7Property(){ return getDataPixmap( 7 ); }
-
 };
 
-#endif // QEPUSHBUTTON_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEPushButton::UserLevels)
+Q_DECLARE_METATYPE (QEPushButton::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QEPushButton::Formats)
+Q_DECLARE_METATYPE (QEPushButton::Notations)
+Q_DECLARE_METATYPE (QEPushButton::ArrayActions)
+Q_DECLARE_METATYPE (QEPushButton::UpdateOptions)
+Q_DECLARE_METATYPE (QEPushButton::ProgramStartupOptionNames)
+Q_DECLARE_METATYPE (QEPushButton::CreationOptionNames)
+#endif
+
+#endif // QE_PUSH_BUTTON_H

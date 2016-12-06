@@ -54,4 +54,8 @@ signals:
 };
 
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEScanTimers::ScanRates)
+#endif
+
 #endif  // QE_SCAN_TIMERS_H

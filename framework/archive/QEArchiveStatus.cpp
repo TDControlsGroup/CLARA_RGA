@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -30,7 +30,7 @@
 #include <QECommon.h>
 #include "QEArchiveStatus.h"
 
-#define DEBUG  qDebug () << "QEArchiveStatus::" << __FUNCTION__ << __LINE__
+#define DEBUG  qDebug () << "QEArchiveStatus" << __LINE__ << __FUNCTION__ << "  "
 
 
 //==============================================================================
@@ -46,6 +46,7 @@ void QEArchiveStatus::createInternalWidgets ()
    this->rowList [j].member->setStyleSheet (sheet);              \
    hLayout->addWidget (this->rowList [j].member);                \
 }
+
 
    const int frameHeight = 19;
    const int horMargin = 2;    // 19 - 2 - 2 => widget height is 15
@@ -79,7 +80,7 @@ void QEArchiveStatus::createInternalWidgets ()
    CREATE_LABEL (available,     68, Qt::AlignRight,   "Available");
    CREATE_LABEL (read,          68, Qt::AlignRight,   "Read");
    CREATE_LABEL (numberPVs,     68, Qt::AlignRight,   "Num PVs");
-
+   CREATE_LABEL (pending,       68, Qt::AlignRight,   "Pending");
    this->vLayout->addWidget (frame);
 
 
@@ -102,6 +103,7 @@ void QEArchiveStatus::createInternalWidgets ()
       CREATE_LABEL (available,     68, Qt::AlignRight,    " - ");
       CREATE_LABEL (read,          68, Qt::AlignRight,    " - ");
       CREATE_LABEL (numberPVs,     68, Qt::AlignRight,    " - ");
+      CREATE_LABEL (pending,       68, Qt::AlignRight,    " - ");
 
       this->vLayout->addWidget (row->frame);
 
@@ -143,11 +145,12 @@ QEArchiveStatus::QEArchiveStatus (QWidget* parent) : QEGroupBox (parent)
                      this, SLOT (archiveStatus (const QEArchiveAccess::StatusList&)));
 
    this->calcMinimumHeight ();
-   this->setMinimumWidth (712);
+   this->setMinimumWidth (776);
 
+   // This info re-emitted on change, but we need to stimulate an initial update.
+   //
    this->archiveAccess->resendStatus ();
 }
-
 
 //------------------------------------------------------------------------------
 //
@@ -159,7 +162,7 @@ QEArchiveStatus::~QEArchiveStatus ()
 //
 QSize QEArchiveStatus::sizeHint () const
 {
-   return QSize (712, 64);   // two rows
+   return QSize (776, 64);   // two rows
 }
 
 //------------------------------------------------------------------------------
@@ -173,12 +176,10 @@ void QEArchiveStatus::reReadAvailablePVs ()
 //
 void QEArchiveStatus::archiveStatus (const QEArchiveAccess::StatusList& statusList)
 {
-   int j;
-
    this->inUseCount = statusList.count ();
    this->calcMinimumHeight ();
 
-   for (j = 0; j < QEArchiveStatus::NumberRows; j++ ) {
+   for (int j = 0; j < QEArchiveStatus::NumberRows; j++ ) {
       QEArchiveStatus::Rows* row = &this->rowList [j];
 
       if (j <  statusList.count ()) {
@@ -191,9 +192,9 @@ void QEArchiveStatus::archiveStatus (const QEArchiveAccess::StatusList& statusLi
          row->available->setText (QString ("%1").arg (state.available));
          row->read->setText (QString ("%1").arg (state.read));
          row->numberPVs->setText (QString ("%1").arg (state.numberPVs));
+         row->pending->setText (QString ("%1").arg (state.pending));
 
          row->frame->setVisible (true);
-
       } else {
          row->frame->setVisible (false);
       }

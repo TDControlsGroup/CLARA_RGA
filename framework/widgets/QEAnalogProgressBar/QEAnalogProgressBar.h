@@ -23,8 +23,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEANALOGPROGRESSBAR_H
-#define QEANALOGPROGRESSBAR_H
+#ifndef QE_ANALOG_PROGRESS_BAR_H
+#define QE_ANALOG_PROGRESS_BAR_H
 
 #include <QString>
 #include <QVector>
@@ -34,44 +34,44 @@
 #include <QEFloatingFormatting.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <QEPluginLibrary_global.h>
+#include <QESingleVariableMethods.h>
 #include <QEStringFormattingMethods.h>
 
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEAnalogProgressBar :
-      public QEAnalogIndicator, public QEWidget, public QEStringFormattingMethods  {
+      public QEAnalogIndicator,
+      public QEWidget,
+      public QESingleVariableMethods,
+      public QEStringFormattingMethods  {
 
 Q_OBJECT
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
 public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
     // Standard properties
@@ -346,10 +346,6 @@ public:
     /// \li APPEND - treat array as an array of numbers and format a string containing them all with a space between each. For example, an array of three numbers 10, 11 and 12 will be formatted as '10 11 12'.
     /// \li INDEX - Extract a single item from the array. The item is then formatted as any other non array data would be. The item selected is determined by the arrayIndex property. For example, if arrayIndex property is 1, an array of three numbers 10, 11 and 12 will be formatted as '11'.
     Q_PROPERTY(ArrayActions arrayAction READ getArrayActionProperty WRITE setArrayActionProperty)
-
-    /// Index used to select a single item of data for formatting from an array of data. Default is 0.
-    /// Only used when the arrayAction property is INDEX. Refer to the arrayAction property for more details.
-    Q_PROPERTY(unsigned int arrayIndex READ getArrayIndex WRITE setArrayIndex)
 public:
     // END-STRING-FORMATTING-PROPERTIES ===============================================
 
@@ -364,12 +360,7 @@ public:
     QEAnalogProgressBar( const QString &variableName, QWidget *parent = 0 );
 
     /// Destruction
-    virtual ~QEAnalogProgressBar(){}
-
-    // Property convenience functions
-    // Hide standard string formatting property functions that set/get array index.
-    void setArrayIndex (const unsigned int arrayIndex);
-    unsigned int getArrayIndex () const;
+    virtual ~QEAnalogProgressBar() {}
 
     // useDbDisplayLimits, e.g. as specified by LOPR and HOPR fields for ai, ao, longin
     // and longout record types, to call setAnalogMinimum and setAnalogMaximum.
@@ -432,7 +423,6 @@ private:
     bool useDbDisplayLimits;
     AlarmSeverityDisplayModes alarmSeverityDisplayMode;
     bool isFirstUpdate;
-    int arrayIndex;
     QColor savedForegroundColour;
     QColor savedBackgroundColour;
     QString theImage;
@@ -447,4 +437,14 @@ private slots:
                                      unsigned int variableIndex);
 };
 
-#endif // QEANALOGPROGRESSBAR_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEAnalogProgressBar::UserLevels)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::AlarmSeverityDisplayModes)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::Formats)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::Separators)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::Notations)
+Q_DECLARE_METATYPE (QEAnalogProgressBar::ArrayActions)
+#endif
+
+#endif // QE_ANALOG_PROGRESS_BAR_H

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011 Australian Synchrotron
+ *  Copyright (c) 2011,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -35,27 +35,28 @@ managePixmaps::managePixmaps()
     }
 }
 
-void managePixmaps::setDataPixmap( const QPixmap& pixmap, const unsigned int index )
+// place holder function intended to be overiden by sub class if required.
+void managePixmaps::pixmapUpdated( const int ) { }
+
+void managePixmaps::setDataPixmap( const QPixmap& pixmap, const int index )
 {
     // Sanity check
-    if( index >= (unsigned int)pixmaps.count() )
+    if( index < 0 || index >= pixmaps.count() )
         return;
 
     // Save the pixmap
     pixmaps[index] = pixmap;
+
+    // Call virtual pixmapUpdated function to allow sub-classes to take any
+    // required action if/wghen a pix map changes.
+    //
+    pixmapUpdated( index );
 }
 
-QPixmap managePixmaps::getDataPixmap( const unsigned int index ) const
+QPixmap managePixmaps::getDataPixmap( const int index ) const
 {
-    // Sanity check
-    if( index >= (unsigned int)pixmaps.count() )
-    {
-        QPixmap blank;
-        return blank;
-    }
-
-    // Return the pixmap
-    return pixmaps[index];
+    QPixmap blank;
+    return pixmaps.value (index, blank);
 }
 
 QPixmap managePixmaps::getDataPixmap( const QString text ) const
@@ -70,7 +71,7 @@ QPixmap managePixmaps::getDataPixmap( const QString text ) const
         dValue = list[0].toDouble( &ok );
 
     // Convert any resultant floating point number to a pixmap index
-    unsigned int iValue = (unsigned int)dValue;
+    int iValue = (int)dValue;
 
     // If the text was interpreted as a floating point number, select and return the pixmap
     if( ok )

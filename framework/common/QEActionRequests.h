@@ -71,6 +71,7 @@ public:
    static QString actionPvProperties ()  { return "PV Properties...";   }
    static QString actionStripChart ()    { return "Strip Chart...";     }
    static QString actionScratchPad ()    { return "Scratch Pad...";     }
+   static QString actionPlotter ()       { return "Show in Plotter..."; }
    static QString actionShowInHisogram (){ return "Show in Histogram..."; }
    static QString actionGeneralPvEdit () { return "General PV Edit..."; }
 

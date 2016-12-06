@@ -16,6 +16,7 @@ HEADERS += \
    common/QEExpressionEvaluation.h  \
    common/QEFileMonitor.h  \
    common/QEFixedPointRadix.h \
+   common/QEFormMapper.h \
    common/QEFrameworkVersion.h \
    common/QEPvNameSearch.h \
    common/QEPVNameSelectDialog.h \
@@ -24,12 +25,13 @@ HEADERS += \
    common/QEGraphicNames.h \
    common/QEOneToOne.h \
    common/QEPlatform.h \
+   common/QEQuickSort.h \
+   common/QERecordFieldName.h \
    common/QEScaling.h \
    common/QEScanTimers.h \
    common/PasswordDialog.h \
    common/windowCustomisation.h \
-   common/macroSubstitution.h \
-    common/QEFormMapper.h
+   common/macroSubstitution.h
 
 SOURCES += \
    common/QEActionRequests.cpp \
@@ -43,18 +45,20 @@ SOURCES += \
    common/QEExpressionEvaluation.cpp  \
    common/QEFileMonitor.cpp  \
    common/QEFixedPointRadix.cpp \
+   common/QEFormMapper.cpp \
    common/QEFrameworkVersion.cpp \
    common/QEPvNameSearch.cpp \
    common/QEPVNameSelectDialog.cpp \
    common/QEGraphic.cpp \
    common/QEGraphicMarkup.cpp \
    common/QEPlatform.cpp \
+   common/QEQuickSort.cpp \
+   common/QERecordFieldName.cpp \
    common/QEScaling.cpp \
    common/QEScanTimers.cpp \
    common/PasswordDialog.cpp \
    common/windowCustomisation.cpp \
-   common/macroSubstitution.cpp \
-    common/QEFormMapper.cpp
+   common/macroSubstitution.cpp
 
 INCLUDEPATH += \
    common
@@ -68,10 +72,7 @@ FORMS += \
    common/QEPVNameSelectDialog.ui \
    common/PasswordDialog.ui
 
-OTHER_FILES += \
-   common/QEPVNameSelectFilterHelp.ui
-
-RESOURCES += \
-   common/common.qrc
+#RESOURCES += \
+#   common/common.qrc
 
 # end

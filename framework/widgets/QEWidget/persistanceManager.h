@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -32,8 +32,8 @@
  * Refer to persistanceManager.cpp for further details
  */
 
-#ifndef PERSISTANCEMANAGER_H
-#define PERSISTANCEMANAGER_H
+#ifndef PERSISTANCE_MANAGER_H
+#define PERSISTANCE_MANAGER_H
 
 #include <QObject>
 #include <QHash>
@@ -43,6 +43,10 @@
 #include <QXmlDefaultHandler>
 #include <QVariant>
 #include <QDomDocument>
+
+
+// Save / Restore configuration name
+#define QE_CONFIG_NAME "QEGuiConfig"
 
 class PersistanceManager;
 // Class used to generate signals that a save or restore is require.
@@ -143,6 +147,9 @@ private:
 };
 
 // Persistance manager
+//
+class QEWidget;   // differed
+
 class QEPLUGINLIBRARYSHARED_EXPORT PersistanceManager : public QXmlDefaultHandler
 {
 public:
@@ -153,8 +160,12 @@ public:
 
     // Main kickstarter methods
     QObject* getSaveRestoreObject();                                                                  // Get a reference to the object that will supply save and restore signals
-    void     save( const QString fileName, const QString rootName, const QString configName );        // Save the current configuration
+    void     save( const QString fileName, const QString rootName, const QString configName, const bool warnUser );        // Save the current configuration
     void     restore( const QString fileName, const QString rootName, const QString configName );     // Restore a configuration
+    void     saveWidget( QEWidget* qewidget, const QString fileName,                                  // Save the current configuration of nominated QEWidget
+                         const QString rootName, const QString configName );                          //
+    void     restoreWidget( QEWidget* qewidget, const QString fileName,                               // Restore a configuration of nominated QEWidget
+                            const QString rootName, const QString configName );                       //
     bool     restoring;                                                                               // True if a restore is in progress
     bool     isRestoring();                                                                           // Returns true if a restore is in progress
 
@@ -165,11 +176,16 @@ public:
     // Configuration management
     QStringList getConfigNames( QString fileName, QString rootName );                   // Get a list of the existing configurations
     QStringList getConfigNames( QString fileName, QString rootName, bool& hasDefault ); // Get a list of the existing configurations (and if there is a default configuration)
-    void deleteConfigs( QString fileName, QString rootName, QStringList names );        // Delete a list of configurations
+    void deleteConfigs( const QString fileName, const QString rootName, const QStringList names, const bool warnUser );        // Delete a list of configurations
+    bool isConfigurationPresent( const QString fileName, const QString rootName, const QString configName );    // Is a given configuration name present
+
     static QString defaultName;
 
 private:
-    bool openRead(  QString fileName, QString rootName, bool fileExpected );// Open and read the configuration file. fileExpected is true if the file must be present
+    void saveProlog( const QString fileName, const QString rootName, const QString configName, const bool warnUser );   // common save/saveWidget functionality
+    void saveEpilog( const QString fileName, const bool warnUser );                                                     // common save/saveWidget functionality
+
+    bool openRead( const QString fileName, const QString rootName, const bool fileExpected, const bool warnUser );// Open and read the configuration file. fileExpected is true if the file must be present
 
     PMElement addElement( QDomElement parent, QString name );               // Add an element, return the new added element
 
@@ -209,4 +225,4 @@ private:
     QDomElement docElem;                // Configuration document
 };
 
-#endif // PERSISTANCEMANAGER_H
+#endif // PERSISTANCE_MANAGER_H

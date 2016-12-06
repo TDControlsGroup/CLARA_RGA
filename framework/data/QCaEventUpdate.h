@@ -55,6 +55,7 @@ class QCaEventUpdate : public QEvent {
     QCaEventUpdate( qcaobject::QCaObject *emitterObjectIn,  // The object that emited the event
                     long newReason,                         // Callback reason. Actually of type caobject::callback_reasons
                     void* newDataPtr );                     // CA data. This is actually of type carecord::CaRecord*
+    ~QCaEventUpdate();
 
     static QEvent::Type EVENT_UPDATE_TYPE;
     bool acceptThisEvent;                // If true, the originator of this event has been deleted. Ignore the event.

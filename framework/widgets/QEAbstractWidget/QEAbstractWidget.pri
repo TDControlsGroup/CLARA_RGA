@@ -5,10 +5,12 @@
 #
 
 HEADERS += \
-    widgets/QEAbstractWidget/QEAbstractWidget.h
+    widgets/QEAbstractWidget/QEAbstractWidget.h \
+    widgets/QEAbstractWidget/QEAbstractDynamicWidget.h
 
 SOURCES += \
-    widgets/QEAbstractWidget/QEAbstractWidget.cpp
+    widgets/QEAbstractWidget/QEAbstractWidget.cpp \
+    widgets/QEAbstractWidget/QEAbstractDynamicWidget.cpp
 
 INCLUDEPATH += \
     widgets/QEAbstractWidget

@@ -25,7 +25,7 @@
 #ifndef QEPERIODICMANAGER_H
 #define QEPERIODICMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

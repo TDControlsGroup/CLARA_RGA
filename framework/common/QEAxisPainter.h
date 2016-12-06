@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -58,7 +58,6 @@ public:
 
 #define NUMBER_OF_MARKERS   4
 
-
    explicit QEAxisPainter (QWidget* parent = 0);
    ~QEAxisPainter ();
 
@@ -72,7 +71,19 @@ public:
    void setMaximum (const double maximum);
    double getMaximum () const;
 
-   // Set/get minor tick interval. Altough not enforced, this is most sensibly
+   // Set display module, e.g. 24.0 for hours in a day, or 360.0 for degrees.
+   // Zero means no modulo processing.
+   //
+   void setModulo (const double modulo);
+   double getModulo () const;
+
+   // Set axis values display precision (linear).
+   // Default is 1.  Allowed range is 0 to 6.
+   //
+   void setPrecision (const int precision);
+   int getPrecision () const;
+
+   // Set/get minor tick interval. Although not enforced, this is most sensibly
    // something like 0.01, 0.5, 1.0.  Default is 0.2
    //
    void setMinorInterval (const double minorInterval);
@@ -83,6 +94,12 @@ public:
    //
    void setMajorMinorRatio (const int majorMinorRatio);
    int getMajorMinorRatio  () const;
+
+   // Set has/does not have axis line above/below or left/right of ticks.
+   // Default: false
+   //
+   void setHasAxisLine (const bool hasAxisLine);
+   bool getHasAxisLine () const;
 
    // Set/get log scaling. Default is false (i.e. linear scaling)
    //
@@ -108,8 +125,13 @@ public:
    // orientation is horizontal, or with respect to widget height when the orientation
    // is vertical. Default is 20.
    //
-   void setIndent (const int indent);
-   int getIndent  () const;
+   void setIndent (const int topLeftIndent,
+                   const int rightBottomIndent);
+   int getTopLeftIndent  () const;
+   int getRightBottomIndent  () const;    // right/bottom
+
+   void setIndent (const int indent);  // sets top/left and right/bottom to same value.
+   int getIndent  () const;            // returns average
 
    // Set/get axis gap or margin from top edge of the widget when the orientation is
    // horizontal, or the vertical gap from the left/right edge when the orientation
@@ -117,6 +139,14 @@ public:
    //
    void setGap (const int gap);
    int getGap  () const;
+
+   // Set/get auto fixed set. When true the fallowing applies: when the orientation
+   // is horizontal/vertical the widgets height/widthis fixed, just large enough to
+   // accomodate the 'gap', axis and the axis annotation.
+   // Default is false.
+   //
+   void setAutoFixedSize (const bool enabled);
+   bool getAutoFixedSize () const;
 
    // Set/get marker attributes. Index is constrained to the range 0 .. 3.
    // Default values are clear; false; and  0.0.
@@ -143,7 +173,7 @@ private:
    double calcFraction (const double value);
 
    void drawAxisText (QPainter& painter, const QPoint& position,
-                      const QString& text, const int pointSize);
+                      const QString& text);
 
    QColor markerColour [NUMBER_OF_MARKERS];
    bool   markerVisible [NUMBER_OF_MARKERS];
@@ -154,14 +184,24 @@ private:
    double mMinimum;
    double mMaximum;
    double mMinorInterval;
+   double mModulo;
+   int mPrecision;
    int mMajorMinorRatio;
-   int mIndent;
+   int mTopLeftIndent;
+   int mRightBottomIndent;
    int mGap;
+   bool mAutoFixedSize;
    Orientations mOrientation;
    TextPositions mTextPosition;
    bool mIsLogScale;
+   bool mHasAxisLine;
    QEAxisIterator* iterator;
 };
 
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEAxisPainter::Orientations)
+Q_DECLARE_METATYPE (QEAxisPainter::TextPositions)
+#endif
 
 #endif  // QE_AXIS_PAINTER_H

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013,2014 Australian Synchrotron
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -33,6 +33,7 @@
 #include <QEInteger.h>
 #include <QEIntegerFormatting.h>
 #include <QEPluginLibrary_global.h>
+#include <QESingleVariableMethods.h>
 #include <QEStringFormattingMethods.h>
 #include <QSimpleShape.h>
 
@@ -46,46 +47,101 @@
 */
 class QEPLUGINLIBRARYSHARED_EXPORT QESimpleShape :
       public QSimpleShape,
-      public QEWidget, public QEStringFormattingMethods {
+      public QEWidget,
+      public QESingleVariableMethods,
+      public QEStringFormattingMethods {
 
    Q_OBJECT
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
 public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
-
-    // QESimpleShape specific.
+    // QESimpleShape specific properties ==============================================
+    // Optional PV used to set the colour of the shape boundary.
     //
     Q_PROPERTY (QString edgeVariable READ getEdgeVariableNameProperty WRITE setEdgeVariableNameProperty)
-    void setEdgeVariableNameProperty (const QString& variableName);
-    QString getEdgeVariableNameProperty () const;
+
+    Q_PROPERTY(int edgeArrayIndex READ getEdgeArrayIndex WRITE setEdgeArrayIndex)
+    Q_PROPERTY (DisplayAlarmStateOptions edgeAlarmStateOption READ getEdgeAlarmStateOptionProperty WRITE setEdgeAlarmStateOptionProperty)
+
+    //----------------------------------------------------------------------------------
+    /// If true (default), add engineering units supplied with the data.
+    ///
+    Q_PROPERTY (bool addUnits       READ getAddUnits       WRITE setAddUnits)
+
+    //----------------------------------------------------------------------------------
+    // NOTE, keep in sync. The documentation below is repeated in QEStringFormatting::setLocalEnumeration() (in QEStringformatting.cpp)
+    /// An enumeration list used to data values. Used only when the formatting option is 'local enumeration'.
+    /// Value is converted to an integer and used to select a string from this list.
+    ///
+    /// Format is:
+    ///
+    ///   [[<|<=|=|!=|>=|>]value1|*] : string1 , [[<|<=|=|!=|>=|>]value2|*] : string2 , [[<|<=|=|!=|>=|>]value3|*] : string3 , ...
+    ///
+    /// Where:
+    ///   <  Less than
+    ///   <= Less than or equal
+    ///   =  Equal (default if no operator specified)
+    ///   >= Greather than or equal
+    ///   >  Greater than
+    ///   *  Always match (used to specify default text)
+    ///
+    /// Values may be numeric or textual
+    /// Values do not have to be in any order, but first match wins
+    /// Values may be quoted
+    /// Strings may be quoted
+    /// Consecutive values do not have to be present.
+    /// Operator is assumed to be equality if not present.
+    /// White space is ignored except within quoted strings.
+    /// \n may be included in a string to indicate a line break
+    ///
+    /// Examples are:
+    ///
+    /// 0:Off,1:On
+    /// 0 : "Pump Running", 1 : "Pump not running"
+    /// 0:"", 1:"Warning!\nAlarm"
+    /// <2:"Value is less than two", =2:"Value is equal to two", >2:"Value is grater than 2"
+    /// 3:"Beamline Available", *:""
+    /// "Pump Off":"OH NO!, the pump is OFF!","Pump On":"It's OK, the pump is on"
+    ///
+    /// The data value is converted to a string if no enumeration for that value is available.
+    /// For example, if the local enumeration is '0:off,1:on', and a value of 10 is processed, the text generated is '10'.
+    /// If a blank string is required, this should be explicit. for example, '0:off,1:on,10:""'
+    ///
+    /// A range of numbers can be covered by a pair of values as in the following example: >=4:"Between 4 and 8",<=8:"Between 4 and 8"
+    Q_PROPERTY(QString/*localEnumerationList*/ localEnumeration READ getLocalEnumeration WRITE setLocalEnumeration)
+
+    // Make the value and isActive properties non-designable. This both hides the properties
+    // within designer and stops the values from being written to the .ui file.
+    //
+    Q_PROPERTY (int    value    READ getValue     WRITE setValue    DESIGNABLE false)
+    Q_PROPERTY (bool   isActive READ getIsActive  WRITE setIsActive DESIGNABLE false)
+    //
+    // End QESimpleShape specific properties ==========================================
 
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
@@ -203,79 +259,23 @@ public:
 public:
    // END-STANDARD-PROPERTIES ========================================================
 
-   // QESimpleShape specific properties ==============================================
-   //
-   Q_PROPERTY (DisplayAlarmStateOptions edgeAlarmStateOption READ getEdgeAlarmStateOptionProperty WRITE setEdgeAlarmStateOptionProperty)
-
-   DisplayAlarmStateOptions getEdgeAlarmStateOptionProperty ();             ///< Access function for #edgeAlarmStateOption property - refer to #edgeAlarmStateOption property for details
-   void setEdgeAlarmStateOptionProperty( DisplayAlarmStateOptions option);  ///< Access function for #edgeAlarmStateOption property - refer to #edgeAlarmStateOption property for details
-
-   /// Array Index element to display for main (non-edge) variable is a waveform. Defaults to 0.
-   ///
-   Q_PROPERTY (int arrayIndex   READ getArrayIndex   WRITE setArrayIndex )
-
-   //----------------------------------------------------------------------------------
-   /// If true (default), add engineering units supplied with the data.
-   ///
-   Q_PROPERTY (bool addUnits       READ getAddUnits       WRITE setAddUnits)
-
-   //----------------------------------------------------------------------------------
-   // NOTE, keep in sync. The documentation below is repeated in QEStringFormatting::setLocalEnumeration() (in QEStringformatting.cpp)
-   /// An enumeration list used to data values. Used only when the formatting option is 'local enumeration'.
-   /// Value is converted to an integer and used to select a string from this list.
-   ///
-   /// Format is:
-   ///
-   ///   [[<|<=|=|!=|>=|>]value1|*] : string1 , [[<|<=|=|!=|>=|>]value2|*] : string2 , [[<|<=|=|!=|>=|>]value3|*] : string3 , ...
-   ///
-   /// Where:
-   ///   <  Less than
-   ///   <= Less than or equal
-   ///   =  Equal (default if no operator specified)
-   ///   >= Greather than or equal
-   ///   >  Greater than
-   ///   *  Always match (used to specify default text)
-   ///
-   /// Values may be numeric or textual
-   /// Values do not have to be in any order, but first match wins
-   /// Values may be quoted
-   /// Strings may be quoted
-   /// Consecutive values do not have to be present.
-   /// Operator is assumed to be equality if not present.
-   /// White space is ignored except within quoted strings.
-   /// \n may be included in a string to indicate a line break
-   ///
-   /// Examples are:
-   ///
-   /// 0:Off,1:On
-   /// 0 : "Pump Running", 1 : "Pump not running"
-   /// 0:"", 1:"Warning!\nAlarm"
-   /// <2:"Value is less than two", =2:"Value is equal to two", >2:"Value is grater than 2"
-   /// 3:"Beamline Available", *:""
-   /// "Pump Off":"OH NO!, the pump is OFF!","Pump On":"It's OK, the pump is on"
-   ///
-   /// The data value is converted to a string if no enumeration for that value is available.
-   /// For example, if the local enumeration is '0:off,1:on', and a value of 10 is processed, the text generated is '10'.
-   /// If a blank string is required, this should be explicit. for example, '0:off,1:on,10:""'
-   ///
-   /// A range of numbers can be covered by a pair of values as in the following example: >=4:"Between 4 and 8",<=8:"Between 4 and 8"
-   Q_PROPERTY(QString/*localEnumerationList*/ localEnumeration READ getLocalEnumeration WRITE setLocalEnumeration)
-
-
-   // Make the value and isActive properties non-designable. This both hides the properties
-   // within designer and stops the values from being written to the .ui file.
-   //
-   Q_PROPERTY (int    value    READ getValue     WRITE setValue    DESIGNABLE false)
-   Q_PROPERTY (bool   isActive READ getIsActive  WRITE setIsActive DESIGNABLE false)
-   //
-   // End QESimpleShape specific properties ============================================
-
 public:
    QESimpleShape (QWidget* parent = 0);
    QESimpleShape (const QString & variableName, QWidget* parent = 0);
+   ~QESimpleShape ();
 
-   void setArrayIndex (const int arrayIndex);
-   int getArrayIndex () const;
+   // Override paranet method of same name so that we can apply substitutions to
+   // both variable name managers.
+   void setVariableNameSubstitutionsProperty (const QString& substitutions);
+
+   void setEdgeVariableNameProperty (const QString& variableName);
+   QString getEdgeVariableNameProperty () const;
+
+   void setEdgeArrayIndex (const int arrayIndex);
+   int getEdgeArrayIndex () const;
+
+   DisplayAlarmStateOptions getEdgeAlarmStateOptionProperty ();             ///< Access function for #edgeAlarmStateOption property - refer to #edgeAlarmStateOption property for details
+   void setEdgeAlarmStateOptionProperty( DisplayAlarmStateOptions option);  ///< Access function for #edgeAlarmStateOption property - refer to #edgeAlarmStateOption property for details
 
 signals:
    // Note, the following signals are common to many QE widgets,
@@ -323,12 +323,12 @@ protected:
 private:
    void setup ();
 
-   QCaVariableNamePropertyManager edgeVNPM;
+   QESingleVariableMethods* edge;
+
    DisplayAlarmStateOptions edgeAlarmState;
    QEIntegerFormatting integerFormatting;
    bool isStaticValue;
    bool isFirstUpdate;
-   int arrayIndex;
    int  channelValue;
    QColor channelAlarmColour;
 
@@ -343,5 +343,10 @@ private slots:
    void setShapeValue (const long& value, QCaAlarmInfo& alarmInfo,
                        QCaDateTime& dateTime, const unsigned int& variableIndex);
 };
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QESimpleShape::UserLevels)
+Q_DECLARE_METATYPE (QESimpleShape::DisplayAlarmStateOptions)
+#endif
 
 #endif  // QE_SIMPLE_SHAPE_H

@@ -750,7 +750,7 @@ void imageDisplayProperties::setStatistics( unsigned int minPIn,                
 void imageDisplayProperties::showStatistics()
 {
     // Recalculate dependand variables
-    range = (1<<depth)-1;
+    range = ((unsigned long)(1)<<depth)-1;
 
     // Apply changes
     zeroValueSpinBox->setMinimum( -(int)range*10 );

@@ -25,7 +25,7 @@
 #ifndef QEPUSHBUTTONMANAGER_H
 #define QEPUSHBUTTONMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

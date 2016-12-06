@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -26,6 +26,7 @@
 
 #include <QDebug>
 #include <QBrush>
+#include <QMouseEvent>
 #include <QPen>
 
 #include <QECommon.h>
@@ -34,14 +35,19 @@
 #include <QECommon.h>
 #include <QEDisplayRanges.h>
 
-#define DEBUG qDebug () << "QEHistogram (" << __FUNCTION__ << __LINE__ << "): "
+#define DEBUG qDebug () << "QEHistogram" << __LINE__ << __FUNCTION__ << "  "
+
+// Useful orientation selection macros.
+//
+#define HORIZONTAL       (this->mOrientation == Qt::Horizontal)
+#define SELECT(ho, vo)   (HORIZONTAL ? (ho) : (vo))
 
 // Magic null values - use NaN ?
 // 'Unlikely' to occur and can be exactly represented as a double.
+// A bit 'naughty' mixing control and data, but it's pragmatic.
 //
 static const double  NO_DATA_VALUE = -1073741824.0;
 static const QColor  NO_COLOUR_VALUE = QColor (3, 1, 4, 2);   // Pi colour ;-)
-
 
 static const double  MINIMUM_SPAN  = +1.0E-18;
 static const int     MAX_CAPACITY  = 10000;
@@ -75,6 +81,7 @@ QEHistogram::QEHistogram (QWidget *parent) : QFrame (parent)
    //
    this->mBackgroundColour = QColor (224, 224, 224);   // pale gray
    this->mBarColour = QColor (55, 155, 255);           // blue
+   this->mDrawAxies = true;
    this->mDrawBorder = true;
    this->mAutoScale = false;
    this->mAutoBarGapWidths = false;
@@ -84,31 +91,44 @@ QEHistogram::QEHistogram (QWidget *parent) : QFrame (parent)
 
    this->mGap = 3;                // 0 .. 10
    this->mBarWidth = 8;           // 1 .. 80
+   this->mMargin = 3;             // 0 .. 20
    this->mBaseLine = 0.0;
    this->mMinimum = 0.0;
    this->mMaximum = 10.0;
-   this->mOrientation = Qt::Horizontal;
    this->mTestSize = 0;
 
    // Create internal widgets
    //
-   this->layout = new QVBoxLayout (this);
-   this->layout->setMargin (3);
-   this->layout->setSpacing (3);
+   this->layoutA = NULL;
+   this->layoutB = NULL;
 
-   this->histogramArea = new QWidget (this);
-   this->histogramArea->setMouseTracking (true);
-   this->layout->addWidget (this->histogramArea);
-
+   this->histogramAxisPlusArea = new QWidget (this);
+   this->axisPainter = new QEAxisPainter (this->histogramAxisPlusArea);
+   this->histogramArea = new QWidget (this->histogramAxisPlusArea);
    this->scrollbar = new QScrollBar (this);
-   this->scrollbar->setOrientation (Qt::Horizontal);
+
+   this->axisPainter->setAutoFixedSize (true);  // but does not do auto indent.
+   this->axisPainter->setIndent (6, 6);
+   this->axisPainter->setGap (0);
+   this->axisPainter->setHasAxisLine (true);
+
+   this->histogramArea->setMouseTracking (true);
+   this->histogramArea->installEventFilter (this);
+
    this->scrollbar->setRange (0, 0);
-   this->layout->addWidget (this->scrollbar);
+
+   // Setting the orientation will create the needed layouts and add widgets to
+   // those layouts. We force first call to do an acutal update by setting the
+   // orientation state to a non-default value.
+   //
+   this->mOrientation = Qt::Vertical;
+   this->setOrientation (Qt::Horizontal);
 
    this->dataArray.clear ();
    this->dataArray.reserve (100);
    this->numberDisplayed = 0;
    this->firstDisplayed = 0;
+   this->lastEmittedIndex = -2;  // not -1.
 
    // Do this only once, not in paintEvent as it causes another paint event.
    //
@@ -117,8 +137,6 @@ QEHistogram::QEHistogram (QWidget *parent) : QFrame (parent)
 
    QObject::connect (this->scrollbar, SIGNAL (valueChanged (int)),
                      this,     SLOT (scrollBarValueChanged (int)));
-
-   this->histogramArea->installEventFilter (this);
 }
 
 
@@ -253,25 +271,38 @@ void QEHistogram::scrollBarValueChanged (int value)
 
 //------------------------------------------------------------------------------
 //
-int QEHistogram::firstBarLeft () const
+int QEHistogram::firstBarTopLeft () const
 {
-   return this->paintArea.left ();
+   return SELECT (this->paintArea.left (), this->paintArea.top ());
 }
 
 //------------------------------------------------------------------------------
 //
 QRect QEHistogram::fullBarRect  (const int position) const
 {
+   int top;
+   int left;
+   int right;
+   int bottom;
+
    // paintArea defines overall paint area.
    //
-   const int top = this->paintArea.top ();
-   const int left = this->firstBarLeft () +
-                    (this->useBarWidth + this->useGap + 1) * position;
-   const int bottom = this->paintArea.bottom ();
-   const int right = left + this->useBarWidth;
+   if (HORIZONTAL) {
+      top = this->paintArea.top ();
+      bottom = this->paintArea.bottom ();
+
+      left = this->firstBarTopLeft () +
+            (this->useBarWidth + this->useGap + 1) * position;
+      right = left + this->useBarWidth;
+   } else {
+      left = this->paintArea.left ();
+      right = this->paintArea.right ();
+      top = this->firstBarTopLeft () +
+            (this->useBarWidth + this->useGap + 1) * position;
+      bottom = top + this->useBarWidth;
+   }
 
    QRect result;
-
    result.setTop (top);
    result.setLeft (left);
    result.setBottom (bottom);
@@ -282,16 +313,12 @@ QRect QEHistogram::fullBarRect  (const int position) const
 
 //------------------------------------------------------------------------------
 //
-int QEHistogram::indexOfPosition (const int x, const int y) const
+int QEHistogram::indexOfHistogramAreaPosition (const int x, const int y) const
 {
-   // Convert from histogram co-ordinates (which is what the external world sees)
-   // to local internal widger co-ordinates.
-   //
-   const int hax = x - this->histogramArea->geometry ().left ();
-   const int hay = y - this->histogramArea->geometry ().top ();
+   const int han = SELECT (x, y);
 
-   const int guess = (hax - this->firstBarLeft ()) /
-                     MAX (1, this->useBarWidth + this->useGap + 1);
+   const int guess = (han - this->firstBarTopLeft ()) /
+                      MAX (1, this->useBarWidth + this->useGap + 1);
 
    // Add +/- 2 - very conservative.
    //
@@ -303,8 +330,8 @@ int QEHistogram::indexOfPosition (const int x, const int y) const
    for (int j = lower; j <= upper; j++) {
       QRect jbar = this->fullBarRect (j);
 
-      if (hax >= jbar.left () && hax <= jbar.right () &&
-          hay >= jbar.top ()  && hay <= jbar.bottom ()) {
+      if (x >= jbar.left () && x <= jbar.right () &&
+          y >= jbar.top ()  && y <= jbar.bottom ()) {
          // found it.
          //
          result = j + this->firstDisplayed;
@@ -318,9 +345,44 @@ int QEHistogram::indexOfPosition (const int x, const int y) const
 
 //------------------------------------------------------------------------------
 //
+int QEHistogram::indexOfHistogramAreaPosition (const QPoint& p) const
+{
+   return this->indexOfHistogramAreaPosition (p.x (), p.y ());
+}
+
+//------------------------------------------------------------------------------
+//
+int QEHistogram::indexOfPosition (const int x, const int y) const
+{
+   // Convert from histogram co-ordinates (which is what the external world sees)
+   // to local internal histogramArea widget co-ordinates.
+   //
+   const QPoint golbalPos = this->mapToGlobal (QPoint (x, y));
+   const QPoint localPos = this->histogramArea->mapFromGlobal (golbalPos);
+
+   return this->indexOfHistogramAreaPosition (localPos);
+}
+
+//------------------------------------------------------------------------------
+//
 int QEHistogram::indexOfPosition (const QPoint& p) const
 {
    return this->indexOfPosition (p.x (), p.y ());
+}
+
+//------------------------------------------------------------------------------
+//
+QRect QEHistogram::positionOfIndex (const int index) const
+{
+   const QRect temp = this->fullBarRect (index - this->firstDisplayed);
+
+   // Convert from internal histogramArea widget co-ordinates to histogram
+   // co-ordinates (which is what the external world sees)
+   //
+   const QPoint topLeft     = this->mapFromGlobal (this->histogramArea->mapToGlobal (temp.topLeft ()));
+   const QPoint bottomRight = this->mapFromGlobal (this->histogramArea->mapToGlobal (temp.bottomRight ()));
+
+   return QRect (topLeft, bottomRight);
 }
 
 //------------------------------------------------------------------------------
@@ -329,24 +391,35 @@ bool QEHistogram::paintItem (QPainter& painter,
                              const int position,
                              const int valueIndex) const
 {
-   const int finishRight = this->paintArea.right ();
+   const int axisOffset = QEScaling::scale (4);
+   const int finishBottomRight = SELECT (this->paintArea.right (),
+                                         this->paintArea.bottom () - axisOffset);
    QRect bar;
    double value;
    double base;
    double baseLineFraction;
    double valueFraction;
-   int top;
-   int bot;
+   int topRight;
+   int bottomLeft;
    QColor colour;
    QColor boarderColour;
    QBrush brush;
    QPen pen;
 
    bar = this->fullBarRect (position);
-   if (bar.left () >= finishRight) return false;   // Off to the side
-   if (bar.right () > finishRight) {
-      bar.setRight (finishRight);                  // Truncate
-      if (bar.width () < 5) return false;          // Tooo small!!
+
+   if (HORIZONTAL) {
+      if (bar.left () >= finishBottomRight) return false;   // Off to the side
+      if (bar.right () > finishBottomRight) {
+         bar.setRight (finishBottomRight);                  // Truncate
+         if (bar.width () < 5) return false;                // Tooo small!!
+      }
+   } else {
+      if (bar.top () >= finishBottomRight) return false;    // Off to the side
+      if (bar.bottom () > finishBottomRight) {
+         bar.setBottom (finishBottomRight);                 // Truncate
+         if (bar.height () < 5) return false;               // Tooo small!!
+      }
    }
 
    value = this->dataArray.value (valueIndex, NO_DATA_VALUE);
@@ -369,14 +442,23 @@ bool QEHistogram::paintItem (QPainter& painter,
                       (this->drawMaximum - this->drawMinimum);
    baseLineFraction = LIMIT (baseLineFraction, 0.0, 1.0);
 
-   // Top based on fraction which in turn based on value.
-   // Note: top increases as value/fraction decreases.
-   //
-   top = bar.bottom () - (int) (valueFraction * bar.height ());
-   bot = bar.bottom () - (int) (baseLineFraction * bar.height ());
+   if (HORIZONTAL) {
+      // Top based on fraction which in turn based on value.
+      // Note: top increases as value/fraction decreases.
+      //
+      topRight   = bar.bottom () - (int) (valueFraction * bar.height ());
+      bottomLeft = bar.bottom () - (int) (baseLineFraction * bar.height ());
 
-   bar.setTop (top);
-   bar.setBottom (bot);
+      bar.setBottom (bottomLeft);
+      bar.setTop (topRight);
+   } else {
+      // Ditto
+      topRight   = bar.left () + (int) (valueFraction * bar.width ());
+      bottomLeft  = bar.left () + (int) (baseLineFraction * bar.width ());
+
+      bar.setLeft (bottomLeft);
+      bar.setRight (topRight);
+   }
 
    // All good to go - set up colour.
    //
@@ -418,14 +500,13 @@ QString QEHistogram::coordinateText (const double value) const
       //
       result = QString ("%1").arg (EXP10 (value), 0, 'e', 0);
    } else {
-      result = QString ("%1").arg (value);
+      result = QString ("%1").arg (value, 0, 'f', this->axisPainter->getPrecision());
    }
    return result;
 }
 
 //------------------------------------------------------------------------------
-// This is like paintGrid, BUT with no actual painting.
-// Maybe we could keep / cache generated value text images.
+// TODO - get this inform from axis painter.
 //
 int QEHistogram::maxPaintTextWidth (QPainter& painter) const
 {
@@ -461,14 +542,8 @@ void QEHistogram::paintGrid (QPainter& painter) const
 
    QColor penColour;
    QPen pen;
-   int j;
    double value;
    double fraction;
-   int y;
-   QFontMetrics fm = painter.fontMetrics ();
-   QFont pf (this->font ());
-   QString text;
-   int x;
 
    penColour = QEUtilities::fontColour (this->getBackgroundColour ()); // black/white
    if (!this->isEnabled ()) {
@@ -479,7 +554,9 @@ void QEHistogram::paintGrid (QPainter& painter) const
    pen.setStyle (Qt::DashLine);
    painter.setPen (pen);
 
-   for (j = 0; true; j++) {
+   for (int j = 0; true; j++) {
+      int x = 0;
+      int y = 0;
       value = this->drawMinimum + (j*this->drawMajor);
       if (value > this->drawMaximum) break;
       if (j > 1000) break;  // sainity check
@@ -489,45 +566,44 @@ void QEHistogram::paintGrid (QPainter& painter) const
 
       // Same idea as we used in paintItem.
       //
-      y = this->paintArea.bottom () - (int) (fraction * this->paintArea.height ());
-
-      if (this->mShowGrid && (j > 0)) {
-         painter.drawLine (this->paintArea.left () - axisOffset, y,
-                           this->paintArea.right(), y);
-      }
-
-      if (this->mShowScale) {
-         // Centre text. For height, pointSize seems better than fm.height ()
-         // painter.drawText needs bottom left coordinates.
-         //
-         text = this->coordinateText (value);
-         x = this->paintArea.left () - fm.width (text) - 2 * axisOffset;
-         y = y +  (pf.pointSize () + 1)/2;
-
-         painter.drawText (x, y, text);
+      if (HORIZONTAL) {
+         y = this->paintArea.bottom () - (int) (fraction * this->paintArea.height ());
+         if (this->mShowGrid && (j > 0)) {
+            painter.drawLine (this->paintArea.left () - axisOffset, y,
+                              this->paintArea.right(),              y);
+         }
+      } else {
+         x = this->paintArea.left () + (int) (fraction * this->paintArea.width ());
+         if (this->mShowGrid && (j > 0)) {
+            painter.drawLine (x, this->paintArea.top () - axisOffset,
+                              x, this->paintArea.bottom ());
+         }
       }
    }
 
-   pen.setWidth (1);
-   pen.setStyle (Qt::SolidLine);
-   painter.setPen (pen);
+   if (this->mDrawAxies) {
+      pen.setWidth (1);
+      pen.setStyle (Qt::SolidLine);
+      painter.setPen (pen);
 
-   painter.drawLine (this->paintArea.left () - axisOffset, this->paintArea.top (),
-                     this->paintArea.left () - axisOffset, this->paintArea.bottom () + axisOffset);
+      if (HORIZONTAL) {
+         painter.drawLine (this->paintArea.left () - axisOffset, this->paintArea.bottom () + axisOffset,
+                           this->paintArea.right (),             this->paintArea.bottom () + axisOffset);
 
-   painter.drawLine (this->paintArea.left () - axisOffset,  this->paintArea.bottom () + axisOffset,
-                     this->paintArea.right (), this->paintArea.bottom () + axisOffset);
+      } else {
+         painter.drawLine (this->paintArea.left () - axisOffset, this->paintArea.top (),
+                           this->paintArea.left () - axisOffset, this->paintArea.bottom () + axisOffset);
+      }
+   }
 }
 
 //------------------------------------------------------------------------------
 //
 void QEHistogram::paintAllItems ()
 {
-   const int numberGrid = 5;   // approx number of y grid lines.
-   const int margin = QEScaling::scale (3);
-   const int extra = QEScaling::scale (8);
+   const int numberGrid = 5;   // approx number of grid lines.
 
-   // Only apply style on change as this casues a new paint event.
+   // Only apply style on change as this causes a new paint event.
    // Maybe we just just paint a rectangle of the appropriate colour.
    //
    QString ownStyle = QEUtilities::colourToStyle (this->getBackgroundColour ());
@@ -543,6 +619,8 @@ void QEHistogram::paintAllItems ()
    double useMinimum = this->mMinimum;
    double useMaximum = this->mMaximum;
    if (this->mAutoScale) {
+      // Auto scale is true - find min amd max values.
+      //
       bool foundValue = false;
       double searchMinimum = +1.0E25;
       double searchMaximum = -1.0E25;
@@ -560,12 +638,16 @@ void QEHistogram::paintAllItems ()
    }
 
    // Do not allow ultra small spans, which will occur when autoscaling
-   // a histogram with a single value.
+   // a histogram with a single value, or set of identical values.
    //
-   if ((useMaximum - useMinimum) < MINIMUM_SPAN) {
+   double l1 = 1.0e-6 * ABS (useMinimum);
+   double l2 = 1.0e-6 * ABS (useMaximum);
+   double useMinSpan = MAX (MINIMUM_SPAN, MAX (l1, l2));
+
+   if ((useMaximum - useMinimum) < useMinSpan) {
       double midway = (useMaximum + useMinimum)/2.0;
-      useMinimum = midway - MINIMUM_SPAN/2.0;
-      useMaximum = midway + MINIMUM_SPAN/2.0;
+      useMinimum = midway - useMinSpan/2.0;
+      useMaximum = midway + useMinSpan/2.0;
    }
 
    // Now calc draw min max  - log of min / max if necessary.
@@ -575,25 +657,50 @@ void QEHistogram::paintAllItems ()
 
    if (this->mLogScale) {
       displayRange.adjustLogMinMax (this->drawMinimum, this->drawMaximum, this->drawMajor);
-      // We use, and this store,  the log of thwse values when using the log scale.
+      // We use, and this store,  the log of these values when using the log scale.
       // drawMajor already reflects the scale scale and is typicaly 1 (as in 1 decade).
       //
+      this->axisPainter->setLogScale (true);
+      this->axisPainter->setMinimum (this->drawMinimum);
+      this->axisPainter->setMaximum (this->drawMaximum);
+      this->axisPainter->setMajorMinorRatio (1);
+
       this->drawMinimum = LOG10 (this->drawMinimum);
       this->drawMaximum = LOG10 (this->drawMaximum);
 
    } else {
-      displayRange.adjustMinMax (numberGrid, true, this->drawMinimum, this->drawMaximum, this->drawMajor);
+      displayRange.adjustMinMax (numberGrid, true,
+                                 this->drawMinimum, this->drawMaximum, this->drawMajor);
+      this->axisPainter->setLogScale (false);
+      this->axisPainter->setMinimum (this->drawMinimum);
+      this->axisPainter->setMaximum (this->drawMaximum);
+      this->axisPainter->setMinorInterval (this->drawMajor / 5.0);
+      this->axisPainter->setMajorMinorRatio (5);
    }
 
-   // Define actual chart draw area ...
+   // Define actual historgram draw area ...
    //
-   QRect hostWidgetArea = this->histogramArea->geometry ();
-   QFont ownFont (this->font ());
+   const int extra = QEScaling::scale (2);
+   const int axisOffset = QEScaling::scale (4);
+
+   QRect histAreaGeo = this->histogramArea->geometry ();
+   QFont ownFont (this->axisPainter->font ());
    int halfPointSize = (ownFont.pointSize () + 1) / 2;
-   this->paintArea.setTop (margin + halfPointSize);
-   this->paintArea.setBottom (hostWidgetArea.height () - margin - halfPointSize);
-   this->paintArea.setLeft (this->maxPaintTextWidth (painter) + extra);
-   this->paintArea.setRight (hostWidgetArea.width () - margin);
+   int halfTextWidth = (this->maxPaintTextWidth (painter) + 1) / 2;
+
+   if (HORIZONTAL) {
+      this->paintArea.setTop (halfPointSize + 1);
+      this->paintArea.setBottom (histAreaGeo.height () - halfPointSize - axisOffset);
+      this->paintArea.setLeft (extra);
+      this->paintArea.setRight (histAreaGeo.width ());
+      this->axisPainter->setIndent (halfPointSize, halfPointSize + extra);
+   } else {
+      this->paintArea.setTop (0);
+      this->paintArea.setBottom (histAreaGeo.height ());
+      this->paintArea.setLeft (halfTextWidth);
+      this->paintArea.setRight (histAreaGeo.width () - halfTextWidth - extra);
+      this->axisPainter->setIndent (halfTextWidth, halfTextWidth);
+   }
 
    // Do grid and axis - note this might tweak useMinimum/useMaximum.
    //
@@ -627,7 +734,7 @@ void QEHistogram::paintAllItems ()
    this->numberDisplayed = 0;
    for (int posnIndex = 0; posnIndex < maxDrawable; posnIndex++) {
       int dataIndex = this->firstDisplayed + posnIndex;
-      bool painted = paintItem (painter, posnIndex, dataIndex);
+      bool painted = this->paintItem (painter, posnIndex, dataIndex);
       if (painted) {
          this->numberDisplayed = posnIndex + 1;
       } else {
@@ -649,13 +756,71 @@ bool QEHistogram::eventFilter (QObject *obj, QEvent* event)
    const QEvent::Type type = event->type ();
    bool result = false;
 
-   if (type == QEvent::Paint) {
-      if (obj == this->histogramArea) {
-         this->paintAllItems ();
-         result = true;  // event has been handled
-      }
+   switch (type) {
+
+      case QEvent::MouseMove:
+         if (obj == this->histogramArea) {
+            const QMouseEvent* mouseEvent = static_cast<QMouseEvent *> (event);
+            const QPoint pos = mouseEvent->pos ();
+            const int index = this->indexOfHistogramAreaPosition (pos);
+            if (this->lastEmittedIndex != index) {
+               emit this->mouseIndexChanged (index);
+               this->lastEmittedIndex = index;
+            }
+            result = true; // event has been handled.
+         }
+         break;
+
+      case QEvent::MouseButtonPress:
+         if (obj == this->histogramArea) {
+            const QMouseEvent* mouseEvent = static_cast<QMouseEvent *> (event);
+            const QPoint pos = mouseEvent->pos ();
+            const int index = this->indexOfHistogramAreaPosition (pos);
+            if (index >= 0) {
+               Qt::MouseButton button = mouseEvent->button();
+               emit this->mouseIndexPressed (index, button);
+            }
+            result = true; // event has been handled.
+         }
+         break;
+
+      case QEvent::Leave:
+         if (obj == this->histogramArea) {
+            int index = -1;    // by definition
+            if (this->lastEmittedIndex != index) {
+               emit this->mouseIndexChanged (index);
+               this->lastEmittedIndex = index;
+            }
+            result = true; // event has been handled.
+         }
+         break;
+
+      case QEvent::Paint:
+         if (obj == this->histogramArea) {
+            this->paintAllItems ();
+            result = true;  // event has been handled
+         }
+         break;
+
+      default:
+         result = false;   // event has not been handled
+         break;
    }
+
+   if (!result) {
+      // event not handled - call parent.
+      result = QFrame::eventFilter (obj, event);
+   }
+
    return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEHistogram::fontChange (const QFont& f)
+{
+   this->axisPainter->setFont (f);   // Update the axis painter
+   this->update ();                  // Initiate a re-paint
 }
 
 //------------------------------------------------------------------------------
@@ -712,20 +877,105 @@ type QEHistogram::get##name () const {                       \
 
 PROPERTY_ACCESS (int,    BarWidth,         LIMIT (value, 1, 120),                                 this->mAutoBarGapWidths = false)
 PROPERTY_ACCESS (int,    Gap,              LIMIT (value, 0, 20),                                  this->mAutoBarGapWidths= false)
+PROPERTY_ACCESS (int,    Margin,           LIMIT (value, 0, 20),                                  this->layoutA->setMargin (this->mMargin))
 PROPERTY_ACCESS (double, Minimum,          LIMIT (value, -1.0E20, this->mMaximum - MINIMUM_SPAN), this->mAutoScale = false)
 PROPERTY_ACCESS (double, Maximum,          LIMIT (value, this->mMinimum + MINIMUM_SPAN, +1.0E40), this->mAutoScale = false)
 PROPERTY_ACCESS (double, BaseLine,         value,                                                 NO_EXTRA)
 PROPERTY_ACCESS (bool,   AutoScale,        value,                                                 NO_EXTRA)
 PROPERTY_ACCESS (bool,   AutoBarGapWidths, value,                                                 NO_EXTRA)
-PROPERTY_ACCESS (bool,   ShowScale,        value,                                                 NO_EXTRA)
+PROPERTY_ACCESS (bool,   ShowScale,        value,                                                 this->axisPainter->setVisible (this->mShowScale))
 PROPERTY_ACCESS (bool,   ShowGrid,         value,                                                 NO_EXTRA)
 PROPERTY_ACCESS (bool,   LogScale,         value,                                                 NO_EXTRA)
+PROPERTY_ACCESS (bool,   DrawAxies,        value,                                                 this->axisPainter->setHasAxisLine(this->mDrawAxies);)
 PROPERTY_ACCESS (bool,   DrawBorder,       value,                                                 NO_EXTRA)
 PROPERTY_ACCESS (QColor, BackgroundColour, value,                                                 NO_EXTRA)
 PROPERTY_ACCESS (QColor, BarColour,        value,                                                 NO_EXTRA)
-PROPERTY_ACCESS (Qt::Orientation,  Orientation,  value,                                           NO_EXTRA)
 PROPERTY_ACCESS (int,    TestSize,         LIMIT (value, 0, MAX_CAPACITY),                        this->createTestData ())
 
 #undef PROPERTY_ACCESS
+
+//------------------------------------------------------------------------------
+// Specific property handlers,
+//
+void QEHistogram::setOrientation (const Qt::Orientation orientation)
+{
+   if (this->mOrientation != orientation) {
+      this->mOrientation = orientation;
+
+      // Deconstruct.
+      //
+      if (this->layoutA) {
+         this->layoutA->removeWidget (this->histogramAxisPlusArea);
+         this->layoutA->removeWidget (this->scrollbar);
+
+         delete this->layoutA;
+         this->layoutA = NULL;
+      }
+
+      if (this->layoutB) {
+         this->layoutB->removeWidget (this->axisPainter);
+         this->layoutB->removeWidget (this->histogramArea);
+
+         delete this->layoutB;
+         this->layoutB = NULL;
+      }
+
+      // Reconstruct
+      //
+      this->layoutB = SELECT ((QBoxLayout*) new QHBoxLayout (this->histogramAxisPlusArea),
+                              (QBoxLayout*) new QVBoxLayout (this->histogramAxisPlusArea));
+
+      this->layoutB->setMargin (0);
+      this->layoutB->setSpacing (0);
+
+      this->axisPainter->setOrientation (SELECT (QEAxisPainter::Bottom_To_Top,
+                                                 QEAxisPainter::Left_To_Right));
+
+      if (HORIZONTAL) {
+         this->axisPainter->setFixedWidth (60);
+         this->axisPainter->setMaximumHeight (QWIDGETSIZE_MAX);
+      } else {
+         this->axisPainter->setFixedHeight (30);
+         this->axisPainter->setMaximumWidth (QWIDGETSIZE_MAX);
+      }
+      this->layoutB->addWidget (SELECT (this->axisPainter, this->histogramArea));
+      this->layoutB->addWidget (SELECT (this->histogramArea, this->axisPainter));
+
+
+      this->layoutA = SELECT ((QBoxLayout*) new QVBoxLayout (this),
+                              (QBoxLayout*) new QHBoxLayout (this));
+
+      this->layoutA->setMargin (this->mMargin);
+      this->layoutA->setSpacing (2);
+
+      this->scrollbar->setOrientation (orientation);
+      this->layoutA->addWidget (SELECT (this->histogramAxisPlusArea, this->scrollbar));
+      this->layoutA->addWidget (SELECT (this->scrollbar, this->histogramAxisPlusArea));
+
+      this->update ();
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+Qt::Orientation QEHistogram::getOrientation () const
+{
+   return this->mOrientation;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEHistogram::setPrecision (const int precision)
+{
+   this->axisPainter->setPrecision (precision);
+   this->update ();
+}
+
+//------------------------------------------------------------------------------
+//
+int QEHistogram::getPrecision () const
+{
+   return this->axisPainter->getPrecision ();
+}
 
 // end

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -30,19 +30,30 @@
 
 #include <QELabel.h>
 
+
+#define PV_VARIABLE_INDEX      0
+
 /*
     Constructor with no initialisation
 */
-QELabel::QELabel( QWidget *parent ) : QLabel( parent ), QEWidget( this ) {
+QELabel::QELabel( QWidget *parent ) :
+    QLabel( parent ),
+    QEWidget( this ),
+    QESingleVariableMethods ( this, PV_VARIABLE_INDEX )
+{
     setup();
 }
 
 /*
     Constructor with known variable
 */
-QELabel::QELabel( const QString &variableNameIn, QWidget *parent ) : QLabel( parent ), QEWidget( this )  {
+QELabel::QELabel( const QString &variableNameIn, QWidget *parent ) :
+    QLabel( parent ),
+    QEWidget( this ),
+    QESingleVariableMethods ( this, PV_VARIABLE_INDEX )
+{
     setup();
-    setVariableName( variableNameIn, 0 );
+    setVariableName( variableNameIn, PV_VARIABLE_INDEX );
     activate();
 }
 
@@ -74,8 +85,7 @@ void QELabel::setup() {
 
     // Set up a connection to recieve variable name property changes
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    QObject::connect( &variableNamePropertyManager, SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int) ) );
-
+    connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 }
 
 /*
@@ -91,8 +101,15 @@ void QELabel::setDefaultStyle( const QString& style )
     For a label a QCaObject that streams strings is required.
 */
 qcaobject::QCaObject* QELabel::createQcaItem( unsigned int variableIndex ) {
+    qcaobject::QCaObject* result = NULL;
+
     // Create the item as a QEString
-   return new QEString( getSubstitutedVariableName( variableIndex ), this, &stringFormatting, variableIndex );
+    result = new QEString( getSubstitutedVariableName( variableIndex ), this, &stringFormatting, variableIndex );
+
+    // Apply current array index to new QCaObject
+    setQCaArrayIndex( result );
+
+    return result;
 }
 
 /*
@@ -136,7 +153,7 @@ void QELabel::connectionChanged( QCaConnectionInfo& connectionInfo, const unsign
 
     // Signal channel connection change to any Link widgets,
     // using signal dbConnectionChanged.
-    emitDbConnectionChanged( 0 );
+    emitDbConnectionChanged( PV_VARIABLE_INDEX );
 }
 
 /*
@@ -174,10 +191,6 @@ void QELabel::setLabelText( const QString& textIn, QCaAlarmInfo& alarmInfo, QCaD
         lastTextStyle = textStyle;
     }
 
-    // Signal a database value change to any Link (or other) widgets using one
-    // of the dbValueChanged.
-    emitDbValueChanged( currentText, 0 );
-
     switch( updateOption )
     {
         // Update the text if required
@@ -193,14 +206,18 @@ void QELabel::setLabelText( const QString& textIn, QCaAlarmInfo& alarmInfo, QCaD
 
     // Invoke common alarm handling processing.
     processAlarmInfo( alarmInfo );
+
+    // Signal a database value change to any Link (or other) widgets using one
+    // of the dbValueChanged.
+    emitDbValueChanged( currentText, 0 );
 }
 
 //==============================================================================
 // Drag drop
 void QELabel::setDrop( QVariant drop )
 {
-    setVariableName( drop.toString(), 0 );
-    establishConnection( 0 );
+    setVariableName( drop.toString(), PV_VARIABLE_INDEX );
+    establishConnection( PV_VARIABLE_INDEX );
 }
 
 QVariant QELabel::getDrop()
@@ -215,7 +232,7 @@ QVariant QELabel::getDrop()
 // Copy / Paste
 QString QELabel::copyVariable()
 {
-    return getSubstitutedVariableName(0);
+    return getSubstitutedVariableName( PV_VARIABLE_INDEX );
 }
 
 QVariant QELabel::copyData()
@@ -243,3 +260,5 @@ QELabel::updateOptions QELabel::getUpdateOption()
 {
     return updateOption;
 }
+
+// end

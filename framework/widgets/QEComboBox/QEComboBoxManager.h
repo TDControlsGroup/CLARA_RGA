@@ -27,7 +27,7 @@
 #ifndef QECOMBOBOXMANAGER_H
 #define QECOMBOBOXMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEComboBoxManager : public QObject, public QDesignerCustomWidgetInterface {

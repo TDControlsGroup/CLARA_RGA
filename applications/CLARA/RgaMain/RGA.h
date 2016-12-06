@@ -49,18 +49,23 @@
 #include <QList>
 #include <QWidget>
 #include <QTabWidget>
-#include "QEActionRequests.h"
+
+//UI screens
 #include "ui_mv2_epicsDisplay_v2.h"
 #include "ui_mv2_rgaDisplay.h"
 #include "ui_barchart.h"
 #include "ui_mv2_main_bar.h"
 #include "ui_mv2_stripchart.h"
+
+//Values
 #define MIN_YPRESSURE 1e-13
 #define MAX_YPRESSURE 0.1
 #define DEVICES 6
 
 //RGA List
-#define RGA1 "rga1"
+#define ARCHNAME "CLA-SRV-VAC-RGA"
+
+#define RGA1 "CLA-LLS-VAC-RGA1"
 #define RGA2 "rga2"
 #define RGA3 "rga3"
 #define RGA4 "rga4"
@@ -75,6 +80,10 @@
 //STRIP_SIZE == Elements in STRIP_MASS_LIST
 #define STRIP_SIZE 12
 #define STRIP_MASS_LIST {2,12,14,15,16,18,28,32,40,44,55,69}
+
+//QEString for manual CA to Signal/Slot
+#include <QEString.h>   // Normal
+#include <UserMessage.h>
 
 //! [0]
 
@@ -94,13 +103,23 @@ public slots:
     void RGAFormShowBarPlot();
     void RGAFormShowStripPlot(int);
     void RGAFormShowBarSummary(int);
-private:
-    QString ArchiverName;
 
-    std::vector<QString>        DeviceName;	
-    std::vector<QString>        DeviceTitle;
-    std::vector<int>			summaryMasses;
-	std::vector<int>			stripMasses;
+private:
+	
+    QString ArchiverName;
+    QTextStream* stream;
+    std::vector<QString>        		DeviceName;	
+    std::vector<QEString *>     		DeviceTitle;
+    std::vector<QString>        		DynamicDeviceTitle;
+	std::vector<UserMessage *>          Messages;
+	std::vector<QEStringFormatting *>   StringFormat;
+    std::vector<int>					summaryMasses;
+	std::vector<int>				stripMasses;
+    const char* varString(const char* varstring, char* pvar,  int i);
+	template<class T>
+    void updateObject(const char * catstring,const  char * varstring,const  char * property, int mode, int i, int j=0);
+
+	
     //*******
     //Windows
     //*******
@@ -133,6 +152,10 @@ private:
 	QList<Ui::stripWindow *> pstrip;
 	QList<Ui::mainBar *>     pmainBar;
 
+	
+private slots:
+    void connectionChanged( QCaConnectionInfo& );	
+    void updateTitle( const QString& data, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int & );
 };
 //! [0]
 

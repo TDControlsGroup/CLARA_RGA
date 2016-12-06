@@ -1,4 +1,5 @@
-/*
+/*  QESlider.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -32,19 +33,25 @@
 /*
     Constructor with no initialisation
 */
-QESlider::QESlider( QWidget *parent ) : QSlider( parent ), QEWidget( this ) {
+QESlider::QESlider( QWidget *parent ) :
+    QSlider( parent ),
+    QESingleVariableMethods( this, 0 ),
+    QEWidget( this )
+{
     setup();
 }
 
 /*
     Constructor with known variable
 */
-QESlider::QESlider( const QString &variableNameIn, QWidget *parent ) : QSlider( parent ), QEWidget( this ) {
-
+QESlider::QESlider( const QString &variableNameIn, QWidget *parent ) :
+    QSlider( parent ),
+    QESingleVariableMethods( this, 0 ),
+    QEWidget( this )
+{
     setup();
     setVariableName( variableNameIn, 0 );
     activate();
-
 }
 
 /*
@@ -80,7 +87,7 @@ void QESlider::setup() {
 
     // Set up a connection to recieve variable name property changes
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    QObject::connect( &variableNamePropertyManager, SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
+    connectNewVariableNameProperty( SLOT( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 }
 
 /*
@@ -89,8 +96,15 @@ void QESlider::setup() {
 */
 qcaobject::QCaObject* QESlider::createQcaItem( unsigned int variableIndex ) {
 
+    qcaobject::QCaObject* result = NULL;
+
     // Create the item as a QEFloating
-    return new QEFloating( getSubstitutedVariableName( variableIndex ), this, &floatingFormatting, variableIndex );
+    result = new QEFloating( getSubstitutedVariableName( variableIndex ), this, &floatingFormatting, variableIndex );
+
+    // Apply current array index to new QCaObject
+    setQCaArrayIndex( result );
+
+    return result;
 }
 
 /*
@@ -166,8 +180,9 @@ void QESlider::setValueIfNoFocus( const double& value, QCaAlarmInfo& alarmInfo, 
     // Signal a database value change to any Link widgets
     emit dbValueChanged( qlonglong( value ) );
 
-    // Update the slider only if the user is not interacting with the object.
-    if( !hasFocus() ) {
+    // Update the slider only if the user is not interacting with the object, unless
+    // the form designer has specifically allowed updates  while the widget has focus.
+    if( isAllowFocusUpdate || !hasFocus() ) {
         updateInProgress = true;
         currentValue = value;
         int intValue = int( (value - offset) * scale );
@@ -205,8 +220,8 @@ void QESlider::userValueChanged( const int &value) {
         // It is not known until a connection is established.
         if( qca->dataTypeKnown() )
         {
-            currentValue = (value/scale)+offset;
-            qca->writeFloating( currentValue );
+            currentValue = (value/scale) + offset;
+            qca->writeFloatingElement( currentValue );
         }
         else
         {
@@ -237,10 +252,8 @@ void QESlider::writeNow()
         // It is not known until a connection is established.
         if( qca->dataTypeKnown() )
         {
-            double dd = value()/scale;
-            qDebug() << dd;
-            currentValue = (value()/scale)+offset;
-            qca->writeFloating( currentValue );
+            currentValue = (value()/scale) + offset;
+            qca->writeFloatingElement( currentValue );
         }
     }
 }
@@ -289,7 +302,7 @@ void QESlider::setWriteOnChange( bool writeOnChangeIn )
 {
     writeOnChange = writeOnChangeIn;
 }
-bool QESlider::getWriteOnChange()
+bool QESlider::getWriteOnChange() const
 {
     return writeOnChange;
 }
@@ -299,7 +312,7 @@ void QESlider::setSubscribe( bool subscribeIn )
 {
     subscribe = subscribeIn;
 }
-bool QESlider::getSubscribe()
+bool QESlider::getSubscribe() const
 {
     return subscribe;
 }
@@ -310,7 +323,7 @@ void QESlider::setScale( double scaleIn )
     scale = scaleIn;
 }
 
-double QESlider::getScale()
+double QESlider::getScale() const
 {
     return scale;
 }
@@ -320,7 +333,20 @@ void QESlider::setOffset( double offsetIn )
     offset = offsetIn;
 }
 
-double QESlider::getOffset()
+double QESlider::getOffset() const
 {
     return offset;
 }
+
+// set allow updates while widget has focus.
+void QESlider::setAllowFocusUpdate( bool allowFocusUpdateIn )
+{
+    isAllowFocusUpdate = allowFocusUpdateIn;
+}
+
+bool QESlider::getAllowFocusUpdate() const
+{
+    return isAllowFocusUpdate;
+}
+
+// end

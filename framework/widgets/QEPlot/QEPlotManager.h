@@ -27,7 +27,7 @@
 #ifndef QEPLOTMANAGER_H
 #define QEPLOTMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

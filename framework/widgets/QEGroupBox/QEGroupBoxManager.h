@@ -26,7 +26,7 @@
 #ifndef QEGROUPBOXMANAGER_H
 #define QEGROUPBOXMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

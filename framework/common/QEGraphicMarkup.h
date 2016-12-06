@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -29,22 +29,28 @@
 
 #include <QCursor>
 #include <QObject>
+#include <QFontMetrics>
 #include <QPen>
 #include <QPoint>
+#include <QVariant>
 #include <QEGraphicNames.h>
+#include <QEPluginLibrary_global.h>
 
 class QEGraphic;  // differed declaration - avoid mutual header inclusion
 
 //-----------------------------------------------------------------------------
 // Base class for all QEGraphic markups.
 //
-class QEGraphicMarkup {
+class QEPLUGINLIBRARYSHARED_EXPORT QEGraphicMarkup {
 public:
    explicit QEGraphicMarkup (QEGraphicNames::Markups markup, QEGraphic* owner);
    virtual ~QEGraphicMarkup ();
 
    void setCurrentPosition (const QPointF& currentPosition);
    QPointF getCurrentPosition () const;
+
+   void setData (const QVariant& data);
+   QVariant getData () const;
 
    virtual void setInUse (const bool inUse);   // in use or permitted.
    virtual bool isInUse () const;
@@ -64,6 +70,8 @@ public:
 
    virtual QCursor getCursor () const;
    virtual bool isOver (const QPointF& point, int& distance) const;
+
+   virtual void relocate ();
    void plot ();
 
 protected:
@@ -80,16 +88,21 @@ protected:
    void plotCurve (const QEGraphicNames::DoubleVector& xData,
                    const QEGraphicNames::DoubleVector& yData);
 
+   // Extract the font metric for a given font point size.
+   //
+   QFontMetrics getFontMetrics ();
+
    // Emits the current markup postion from the QEGraphic owner.
    //
    void emitCurrentPostion ();
 
    // All concrete classes must provide a means to draw a markup.
-   // This is only called when the markup is visible.
+   // This is only ever called when the markup is visible.
    //
    virtual void plotMarkup () = 0;
 
    QPointF positon;   // notional current position
+   QVariant data;     // any associated data
    QPen pen;
    QBrush brush;
    QCursor cursor;
@@ -99,7 +112,7 @@ protected:
    bool enabled;
    bool selected;
    const QEGraphicNames::Markups markup;   // own type indicator.
-private:
+//private:
    QEGraphic* owner;
 };
 
@@ -141,6 +154,21 @@ protected:
 private:
    QPointF origin;
 };
+
+
+//-----------------------------------------------------------------------------
+// Draws a box around the position.
+//
+class QEGraphicBoxMarkup : public QEGraphicMarkup {
+public:
+   explicit QEGraphicBoxMarkup (QEGraphic* owner);
+   bool isOver (const QPointF& point, int& distance) const;
+   void setSelected (const bool selected);
+   
+protected:
+   void plotMarkup ();
+};
+
 
 //-----------------------------------------------------------------------------
 // Draws crosshairs about to current (mouse) position.
@@ -193,6 +221,7 @@ class QEGraphicHorizontalMarkup : public QEGraphicHVBaseMarkup {
 public:
    explicit QEGraphicHorizontalMarkup (const QEGraphicNames::Markups markup, QEGraphic* owner);
    bool isOver (const QPointF& point, int& distance) const;
+   void relocate ();  // make sure we don't "lose" the markers
 protected:
    void getLine (double& xmin, double& xmax, double& ymin, double& ymax);
    void getShape (QPoint shape []);
@@ -206,6 +235,7 @@ class QEGraphicVerticalMarkup : public QEGraphicHVBaseMarkup {
 public:
    explicit QEGraphicVerticalMarkup (const QEGraphicNames::Markups markup, QEGraphic* owner);
    bool isOver (const QPointF& point, int& distance) const;
+   void relocate ();  // make sure we don't "lose" the markers
 protected:
    void getLine (double& xmin, double& xmax, double& ymin, double& ymax);
    void getShape (QPoint shape []);

@@ -32,7 +32,6 @@ HEADERS += \
     archive/QEArchiveNameSearchManager.h
 
 
-
 SOURCES += \
     archive/maiaFault.cpp \
     archive/maiaObject.cpp \
@@ -43,7 +42,6 @@ SOURCES += \
     archive/QEArchiveStatusManager.cpp  \
     archive/QEArchiveNameSearch.cpp  \
     archive/QEArchiveNameSearchManager.cpp
-
 
 INCLUDEPATH += \
     archive

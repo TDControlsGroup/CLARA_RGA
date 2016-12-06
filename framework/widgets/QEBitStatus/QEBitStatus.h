@@ -1,4 +1,6 @@
-/*  This file is part of the EPICS QT Framework, initially developed at the
+/*  QEBitStatus.h
+ *
+ *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or
@@ -14,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011 Australian Synchrotron
+ *  Copyright (c) 2011,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -31,44 +33,42 @@
 #include <QEWidget.h>
 #include <QEInteger.h>
 #include <QEIntegerFormatting.h>
+#include <QESingleVariableMethods.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <QEPluginLibrary_global.h>
 
-class QEPLUGINLIBRARYSHARED_EXPORT QEBitStatus : public QBitStatus, public QEWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QEBitStatus :
+      public QBitStatus,
+      public QESingleVariableMethods,
+      public QEWidget {
    Q_OBJECT
 
-// #ifdef PLUGIN_APP
-
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
-    // Single Variable properties
-    // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
-    //
-    // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
+   // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
+   // Single Variable properties
+   // These properties should be identical for every widget using a single variable.
+   // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+   // directory.
+   //
+   // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
+   // A property name ending with 'Name' results in some sort of string a variable being displayed,
+   // but will only accept alphanumeric and won't generate callbacks on change.
 public:
-    /// EPICS variable name (CA PV)
-    ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+   /// EPICS variable name (CA PV)
+   ///
+   Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+   /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+   /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+   /// These substitutions are applied to variable names for all QE widgets.
+   /// In some widgets are are also used for other purposes.
+   ///
+   Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
+   /// Index used to select a single item of data for processing. The default is 0.
+   ///
+   Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+   //
+   // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
     // Standard properties
@@ -187,10 +187,6 @@ public:
 
     // QEBitStatus specific properties ================================================
     //
-    /// Array Index element to display if main (non-edge) variable is a waveform. Defaults to 0.
-    ///
-    Q_PROPERTY (int arrayIndex   READ getArrayIndex   WRITE setArrayIndex )
-
     // Make the value, isActive and isvalid properties non-designable. This both hides the
     // properties within designer and stops the values from being written to the .ui file.
     //
@@ -203,9 +199,6 @@ public:
 public:
    QEBitStatus (QWidget* parent = 0);
    QEBitStatus (const QString & variableName, QWidget* parent = 0);
-
-   void setArrayIndex (const int arrayIndex);
-   int getArrayIndex () const;
 
 signals:
    // Note, the following signals are common to many QE widgets,
@@ -242,7 +235,6 @@ protected:
 
 private:
    QEIntegerFormatting integerFormatting;
-   int arrayIndex;
 
    void setup ();
 
@@ -257,5 +249,9 @@ private slots:
                                     unsigned int variableIndex);
 };
 
-#endif                          // QE_BIT_STATUS_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEBitStatus::UserLevels)
+Q_DECLARE_METATYPE (QEBitStatus::DisplayAlarmStateOptions)
+#endif
 
+#endif   // QE_BIT_STATUS_H

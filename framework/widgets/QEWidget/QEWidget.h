@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Anthony Owen
@@ -317,9 +317,11 @@ public:
     const QList<QCaInfo> getQCaInfo();
 
 protected:
-    qcaobject::QCaObject* createConnection( unsigned int variableIndex ); ///< Create a CA connection. Return a QCaObject if successfull
+    qcaobject::QCaObject* createConnection( unsigned int variableIndex ); ///< Create a CA connection. Use default subscribe option. Return a QCaObject if successfull
+    qcaobject::QCaObject* createConnection( unsigned int variableIndex,
+                                            const bool do_subscribe );    ///< Create a CA connection. Use specified subscribe option. Return a QCaObject if successfull
 
-    QString persistantName( QString prefix );                             ///< Returns a string that will not change between runs of the application (given the same configuration)
+    QString persistantName( QString prefix ) const;                       ///< Returns a string that will not change between runs of the application (given the same configuration)
 
     virtual void actionRequest( QString, QStringList, bool, QAction* ){}  ///< Perform a named action
 
@@ -342,7 +344,7 @@ private:
 
     signalSlotHandler signalSlot;                                         // QObject based class a save/restore signal can be delivered to
 
-    void buildPersistantName( QWidget* w, QString& name );
+    void buildPersistantName( QWidget* w, QString& name ) const;          // make a function??
 
     QCAALARMINFO_SEVERITY lastSeverity;                                  // Used as low pass tool tip filter.
     standardProperties::displayAlarmStateOptions lastDisplayAlarmState;  // Last alarm state. Kept to identify when the alarm state (included in a data update signal) changes

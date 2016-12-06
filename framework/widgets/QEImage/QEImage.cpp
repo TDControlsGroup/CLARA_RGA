@@ -87,7 +87,10 @@ void QEImage::setup() {
 
     resizeOption = RESIZE_OPTION_ZOOM;
     zoom = 100;
-    infoUpdateZoom( zoom );
+    XStretch = 1.0;
+    YStretch = 1.0;
+    infoUpdateZoom( zoom, XStretch, YStretch );
+    imageSizeSet = false;
 
     initialHozScrollPos = 0;
     initialVertScrollPos = 0;
@@ -561,7 +564,8 @@ void QEImage::presentControls()
     Implementation of QEWidget's virtual funtion to create the specific types of QCaObject required.
 */
 qcaobject::QCaObject* QEImage::createQcaItem( unsigned int variableIndex ) {
-    switch( variableIndex )
+
+    switch( (variableIndexes)variableIndex )
     {
         // Create the image item as a QEByteArray
         case IMAGE_VARIABLE:
@@ -577,8 +581,9 @@ qcaobject::QCaObject* QEImage::createQcaItem( unsigned int variableIndex ) {
                 return qca;
             }
 
-        // Create the image format, image dimensions, target and beam, regions and profile and clipping items as a QEString
+        // Create the image format as a QEString
         case FORMAT_VARIABLE:
+        case DATA_TYPE_VARIABLE:
             return new QEString( getSubstitutedVariableName( variableIndex ), this, &stringFormatting, variableIndex );
 
         // Create the image dimensions, target and beam, regions and profile, clipping items and other variables as a QEInteger
@@ -684,7 +689,7 @@ void QEImage::establishConnection( unsigned int variableIndex ) {
     // If successfull, the QCaObject object that will supply data update signals will be returned
     qcaobject::QCaObject* qca = createConnection( variableIndex );
 
-    switch( variableIndex )
+    switch( (variableIndexes)variableIndex )
     {
         // Connect the image waveform record to the display image
         case IMAGE_VARIABLE:
@@ -717,6 +722,19 @@ void QEImage::establishConnection( unsigned int variableIndex ) {
             {
                 QObject::connect( qca,  SIGNAL( integerChanged( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ),
                                   this, SLOT( setBitDepth( const long&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ) );
+                QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo& ) ),
+                                  this, SLOT( connectionChanged( QCaConnectionInfo& ) ) );
+                QObject::connect( this, SIGNAL( requestResend() ),
+                                  qca, SLOT( resendLastData() ) );
+            }
+            break;
+
+        // Connect the data type variable
+        case DATA_TYPE_VARIABLE:
+            if(  qca )
+            {
+                QObject::connect( qca,  SIGNAL( stringChanged( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ),
+                                  this, SLOT( setDataType( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int& ) ) );
                 QObject::connect( qca,  SIGNAL( connectionChanged( QCaConnectionInfo& ) ),
                                   this, SLOT( connectionChanged( QCaConnectionInfo& ) ) );
                 QObject::connect( this, SIGNAL( requestResend() ),
@@ -844,6 +862,12 @@ void QEImage::establishConnection( unsigned int variableIndex ) {
                                   qca, SLOT( resendLastData() ) );
             }
             break;
+
+        // Don't connect to target trigger variable.
+        // We are not interested in updates from it - we just write to it when the user clicks on the target trigger button
+        case TARGET_TRIGGER_VARIABLE:
+            break;
+
         // QCa creation occured, but no connection for display is required here.
         case PROFILE_H_ARRAY:
         case PROFILE_V_ARRAY:
@@ -865,6 +889,10 @@ void QEImage::establishConnection( unsigned int variableIndex ) {
                 QObject::connect( this, SIGNAL( requestResend() ),
                                   qca, SLOT( resendLastData() ) );
             }
+            break;
+
+        // Not a variable index. Included to avoid compilation warnings
+        case QEIMAGE_NUM_VARIABLES:
             break;
 
      }
@@ -903,8 +931,15 @@ void QEImage::connectionChanged( QCaConnectionInfo& connectionInfo )
 
     This is the slot used to recieve data updates from a QCaObject based class.
  */
-void QEImage::setFormat( const QString& text, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& )
+void QEImage::setFormat( const QString& text, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex )
 {
+    // Sanity check - Only deal with format variable
+    if( variableIndex != FORMAT_VARIABLE)
+    {
+        return;
+    }
+
+    // Set the format based on the area detector format text
     if( !iProcessor.setFormat( text ) )
     {
         return;
@@ -925,10 +960,10 @@ void QEImage::setFormat( const QString& text, QCaAlarmInfo& alarmInfo, QCaDateTi
 }
 
 /*
-    Update the image dimensions
+    Update the image dimensions (width and height in various arrangements)
     This is the slot used to recieve data updates from a QCaObject based class.
  */
-void QEImage::setDimension( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex)
+void QEImage::setDimension( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex )
 {
     bool dimensionChange = false;
 
@@ -974,7 +1009,7 @@ void QEImage::setDimension( const long& value, QCaAlarmInfo& alarmInfo, QCaDateT
 }
 
 /*
-    Update the image dimensions
+    Update the image dimensions (bit depth)
     This is the slot used to recieve data updates from a QCaObject based class.
  */
 void QEImage::setBitDepth( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex)
@@ -984,6 +1019,47 @@ void QEImage::setBitDepth( const long& value, QCaAlarmInfo& alarmInfo, QCaDateTi
     {
         return;
     }
+
+    // Update the depth
+    setBitDepth( value );
+
+    // Update the image.
+    // This is required if image data for an enlarged image arrived before the width and height.
+    // The image data will be present, but will not have been used to update the image if the
+    // width and height were not suitable at the time of the image update
+    displayImage();
+
+    // Display invalid if invalid
+    if( alarmInfo.isInvalid() )
+    {
+        //setImageInvalid()
+        // !!! not done
+    }
+}
+
+/*
+    Update the image dimensions (bit depth derived from data type)
+    This is the slot used to recieve data updates from a QCaObject based class.
+ */
+void QEImage::setDataType( const QString& text, QCaAlarmInfo& alarmInfo, QCaDateTime&, const unsigned int& variableIndex )
+{
+    // Sanity check - Only deal with data type
+    if( variableIndex != DATA_TYPE_VARIABLE)
+    {
+        return;
+    }
+
+    // Determine the bit depth from the data type.
+    long value = 1;
+    if(      text == "Int8" )    value = 7;
+    else if( text == "UInt8" )   value = 8;
+    else if( text == "Int16" )   value = 15;
+    else if( text == "UInt16" )  value = 16;
+    else if( text == "Int32" )   value = 24; // Todo:??? Should be 31. change to 31 when all pixel information is held in unsigned int or long. (mostly in brightness / contrast code where int is used to woek well with sliders)
+    else if( text == "UInt32" )  value = 24; // Todo:??? Should be 32. change to 32 when all pixel information is held in unsigned int or long. (mostly in brightness / contrast code where int is used to woek well with sliders)
+    else if( text == "Float32" ) value = 16; // Bit depth cannot be derived. Assume 16 bit (actually, setting bit depth from the data type is always an assumption!)
+    else if( text == "Float64" ) value = 16; // Bit depth cannot be derived. Assume 16 bit (actually, setting bit depth from the data type is always an assumption!)
+    else return;
 
     // Update the depth
     setBitDepth( value );
@@ -1586,9 +1662,10 @@ void QEImage::setImage( const QByteArray& imageIn,
 // Display a new image.
 void QEImage::displayImage()
 {
-
-    // Set up the image buffer if not done already
-    if( !iProcessor.hasImageBuff() )
+    // Set up the displayed image size if not done already.
+    // This needs to get done once (here) initially, and is done whenever something
+    // changes. For example, the user changes the zoom level.
+    if( !imageSizeSet )
     {
         setImageSize();
     }
@@ -1610,7 +1687,7 @@ void QEImage::displayImage()
 // Continue displaying a new image.
 // This slot continues the work of the function QEImage::displayImage() above.
 //
-void QEImage::displayBuiltImage( QImage frameImage, QString messageText )
+void QEImage::displayBuiltImage( QImage image, QString messageText )
 {
     // If there was an error processing the image, report it.
     if( !messageText.isEmpty() )
@@ -1621,13 +1698,13 @@ void QEImage::displayBuiltImage( QImage frameImage, QString messageText )
     // If no image could be created, do nothing.
     // Even without an error message above, it may be reasonable that no image
     // can be created - for example, if image dimensions are not yet available.
-    if( frameImage.isNull() )
+    if( image.isNull() )
     {
         return;
     }
 
     // Display the new image
-    videoWidget->setNewImage( frameImage, imageTime );
+    videoWidget->setNewImage( image, imageTime );
 
     // Update markups if required
     updateMarkupData();
@@ -1654,7 +1731,7 @@ QSize QEImage::getVideoDestinationSize()
     }
 }
 
-// Set the image buffer used for generating images so it will be large enough to hold the processed image.
+// Set the video widget size so it will match the processed image.
 void QEImage::setImageSize()
 {
     // Do nothing if there are no image dimensions yet
@@ -1666,7 +1743,8 @@ void QEImage::setImageSize()
     {
         // Zoom the image
         case RESIZE_OPTION_ZOOM:
-            videoWidget->resize( iProcessor.rotatedImageBuffWidth() * zoom / 100, iProcessor.rotatedImageBuffHeight() * zoom / 100 );
+            videoWidget->resize( (int)((double)iProcessor.rotatedImageBuffWidth() * zoom / 100 * XStretch),
+                                 (int)((double)iProcessor.rotatedImageBuffHeight() * zoom / 100 * YStretch) );
             break;
 
         // Resize the image to fit exactly within the QCaItem
@@ -1676,18 +1754,18 @@ void QEImage::setImageSize()
             double hScale = (double)(destSize.width()) / (double)(iProcessor.rotatedImageBuffWidth());
             double scale = (hScale<vScale)?hScale:vScale;
 
-            videoWidget->resize( (int)((double)iProcessor.rotatedImageBuffWidth() * scale),
-                                 (int)((double)iProcessor.rotatedImageBuffHeight() * scale) );
+            videoWidget->resize( (int)((double)iProcessor.rotatedImageBuffWidth()  * scale * XStretch),
+                                 (int)((double)iProcessor.rotatedImageBuffHeight() * scale * YStretch) );
             zoom = scale * 100;
 
             // Update the info area
-            infoUpdateZoom( zoom );
+            infoUpdateZoom( zoom, XStretch, YStretch );
 
             break;
     }
 
-    // Set the image buffer used for generating images so it will be large enough to hold the processed image.
-    iProcessor.setImageBuff();
+    // Flag the image size has been set
+    imageSizeSet = true;
 }
 
 //=================================================================================================
@@ -1836,7 +1914,7 @@ void QEImage::zoomToArea()
     zoom = int( newZoom*100.0 );
 
     // Update the info area
-    infoUpdateZoom( zoom );
+    infoUpdateZoom( zoom, XStretch, YStretch );
 }
 
 // ROI area 1 changed
@@ -2727,13 +2805,67 @@ void QEImage::setZoom( int zoomIn )
     setImageSize();
 
     // Update the info area
-    infoUpdateZoom( zoom );
+    infoUpdateZoom( zoom, XStretch, YStretch );
 
 }
 
 int QEImage::getZoom()
 {
     return zoom;
+}
+
+// X stretch factor. Used when determining canvas size of fully processed image (zoomed, flipped, etc)
+
+#define STRETCH_LIMIT 50
+
+void QEImage::setXStretch( double XStretchIn )
+{
+    // Save the X stretch factor
+    // (Limit to a range of STRETCH_LIMIT times)
+    if( XStretchIn < (1/STRETCH_LIMIT) )
+        XStretch = 1/STRETCH_LIMIT;
+    else if( XStretchIn > STRETCH_LIMIT )
+        XStretch = STRETCH_LIMIT;
+    else
+        XStretch = XStretchIn;
+
+    // Resize and rescale
+    setImageSize();
+
+    // Update the info area
+    infoUpdateZoom( zoom, XStretch, YStretch );
+
+}
+
+double QEImage::getXStretch()
+{
+    return XStretch;
+}
+
+// Y stretch factor. Used when determining canvas size of fully processed image (zoomed, flipped, etc)
+
+void QEImage::setYStretch( double YStretchIn )
+{
+    // Save the Y stretch factor
+    // (Limit to a range of STRETCH_LIMIT times)
+    if( YStretchIn < (1/STRETCH_LIMIT) )
+        YStretch = 1/STRETCH_LIMIT;
+    else if( YStretchIn > STRETCH_LIMIT )
+        YStretch = STRETCH_LIMIT;
+    else
+        YStretch = YStretchIn;
+
+    // Resize and rescale
+    setImageSize();
+
+    // Update the info area
+    infoUpdateZoom( zoom, XStretch, YStretch );
+
+}
+
+double QEImage::getYStretch()
+{
+    return YStretch;
 }
 
 // Rotation
@@ -5110,8 +5242,11 @@ void QEImage::showImageAboutDialog()
     qca = getQcaItem( BIT_DEPTH_VARIABLE );
     about.append( "\n\nBit depth variable: " ).append( (qca!=0)?qca->getRecordName():"No variable" );
 
+    qca = getQcaItem( DATA_TYPE_VARIABLE );
+    about.append( "\nData type variable: " ).append( (qca!=0)?qca->getRecordName():"No variable" );
+
     qca = getQcaItem( WIDTH_VARIABLE );
-    about.append( "\nImage width variable: " ).append( (qca!=0)?qca->getRecordName():"No variable" );
+    about.append( "\n\nImage width variable: " ).append( (qca!=0)?qca->getRecordName():"No variable" );
 
     qca = getQcaItem( HEIGHT_VARIABLE );
     about.append( "\nImage height variable: " ).append( (qca!=0)?qca->getRecordName():"No variable" );

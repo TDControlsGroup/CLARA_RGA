@@ -23,10 +23,10 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEARCHIVENAMESEARCHMANAGER_H
-#define QEARCHIVENAMESEARCHMANAGER_H
+#ifndef QE_ARCHIVE_NAME_SEARCH_MANAGER_H
+#define QE_ARCHIVE_NAME_SEARCH_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*
@@ -58,4 +58,4 @@ private:
     bool initialized;
 };
 
-#endif  // QEARCHIVENAMESEARCHMANAGER_H 
+#endif  // QE_ARCHIVE_NAME_SEARCH_MANAGER_H 

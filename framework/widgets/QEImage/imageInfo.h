@@ -75,11 +75,11 @@ public:
     void infoUpdatePixel();                                 // Clear the current pixel information
     void infoUpdatePixel( const QPoint pos, int value );    // Update the current pixel information
 
-    void infoUpdateZoom();                                 // Clear the zoom level information
-    void infoUpdateZoom( int value );                      // Update the zoom level information
+    void infoUpdateZoom();                                                             // Clear the zoom level information
+    void infoUpdateZoom( int value, const double XStretch, const double YStretch );    // Update the zoom level information
 
-    void infoUpdatePaused();                                 // Clear the zoom level information
-    void infoUpdatePaused( bool paused );                    // Update the zoom level information
+    void infoUpdatePaused();                                 // Clear the 'paused' information
+    void infoUpdatePaused( bool paused );                    // Update the 'paused' information
 
     void setBriefInfoArea( const bool briefIn );            // Set if displaying all info, or a brief summary
     bool getBriefInfoArea();                                // Report if displaying all info, or a brief summary

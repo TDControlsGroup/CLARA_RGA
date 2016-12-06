@@ -25,7 +25,7 @@
 #ifndef QESPINBOXMANAGER_H
 #define QESPINBOXMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QESpinBoxManager : public QObject, public QDesignerCustomWidgetInterface {

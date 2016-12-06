@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Anthony Owen
@@ -34,6 +34,8 @@
 #include <QCaEventUpdate.h>
 #include <CaRecord.h>
 #include <CaConnection.h>
+
+#define DEBUG  qDebug () << "QCaObject" << __LINE__ << __FUNCTION__ << "  "
 
 using namespace qcaobject;
 using namespace generic;
@@ -249,6 +251,27 @@ bool QCaObject::singleShotRead() {
 }
 
 /*
+   An update event is being deleted. It will be deleted by the event queueing system and may happen after
+   it has been processed, or before it is delivered if the object that queued it is being deleted.
+   Note, this is a static method since it is possible for a QCaObject to clear its list of pending events - effectively
+   abandoning them in the event queue - and then delete itself. If it has done this 'acceptThisEvent' will be false and
+   the emitterObject reference will be cleared. So if 'acceptThisEvent' is false, don't expect emitterObject (the QCaObject)
+   that posted this event to still exist.
+*/
+void QCaObject::deletingEventStatic( QCaEventUpdate* dataUpdateEvent )
+{
+    // Protect access to the pending events list
+    QMutexLocker locker( &pendingEventsLock );
+
+    // If the originating object still exists, remove the event from its list of pending events
+    if( dataUpdateEvent->acceptThisEvent == true )
+    {
+        dataUpdateEvent->emitterObject->removeEventFromPendingList( dataUpdateEvent );
+    }
+}
+
+
+/*
    Process self generated events and only accept them if the
    originating QCaObject still exists.
    Note, this is a static method
@@ -263,11 +286,11 @@ void QCaObject::processEventStatic( QCaEventUpdate* dataUpdateEvent )
         // Protect access to the pending events list
         QMutexLocker locker( &pendingEventsLock );
 
-        // If the originating object still exists, remove the event from it's list of pending events
+        // If the originating object still exists, remove the event from its list of pending events
         if( dataUpdateEvent->acceptThisEvent == true )
         {
             // Remove the event from the list of pending events.
-            eventValid = dataUpdateEvent->emitterObject->removeEventFromPendingList( dataUpdateEvent );
+            eventValid = dataUpdateEvent->emitterObject->removeNextEventFromPendingList( dataUpdateEvent );
         }
 
     } // Pending event list unlocked here
@@ -281,10 +304,33 @@ void QCaObject::processEventStatic( QCaEventUpdate* dataUpdateEvent )
 
 /*
    Remove an event from the pending event list.
+   This QCaObject can't afford to hold a reference to a data update event after it has been deleted.
+   The list must be locked (using pendingEventsLock) prior to calling this method
+*/
+void QCaObject::removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent )
+{
+    int pendingEventsSize = pendingEvents.size();
+    for( int i = 0; i < pendingEventsSize; i++ )
+    {
+        if( pendingEvents[i].event == dataUpdateEvent)
+        {
+            // Ensure the event will no longer be used.
+            // This is belt and braces since this function is used when the event is being deleted, so it should never be processed.
+            dataUpdateEvent->acceptThisEvent = false;
+            dataUpdateEvent->emitterObject = NULL;   // Ensure a 'nice' crash if referenced in error
+            pendingEvents.removeAt(i);
+            break;
+        }
+    }
+
+}
+
+/*
+   Remove the next expected event from the pending event list.
    If the event can't be found log an error and return false indicating 'the event is suspect - don't use it'.
    The list must be locked (using pendingEventsLock) prior to calling this method
 */
-bool QCaObject::removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent )
+bool QCaObject::removeNextEventFromPendingList( QCaEventUpdate* dataUpdateEvent )
 {
     // If list is empty, something is wrong - report it
     if( pendingEvents.isEmpty() )
@@ -294,7 +340,7 @@ bool QCaObject::removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent )
         {
             QString msg( recordName );
             userMessage->sendMessage( msg.append( " Outstanding events list is empty. It should contain at least one event"),
-                                      "QCaObject::processEvent()",
+                                      "QCaObject::removeNextEventFromPendingList()",
                                       message_types ( MESSAGE_TYPE_ERROR ) );
         }
         return false;
@@ -308,7 +354,7 @@ bool QCaObject::removeEventFromPendingList( QCaEventUpdate* dataUpdateEvent )
         {
             QString msg( recordName );
             userMessage->sendMessage( msg.append( " Outstanding events list is corrupt. The first event is not the event being processed" ),
-                                      "QCaObject::processEvent()",
+                                      "QCaObject::removeNextEventFromPendingList()",
                                       message_types ( MESSAGE_TYPE_ERROR ) );
         }
         return false;
@@ -608,6 +654,37 @@ bool QCaObject::writeData( const QVariant& newData ) {
 }
 
 /*
+    Update current data [arrayIndex] with new element value and write to channel.
+    Returns false if array index is out of range.
+*/
+bool QCaObject::writeDataElement( const QVariant& elementValue )
+{
+    bool result;
+    if( lastVariantValue.type() ==  QVariant::List )
+    {
+        QVariantList valueList = lastVariantValue.toList();
+        if( ( arrayIndex >= 0 ) && ( arrayIndex < valueList.size() ) )
+        {
+            valueList.replace( arrayIndex, elementValue );  // replace with new value
+            result = writeData( valueList );
+        }
+        else {
+           result = false;
+        }
+    }
+    else
+    {
+        if( arrayIndex == 0 ) {
+            result = writeData( elementValue );       // not an array - write as scalar
+        }
+        else {
+            result = false;
+        }
+    }
+    return result;
+}
+
+/*
     Implemetation of virtual CA callback function.
     This code is executed by an EPICS library thread. It packages data and
     posts via an event.
@@ -625,6 +702,7 @@ void QCaObject::signalCallback( caobject::callback_reasons newReason ) {
 
     // If the callback is a data update callback, and there is an earlier, unprocessed, data event
     // of the same type in the queue (but not an initial update that carries extra info such as precision and units),
+    // and the event is still usable (not for a QCaObject that has been deleted),
     // then replace the data package with this one.
     // This is better than adding events faster than they can be processed.
     bool replaced = false;  // True if data replaced in earlier event
@@ -1212,12 +1290,14 @@ void QCaObject::setRequestedElementCount( unsigned int elementCount )
 }
 
 /*
-  Re-emit the last data emited, if any
+  Re-emit the last data emited, if any.
   This can be used after a property of a widget using this QCaObject has changed to
   force an update of the data and a re-presentation of the data in the widget to reflect the new property
   */
 void QCaObject::resendLastData()
 {
+    if( !getDataIsAvailable() ) return;
+
     if( signalsToSend & SIG_VARIANT )
     {
         emit dataChanged( lastVariantValue, lastAlarmInfo, lastTimeStamp, variableIndex );
@@ -1339,7 +1419,7 @@ QVector<double> QCaObject::getFloatingArray () const
         result.reserve( list.count() );
         for( int j = 0; j < list.count(); j++ ){
            bool okay;
-           long item;
+           double item;
            item = list.value( j ).toDouble( &okay );
            if( !okay )break;
            result.append ( item );
@@ -1347,7 +1427,7 @@ QVector<double> QCaObject::getFloatingArray () const
     } else {
         // array of 1 element
         bool okay;
-        long item;
+        double item;
         item = lastVariantValue.toDouble( &okay );
         if( okay )result.append ( item );
     }
@@ -1545,3 +1625,5 @@ QCaDateTime QCaObject::getDateTime ()
 {
     return lastTimeStamp;
 }
+
+// end

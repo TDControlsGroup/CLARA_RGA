@@ -26,9 +26,8 @@
 #ifndef QE_SIMPLE_SHAPE_MANAGER_H
 #define QE_SIMPLE_SHAPE_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QESimpleShapeManager : public QObject, public QDesignerCustomWidgetInterface {
    Q_OBJECT

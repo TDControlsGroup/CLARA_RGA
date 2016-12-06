@@ -26,7 +26,7 @@
 #ifndef QEFILEBROWSERPLUGINMANAGER_H
 #define QEFILEBROWSERPLUGINMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

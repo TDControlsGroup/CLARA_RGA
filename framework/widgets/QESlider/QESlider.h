@@ -1,4 +1,5 @@
-/*
+/*  QESlider.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -22,17 +23,21 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QESLIDER_H
-#define QESLIDER_H
+#ifndef QE_SLIDER_H
+#define QE_SLIDER_H
 
 #include <QSlider>
 #include <QEWidget.h>
 #include <QEFloating.h>
 #include <QEFloatingFormatting.h>
+#include <QESingleVariableMethods.h>
 #include <QEPluginLibrary_global.h>
 #include <QCaVariableNamePropertyManager.h>
 
-class QEPLUGINLIBRARYSHARED_EXPORT QESlider : public QSlider, public QEWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QESlider :
+      public QSlider,
+      public QESingleVariableMethods,
+      public QEWidget {
     Q_OBJECT
 
   public:
@@ -43,17 +48,24 @@ class QEPLUGINLIBRARYSHARED_EXPORT QESlider : public QSlider, public QEWidget {
 
     // write on change
     void setWriteOnChange( bool writeOnChange );
-    bool getWriteOnChange();
+    bool getWriteOnChange() const;
 
     // subscribe
     void setSubscribe( bool subscribe );
-    bool getSubscribe();
+    bool getSubscribe() const;
 
     // Set scale and offset (used to scale data when inteter scale bar min and max are not suitable)
     void setScale( double scaleIn );
-    double getScale();
+    double getScale() const;
     void setOffset( double offsetIn );
-    double getOffset();
+    double getOffset() const;
+
+    // set/get allow focus update
+    void setAllowFocusUpdate( bool allowFocusUpdate );
+    bool getAllowFocusUpdate() const;
+
+    // write the value (of the underlying QSlider object) into the PV immediately
+    void writeNow();
 
   public slots:
     /// Update the default style applied to this widget.
@@ -94,8 +106,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QESlider : public QSlider, public QEWidget {
 
     double scale;
     double offset;
-
-    void writeNow();
+    bool isAllowFocusUpdate;
 
     double currentValue;        // Value or last update or write
 
@@ -112,36 +123,32 @@ protected:
     QVariant copyData();
     void paste( QVariant s );
 
-    // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
+    // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
     // Single Variable properties
     // These properties should be identical for every widget using a single variable.
-    // WHEN MAKING CHANGES: Use the update_widget_properties script in the
-    // resources directory.
+    // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+    // directory.
     //
     // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
-    // A property name ending with 'Name' results in some sort of string a variable being displayed, but will only accept alphanumeric and won't generate callbacks on change.
-public:
+    // A property name ending with 'Name' results in some sort of string a variable being displayed,
+    // but will only accept alphanumeric and won't generate callbacks on change.
+ public:
     /// EPICS variable name (CA PV)
     ///
-    Q_PROPERTY(QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
-    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2... Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
-    /// These substitutions are applied to variable names for all QE widgets. In some widgets are are also used for other purposes.
-    Q_PROPERTY(QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
+    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
 
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    void    setVariableNameProperty( QString variableName ){ variableNamePropertyManager.setVariableNameProperty( variableName ); }
-    /// Property access function for #variable property. This has special behaviour to work well within designer.
-    QString getVariableNameProperty(){ return variableNamePropertyManager.getVariableNameProperty(); }
+    /// Macro substitutions. The default is no substitutions. The format is NAME1=VALUE1[,] NAME2=VALUE2...
+    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
+    /// These substitutions are applied to variable names for all QE widgets.
+    /// In some widgets are are also used for other purposes.
+    ///
+    Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    void    setVariableNameSubstitutionsProperty( QString variableNameSubstitutions ){ variableNamePropertyManager.setSubstitutionsProperty( variableNameSubstitutions ); }
-    /// Property access function for #variableSubstitutions property. This has special behaviour to work well within designer.
-    QString getVariableNameSubstitutionsProperty(){ return variableNamePropertyManager.getSubstitutionsProperty(); }
-
-private:
-    QCaVariableNamePropertyManager variableNamePropertyManager;
-public:
-    // END-SINGLE-VARIABLE-PROPERTIES =================================================
+    /// Index used to select a single item of data for processing. The default is 0.
+    ///
+    Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+    //
+    // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
 
     //=================================================================================
     // Control widget properties
@@ -151,9 +158,14 @@ public:
     /// Sets if this widget subscribes for data updates and displays current data.
     /// Default is 'true' (subscribes for and displays data updates)
     Q_PROPERTY(bool subscribe READ getSubscribe WRITE setSubscribe)
+
     /// Sets if this widget writes any changes as the user moves the slider (the QSlider 'valueChanged' signal is emitted).
     /// Default is 'true' (writes any changes when the QSlider 'valueChanged' signal is emitted).
     Q_PROPERTY(bool writeOnChange READ getWriteOnChange WRITE setWriteOnChange)
+
+    /// Allow updated while widget has focus - defaults to false
+    ///
+    Q_PROPERTY( bool allowFocusUpdate READ getAllowFocusUpdate WRITE setAllowFocusUpdate )
 public:
     //=================================================================================
 
@@ -286,4 +298,9 @@ public:
 
 };
 
-#endif // QESLIDER_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QESlider::UserLevels)
+Q_DECLARE_METATYPE (QESlider::DisplayAlarmStateOptions)
+#endif
+
+#endif // QE_SLIDER_H

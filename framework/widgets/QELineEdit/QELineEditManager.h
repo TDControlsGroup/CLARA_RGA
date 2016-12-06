@@ -27,7 +27,7 @@
 #ifndef QELINEEDITMANAGER_H
 #define QELINEEDITMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QELineEditManager : public QObject, public QDesignerCustomWidgetInterface {

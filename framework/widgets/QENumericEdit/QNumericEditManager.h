@@ -27,9 +27,8 @@
 #ifndef Q_NUMERIC_EDIT_MANAGER_H
 #define Q_NUMERIC_EDIT_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QNumericEditManager :
       public QObject, public QDesignerCustomWidgetInterface {

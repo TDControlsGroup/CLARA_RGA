@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012, 2013 Australian Synchrotron
+ *  Copyright (c) 2012,2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,8 +24,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QARCHIVE_INTERFACE_H
-#define QARCHIVE_INTERFACE_H
+#ifndef QE_ARCHIVE_INTERFACE_H
+#define QE_ARCHIVE_INTERFACE_H
 
 #include <QObject>
 #include <QString>
@@ -138,11 +138,15 @@ public:
    virtual ~QEArchiveInterface ();
 
    void setUrl (QUrl url);
-   QUrl getUrl ();
+   QUrl getUrl () const;
 
    // Returns string image of the url
    //
-   QString getName ();
+   QString getName () const;
+
+   // Returns number of oustanding requests.
+   //
+   int getNumberPending () const;
 
    // Each of the xxxxRequest functions result in a xxxxResponse signal
    // being emitted. In each case the given userData is not used by the
@@ -205,6 +209,7 @@ private:
    };
 
    QUrl mUrl;
+   int pending;     // number of outstanding request/responces
    MaiaXmlRpcClient *client;
 
    static QCaDateTime convertArchiveToEpics (const int seconds, const int nanoSecs);
@@ -274,4 +279,4 @@ private slots:
    void xmlRpcFault    (int error, const QString& response);
 };
 
-#endif // QARCHIVE_INTERFACE_H
+#endif // QE_ARCHIVE_INTERFACE_H

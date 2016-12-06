@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) Australian Synchrotron 2013
+ *  Copyright (c) Australian Synchrotron 2013,2016
  *
  *  Author:
  *    Andrew Starritt
@@ -48,6 +48,7 @@
 #include <QEPVNameSelectDialog.h>
 #include <QEPvLoadSaveGroupNameDialog.h>
 #include <QEPvLoadSaveValueEditDialog.h>
+#include <QEPvLoadSaveTimeDialog.h>
 
 #include "QEPvLoadSaveCommon.h"
 
@@ -91,6 +92,11 @@ public:
    ///
    Q_PROPERTY (QString defaultDir           READ getDefaultDir    WRITE setDefaultDir)
 
+   /// If true, a dialog will be presented asking the user to confirm if the PV write actions
+   /// should be carried out. Defaults to true.
+   ///
+   Q_PROPERTY (bool confirmAction READ getConfirmAction WRITE setConfirmAction)
+
    //
    // End of QEPvLoadSave specific properties =====================================
 
@@ -124,6 +130,10 @@ public:
 
    void setDefaultDir (const QString& defaultDir);
    QString getDefaultDir () const;
+
+   // confirm
+   void setConfirmAction (bool confirmRequiredIn );
+   bool getConfirmAction () const;
 
    // Used internally but needs to be public.
    static const int NumberOfButtons = 15;
@@ -213,9 +223,12 @@ private:
    QEPvLoadSaveGroupNameDialog* groupNameDialog;
    QEPvLoadSaveValueEditDialog* valueEditDialog;
    QEPVNameSelectDialog* pvNameSelectDialog;
+   QEPvLoadSaveTimeDialog* archiveTimeDialog;
+
    QMenu* treeContextMenu;
    TreeContextMenuActionLists actionList;
    QString defaultDir;
+   bool confirmRequired;
 
    // Only meaningfull for context menu processing, i.e. after treeMenuRequested
    // called and up until treeMenuSelected.
@@ -239,6 +252,10 @@ private:
                           const TreeContextMenuActions treeAction);
 
    void setReadOut (const QString& text);
+
+   // Utility function get write confirmation if needed.
+   //
+   bool pvWriteIsPermitted ();
 
    friend class QEPvLoadSaveCompare;
    friend class QEPvLoadSaveModel;
@@ -268,7 +285,6 @@ private slots:
    void sortClicked (bool);
    void compareClicked (bool);
    void abortClicked (bool);
-
 };
 
 #endif // QEPVLOADSAVE_H

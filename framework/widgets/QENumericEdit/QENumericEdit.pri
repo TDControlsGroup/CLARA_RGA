@@ -8,8 +8,8 @@ INCLUDEPATH += \
     widgets/QENumericEdit
 
 OTHER_FILES += \
-    widgets/QENumericEdit/QNumericEdit.png
-#   widgets/QENumericEdit/QENumericEdit.png
+    widgets/QENumericEdit/QNumericEdit.png \
+    widgets/QENumericEdit/QENumericEdit.png
 
 
 RESOURCES += \
@@ -17,14 +17,14 @@ RESOURCES += \
 
 HEADERS += \
     widgets/QENumericEdit/QNumericEdit.h \
-    widgets/QENumericEdit/QNumericEditManager.h
-#   widgets/QENumericEdit/QENumericEdit.h \
-#   widgets/QENumericEdit/QENumericEditManager.h
+    widgets/QENumericEdit/QNumericEditManager.h \
+    widgets/QENumericEdit/QENumericEdit.h \
+    widgets/QENumericEdit/QENumericEditManager.h
 
 SOURCES += \
     widgets/QENumericEdit/QNumericEdit.cpp \
-    widgets/QENumericEdit/QNumericEditManager.cpp
-#   widgets/QENumericEdit/QENumericEdit.cpp \
-#   widgets/QENumericEdit/QENumericEditManager.cpp
+    widgets/QENumericEdit/QNumericEditManager.cpp \
+    widgets/QENumericEdit/QENumericEdit.cpp \
+    widgets/QENumericEdit/QENumericEditManager.cpp
 
 # end

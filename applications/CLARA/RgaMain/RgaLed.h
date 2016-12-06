@@ -33,10 +33,8 @@ public:
     }
 
     
-	void setEPICS(const char * title, const char * pv)
-	{
-
-		this->setTitle(title);
+	void setEPICS(const char * pv)
+	{		
 		QString base=pv;
 		STOP_1      ->setProperty ("variable", base+":HEADSTA" );
 		BAR50_1     ->setProperty ("variable", base+":HEADSTA" );
@@ -44,10 +42,11 @@ public:
 		BAR200_1    ->setProperty ("variable", base+":HEADSTA" );
 		ANA200_1    ->setProperty ("variable", base+":HEADSTA" );
 		SS_1        ->setProperty ("variable", base+":SCAN" );
-		archOn_1    ->setProperty ("variable", base+":ARMOD" );
-		mode_1      ->setProperty ("variable", base+":ARCSTA" );
-		archTO_1    ->setProperty ("variable", base+":ANATO" );
-		archTime_1  ->setProperty ("variable", base+":TIMER" );
+		ARMOD       ->setProperty ("variable", base+":ARMOD" );
+		ARCSTA      ->setProperty ("variable", base+":ARCSTA" );
+		ANATO       ->setProperty ("variable", base+":ANATO" );
+		TIMER       ->setProperty ("variable", base+":USRTIMER" );
+		
 	}
 
 };

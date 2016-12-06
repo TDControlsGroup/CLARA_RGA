@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -29,13 +29,13 @@
 
 #include "QSimpleShape.h"
 
-#define DEBUG qDebug () << "QSimpleShape" << __LINE__ << __FUNCTION__
+#define DEBUG qDebug () << "QSimpleShape" << __LINE__ << __FUNCTION__ << "  "
 
 #define NUMBER_OF_STATES   16
 
 //-----------------------------------------------------------------------------
 //
-QSimpleShape::QSimpleShape (QWidget * parent) : QWidget (parent)
+QSimpleShape::QSimpleShape (QWidget* parent) : QWidget (parent)
 {
    // This class properties.
    //
@@ -83,7 +83,7 @@ void QSimpleShape::equaliseRect (QRect& rect)
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::drawText (QPainter & painter, QPoint & textCentre, QString & text)
+void QSimpleShape::drawText (QPainter& painter, const QPoint& textCentre, const QString& text)
 {
    QFont pf (this->font ());
    painter.setFont (pf);
@@ -506,7 +506,7 @@ int QSimpleShape::getValue () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setModulus (int value)
+void QSimpleShape::setModulus (const int value)
 {
    this->modulus = LIMIT (value, 2, NUMBER_OF_STATES);
 
@@ -584,7 +584,7 @@ QStringList QSimpleShape::getStateSet () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setShape (Shapes shapeIn)
+void QSimpleShape::setShape (const Shapes shapeIn)
 {
    if (this->shape != shapeIn) {
       this->shape = shapeIn;
@@ -601,7 +601,7 @@ QSimpleShape::Shapes QSimpleShape::getShape () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setTextFormat (TextFormats textFormatIn)
+void QSimpleShape::setTextFormat (const TextFormats textFormatIn)
 {
    if (this->textFormat != textFormatIn) {
       this->textFormat = textFormatIn;
@@ -618,7 +618,7 @@ QSimpleShape::TextFormats QSimpleShape::getTextFormat () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setFixedText (QString value)
+void QSimpleShape::setFixedText (const QString& value)
 {
    if (this->fixedText != value) {
       this->fixedText = value;
@@ -637,11 +637,13 @@ QString QSimpleShape::getFixedText () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setFlashRate (QEScanTimers::ScanRates flashRateIn)
+void QSimpleShape::setFlashRate (const QEScanTimers::ScanRates flashRateIn)
 {
    const char* member = SLOT (flashTimeout (const bool));
 
    if (this->flashRate != flashRateIn) {
+      // Disconnect old flash rate signal and connect new flash rate signal.
+      //
       QEScanTimers::detach (this, member);
       this->flashRate = flashRateIn;
       QEScanTimers::attach (this, member, this->flashRate);
@@ -657,7 +659,7 @@ QEScanTimers::ScanRates QSimpleShape::getFlashRate () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setFlashOffColour (const QColor& flashOffColourIn)
+void QSimpleShape::setFlashOffColour (const QColor flashOffColourIn)
 {
    this->flashOffColour = flashOffColourIn;
    this->update ();
@@ -687,7 +689,7 @@ bool QSimpleShape::getIsActive () const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setColourProperty (int slot, QColor colour)
+void QSimpleShape::setColourProperty (const int slot, const QColor colour)
 {
    if ((slot >= 0) && (slot < NUMBER_OF_STATES)) {
       if (this->colourList[slot] != colour) {
@@ -701,7 +703,7 @@ void QSimpleShape::setColourProperty (int slot, QColor colour)
 
 //------------------------------------------------------------------------------
 //
-QColor QSimpleShape::getColourProperty (int slot) const
+QColor QSimpleShape::getColourProperty (const int slot) const
 {
    QColor result;
 
@@ -716,16 +718,16 @@ QColor QSimpleShape::getColourProperty (int slot) const
 
 //------------------------------------------------------------------------------
 //
-void QSimpleShape::setFlashProperty (int slot, bool flash)
+void QSimpleShape::setFlashProperty (const int slot, const bool isFlashing)
 {
    if ((slot >= 0) && (slot < NUMBER_OF_STATES)) {
-      this->flashList [slot] = flash;
+      this->flashList [slot] = isFlashing;
    }
 }
 
 //------------------------------------------------------------------------------
 //
-bool QSimpleShape::getFlashProperty (int slot) const
+bool QSimpleShape::getFlashProperty (const int slot) const
 {
    bool result = false;
 

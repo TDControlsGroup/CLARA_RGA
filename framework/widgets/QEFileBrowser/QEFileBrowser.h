@@ -1,4 +1,6 @@
-/*  This file is part of the EPICS QT Framework, initially developed at the
+/*  QEFileBrowser.h
+ *
+ *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or
@@ -22,8 +24,8 @@
  *    ricardo.fernandes@synchrotron.org.au
  */
 
-#ifndef QEFILEBROWSER_H
-#define QEFILEBROWSER_H
+#ifndef QE_FILE_BROWSER_H
+#define QE_FILE_BROWSER_H
 
 #include <QTableWidget>
 #include <QPushButton>
@@ -40,7 +42,6 @@ enum details
 };
 
 
-
 // ============================================================
 //  _QTABLEWIDGETFILEBROWSER CLASS
 // ============================================================
@@ -52,9 +53,7 @@ class _QTableWidgetFileBrowser:public QTableWidget
     private:
         bool initialized;
 
-
     protected:
-
 
     public:
         _QTableWidgetFileBrowser(QWidget * pParent = 0);
@@ -62,13 +61,9 @@ class _QTableWidgetFileBrowser:public QTableWidget
         void resizeEvent(QResizeEvent *);
         void resize(int w, int h);
 
-
     private slots:
 
 };
-
-
-
 
 
 // ============================================================
@@ -85,7 +80,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEFileBrowser:public QWidget, public QEWidget
 
     private:
 
-
     protected:
         QELineEdit *qeLineEditDirectoryPath;
         QPushButton *qPushButtonDirectoryBrowser;
@@ -96,12 +90,10 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEFileBrowser:public QWidget, public QEWidget
         bool fileDialogDirectoriesOnly;
         int optionsLayout;
 
-
     public:
 
         QEFileBrowser(QWidget *pParent = 0);
         virtual ~QEFileBrowser(){}
-
 
         void setVariableName(QString pValue);
         QString getVariableName();
@@ -208,7 +200,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEFileBrowser:public QWidget, public QEWidget
         {
             return (optionsLayoutProperty) getOptionsLayout();
         }
-
 
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
@@ -327,8 +318,6 @@ public:
     // END-STANDARD-PROPERTIES ========================================================
 
 
-
-
     private slots:
         void lineEditDirectoryPathChanged(QString);
 
@@ -346,9 +335,10 @@ public:
 
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEFileBrowser::optionsLayoutProperty)
+Q_DECLARE_METATYPE (QEFileBrowser::UserLevels)
+Q_DECLARE_METATYPE (QEFileBrowser::DisplayAlarmStateOptions)
+#endif
 
-
-
-
-#endif // QEFILEBROWSER_H
-
+#endif // QE_FILE_BROWSER_H

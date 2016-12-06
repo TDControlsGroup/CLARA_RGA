@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) Australian Synchrotron 2015
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -58,8 +58,9 @@ QEPvLoadSaveCompare::QEPvLoadSaveCompare (QEPvLoadSave* ownerIn,
       qDebug () << "QEPvLoadSaveCompare constructor: side" << this->side << "out pf range";
       return;
    }
-   this->ui->comparison->setMouseTracking (true);
-   this->ui->comparison->installEventFilter (this);
+
+   QObject::connect (this->ui->comparison, SIGNAL (mouseIndexChanged     (const int)),
+                     this,                 SLOT   (mouseIndexChangedSlot (const int)));
 
    // Initialse scale based on slider setting chossen at design time.
    //
@@ -253,21 +254,9 @@ void QEPvLoadSaveCompare::updateReadout (const int index)
 
 //------------------------------------------------------------------------------
 //
-bool QEPvLoadSaveCompare::eventFilter (QObject* obj, QEvent* event)
+void QEPvLoadSaveCompare::mouseIndexChangedSlot (const int index)
 {
-   const QEvent::Type type = event->type ();
-   QMouseEvent* mouseEvent = NULL;
-
-   bool result = false;
-
-   if ((type == QEvent::MouseMove) && (obj == this->ui->comparison)) {
-      mouseEvent = static_cast<QMouseEvent *> (event);
-      int index = this->ui->comparison->indexOfPosition (mouseEvent->pos ());
-      this->updateReadout (index);
-      result = true;
-   }
-
-   return result;
+   this->updateReadout (index);
 }
 
 // end

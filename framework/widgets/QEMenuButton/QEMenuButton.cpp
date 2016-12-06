@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -37,12 +37,29 @@
 
 //------------------------------------------------------------------------------
 //
-QEMenuButton::QEMenuButton (QWidget* parent) : QPushButton (parent), QEWidget (this)
+QEMenuButton::QEMenuButton (QWidget* parent) : QEAbstractWidget (parent)
 {
-   // Set default property values
-   // Super class....
+   // Create internal widget.
    //
-   this->setText ("MenuButton");
+   this->button = new QPushButton (this);
+
+   // Copy actual widget size policy to the containing widget, then ensure
+   // internal widget will expand to fill container widget.
+   //
+   this->setSizePolicy (this->button->sizePolicy ());
+   this->button->setSizePolicy (QSizePolicy::Preferred, QSizePolicy::Preferred);
+
+   this->layout = new QHBoxLayout (this);
+   this->layout->setMargin (0);    // extact fit.
+   this->layout->addWidget (this->button);
+
+   // Set default property values
+   //
+   this->setAllowDrop (false);
+   this->setVariableAsToolTip (false);
+   this->setDisplayAlarmStateOption (DISPLAY_ALARM_STATE_NEVER);
+
+   this->button->setText ("MenuButton");
 
    // Null menu specification.
    //
@@ -54,7 +71,7 @@ QEMenuButton::QEMenuButton (QWidget* parent) : QPushButton (parent), QEWidget (t
 
    this->buttonMainMenu = new QMenu (this);
 
-   this->setMenu (this->buttonMainMenu);
+   this->button->setMenu (this->buttonMainMenu);
 
    // The connection applies to all added the sub-menus and actions.
    //
@@ -65,7 +82,7 @@ QEMenuButton::QEMenuButton (QWidget* parent) : QPushButton (parent), QEWidget (t
    // If a profile is define by whatever contains the menu button, then use it.
    // Note: cribbed from QEGenericButton - keep in sync.
    //
-   if (isProfileDefined()) {
+   if (this->isProfileDefined ()) {
       // Setup a signal to launch a new gui
       // The signal will be used by whatever the button is in.
       //

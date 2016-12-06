@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Anthony Owen
@@ -120,14 +120,20 @@ QEWidget::~QEWidget() {
 // Create a CA connection and initiates updates if required.
 // This is called by the establishConnection function of CA aware widgets based on this class, such as a QELabel.
 // If successfull it will return the QCaObject based object supplying data update signals
-qcaobject::QCaObject* QEWidget::createConnection( unsigned int variableIndex ) {
+qcaobject::QCaObject* QEWidget::createConnection( unsigned int variableIndex,
+                                                  const bool do_subscribe ) {
 
     // Update the variable names in the tooltip if required
     setToolTipFromVariableNames();
 
     // Create the required QCa objects (in the end, the originating QE widget will be asked to create
     // the QCa objects in the flavours that it wants through the createQcaItem() virtual function.
-    return createVariable( variableIndex );
+    return createVariable( variableIndex, do_subscribe );
+}
+
+// Overloaded function. As above but use the default (as set via the proprty) as subscribe mode.
+qcaobject::QCaObject* QEWidget::createConnection( unsigned int variableIndex ) {
+    return createConnection (variableIndex, this->subscribe );
 }
 
 // Return a colour to update the widget's look to reflect the current alarm state
@@ -347,16 +353,16 @@ QFile* QEWidget::findQEFile( QString name, ContainerProfile* profile )
         }
 
         // Attempt to open the file
-        QFile* uiFile = NULL;
+        QFile* file = NULL;
         for( int i = 0; i < searchList.count(); i++ )
         {
-            uiFile = new QFile( searchList[i] );
-            if( uiFile->exists() )
+            file = new QFile( searchList[i] );
+            if( file->exists() )
                 break;
-            delete uiFile;
-            uiFile = NULL;
+            delete file;
+            file = NULL;
         }
-        return uiFile;
+        return file;
 }
 
 // Add a path and filename to a search list.
@@ -408,7 +414,7 @@ QString QEWidget::getFrameworkVersion()
 }
 
 // Returns a string that will not change between runs of the application (given the same configuration)
-QString QEWidget::persistantName( QString prefix )
+QString QEWidget::persistantName( QString prefix ) const
 {
     QString name = prefix;
     buildPersistantName( owner, name );
@@ -416,7 +422,7 @@ QString QEWidget::persistantName( QString prefix )
 }
 
 // Returns a string that will not change between runs of the application (given the same configuration)
-void QEWidget::buildPersistantName( QWidget* w, QString& name )
+void QEWidget::buildPersistantName( QWidget* w, QString& name ) const
 {
     // Stop when a QEForm is found with a unique identifier.
     // From this level up the application using the framework is responsible

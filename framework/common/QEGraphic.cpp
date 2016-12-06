@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013, 2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -28,21 +28,24 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QPalette>
 
 #include <qevent.h>       // QEvent maps to qcoreevent.h, not qevent.h
 #include <qwt_scale_engine.h>
+#include <qwt_scale_widget.h>
 
 #include <QECommon.h>
+#include <QEScaling.h>
 #include <QEPlatform.h>
 #include <QEGraphicMarkup.h>
 #include <QEGraphic.h>
 
-#define DEBUG qDebug () << "QEGraphic" << __FUNCTION__ <<  __LINE__
+#define DEBUG qDebug () << "QEGraphic" <<  __LINE__ << __FUNCTION__  << "  "
 
-// These should be consistant with adjustMinMax functions.
+// These should be consistant with QEDisplayRanges::adjustMinMax functions.
 //
 #define MINIMUM_SPAN              (1.0e-12)
-#define MAXIMUM_SPAN              (1.0e+26)
+#define MAXIMUM_SPAN              (1.0e+100)
 
 #define NUMBER_TRANISTION_STEPS   6
 
@@ -87,7 +90,7 @@ QEGraphic::OwnPlot::~OwnPlot () { }
 
 //------------------------------------------------------------------------------
 //
-void QEGraphic::OwnPlot::drawCanvas(QPainter* painter)
+void QEGraphic::OwnPlot::drawCanvas (QPainter* painter)
 {
    QwtPlot::drawCanvas (painter); // call super class function first.
    if (this->owner) {
@@ -341,6 +344,17 @@ double QEGraphic::Axis::getScale () const
 
 //------------------------------------------------------------------------------
 //
+void QEGraphic::Axis::setAxisColor (const QColor axisColor) const
+{
+   QwtScaleWidget* scaleWidget = this->plot->axisWidget(this->axisId);
+   QPalette palette = scaleWidget->palette();
+   palette.setColor (QPalette::WindowText, axisColor);
+   palette.setColor (QPalette::Text, axisColor);
+   scaleWidget->setPalette(palette);
+}
+
+//------------------------------------------------------------------------------
+//
 void QEGraphic::Axis::setOffset (const double offsetIn)
 {
    this->offset = offsetIn;
@@ -417,14 +431,17 @@ void QEGraphic::construct ()
    this->plotGrid->attach (this->plot);
 
    this->xAxis = new Axis (this->plot, QwtPlot::xBottom);
-   this->yAxis = new Axis (this->plot, QwtPlot::yLeft);
+   this->yAxisLeft = new Axis (this->plot, QwtPlot::yLeft);
+   this->yAxisRight = new Axis (this->plot, QwtPlot::yRight);
 
    // Construct markups and insert into marksup set.
    //
    this->graphicMarkupsSet = new QEGraphicMarkupSets;
    this->graphicMarkupsSet->insert (Area,             new QEGraphicAreaMarkup (this));
    this->graphicMarkupsSet->insert (Line,             new QEGraphicLineMarkup (this));
+   this->graphicMarkupsSet->insert (Box,              new QEGraphicBoxMarkup (this));
    this->graphicMarkupsSet->insert (CrossHair,        new QEGraphicCrosshairsMarkup (this));
+
    // There are multiple instances - we need to be explicit.
    this->graphicMarkupsSet->insert (HorizontalLine_1, new QEGraphicHorizontalMarkup (HorizontalLine_1, this));
    this->graphicMarkupsSet->insert (HorizontalLine_2, new QEGraphicHorizontalMarkup (HorizontalLine_2, this));
@@ -439,11 +456,18 @@ void QEGraphic::construct ()
 
    // Set defaults.
    //
-   this->rightIsDefined = false;
+   this->rightButtonIsPressed = false;
 
    this->pen = QPen (QColor (0, 0, 0, 255));  // black
    // go with default brush for now.
+
+   this->textFont = this->font ();  // use parent font as default font.
+
+   // Turning this on gives relatively fuzzy lines.
+   //
    this->hint = QwtPlotItem::RenderAntialiased;
+   this->hintOn = false;
+
    this->style = QwtPlotCurve::Lines;
 
 #if QWT_VERSION < 0x060100
@@ -477,7 +501,8 @@ QEGraphic::~QEGraphic ()
    }
 
    delete this->xAxis;
-   delete this->yAxis;
+   delete this->yAxisLeft;
+   delete this->yAxisRight;
 
    const MarkupLists keys = this->graphicMarkupsSet->keys ();
    for (int j = 0; j < keys.count (); j++) {
@@ -490,15 +515,58 @@ QEGraphic::~QEGraphic ()
    delete this->graphicMarkupsSet;
 }
 
+
 //------------------------------------------------------------------------------
 //
-bool QEGraphic::doDynamicRescaling ()
+void QEGraphic::enableAxis (int axisId, bool tf)
+{
+   this->plot->enableAxis (axisId, tf);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setAxisScale (int axisId, double min, double max, double step)
+{
+   this->plot->setAxisScale (axisId, min, max, step);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::installCanvasEventFilter (QObject* eventFilter)
+{
+   this->plot->canvas()->installEventFilter (eventFilter);
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::isCanvasObject (QObject* obj) const
+{
+   return (obj == this->plot->canvas());
+}
+
+//------------------------------------------------------------------------------
+//
+QRect QEGraphic::getEmbeddedCanvasGeometry () const
+{
+   return this->plot->canvas()->geometry();
+}
+
+//------------------------------------------------------------------------------
+//
+QwtPlot* QEGraphic::getEmbeddedQwtPlot () const
+{
+   return this->plot;
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::doDynamicRescaling (const QwtPlot::Axis selectedYAxis)
 {
    bool result;
    bool a, b;
 
    a = this->xAxis->doDynamicRescaling ();
-   b = this->yAxis->doDynamicRescaling ();
+   b = axisFromPosition(selectedYAxis)->doDynamicRescaling ();
 
    result = a||b;
    if (result) {
@@ -583,7 +651,51 @@ bool QEGraphic::getMarkupVisible (const Markups markup) const
    bool result = false;
    QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
    if (graphicMarkup) {
-       result = graphicMarkup->isVisible ();
+      result = graphicMarkup->isVisible ();
+   }
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setMarkupEnabled (const Markups markup, const bool isEnabled)
+{
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup && graphicMarkup->isInUse ()) {
+      graphicMarkup->setEnabled (isEnabled);
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getMarkupEnabled (const Markups markup) const
+{
+   bool result = false;
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup) {
+      result = graphicMarkup->isEnabled ();
+   }
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setMarkupSelected (const Markups markup, const bool selected)
+{
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup && graphicMarkup->isInUse ()) {
+      graphicMarkup->setSelected (selected);
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getMarkupIsSelected (const Markups markup) const
+{
+   bool result = false;
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup) {
+      result = graphicMarkup->isSelected ();
    }
    return result;
 }
@@ -606,6 +718,28 @@ QPointF QEGraphic::getMarkupPosition (const Markups markup) const
    QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
    if (graphicMarkup && graphicMarkup->isInUse ()) {
       result = graphicMarkup->getCurrentPosition ();
+   }
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setMarkupData (const Markups markup, const QVariant& data)
+{
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup && graphicMarkup->isInUse ()) {
+      graphicMarkup->setData (data);
+   }
+}
+
+//------------------------------------------------------------------------------
+//
+QVariant QEGraphic::getMarkupData (const Markups markup) const
+{
+   QVariant result = QVariant (QVariant::Invalid);
+   QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (markup, NULL);
+   if (graphicMarkup && graphicMarkup->isInUse ()) {
+      result = graphicMarkup->getData ();
    }
    return result;
 }
@@ -634,36 +768,36 @@ bool QEGraphic::getCrosshairsVisible () const
 
 //------------------------------------------------------------------------------
 //
-QPointF QEGraphic::pointToReal (const QPoint& pos) const
+QPointF QEGraphic::pointToReal (const QPoint& pos, const QwtPlot::Axis selectedYAxis) const
 {
    double x, y;
 
    x = this->xAxis->pointToReal (pos.x ());
-   y = this->yAxis->pointToReal (pos.y ());
+   y = axisFromPosition(selectedYAxis)->pointToReal (pos.y ());
 
    return QPointF (x, y);
 }
 
 //------------------------------------------------------------------------------
 //
-QPointF QEGraphic::pointToReal (const QPointF& pos) const
+QPointF QEGraphic::pointToReal (const QPointF& pos, const QwtPlot::Axis selectedYAxis) const
 {
    double x, y;
 
    x = this->xAxis->pointToReal ((int) pos.x ());
-   y = this->yAxis->pointToReal ((int) pos.y ());
+   y = axisFromPosition(selectedYAxis)->pointToReal ((int) pos.y ());
 
    return QPointF (x, y);
 }
 
 //------------------------------------------------------------------------------
 //
-QPoint QEGraphic::realToPoint (const QPointF& pos) const
+QPoint QEGraphic::realToPoint (const QPointF& pos, const QwtPlot::Axis selectedYAxis) const
 {
    int x, y;
 
    x = this->xAxis->realToPoint (pos.x ());
-   y = this->yAxis->realToPoint (pos.y ());
+   y = axisFromPosition(selectedYAxis)->realToPoint (pos.y ());
 
    return QPoint (x, y);
 }
@@ -714,7 +848,9 @@ void QEGraphic::attchOwnCurve (QwtPlotCurve* curve)
 
 //------------------------------------------------------------------------------
 //
-QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData, const DoubleVector& yData)
+QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData,
+                                          const DoubleVector& yData,
+                                          const QwtPlot::Axis selectedYAxis)
 {
    const int curveLength = MIN (xData.size (), yData.size ());
 
@@ -729,8 +865,11 @@ QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData, const Doubl
    //
    curve->setPen (this->getCurvePen ());
    curve->setBrush (this->getCurveBrush ());
-   curve->setRenderHint (this->getCurveRenderHint ());
+
+   curve->setRenderHint (this->getCurveRenderHint (),
+                         this->getCurveRenderHintOn ());
    curve->setStyle (this->getCurveStyle ());
+   curve->setYAxis(selectedYAxis);
 
    // Scale data as need be. Underlying Qwr widget does basic transformation,
    // but we need to do any required real world/log scaling.
@@ -743,7 +882,7 @@ QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData, const Doubl
       x = this->xAxis->scaleValue (xData.value (j));
       useXData.append (x);
 
-      y = this->yAxis->scaleValue (yData.value (j));
+      y = axisFromPosition(selectedYAxis)->scaleValue (yData.value (j));
       useYData.append (y);
    }
 
@@ -754,6 +893,7 @@ QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData, const Doubl
 #endif
 
    // Attach new curve to the plot object.
+   // By defaut curves are plotted on the yLeft y axis.
    //
    curve->attach (this->plot);
 
@@ -762,10 +902,12 @@ QwtPlotCurve* QEGraphic::createCurveData (const DoubleVector& xData, const Doubl
 
 //------------------------------------------------------------------------------
 //
-void QEGraphic::plotCurveData (const DoubleVector& xData, const DoubleVector& yData)
+void QEGraphic::plotCurveData (const DoubleVector& xData,
+                               const DoubleVector& yData,
+                               const QwtPlot::Axis yAxis)
 {
    QwtPlotCurve* curve;
-   curve = this->createCurveData (xData, yData);
+   curve = this->createCurveData (xData, yData, yAxis);
    if (curve) this->userCurveList.append (curve);
 }
 
@@ -786,6 +928,7 @@ void QEGraphic::plotMarkups ()
    for (int j = 0; j < keys.count (); j++) {
       QEGraphicMarkup* graphicMarkup = this->graphicMarkupsSet->value (keys.value (j), NULL);
       if (graphicMarkup) {
+         graphicMarkup->relocate ();  // specials to avoid off screen
          graphicMarkup->plot ();
       }
    }
@@ -802,41 +945,64 @@ void QEGraphic::graphicReplot ()
 
 //------------------------------------------------------------------------------
 //
-void QEGraphic::drawText (const QPointF& posn, const QString& text, const TextPositions option)
+void QEGraphic::drawText (const QPointF& posn,
+                          const QString& text,
+                          const TextPositions option,
+                          bool isCentred)
 {
    TextItems item;
 
+   // We store real-world postions.
    if (option == QEGraphic::RealWorldPosition) {
-      item.position = this->realToPoint (posn);
-   } else {
       item.position = posn;
+   } else {
+      item.position = this->pointToReal (posn);
    }
    item.text = text;
-   item.pen = this->pen;   // use curve pen
+   item.isCentred = isCentred;
+   item.font = this->textFont;   // use current text font
+   item.pen = this->pen;         // use current curve pen
 
    this->textItemList.append (item);
 }
 
 //------------------------------------------------------------------------------
 //
-void QEGraphic::drawText (const QPoint& posn, const QString& text, const TextPositions option)
+void QEGraphic::drawText (const QPoint& posn,
+                          const QString& text,
+                          const TextPositions option,
+                          bool isCentred)
 {
-   this->drawText (QPointF (posn), text, option);
+   this->drawText (QPointF (posn), text, option, isCentred);
 }
 
 //------------------------------------------------------------------------------
 //
 void QEGraphic::drawTexts (QPainter* painter)
 {
-   QFontMetrics fm = painter->fontMetrics ();
-   int ps = this->font().pointSize ();
-
    int n = this->textItemList.count ();
    for (int j = 0; j < n; j++) {
-      TextItems item = this->textItemList.value (j);
+      const TextItems item = this->textItemList.value (j);
+      const int ps = QEScaling::scale (item.font.pointSize ());
 
-      int x = item.position.x () - fm.width (item.text)/2;
-      int y = item.position.y () + (ps + 1)/2;
+      // Sewt the reqiuired font point size..
+      //
+      QFont font = item.font;
+      font.setPointSize (ps);
+      painter->setFont (font);
+
+      // Do last minute conversion.
+      //
+      const QPoint pixelPos = this->realToPoint (item.position);
+
+      int x = pixelPos.x ();
+      int y = pixelPos.y ();
+
+      if (item.isCentred) {
+         QFontMetrics fm = painter->fontMetrics ();
+         x -= fm.width (item.text)/2;
+         y += (ps + 1)/2;
+      }
 
       painter->setPen (item.pen);
       painter->drawText (x, y, item.text);
@@ -845,9 +1011,20 @@ void QEGraphic::drawTexts (QPainter* painter)
 
 //------------------------------------------------------------------------------
 //
+QEGraphic::Axis* QEGraphic::axisFromPosition (const QwtPlot::Axis axisPosition) const
+{
+   if (axisPosition == QwtPlot::yLeft) {
+      return this->yAxisLeft;
+   } else {
+      return this->yAxisRight;
+   }
+}
+
+//------------------------------------------------------------------------------
+//
 bool QEGraphic::rightButtonPressed () const
 {
-   return this->rightIsDefined;
+   return this->rightButtonIsPressed;
 }
 
 //------------------------------------------------------------------------------
@@ -895,6 +1072,125 @@ QPoint QEGraphic::pixelDistance (const QPointF& from, const QPointF& to) const
    QPoint pointFrom = this->realToPoint (from);
    QPoint pointTo = this->realToPoint (to);
    return pointTo - pointFrom;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setAxisEnableX (const bool enable)
+{
+   this->xAxis->setAxisEnable (enable);
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getAxisEnableX () const
+{
+   return this->xAxis->getAxisEnable ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setAxisEnableY (const bool enable, const QwtPlot::Axis selectedYAxis)
+{
+   this->axisFromPosition(selectedYAxis)->setAxisEnable (enable);
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getAxisEnableY (const QwtPlot::Axis selectedYAxis) const
+{
+   return this->axisFromPosition(selectedYAxis)->getAxisEnable ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setXScale (const double scale)
+{
+   this->xAxis->setScale (scale);
+}
+
+//------------------------------------------------------------------------------
+//
+double QEGraphic::getXScale () const
+{
+   return this->xAxis->getScale ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setXOffset (const double offset)
+{
+   this->xAxis->setOffset (offset);
+}
+
+//------------------------------------------------------------------------------
+//
+double QEGraphic::getXOffset () const
+{
+   return this->xAxis->getOffset ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setXLogarithmic (const bool isLog)
+{
+   this->xAxis->setLogarithmic (isLog);
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getXLogarithmic () const
+{
+   return this->xAxis->getLogarithmic ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setYScale (const double scale, const QwtPlot::Axis selectedYAxis)
+{
+   this->axisFromPosition(selectedYAxis)->setScale (scale);
+}
+
+//------------------------------------------------------------------------------
+//
+double QEGraphic::getYScale (const QwtPlot::Axis selectedYAxis) const
+{
+   return this->axisFromPosition(selectedYAxis)->getScale ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setYOffset (const double offset, const QwtPlot::Axis selectedYAxis)
+{
+   this->axisFromPosition(selectedYAxis)->setOffset (offset);
+}
+
+//------------------------------------------------------------------------------
+//
+double QEGraphic::getYOffset (const QwtPlot::Axis selectedYAxis) const
+{
+   return this->axisFromPosition(selectedYAxis)->getOffset ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setYLogarithmic (const bool isLog, const QwtPlot::Axis selectedYAxis)
+{
+   this->axisFromPosition(selectedYAxis)->setLogarithmic (isLog);
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getYLogarithmic (const QwtPlot::Axis selectedYAxis) const
+{
+   return this->axisFromPosition (selectedYAxis)->getLogarithmic ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setYColor (const QColor color, const QwtPlot::Axis selectedYAxis)
+{
+   this->axisFromPosition (selectedYAxis)->setAxisColor (color);
 }
 
 //------------------------------------------------------------------------------
@@ -954,7 +1250,7 @@ void QEGraphic::canvasMousePress (QMouseEvent* mouseEvent)
    QEGraphicMarkup* t = this->mouseIsOverMarkup ();
    if (t) search = t;
 
-   // Mark this markup as selected.
+   // Mark this markup as selected (if markup allows it)
    //
    if (search) {
       search->setSelected (true);
@@ -969,7 +1265,7 @@ void QEGraphic::canvasMousePress (QMouseEvent* mouseEvent)
    }
 
    if (button == Qt::RightButton) {
-      this->rightIsDefined = true;
+      this->rightButtonIsPressed = true;
    }
 
    // Treat as a mouse move as well.
@@ -996,7 +1292,7 @@ void QEGraphic::canvasMouseRelease (QMouseEvent* mouseEvent)
    }
 
    if (button == Qt::RightButton) {
-      this->rightIsDefined = false;
+      this->rightButtonIsPressed = false;
    }
 
    // Treat as a mouse move as well.
@@ -1112,13 +1408,28 @@ void QEGraphic::setXRange (const double min, const double max,
    this->xAxis->setRange (min, max, mode, value, immediate);
 }
 
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::getXRange (double& min, double& max) const
+{
+   this->xAxis->getRange (min, max);
+}
+
 //------------------------------------------------------------------------------
 //
 void QEGraphic::setYRange (const double min, const double max,
                            const AxisMajorIntervalModes mode, const int value,
-                           const bool immediate)
+                           const bool immediate, const QwtPlot::Axis selectedYAxis)
 {
-   this->yAxis->setRange (min, max, mode, value, immediate);
+   this->axisFromPosition(selectedYAxis)->setRange (min, max, mode, value, immediate);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::getYRange (double& min, double& max, const QwtPlot::Axis selectedYAxis) const
+{
+   this->axisFromPosition(selectedYAxis)->getRange (min, max);
 }
 
 //------------------------------------------------------------------------------
@@ -1160,16 +1471,53 @@ QBrush QEGraphic::getCurveBrush () const
 
 //------------------------------------------------------------------------------
 //
-void QEGraphic::setCurveRenderHint (const QwtPlotItem::RenderHint hintIn)
+void QEGraphic::setTextFont (const QFont& fontIn)
 {
-   this->hint = hintIn;
+   this->textFont = fontIn;
 }
 
 //------------------------------------------------------------------------------
 //
-QwtPlotItem::RenderHint QEGraphic::getCurveRenderHint ()
+QFont QEGraphic::getTextFont () const
+{
+   return this->textFont;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setTextPointSize (const int pointSize)
+{
+   this->textFont.setPointSize (pointSize);
+}
+
+//------------------------------------------------------------------------------
+//
+int QEGraphic::getTextPointSize () const
+{
+   return this->textFont.pointSize ();
+}
+
+//------------------------------------------------------------------------------
+//
+void QEGraphic::setCurveRenderHint (const QwtPlotItem::RenderHint hintIn,
+                                    const bool on)
+{
+   this->hint = hintIn;
+   this->hintOn = on;
+}
+
+//------------------------------------------------------------------------------
+//
+QwtPlotItem::RenderHint QEGraphic::getCurveRenderHint () const
 {
    return this->hint;
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEGraphic::getCurveRenderHintOn () const
+{
+    return this->hintOn;
 }
 
 //------------------------------------------------------------------------------

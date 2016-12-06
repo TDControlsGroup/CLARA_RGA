@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -45,14 +45,14 @@ QERecordSpec::QERecordSpec (const QString recordTypeIn)
 
 //------------------------------------------------------------------------------
 //
-QString QERecordSpec::getRecordType ()
+QString QERecordSpec::getRecordType () const
 {
    return this->recordType;
 }
 
 //------------------------------------------------------------------------------
 //
-QString QERecordSpec::getFieldName (const int index)
+QString QERecordSpec::getFieldName (const int index) const
 {
    if ((0 <= index) && (index < size ())) {
       return this->at (index);
@@ -72,7 +72,8 @@ QERecordSpecList::QERecordSpecList ()
 
 //------------------------------------------------------------------------------
 //
-int QERecordSpecList::findSlot (const QString recordType) {
+int QERecordSpecList::findSlot (const QString recordType) const
+{
    int result = -1;
    QERecordSpec * checkSpec;
 
@@ -90,7 +91,8 @@ int QERecordSpecList::findSlot (const QString recordType) {
 
 //------------------------------------------------------------------------------
 //
-QERecordSpec * QERecordSpecList::find (const QString recordType) {
+QERecordSpec * QERecordSpecList::find (const QString recordType) const
+{
    QERecordSpec *result = NULL;
    int slot;
 
@@ -179,149 +181,6 @@ bool QERecordSpecList::processRecordSpecFile (const QString& filename)
 
    record_field_file.close ();
    return true;
-}
-
-
-//==============================================================================
-//
-QString QERecordFieldName::recordName (const QString & pvName)
-{
-   QString result;
-   int dot_posn;
-
-   result = pvName;
-   dot_posn = result.indexOf (".", 0);
-   if (dot_posn >= 0) {
-      result.truncate (dot_posn);
-   }
-   return result;
-}
-
-//------------------------------------------------------------------------------
-//
-QString QERecordFieldName::fieldName (const QString & pvName)
-{
-   QString result = "VAL";
-   int dot_posn;
-   int fs;
-
-   dot_posn = pvName.indexOf (".", 0);
-   if (dot_posn >= 0) {
-      fs = pvName.length() - dot_posn - 1;
-      if (fs > 0) {
-         result = pvName.right (fs);
-      }
-   }
-   return result;
-}
-
-//------------------------------------------------------------------------------
-//
-QString QERecordFieldName::fieldPvName (const QString & pvName, const QString & field)
-{
-    return recordName (pvName) + "." + field;
-}
-
-//------------------------------------------------------------------------------
-//
-QString QERecordFieldName::rtypePvName (const QString & pvName)
-{
-   return recordName (pvName) + ".RTYP";
-}
-
-//------------------------------------------------------------------------------
-//
-bool QERecordFieldName::pvNameIsValid (const QString & pvName)
-{
-   QChar c;
-   bool result;
-   int j;
-   int colonCount;
-   int dotCount;
-
-   if (pvName.length () == 0) {
-      return false;
-   }
-
-   // Must start with a letter.
-   //
-   c = pvName [0];
-   if ((!c.isUpper ()) && (!c.isLower())) {
-      return false;
-   }
-
-   // Hypothosize all okay
-   //
-   result = true;
-   colonCount = 0;
-   dotCount = 0;
-   for (j = 1; j < pvName.length (); j++) {
-      c = pvName [j];
-
-      if (c.isUpper() || c.isLower() || c.isDigit() ||
-         (c == '_')   || (c == '-')) {
-         // is good
-      } else if (c == ':') {
-         colonCount++;
-      } else if ( c== '.' ) {
-         dotCount++;
-      } else {
-         // Invalid character
-         result = false;
-         break;
-      }
-   }
-
-   // Expected format is CCCC:SSSS[.FFFF]
-   // However many beamline PVs do not strictly follow the naming
-   // convension, so allow 1 or 2 colons.
-   //
-   if ((colonCount < 1) || (colonCount > 2) || (dotCount > 1)) {
-      result = false;
-   }
-
-   return result;
-}
-
-//------------------------------------------------------------------------------
-//
-#define SUFFIX_NUM   13
-
-static const char * suffixList [SUFFIX_NUM] = {
-   " NPP", " PP", " CA", " CP", " CPP", " NMS", " MS",
-   // truncated versions
-   " N", " NP", " P", " C", " NM" , " M"
-};
-
-bool QERecordFieldName::extractPvName (const QString & item, QString & pvName)
-{
-   int i;
-   int j;
-   bool status;
-
-   pvName = item.trimmed ();
-
-   // Strip off standard suffix.
-   //
-   // Could be a little smarter, but as only a few suffix, this is okay.
-   //
-   for (i = 0; i < SUFFIX_NUM; i++) {
-      for (j = 0; j < SUFFIX_NUM; j++) {
-
-         if (pvName.endsWith (suffixList [j])) {
-            int at = pvName.length () - (int)strlen (suffixList [j]);
-            pvName.truncate (at);
-         }
-      }
-   }
-
-   // Validate what is left.
-   //
-   status = QERecordFieldName::pvNameIsValid (pvName);
-   if (!status) {
-      pvName.clear ();
-   }
-   return status;
 }
 
 // end

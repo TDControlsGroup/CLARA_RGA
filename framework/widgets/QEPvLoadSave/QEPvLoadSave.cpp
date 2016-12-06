@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -31,6 +31,7 @@
 #include <QHeaderView>
 #include <QApplication>
 #include <QClipboard>
+#include <QMessageBox>
 
 #include <QECommon.h>
 #include <QEScaling.h>
@@ -40,7 +41,7 @@
 #include "QEPvLoadSaveModel.h"
 #include "QEPvLoadSaveUtilities.h"
 
-#define DEBUG  qDebug () << "QEPvLoadSave::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG  qDebug () << "QEPvLoadSave.cpp" << __LINE__ << __FUNCTION__ << "  "
 
 // Compare with QEStripChartToolBar
 //
@@ -144,6 +145,7 @@ QEPvLoadSave::Halves::Halves (const Sides sideIn, QEPvLoadSave* ownerIn, QBoxLay
          button->setText (buttonSpecs[j].captionOrIcon);
       }
 
+      button->setFocusPolicy (Qt::NoFocus);
       button->setToolTip (buttonSpecs[j].toolTip);
       gap = buttonSpecs[j].gap;
 
@@ -153,6 +155,7 @@ QEPvLoadSave::Halves::Halves (const Sides sideIn, QEPvLoadSave* ownerIn, QBoxLay
          if (this->side == LeftSide) {
             this->checkBox = new QCheckBox ("Show 2nd tree", this->header);
             this->checkBox->setGeometry (left + 2, top, 120, 26);
+            this->checkBox->setFocusPolicy (Qt::NoFocus);
 
             QObject::connect (this->checkBox, SIGNAL (stateChanged (int)),
                               this->owner,    SLOT   (checkBoxStateChanged (int)));
@@ -334,6 +337,7 @@ QEPvLoadSave::QEPvLoadSave (QWidget* parent) : QEFrame (parent)
    this->setMinimumSize (932, 400);
 
    this->defaultDir = "";
+   this->confirmRequired = true;
 
    // Create internal widgets.
    //
@@ -378,6 +382,7 @@ QEPvLoadSave::QEPvLoadSave (QWidget* parent) : QEFrame (parent)
    this->groupNameDialog = new QEPvLoadSaveGroupNameDialog (this);
    this->valueEditDialog = new QEPvLoadSaveValueEditDialog (this);
    this->pvNameSelectDialog = new QEPVNameSelectDialog (this);
+   this->archiveTimeDialog = new QEPvLoadSaveTimeDialog (this);
 
    this->setAllowDrop (false);
 
@@ -828,14 +833,39 @@ void QEPvLoadSave::checkBoxStateChanged (int state)
 
 //------------------------------------------------------------------------------
 //
+bool QEPvLoadSave::pvWriteIsPermitted ()
+{
+   bool result;
+   if (this->confirmRequired) {
+      int confirm = QMessageBox::warning
+            (this, "PV Write Confirmation",
+             "You are about to write to one or more system Process\n"
+             "Variables. This may adversely affect the operation of\n"
+             "the system. Are you sure you wish to processed?\n"
+             "Click OK to proceed or Cancel for no change.",
+             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+      result = (confirm == QMessageBox::Ok);
+   } else {
+      result = true;
+   }
+   return result;
+}
+
+//------------------------------------------------------------------------------
+//
 void QEPvLoadSave::writeAllClicked (bool)
 {
    VERIFY_SENDER;
    QEPvLoadSaveModel* model = this->half [side]->model;
 
-   this->progressBar->setMaximum (MAX (1, model->leafCount ()));
-   this->progressBar->setValue (0);
-   model->applyPVData ();
+   const int number =  model->leafCount ();
+   if (number > 0) {
+      if (this->pvWriteIsPermitted ()) {
+         this->progressBar->setMaximum (MAX (1, number));
+         this->progressBar->setValue (0);
+         model->applyPVData ();
+      }
+   }
 }
 
 //------------------------------------------------------------------------------
@@ -855,12 +885,15 @@ void QEPvLoadSave::readAllClicked (bool)
 void QEPvLoadSave::writeSubsetClicked (bool)
 {
    VERIFY_SENDER;
-
    QEPvLoadSaveItem* item = this->half [side]->model->getSelectedItem ();
-   if (item) {
-      this->progressBar->setMaximum (MAX (1, item->leafCount ()));
-      this->progressBar->setValue (0);
-      item->applyPVData ();
+
+   const int number = item ? item->leafCount() : 0;
+   if (number > 0) {
+      if (this->pvWriteIsPermitted ()) {
+         this->progressBar->setMaximum (MAX (1, number));
+         this->progressBar->setValue (0);
+         item->applyPVData ();
+      }
    }
 }
 
@@ -882,9 +915,32 @@ void QEPvLoadSave::readSubsetClicked (bool)
 //
 void QEPvLoadSave::archiveTimeClicked (bool)
 {
+   QWidget* theSender = dynamic_cast <QWidget*> (this->sender ());
+
    VERIFY_SENDER;
-   DEBUG << side;
+   QEPvLoadSaveModel* model = this->half [side]->model;
+   if (!model) return;  // sainity check
+
+   const int number =  model->leafCount ();
+
+   // Any PVs to worry about?
+   //
+   if (number > 0) {
+      QDateTime timeNow = QDateTime::currentDateTime().toLocalTime ();
+      this->archiveTimeDialog->setMaximumDateTime (timeNow);
+      int n = this->archiveTimeDialog->exec (theSender);
+      if (n == 1) {
+         // User has selected okay.
+         //
+         QDateTime selectedDataTime = this->archiveTimeDialog->getDateTime ();
+
+         this->progressBar->setMaximum (MAX (1, number));
+         this->progressBar->setValue (0);
+         model->readArchiveData (selectedDataTime);
+      }
+   }
 }
+
 
 //------------------------------------------------------------------------------
 //
@@ -929,6 +985,20 @@ QString QEPvLoadSave::getDefaultDir () const
 
 //------------------------------------------------------------------------------
 //
+void QEPvLoadSave::setConfirmAction (bool confirmRequiredIn)
+{
+   this->confirmRequired = confirmRequiredIn;
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEPvLoadSave::getConfirmAction () const
+{
+   return this->confirmRequired;
+}
+
+//------------------------------------------------------------------------------
+//
 void QEPvLoadSave::loadClicked (bool)
 {
    VERIFY_SENDER;
@@ -937,7 +1007,7 @@ void QEPvLoadSave::loadClicked (bool)
    filename = QFileDialog::getOpenFileName
          (this,
           "Select input file", this->getDefaultDir (),
-          "PV Config Files(*.xml);;PV Config Files(*.pcf);;All files (*.*)");
+          "PV Config Files(*.xml);;All files (*.*)");
 
    if (!filename.isEmpty()) {
       this->half [side]->open (filename);
@@ -956,10 +1026,26 @@ void QEPvLoadSave::saveClicked (bool)
    VERIFY_SENDER;
    QString filename;
 
+   // Create a defualt file name based on current time of day.
+   //
+   QDateTime timeNow = QDateTime::currentDateTime ();
+   QString defaultDir = this->getDefaultDir ();
+   QString defaultName;
+
+   defaultName = QString ("%1%2.xml")
+         .arg (defaultDir.isEmpty() ? "" : "/")
+         .arg (timeNow.toString ("yyyyMMdd_hhmm"));
+
    filename = QFileDialog::getSaveFileName
-         (this,
-          "Select output file", this->getDefaultDir (),
-          "PV Config Files(*.xml);;PV Config Files(*.pcf)");
+         (this, "Select output file",
+          defaultDir + defaultName,
+          "PV Config Files(*.xml)");
+
+   // Ensure file has xml extension
+   //
+   if (!filename.endsWith(".xml")) {
+      filename.append(".xml");
+   }
 
    if (!filename.isEmpty()) {
       this->half [side]->save (filename);

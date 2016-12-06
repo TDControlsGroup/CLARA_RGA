@@ -2,7 +2,4 @@
     <qresource prefix="/qe/lineedit">
         <file>QELineEdit.png</file>
     </qresource>
-    <qresource prefix="/qe/numericedit">
-        <file>QENumericEdit.png</file>
-    </qresource>
 </RCC>

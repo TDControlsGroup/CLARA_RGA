@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -135,9 +135,11 @@ protected:
     void setNumVariables( unsigned int numVariablesIn );                        ///< Set the number of variables that will stream data updates to the widget. Default of 1 if not called.
     unsigned int getNumVariables() const { return numVariables; }               ///< Get the number of variables streaming data updates to the widget.
 
-    bool subscribe;                                                             ///< Flag if data updates should be requested
+    bool subscribe;                                                             ///< Flag if data updates should be requested (default value used by QEWidget)
 
-    qcaobject::QCaObject* createVariable( unsigned int variableIndex );         ///< Create a CA connection. Return a QCaObject if successfull
+    qcaobject::QCaObject* createVariable( unsigned int variableIndex,
+                                          const bool do_subscribe );            ///< Create a CA connection. do_subscribe indicated if updates should be requested.
+                                                                                ///< Return a QCaObject if successfull.
 
     virtual qcaobject::QCaObject* createQcaItem( unsigned int variableIndex );  ///< Function to create a appropriate superclass of QCaObject to stream data updates
     virtual void establishConnection( unsigned int variableIndex );             ///< Create a CA connection and initiates updates if required

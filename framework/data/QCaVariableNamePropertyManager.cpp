@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2014 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2014, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -89,6 +89,14 @@ QCaVariableNamePropertyManager::QCaVariableNamePropertyManager() {
 */
 void QCaVariableNamePropertyManager::setVariableIndex( unsigned int variableIndexIn ) {
     variableIndex = variableIndexIn;
+}
+
+/*
+    Get the variable index.
+*/
+unsigned int QCaVariableNamePropertyManager::getVariableIndex() const
+{
+    return variableIndex;
 }
 
 /*

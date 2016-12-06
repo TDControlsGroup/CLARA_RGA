@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2015 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -47,8 +47,7 @@ QEStringFormatting::QEStringFormatting() {
     stream.setIntegerBase( 10 );
     stream.setRealNumberNotation( QTextStream::FixedNotation );
     addUnits = true;
-    arrayAction = ASCII;//INDEX;
-    arrayIndex = 0;
+    arrayAction = ASCII; // INDEX;
 
     // Initialise database information
     dbPrecision = 0;
@@ -283,6 +282,25 @@ QVariant QEStringFormatting::formatValue( const QString& text, bool& ok )
     return value;
 }
 
+/*
+    Generate a value varry given an array of strings, using formatting defined
+    within this class.
+    If all the values can be formatted the formatted value is returned and 'ok' is true.
+    If any of the values can't be formatted an error string is returned and 'ok' is false
+ */
+QVariant QEStringFormatting::formatValue( const QVector<QString>& text, bool& ok )
+{
+    QVariantList result;
+    int n = text.count();
+    ok = true;
+    for( int j = 0; j < n ;j++ ){
+        bool elok;
+        QVariant element = formatValue( text.value( j ), elok );
+        if (!elok) ok = false;
+        result.append( element );
+    }
+    return result;
+}
 
 // Determine the format that will be used when interpreting a value to write,
 // or when presenting a value for which default formatting has been requested.
@@ -391,7 +409,7 @@ QString QEStringFormatting::insertSeparators( const QString image) const
 /*
     Generate a string given a value, using formatting defined within this class.
 */
-QString QEStringFormatting::formatString( const QVariant& value ) const
+QString QEStringFormatting::formatString( const QVariant& value, int arrayIndex ) const
 {
     QEStringFormatting* self = (QEStringFormatting*) this;   // this works as modified members are just used as temp. variables.
     QString result;
@@ -454,9 +472,9 @@ QString QEStringFormatting::formatString( const QVariant& value ) const
 
             case INDEX:
                 // Interpret the element selected by setArrayIndex().
-                if( arrayIndex < (unsigned int)(number) )
+                if( ( arrayIndex >= 0 ) && ( arrayIndex < number ) )
                 {
-                    QVariant element = valueArray.value ((int) arrayIndex);
+                    QVariant element = valueArray.value( arrayIndex );
                     result = self->formatElementString( element );
                 }
                 break;
@@ -486,7 +504,6 @@ QString QEStringFormatting::formatElementString( const QVariant& value ) {
     determineDbFormat( value );
 
     // Initialise
-    bool errorMessage = false;      // Set if an error message is the result
     outStr.clear();
 
     // Set the precision
@@ -546,7 +563,6 @@ QString QEStringFormatting::formatElementString( const QVariant& value ) {
 
                 default:
                     formatFailure( QString( "Bug in QEStringFormatting::formatString(). The QVariant type was not expected" ) );
-                    errorMessage = true;
                     break;
                 }
             }
@@ -582,7 +598,6 @@ QString QEStringFormatting::formatElementString( const QVariant& value ) {
         // This is a code error. All cases in QEStringFormatting::formats should be catered for
         default:
             formatFailure( QString( "Bug in QEStringFormatting::format(). The format type was not expected" ) );
-            errorMessage = true;
             break;
     }
 
@@ -972,13 +987,6 @@ void QEStringFormatting::setArrayAction( arrayActions arrayActionIn ) {
 }
 
 /*
-    Set which value from an array is formatted (not relevent when the array is processed as ascii)
-*/
-void QEStringFormatting::setArrayIndex( unsigned int arrayIndexIn ) {
-    arrayIndex = arrayIndexIn;
-}
-
-/*
     Set or clear a flag to include the engineering units in a string
 */
 void QEStringFormatting::setAddUnits( bool AddUnitsIn ) {
@@ -1066,13 +1074,6 @@ QEStringFormatting::notations QEStringFormatting::getNotation() const {
 */
 QEStringFormatting::arrayActions QEStringFormatting::getArrayAction() const {
     return arrayAction;
-}
-
-/*
-    Return the index to select a value from array of values (not relevent when the array is treated as ascii)
-*/
-unsigned int QEStringFormatting::getArrayIndex() const {
-    return arrayIndex;
 }
 
 /*

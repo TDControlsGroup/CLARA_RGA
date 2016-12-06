@@ -24,8 +24,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QBITSTATUS_H
-#define QBITSTATUS_H
+#ifndef Q_BIT_STATUS_H
+#define Q_BIT_STATUS_H
 
 #include <QString>
 #include <QRect>
@@ -192,4 +192,9 @@ public:
 
 };
 
-#endif // QBITSTATUS_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QBitStatus::Orientations)
+Q_DECLARE_METATYPE (QBitStatus::Shapes)
+#endif
+
+#endif // Q_BIT_STATUS_H

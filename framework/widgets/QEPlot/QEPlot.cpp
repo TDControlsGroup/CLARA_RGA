@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010,2016 Australian Synchrotron
  *
  *  Author:
  *    Glenn Jackson
@@ -28,8 +28,12 @@
   It is tighly integrated with the base class QEWidget. Refer to QEWidget.cpp for details
  */
 
+#include <QDebug>
+#include <QECommon.h>
 #include <qwt_legend.h>
 #include <QEPlot.h>
+
+#define DEBUG qDebug () << "QEPlot" <<  __LINE__ << __FUNCTION__  << "  "
 
 /*
     Constructor with no initialisation
@@ -70,6 +74,10 @@ void QEPlot::setup() {
 
     //setLabelOrientation (Qt::Orientation)Qt::Vertical
 
+    // Default to one minute span
+    tickRate = 50;
+    timeSpan = 59;
+
     tickTimer = new QTimer(this);
     connect(tickTimer, SIGNAL(timeout()), this, SLOT(tickTimeout()));
     tickTimer->start( tickRate );
@@ -103,10 +111,6 @@ void QEPlot::setup() {
     gridMinorColor = Qt::gray;
 
 
-    // Default to one minute span
-    tickRate = 50;
-    timeSpan = 59;
-
     // Assume we are plotting scalar (rather than array) data
     plottingArrayData = false;
 
@@ -125,6 +129,9 @@ void QEPlot::setup() {
         QObject::connect( &variableNamePropertyManagers[i], SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ),
                           this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
     }
+
+    canvas()->setMouseTracking( true );
+    canvas()->installEventFilter( this );
 }
 
 QEPlot::~QEPlot()
@@ -151,11 +158,46 @@ QEPlot::~QEPlot()
 }
 
 /*
-  Provides size hint in designer - in not a constraint
+    Provides size hint in designer - in not a constraint
  */
 QSize QEPlot::sizeHint() const
 {
    return QSize (240, 100);
+}
+
+/*
+    Convert canvas position into real world co-ordinates.
+ */
+void QEPlot::canvasMouseMove( QMouseEvent* mouseEvent ) {
+
+    QPoint pos = mouseEvent->pos();
+    double x = invTransform( QwtPlot::xBottom, pos.x() );
+    double y = invTransform( QwtPlot::yLeft, pos.y() );
+    QPointF posn = QPointF( x, y );
+    emit mouseMove( posn );
+}
+
+/*
+    Handle events, specifically the mmouse moves
+ */
+bool QEPlot::eventFilter( QObject *obj, QEvent *event ) {
+    const QEvent::Type type = event->type();
+    QMouseEvent* mouseEvent = NULL;
+
+    switch (type) {
+    case QEvent::MouseMove:
+        mouseEvent = static_cast<QMouseEvent *>( event );
+        if( obj == canvas() ){
+            canvasMouseMove( mouseEvent );
+            return true;  // we have handled move mouse event
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    return false;
 }
 
 /*
@@ -221,6 +263,27 @@ void QEPlot::setPlotData( const double value, QCaAlarmInfo& alarmInfo, QCaDateTi
     // Signal a database value change to any Link widgets
     emit dbValueChanged( value );
 
+    // If the date is more than a wisker into the future, limit it.
+    // This will happen if the source is on another machine with an incorrect time.
+    // Allow a little bit of time (100mS) as machines will not be synchronised perfectly.
+    // This will help if updates get bunched.
+    // If this is not done and we are adding a last point at the current time, this last point will be before this actual data point
+    QCaDateTime ct = QCaDateTime ::currentDateTime();
+    double tsDiff = ct.secondsTo (timestamp);
+    if( tsDiff > 0.1 )
+    {
+        timestamp = ct.addMSecs( 100 );
+    }
+
+    // Else, If the date is a long way in the past, limit to a small amount.
+    // This will happen if the source is on another machine with an incorrect time.
+    // Allow a bit of time (500mS) as machines will not be synchronised perfectly and for network latency hichups.
+    // If this is not done and we are adding a last point at the current time, there will always be a flat bit of line at the end of the plot.
+    else if( tsDiff < -0.5 )
+    {
+        timestamp = ct.addMSecs( -500 );
+    }
+
     // Select the curve information for this variable
     trace* tr = &traces[variableIndex];
 
@@ -235,6 +298,17 @@ void QEPlot::setPlotData( const double value, QCaAlarmInfo& alarmInfo, QCaDateTi
         tr->timeStamps.clear();
         tr->ydata.clear();
         tr->xdata.clear();
+        tr->hasCurrentPoint = false;
+    }
+
+    // If the last point was repeated at the current time to ensure the trace is displayed up to the current time, remove it
+    if( tr->hasCurrentPoint )
+    {
+        int size = tr->xdata.size();
+        tr->timeStamps.remove(size-1);
+        tr->ydata.remove(size-1);
+        tr->xdata.remove(size-1);
+        tr->hasCurrentPoint = false;
     }
 
     // Add the new data point
@@ -295,6 +369,7 @@ void QEPlot::setPlotData( const QVector<double>& values, QCaAlarmInfo& alarmInfo
     tr->xdata.clear();
     tr->ydata.clear();
     tr->timeStamps.clear();
+    tr->hasCurrentPoint = false;
 
     // If no increment was supplied, use 1 by default
     double inc;
@@ -372,6 +447,30 @@ void QEPlot::tickTimeout()
         trace* tr = &traces[i];
         if( tr->curve && !tr->waveform )
         {
+            // Ensure the trace continues all the way up to the current time regardless of when the last point appeared
+
+            // If there is any data...
+            int size = tr->ydata.size();
+            if( size )
+            {
+                // If there is a simulated 'current' point...
+                if( tr->hasCurrentPoint )
+                {
+                    // ...update it to the current time
+                    tr->timeStamps[size-1] = QDateTime::currentDateTime();
+                }
+                // If there is no simulated 'current' point...
+                else
+                {
+                    // ...duplicate the last point at the current time
+                    tr->timeStamps.append( QDateTime::currentDateTime() );
+                    tr->ydata.append( tr->ydata[size-1] );
+                    tr->xdata.append( tr->xdata[size-1] );
+                    tr->hasCurrentPoint = true;
+                }
+            }
+
+            // Recalculate where the points now are and display them
             regenerateTickXData( i );
             setPlotDataCommon( i );
         }
@@ -465,7 +564,7 @@ void QEPlot::setYMin( double yMinIn )
         setAxisScale( yLeft, yMin, yMax );
     }
 }
-double QEPlot::getYMin()
+double QEPlot::getYMin() const
 {
     return yMin;
 }
@@ -479,7 +578,7 @@ void QEPlot::setYMax( double yMaxIn )
         setAxisScale( yLeft, yMin, yMax );
     }
 }
-double QEPlot::getYMax()
+double QEPlot::getYMax() const
 {
     return yMax;
 }
@@ -499,7 +598,7 @@ void QEPlot::setAutoScale( bool autoScaleIn )
         setAxisScale( yLeft, yMin, yMax );
     }
 }
-bool QEPlot::getAutoScale()
+bool QEPlot::getAutoScale() const
 {
     return autoScale;
 }
@@ -511,7 +610,7 @@ void QEPlot::setAxisEnableX( bool axisEnableXIn )
     enableAxis( xBottom, axisEnableX );
 }
 
-bool QEPlot::getAxisEnableX()
+bool QEPlot::getAxisEnableX() const
 {
     return axisEnableX;
 }
@@ -523,7 +622,7 @@ void QEPlot::setAxisEnableY( bool axisEnableYIn )
     enableAxis( yLeft, axisEnableY );
 }
 
-bool QEPlot::getAxisEnableY()
+bool QEPlot::getAxisEnableY() const
 {
     return axisEnableY;
 }
@@ -534,21 +633,25 @@ void QEPlot::setGridEnableMajorX( bool gridEnableMajorXIn )
     gridEnableMajorX = gridEnableMajorXIn;
     setGridEnable();
 }
+
 void QEPlot::setGridEnableMajorY( bool gridEnableMajorYIn )
 {
     gridEnableMajorY = gridEnableMajorYIn;
     setGridEnable();
 }
+
 void QEPlot::setGridEnableMinorX( bool gridEnableMinorXIn )
 {
     gridEnableMinorX = gridEnableMinorXIn;
     setGridEnable();
 }
+
 void QEPlot::setGridEnableMinorY( bool gridEnableMinorYIn )
 {
     gridEnableMinorY = gridEnableMinorYIn;
     setGridEnable();
 }
+
 void QEPlot::setGridEnable()
 {
     // If any grid is required, create a grid and set it up
@@ -583,19 +686,23 @@ void QEPlot::setGridEnable()
         }
     }
 }
-bool QEPlot::getGridEnableMajorX()
+
+bool QEPlot::getGridEnableMajorX() const
 {
     return gridEnableMajorX;
 }
-bool QEPlot::getGridEnableMajorY()
+
+bool QEPlot::getGridEnableMajorY() const
 {
     return gridEnableMajorY;
 }
-bool QEPlot::getGridEnableMinorX()
+
+bool QEPlot::getGridEnableMinorX() const
 {
     return gridEnableMinorX;
 }
-bool QEPlot::getGridEnableMinorY()
+
+bool QEPlot::getGridEnableMinorY() const
 {
     return gridEnableMinorY;
 }
@@ -614,6 +721,7 @@ void QEPlot::setGridMajorColor( QColor gridMajorColorIn )
 #endif
     }
 }
+
 void QEPlot::setGridMinorColor( QColor gridMinorColorIn )
 {
     gridMinorColor = gridMinorColorIn;
@@ -626,11 +734,13 @@ void QEPlot::setGridMinorColor( QColor gridMinorColorIn )
 #endif
     }
 }
-QColor QEPlot::getGridMajorColor()
+
+QColor QEPlot::getGridMajorColor() const
 {
     return gridMajorColor;
 }
-QColor QEPlot::getGridMinorColor()
+
+QColor QEPlot::getGridMinorColor() const
 {
     return gridMinorColor;
 }
@@ -638,7 +748,7 @@ QColor QEPlot::getGridMinorColor()
 
 // Access functions for title
 // No QEPlot::setTitle() needed. Uses QwtPlot::setTitle()
-QString QEPlot::getTitle()
+QString QEPlot::getTitle() const
 {
     return title().text();
 }
@@ -654,7 +764,8 @@ void    QEPlot::setBackgroundColor( QColor backgroundColor )
     setCanvasBackground( backgroundColor );
 #endif
 }
-QColor QEPlot::getBackgroundColor()
+
+QColor QEPlot::getBackgroundColor() const
 {
 #if QWT_VERSION >= 0x060000
     return canvasBackground().color();
@@ -673,7 +784,7 @@ void QEPlot::setTraceStyle( QwtPlotCurve::CurveStyle traceStyle, const unsigned 
     }
 }
 
-QwtPlotCurve::CurveStyle QEPlot::getTraceStyle( const unsigned int variableIndex )
+QwtPlotCurve::CurveStyle QEPlot::getTraceStyle( const unsigned int variableIndex ) const
 {
     return traces[variableIndex].style;
 }
@@ -683,19 +794,21 @@ void QEPlot::setTraceColor( QColor traceColor, const unsigned int variableIndex 
     traces[variableIndex].color = traceColor;
     setCurveColor( traceColor, variableIndex );
 }
+
 void QEPlot::setTraceColor1( QColor traceColor ){ setTraceColor( traceColor, 0 ); }
 void QEPlot::setTraceColor2( QColor traceColor ){ setTraceColor( traceColor, 1 ); }
 void QEPlot::setTraceColor3( QColor traceColor ){ setTraceColor( traceColor, 2 ); }
 void QEPlot::setTraceColor4( QColor traceColor ){ setTraceColor( traceColor, 3 ); }
 
-QColor QEPlot::getTraceColor( const unsigned int variableIndex )
+QColor QEPlot::getTraceColor( const unsigned int variableIndex ) const
 {
     return traces[variableIndex].color;
 }
-QColor QEPlot::getTraceColor1(){ return getTraceColor( 0 ); }
-QColor QEPlot::getTraceColor2(){ return getTraceColor( 1 ); }
-QColor QEPlot::getTraceColor3(){ return getTraceColor( 2 ); }
-QColor QEPlot::getTraceColor4(){ return getTraceColor( 3 ); }
+
+QColor QEPlot::getTraceColor1() const { return getTraceColor( 0 ); }
+QColor QEPlot::getTraceColor2() const { return getTraceColor( 1 ); }
+QColor QEPlot::getTraceColor3() const { return getTraceColor( 2 ); }
+QColor QEPlot::getTraceColor4() const { return getTraceColor( 3 ); }
 
 // Access functions for traceLegend
 void QEPlot::setTraceLegend( QString traceLegend, const unsigned int variableIndex ){
@@ -717,26 +830,29 @@ void QEPlot::setTraceLegend( QString traceLegend, const unsigned int variableInd
         tr->curve->setTitle( traceLegend );
     }
 }
+
 void QEPlot::setTraceLegend1( QString traceLegend ){ setTraceLegend( traceLegend, 0 ); }
 void QEPlot::setTraceLegend2( QString traceLegend ){ setTraceLegend( traceLegend, 1 ); }
 void QEPlot::setTraceLegend3( QString traceLegend ){ setTraceLegend( traceLegend, 2 ); }
 void QEPlot::setTraceLegend4( QString traceLegend ){ setTraceLegend( traceLegend, 3 ); }
 
-QString QEPlot::getTraceLegend( const unsigned int variableIndex )
+QString QEPlot::getTraceLegend( const unsigned int variableIndex ) const
 {
     return traces[variableIndex].legend;
 }
-QString QEPlot::getTraceLegend1(){ return getTraceLegend( 0 ); }
-QString QEPlot::getTraceLegend2(){ return getTraceLegend( 1 ); }
-QString QEPlot::getTraceLegend3(){ return getTraceLegend( 2 ); }
-QString QEPlot::getTraceLegend4(){ return getTraceLegend( 3 ); }
+
+QString QEPlot::getTraceLegend1() const { return getTraceLegend( 0 ); }
+QString QEPlot::getTraceLegend2() const { return getTraceLegend( 1 ); }
+QString QEPlot::getTraceLegend3() const { return getTraceLegend( 2 ); }
+QString QEPlot::getTraceLegend4() const { return getTraceLegend( 3 ); }
 
 // Access functions for xUnit
 void    QEPlot::setXUnit( QString xUnit )
 {
     setAxisTitle(xBottom, xUnit);
 }
-QString QEPlot::getXUnit()
+
+QString QEPlot::getXUnit() const
 {
     return axisTitle( xBottom ).text();
 }
@@ -746,7 +862,8 @@ void    QEPlot::setYUnit( QString yUnit )
 {
     setAxisTitle( yLeft, yUnit );
 }
-QString QEPlot::getYUnit()
+
+QString QEPlot::getYUnit() const
 {
     return axisTitle( yLeft ).text();
 }
@@ -756,7 +873,8 @@ void QEPlot::setXStart( double xStartIn )
 {
     xStart = xStartIn;
 }
-double QEPlot::getXStart()
+
+double QEPlot::getXStart() const
 {
     return xStart;
 }
@@ -766,7 +884,8 @@ void QEPlot::setXIncrement( double xIncrementIn )
 {
     xIncrement = xIncrementIn;
 }
-double QEPlot::getXIncrement()
+
+double QEPlot::getXIncrement() const
 {
     return xIncrement;
 }
@@ -776,7 +895,8 @@ void QEPlot::setTimeSpan( unsigned int timeSpanIn )
 {
     timeSpan = timeSpanIn;
 }
-unsigned int QEPlot::getTimeSpan()
+
+unsigned int QEPlot::getTimeSpan() const
 {
     return timeSpan;
 }
@@ -784,14 +904,15 @@ unsigned int QEPlot::getTimeSpan()
 // Access functions for tickRate
 void QEPlot::setTickRate( unsigned int tickRateIn )
 {
-    tickRate = tickRateIn;
+    tickRate = MAX (20, tickRateIn);   // Limit to >= 20, i.e. <= 50 Hz.
     if( tickTimer )
     {
         tickTimer->stop();
         tickTimer->start( tickRate );
     }
 }
-unsigned int QEPlot::getTickRate()
+
+unsigned int QEPlot::getTickRate() const
 {
     return tickRate;
 }

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013, 2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -28,12 +28,13 @@
 #define QE_GRAPHIC_NAMES_H
 
 #include <QVector>
+#include <QEPluginLibrary_global.h>
 
 // Define grapjic specific names (enumerations). We use a class as opposed to
 // a namespace so that QEGraphic and QEGraphicMarkup classes can just inherit
 // from this class.
 //
-class QEGraphicNames {
+class QEPLUGINLIBRARYSHARED_EXPORT QEGraphicNames {
 public:
 
    typedef QVector<double> DoubleVector;
@@ -67,7 +68,8 @@ public:
       VerticalLine_1    = 0x0100,
       VerticalLine_2    = 0x0200,
       VerticalLine_3    = 0x0400,
-      VerticalLine_4    = 0x0800
+      VerticalLine_4    = 0x0800,
+      Box               = 0x1000
    };
 
    Q_DECLARE_FLAGS (MarkupFlags, Markups)

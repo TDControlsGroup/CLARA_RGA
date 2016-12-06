@@ -24,7 +24,6 @@
 #include "QEAnalogIndicator.h"
 #include "QEAnalogProgressBar.h"
 #include "QELabel.h"
-#include "QELineEdit.h"
 #include "QEPushButton.h"
 #include "RgaLed.h"
 
@@ -45,19 +44,17 @@ public:
     QLabel *label_11;
     QLabel *label_12;
     QFrame *line;
-    QLabel *label_13;
+    QLabel *archDt_2;
     QLabel *label_18;
     QLabel *label_19;
     QLabel *label_20;
     QLabel *label_21;
     RgaLed *box_1;
-    QGroupBox *scan_2;
+    QGroupBox *Archiver;
     QEPushButton *archStop;
     QLabel *label_7;
-    QELineEdit *archDT;
     QEPushButton *archStart;
-    QEPushButton *resetTO;
-    QLabel *label_9;
+    QELabel *archDt;
     RgaLed *box_2;
     RgaLed *box_3;
     RgaLed *box_4;
@@ -144,9 +141,9 @@ public:
         line->setGeometry(QRect(0, 200, 71, 16));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
-        label_13 = new QLabel(Mode);
-        label_13->setObjectName(QStringLiteral("label_13"));
-        label_13->setGeometry(QRect(10, 220, 61, 16));
+        archDt_2 = new QLabel(Mode);
+        archDt_2->setObjectName(QStringLiteral("archDt_2"));
+        archDt_2->setGeometry(QRect(10, 220, 61, 16));
         label_18 = new QLabel(Mode);
         label_18->setObjectName(QStringLiteral("label_18"));
         label_18->setGeometry(QRect(10, 250, 41, 16));
@@ -162,28 +159,22 @@ public:
         box_1 = new RgaLed(scan);
         box_1->setObjectName(QStringLiteral("box_1"));
         box_1->setGeometry(QRect(100, 20, 71, 371));
-        scan_2 = new QGroupBox(scan);
-        scan_2->setObjectName(QStringLiteral("scan_2"));
-        scan_2->setGeometry(QRect(530, 260, 161, 131));
-        archStop = new QEPushButton(scan_2);
+        Archiver = new QGroupBox(scan);
+        Archiver->setObjectName(QStringLiteral("Archiver"));
+        Archiver->setGeometry(QRect(530, 260, 161, 131));
+        archStop = new QEPushButton(Archiver);
         archStop->setObjectName(QStringLiteral("archStop"));
         archStop->setGeometry(QRect(10, 50, 81, 20));
-        label_7 = new QLabel(scan_2);
+        label_7 = new QLabel(Archiver);
         label_7->setObjectName(QStringLiteral("label_7"));
         label_7->setGeometry(QRect(10, 70, 101, 16));
-        archDT = new QELineEdit(scan_2);
-        archDT->setObjectName(QStringLiteral("archDT"));
-        archDT->setGeometry(QRect(10, 90, 141, 20));
-        archDT->setProperty("format", QVariant(QELineEdit::Default));
-        archStart = new QEPushButton(scan_2);
+        archStart = new QEPushButton(Archiver);
         archStart->setObjectName(QStringLiteral("archStart"));
         archStart->setGeometry(QRect(10, 20, 81, 31));
-        resetTO = new QEPushButton(scan_2);
-        resetTO->setObjectName(QStringLiteral("resetTO"));
-        resetTO->setGeometry(QRect(100, 30, 41, 21));
-        label_9 = new QLabel(scan_2);
-        label_9->setObjectName(QStringLiteral("label_9"));
-        label_9->setGeometry(QRect(100, 10, 51, 16));
+        archDt = new QELabel(Archiver);
+        archDt->setObjectName(QStringLiteral("archDt"));
+        archDt->setGeometry(QRect(10, 100, 131, 16));
+        archDt->setProperty("format", QVariant(QELabel::Time));
         box_2 = new RgaLed(scan);
         box_2->setObjectName(QStringLiteral("box_2"));
         box_2->setGeometry(QRect(170, 20, 71, 371));
@@ -360,13 +351,13 @@ public:
         label_10->setText(QApplication::translate("mainWindow", "1-200", 0));
         label_11->setText(QApplication::translate("mainWindow", "Single Scan", 0));
         label_12->setText(QApplication::translate("mainWindow", "STOP", 0));
-        label_13->setText(QApplication::translate("mainWindow", "Archive On", 0));
+        archDt_2->setText(QApplication::translate("mainWindow", "Archive On", 0));
         label_18->setText(QApplication::translate("mainWindow", "Mode", 0));
         label_19->setText(QApplication::translate("mainWindow", "Tiimouts", 0));
         label_20->setText(QApplication::translate("mainWindow", "Next ANA", 0));
         label_21->setText(QApplication::translate("mainWindow", "seconds", 0));
         box_1->setTitle(QApplication::translate("mainWindow", "RGA", 0));
-        scan_2->setTitle(QApplication::translate("mainWindow", "Archiver", 0));
+        Archiver->setTitle(QApplication::translate("mainWindow", "Archiver", 0));
         archStop->setText(QApplication::translate("mainWindow", "Stop", 0));
         archStop->setProperty("variable", QVariant(QApplication::translate("mainWindow", "$(GRGA):ARCH", 0)));
         archStop->setProperty("altReadbackVariable", QVariant(QString()));
@@ -380,13 +371,8 @@ public:
         archStart->setProperty("variableSubstitutions", QVariant(QString()));
         archStart->setClickText(QApplication::translate("mainWindow", "1", 0));
         archStart->setClickCheckedText(QString());
-        resetTO->setText(QApplication::translate("mainWindow", "Rst", 0));
-        resetTO->setProperty("variable", QVariant(QApplication::translate("mainWindow", "$(GRGA):ARCH", 0)));
-        resetTO->setProperty("altReadbackVariable", QVariant(QString()));
-        resetTO->setProperty("variableSubstitutions", QVariant(QString()));
-        resetTO->setClickText(QApplication::translate("mainWindow", "1", 0));
-        resetTO->setClickCheckedText(QString());
-        label_9->setText(QApplication::translate("mainWindow", "Timeout:", 0));
+        archDt->setProperty("variable", QVariant(QString()));
+        archDt->setText(QApplication::translate("mainWindow", "0 00:18:34", 0));
         box_2->setTitle(QApplication::translate("mainWindow", "RGA", 0));
         box_3->setTitle(QApplication::translate("mainWindow", "RGA", 0));
         box_4->setTitle(QApplication::translate("mainWindow", "RGA", 0));

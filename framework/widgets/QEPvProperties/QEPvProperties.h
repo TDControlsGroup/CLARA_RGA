@@ -23,12 +23,12 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-/* The QEPvProperties class allows user to view all the displayalbe fields
+/* The QEPvProperties class allows user to view all the displayable fields
    of the associated IOC record.
 */
 
-#ifndef QEPVPROPERTIES_H
-#define QEPVPROPERTIES_H
+#ifndef QE_PV_PROPERTIES_H
+#define QE_PV_PROPERTIES_H
 
 #include <QAction>
 #include <QLabel>
@@ -54,10 +54,13 @@
 #include <QEStringFormatting.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <QEWidget.h>
+#include <QEQuickSort.h>
+#include <QEOneToOne.h>
 
+class QEPLUGINLIBRARYSHARED_EXPORT QEPvProperties : public QEFrame, QEQuickSort {
+   Q_OBJECT
 
-class QEPLUGINLIBRARYSHARED_EXPORT QEPvProperties : public QEFrame {
-Q_OBJECT
+   typedef QEFrame ParentWidgetClass;
 
     // BEGIN-SINGLE-VARIABLE-PROPERTIES ===============================================
     // Single Variable properties
@@ -91,6 +94,11 @@ public:
     // END-SINGLE-VARIABLE-PROPERTIES =================================================
 
 public:
+    enum OwnContextMenuOptions { PVPROP_NONE = CM_SPECIFIC_WIDGETS_START_HERE,
+                                 PVPROP_SORT_FIELD_NAMES,
+                                 PVPROP_RESET_FIELD_NAMES,
+                                 PVPROP_SUB_CLASS_WIDGETS_START_HERE };
+
    // Constructors
    //
    QEPvProperties (QWidget*  parent = 0);
@@ -99,9 +107,15 @@ public:
 
    QSize sizeHint () const;
 
-
 protected:
-   void resizeEvent ( QResizeEvent*  event );
+   void resizeEvent (QResizeEvent*  event);
+
+   QMenu* buildContextMenu ();                        // Extend the QE generic context menu
+   void contextMenuTriggered (int selectedItemNum);   // An action was selected from the context menu
+
+   bool itemLessThan (const int a, const int b, QObject* context = NULL) const;
+   void swapItems (const int a, const int b, QObject* context = NULL);
+
    void establishConnection (unsigned int variableIndex);
 
    // Override QCaObject/QEWidget functions.
@@ -122,10 +136,9 @@ protected:
 
    // Copy paste
    //
-   QString copyVariable();
-   QVariant copyData();
+   QString copyVariable ();
+   QVariant copyData ();
    void paste (QVariant s);
-
 
 private:
    enum PVReadModes {
@@ -157,14 +170,11 @@ private:
    QHBoxLayout* hlayouts [6];
 
    QTableWidget* table;
-   QMenu* tableContextMenu;
    QFrame* enumerationFrame;
    QLabelList enumerationLabelList;
    QScrollArea* enumerationScroll;
    QEResizeableFrame*  enumerationResize;
    QVBoxLayout* vlayout;
-
-   void createInternalWidgets ();
 
    QString recordBaseName;
    QEStringFormatting fieldStringFormatting;
@@ -173,9 +183,25 @@ private:
    QEString* alternateRecordType;
 
    QList<QEString *> fieldChannels;
+   bool fieldsAreSorted;
+
+   // Not used other than as quick sort contexts
+   //
+   QObject sortContext;
+   QObject resetContext;
+
+   // Map channel variable index  <==>  table row
+   //
+   QEOneToOne <unsigned int, int> variableIndexTableRowMap;
+
+   // When not empty, this is the (context menu) selected field PV.
+   // When empty, this is interpretted as the main PV name.
+   //
+   QString contextMenuPvName;
 
    // common constructor function.
    void common_setup ();
+   void createInternalWidgets ();
    void clearFieldChannels ();
 
    void setUpLabelChannel ();
@@ -191,6 +217,8 @@ private:
    // Set pvName.
    //
    void setPvName (const QString& pvName);
+
+   void addEditPvToMenu (QMenu* menu);
 
 private slots:
    void useNewVariableNameProperty (QString variableNameIn,
@@ -217,18 +245,15 @@ private slots:
                        QCaDateTime & dateTime,
                        const unsigned int & variableIndex);
 
-   // from own combo box.
-   //
-   void boxCurrentIndexChanged (int index);
+   void boxCurrentIndexChanged (int index);                    // From own combo box.
+   void customValueContextMenuRequested (const QPoint & pos);  // Form value label
+   void customTableContextMenuRequested (const QPoint & pos);  // Form the table.
 
-   // For the table.
-   //
-   void customContextMenuRequested (const QPoint & pos);
-   void customContextMenuTriggered (QAction* selectedItem);
+   void tableHeaderClicked (int index);
 
 signals:
-   void setCurrentBoxIndex (int index);
+   void setCurrentBoxIndex (int index);           // connected to own combo box
 
 };
 
-# endif  // QEPVPROPERTIES_H
+# endif  // QE_PV_PROPERTIES_H

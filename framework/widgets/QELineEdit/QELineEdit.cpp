@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2012 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -30,7 +30,9 @@
 
 #include <QELineEdit.h>
 #include <QMessageBox>
+#include <QDebug>
 
+#define DEBUG qDebug () << "QELineEdit.cpp" << __LINE__ << __FUNCTION__ << "  "
 
 /*
     Constructor with no initialisation
@@ -62,8 +64,15 @@ void QELineEdit::setup()
 */
 qcaobject::QCaObject* QELineEdit::createQcaItem( unsigned int variableIndex ) {
 
+    qcaobject::QCaObject* result = NULL;
+
     // Create the item as a QEString
-    return new QEString( getSubstitutedVariableName( variableIndex ), this, &stringFormatting, variableIndex );
+    result = new QEString( getSubstitutedVariableName( variableIndex ), this, &stringFormatting, variableIndex );
+
+    // Apply current array index to new QCaObject
+    setQCaArrayIndex( result );
+
+    return result;
 }
 
 /*
@@ -121,18 +130,44 @@ QVariant QELineEdit::getValue()
    return QVariant (text());
 }
 
-// Wite the given value to the associated channel.
+// Write the given value to the associated channel.
 //
-bool QELineEdit::writeData (const QVariant & value, QString& message)
+bool QELineEdit::writeData (const QVariant& value, QString& message)
 {
-    QEString *qca = dynamic_cast <QEString*> ( getQcaItem(0) );
+    bool result = false;
 
+    QEString *qca = dynamic_cast <QEString*> ( getQcaItem(0) );
     if( qca ) {
-       return qca->writeString( value.toString (), message);
+
+        // Should this logic be relocated into QEString?
+        //
+        switch( getArrayAction() ){
+
+        case QEStringFormatting::ASCII:
+            // convert string to zero terninates int array.
+            //
+            result = qca->writeString( value.toString (), message );
+            break;
+
+        case QEStringFormatting::INDEX:
+            // Update specifiec element and write.
+            //
+            result = qca->writeStringElement( value.toString (), message );
+            break;
+
+        case QEStringFormatting::APPEND:
+        default:
+            message = "Invalid arrayAction property";
+            result = false;
+            break;
+        }
+
     } else {
         message = "null qca object";
-        return false;
+        result =  false;
     }
+
+    return result;
 }
 
 // end

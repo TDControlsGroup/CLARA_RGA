@@ -30,7 +30,7 @@ class Ui_mainBar
 {
 public:
     QWidget *centralwidget;
-    QWidget *layoutWidget_6;
+    QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_14;
     QELabel *name_01;
@@ -84,18 +84,16 @@ public:
     {
         if (mainBar->objectName().isEmpty())
             mainBar->setObjectName(QStringLiteral("mainBar"));
-        mainBar->resize(1017, 847);
+        mainBar->resize(1050, 729);
         centralwidget = new QWidget(mainBar);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        layoutWidget_6 = new QWidget(centralwidget);
-        layoutWidget_6->setObjectName(QStringLiteral("layoutWidget_6"));
-        layoutWidget_6->setGeometry(QRect(30, 60, 933, 642));
-        horizontalLayout_5 = new QHBoxLayout(layoutWidget_6);
+        verticalLayout = new QVBoxLayout(centralwidget);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
         verticalLayout_14 = new QVBoxLayout();
         verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
-        name_01 = new QELabel(layoutWidget_6);
+        name_01 = new QELabel(centralwidget);
         name_01->setObjectName(QStringLiteral("name_01"));
         QFont font;
         font.setPointSize(12);
@@ -107,91 +105,91 @@ public:
 
         verticalLayout_14->addWidget(name_01);
 
-        name_02 = new QELabel(layoutWidget_6);
+        name_02 = new QELabel(centralwidget);
         name_02->setObjectName(QStringLiteral("name_02"));
         name_02->setFont(font);
         name_02->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_02);
 
-        name_03 = new QELabel(layoutWidget_6);
+        name_03 = new QELabel(centralwidget);
         name_03->setObjectName(QStringLiteral("name_03"));
         name_03->setFont(font);
         name_03->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_03);
 
-        name_04 = new QELabel(layoutWidget_6);
+        name_04 = new QELabel(centralwidget);
         name_04->setObjectName(QStringLiteral("name_04"));
         name_04->setFont(font);
         name_04->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_04);
 
-        name_05 = new QELabel(layoutWidget_6);
+        name_05 = new QELabel(centralwidget);
         name_05->setObjectName(QStringLiteral("name_05"));
         name_05->setFont(font);
         name_05->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_05);
 
-        name_06 = new QELabel(layoutWidget_6);
+        name_06 = new QELabel(centralwidget);
         name_06->setObjectName(QStringLiteral("name_06"));
         name_06->setFont(font);
         name_06->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_06);
 
-        name_07 = new QELabel(layoutWidget_6);
+        name_07 = new QELabel(centralwidget);
         name_07->setObjectName(QStringLiteral("name_07"));
         name_07->setFont(font);
         name_07->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_07);
 
-        name_08 = new QELabel(layoutWidget_6);
+        name_08 = new QELabel(centralwidget);
         name_08->setObjectName(QStringLiteral("name_08"));
         name_08->setFont(font);
         name_08->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_08);
 
-        name_09 = new QELabel(layoutWidget_6);
+        name_09 = new QELabel(centralwidget);
         name_09->setObjectName(QStringLiteral("name_09"));
         name_09->setFont(font);
         name_09->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_09);
 
-        name_10 = new QELabel(layoutWidget_6);
+        name_10 = new QELabel(centralwidget);
         name_10->setObjectName(QStringLiteral("name_10"));
         name_10->setFont(font);
         name_10->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_10);
 
-        name_11 = new QELabel(layoutWidget_6);
+        name_11 = new QELabel(centralwidget);
         name_11->setObjectName(QStringLiteral("name_11"));
         name_11->setFont(font);
         name_11->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_11);
 
-        name_12 = new QELabel(layoutWidget_6);
+        name_12 = new QELabel(centralwidget);
         name_12->setObjectName(QStringLiteral("name_12"));
         name_12->setFont(font);
         name_12->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_12);
 
-        name_13 = new QELabel(layoutWidget_6);
+        name_13 = new QELabel(centralwidget);
         name_13->setObjectName(QStringLiteral("name_13"));
         name_13->setFont(font);
         name_13->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_14->addWidget(name_13);
 
-        name_14 = new QELabel(layoutWidget_6);
+        name_14 = new QELabel(centralwidget);
         name_14->setObjectName(QStringLiteral("name_14"));
         name_14->setFont(font);
         name_14->setProperty("notation", QVariant(QELabel::Scientific));
@@ -204,98 +202,98 @@ public:
         verticalLayout_15 = new QVBoxLayout();
         verticalLayout_15->setObjectName(QStringLiteral("verticalLayout_15"));
         verticalLayout_15->setSizeConstraint(QLayout::SetDefaultConstraint);
-        pres_01 = new QELabel(layoutWidget_6);
+        pres_01 = new QELabel(centralwidget);
         pres_01->setObjectName(QStringLiteral("pres_01"));
         pres_01->setFont(font);
         pres_01->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_01);
 
-        pres_02 = new QELabel(layoutWidget_6);
+        pres_02 = new QELabel(centralwidget);
         pres_02->setObjectName(QStringLiteral("pres_02"));
         pres_02->setFont(font);
         pres_02->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_02);
 
-        pres_03 = new QELabel(layoutWidget_6);
+        pres_03 = new QELabel(centralwidget);
         pres_03->setObjectName(QStringLiteral("pres_03"));
         pres_03->setFont(font);
         pres_03->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_03);
 
-        pres_04 = new QELabel(layoutWidget_6);
+        pres_04 = new QELabel(centralwidget);
         pres_04->setObjectName(QStringLiteral("pres_04"));
         pres_04->setFont(font);
         pres_04->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_04);
 
-        pres_05 = new QELabel(layoutWidget_6);
+        pres_05 = new QELabel(centralwidget);
         pres_05->setObjectName(QStringLiteral("pres_05"));
         pres_05->setFont(font);
         pres_05->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_05);
 
-        pres_06 = new QELabel(layoutWidget_6);
+        pres_06 = new QELabel(centralwidget);
         pres_06->setObjectName(QStringLiteral("pres_06"));
         pres_06->setFont(font);
         pres_06->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_06);
 
-        pres_07 = new QELabel(layoutWidget_6);
+        pres_07 = new QELabel(centralwidget);
         pres_07->setObjectName(QStringLiteral("pres_07"));
         pres_07->setFont(font);
         pres_07->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_07);
 
-        pres_08 = new QELabel(layoutWidget_6);
+        pres_08 = new QELabel(centralwidget);
         pres_08->setObjectName(QStringLiteral("pres_08"));
         pres_08->setFont(font);
         pres_08->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_08);
 
-        pres_09 = new QELabel(layoutWidget_6);
+        pres_09 = new QELabel(centralwidget);
         pres_09->setObjectName(QStringLiteral("pres_09"));
         pres_09->setFont(font);
         pres_09->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_09);
 
-        pres_10 = new QELabel(layoutWidget_6);
+        pres_10 = new QELabel(centralwidget);
         pres_10->setObjectName(QStringLiteral("pres_10"));
         pres_10->setFont(font);
         pres_10->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_10);
 
-        pres_11 = new QELabel(layoutWidget_6);
+        pres_11 = new QELabel(centralwidget);
         pres_11->setObjectName(QStringLiteral("pres_11"));
         pres_11->setFont(font);
         pres_11->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_11);
 
-        pres_12 = new QELabel(layoutWidget_6);
+        pres_12 = new QELabel(centralwidget);
         pres_12->setObjectName(QStringLiteral("pres_12"));
         pres_12->setFont(font);
         pres_12->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_12);
 
-        pres_13 = new QELabel(layoutWidget_6);
+        pres_13 = new QELabel(centralwidget);
         pres_13->setObjectName(QStringLiteral("pres_13"));
         pres_13->setFont(font);
         pres_13->setProperty("notation", QVariant(QELabel::Scientific));
 
         verticalLayout_15->addWidget(pres_13);
 
-        pres_14 = new QELabel(layoutWidget_6);
+        pres_14 = new QELabel(centralwidget);
         pres_14->setObjectName(QStringLiteral("pres_14"));
         pres_14->setFont(font);
         pres_14->setProperty("notation", QVariant(QELabel::Scientific));
@@ -308,7 +306,7 @@ public:
         verticalLayout_16 = new QVBoxLayout();
         verticalLayout_16->setObjectName(QStringLiteral("verticalLayout_16"));
         verticalLayout_16->setSizeConstraint(QLayout::SetMinimumSize);
-        bar_01 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_01 = new QEAnalogProgressBar(centralwidget);
         bar_01->setObjectName(QStringLiteral("bar_01"));
         bar_01->setMinimumSize(QSize(700, 40));
         bar_01->setMaximum(0.01);
@@ -323,7 +321,7 @@ public:
 
         verticalLayout_16->addWidget(bar_01);
 
-        bar_02 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_02 = new QEAnalogProgressBar(centralwidget);
         bar_02->setObjectName(QStringLiteral("bar_02"));
         bar_02->setMinimumSize(QSize(700, 40));
         bar_02->setMaximum(0.01);
@@ -337,7 +335,7 @@ public:
 
         verticalLayout_16->addWidget(bar_02);
 
-        bar_03 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_03 = new QEAnalogProgressBar(centralwidget);
         bar_03->setObjectName(QStringLiteral("bar_03"));
         bar_03->setMinimumSize(QSize(700, 40));
         bar_03->setMaximum(0.01);
@@ -351,7 +349,7 @@ public:
 
         verticalLayout_16->addWidget(bar_03);
 
-        bar_04 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_04 = new QEAnalogProgressBar(centralwidget);
         bar_04->setObjectName(QStringLiteral("bar_04"));
         bar_04->setMinimumSize(QSize(700, 40));
         bar_04->setMaximum(0.01);
@@ -365,7 +363,7 @@ public:
 
         verticalLayout_16->addWidget(bar_04);
 
-        bar_05 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_05 = new QEAnalogProgressBar(centralwidget);
         bar_05->setObjectName(QStringLiteral("bar_05"));
         bar_05->setMinimumSize(QSize(700, 40));
         bar_05->setMaximum(0.01);
@@ -379,7 +377,7 @@ public:
 
         verticalLayout_16->addWidget(bar_05);
 
-        bar_06 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_06 = new QEAnalogProgressBar(centralwidget);
         bar_06->setObjectName(QStringLiteral("bar_06"));
         bar_06->setMinimumSize(QSize(700, 40));
         bar_06->setMaximum(0.01);
@@ -393,7 +391,7 @@ public:
 
         verticalLayout_16->addWidget(bar_06);
 
-        bar_07 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_07 = new QEAnalogProgressBar(centralwidget);
         bar_07->setObjectName(QStringLiteral("bar_07"));
         bar_07->setMinimumSize(QSize(700, 40));
         bar_07->setMaximum(0.01);
@@ -407,7 +405,7 @@ public:
 
         verticalLayout_16->addWidget(bar_07);
 
-        bar_08 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_08 = new QEAnalogProgressBar(centralwidget);
         bar_08->setObjectName(QStringLiteral("bar_08"));
         bar_08->setMinimumSize(QSize(700, 40));
         bar_08->setMaximum(0.01);
@@ -421,7 +419,7 @@ public:
 
         verticalLayout_16->addWidget(bar_08);
 
-        bar_09 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_09 = new QEAnalogProgressBar(centralwidget);
         bar_09->setObjectName(QStringLiteral("bar_09"));
         bar_09->setMinimumSize(QSize(700, 40));
         bar_09->setMaximum(0.01);
@@ -435,7 +433,7 @@ public:
 
         verticalLayout_16->addWidget(bar_09);
 
-        bar_10 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_10 = new QEAnalogProgressBar(centralwidget);
         bar_10->setObjectName(QStringLiteral("bar_10"));
         bar_10->setMinimumSize(QSize(700, 40));
         bar_10->setMaximum(0.01);
@@ -449,7 +447,7 @@ public:
 
         verticalLayout_16->addWidget(bar_10);
 
-        bar_11 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_11 = new QEAnalogProgressBar(centralwidget);
         bar_11->setObjectName(QStringLiteral("bar_11"));
         bar_11->setMinimumSize(QSize(700, 40));
         bar_11->setMaximum(0.01);
@@ -463,7 +461,7 @@ public:
 
         verticalLayout_16->addWidget(bar_11);
 
-        bar_12 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_12 = new QEAnalogProgressBar(centralwidget);
         bar_12->setObjectName(QStringLiteral("bar_12"));
         bar_12->setMinimumSize(QSize(700, 40));
         bar_12->setMaximum(0.01);
@@ -477,7 +475,7 @@ public:
 
         verticalLayout_16->addWidget(bar_12);
 
-        bar_13 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_13 = new QEAnalogProgressBar(centralwidget);
         bar_13->setObjectName(QStringLiteral("bar_13"));
         bar_13->setMinimumSize(QSize(700, 40));
         bar_13->setMaximum(0.01);
@@ -491,7 +489,7 @@ public:
 
         verticalLayout_16->addWidget(bar_13);
 
-        bar_14 = new QEAnalogProgressBar(layoutWidget_6);
+        bar_14 = new QEAnalogProgressBar(centralwidget);
         bar_14->setObjectName(QStringLiteral("bar_14"));
         bar_14->setMinimumSize(QSize(700, 40));
         bar_14->setMaximum(0.01);
@@ -508,10 +506,13 @@ public:
 
         horizontalLayout_5->addLayout(verticalLayout_16);
 
+
+        verticalLayout->addLayout(horizontalLayout_5);
+
         mainBar->setCentralWidget(centralwidget);
         menubar = new QMenuBar(mainBar);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1017, 21));
+        menubar->setGeometry(QRect(0, 0, 1050, 21));
         mainBar->setMenuBar(menubar);
         statusbar = new QStatusBar(mainBar);
         statusbar->setObjectName(QStringLiteral("statusbar"));

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -27,7 +27,16 @@
 #ifndef QE_DESIGNER_PLUGIN_COMMON_H
 #define QE_DESIGNER_PLUGIN_COMMON_H
 
-#include <QDesignerFormEditorInterface>
+#include <QtGlobal>
+
+// Provide Qt version independent plugin-related includes.
+//
+#if (QT_VERSION >= 0x050500)
+#include <QtUiPlugin/QDesignerCustomWidgetInterface>
+#else
+#include <QDesignerCustomWidgetInterface>
+#endif
+
 #include <QIcon>
 #include <QObject>
 #include <QString>
@@ -43,7 +52,9 @@
 //
 // Macro formal parameter:
 // widgetName    - class type name (no quotes). The manager class name must be the
-//                 class name with Manager appened.
+//                 class name without Manager appended.
+//
+// Example: QE_DECLARE_PLUGIN_MANAGER (QESimpleShape)
 //
 #define QE_DECLARE_PLUGIN_MANAGER(widgetName)              \
 public:                                                    \
@@ -67,13 +78,17 @@ private:                                                   \
 //
 // Macro formal parameters:
 // widgetName    - class type name (no quotes). The manager class name must be the
-//                 class name with Manager appened, and the include file name must
+//                 class name without Manager appended, and the include file name must
 //                 be the class name with ".h" appended, e.g.:
 //                 QENumericEdit, QENumericEditManager, "QENumericEdit.h"
 // groupName     - string - typically "EPICS Widgets'
 // iconFilepath  - string - typically a resoure file ":/qe/.../classname.png"
 // containerFlag - true/false - typically false except for QEFrame, QEGroupBox and
 //                 other container widgets.
+//
+// Example: QE_IMPLEMENT_PLUGIN_MANAGER
+//             (QESimpleShape, "EPICSQt Monitors", ":/qe/simpleshape/QESimpleShape.png", false)
+//
 //
 #define QE_IMPLEMENT_PLUGIN_MANAGER(widgetName, groupName, iconFilepath, containerFlag)  \
                                                                                    \

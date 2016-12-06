@@ -1,4 +1,6 @@
-/*  This file is part of the EPICS QT Framework, initially developed at the
+/*  QEConfiguredLayout.h
+ *
+ *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or
@@ -14,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Ricardo Fernandes
@@ -22,8 +24,8 @@
  *    ricardo.fernandes@synchrotron.org.au
  */
 
-#ifndef QECONFIGUREDLAYOUT_H
-#define QECONFIGUREDLAYOUT_H
+#ifndef QE_CONFIGURED_LAYOUT_H
+#define QE_CONFIGURED_LAYOUT_H
 
 #include <QDialog>
 #include <QDomDocument>
@@ -36,7 +38,6 @@
 #include <QESpinBox.h>
 
 
-
 enum details
 {
     TOP,
@@ -46,14 +47,11 @@ enum details
 };
 
 
-
 enum configuration
 {
     FROM_FILE,
     FROM_TEXT
 };
-
-
 
 
 enum types
@@ -66,15 +64,11 @@ enum types
 };
 
 
-
-
-
 // ============================================================
 //  FIELD CLASS
 // ============================================================
 class _Field
 {
-
     private:
         QString name;
         QString processVariable;
@@ -84,7 +78,6 @@ class _Field
         bool visibility;
         bool join;
         int type;
-
 
     public:
         _Field();
@@ -121,20 +114,15 @@ class _Field
 };
 
 
-
-
-
 // ============================================================
 //  _ITEM CLASS
 // ============================================================
 class _Item
 {
-
     private:
         QString name;
         QString substitution;
         QString visible;
-
 
     public:
         _Item();
@@ -153,45 +141,29 @@ class _Item
 };
 
 
-
-
-
-
 // ============================================================
 //  _QPUSHBUTTONGROUP CLASS
 // ============================================================
 class _QPushButtonGroup:public QPushButton
 {
-
     Q_OBJECT
-
 
     private:
         QList <_Field *> *currentFieldList;
         QString itemName;
         QString groupName;
 
-
     public:
         _QPushButtonGroup(QWidget * pParent = 0, QString pItemName = "", QString pGroupName = "", QList <_Field *> *pCurrentFieldList = 0);
 
         void mouseReleaseEvent(QMouseEvent *qMouseEvent);
-
         void keyPressEvent(QKeyEvent *pKeyEvent);
-
         void showDialogGroup();
-
-
 
     public slots:
         void buttonGroupClicked();
 
-
 };
-
-
-
-
 
 
 // ============================================================
@@ -199,16 +171,13 @@ class _QPushButtonGroup:public QPushButton
 // ============================================================
 class _QDialogItem:public QDialog
 {
-
     Q_OBJECT
 
     private:
         QPushButton *qPushButtonClose;
 
-
     public:
         _QDialogItem(QWidget *pParent = 0, QString pItemName = "", QString pGroupName = "", QList <_Field *> *pCurrentFieldList = 0, Qt::WindowFlags pF = 0);
-
 
     private slots:
         void buttonCloseClicked();
@@ -216,21 +185,15 @@ class _QDialogItem:public QDialog
 };
 
 
-
-
-
-
 // ============================================================
 //  QECONFIGUREDLAYOUT CLASS
 // ============================================================
 class QEPLUGINLIBRARYSHARED_EXPORT QEConfiguredLayout:public QWidget, public QEWidget
 {
-
     Q_OBJECT
 
     private:
         void setConfiguration(QString pValue);
-
 
     protected:
         QLabel *qLabelItemDescription;
@@ -243,7 +206,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEConfiguredLayout:public QWidget, public QEW
         int optionsLayout;
         int currentUserType;
         bool subscription;
-
 
     public:
         QEConfiguredLayout(QWidget *pParent = 0, bool pSubscription = true);
@@ -323,30 +285,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEConfiguredLayout:public QWidget, public QEW
         {
             return (optionsLayoutProperty) getOptionsLayout();
         }
-
-
-
-        /*
-
-        Q_ENUMS(userTypesProperty)
-        Q_PROPERTY(userTypesProperty currentUserType READ getCurrentUserTypeProperty WRITE setCurrentUserTypeProperty)
-        enum userTypesProperty
-        {
-            User =      userLevelTypes::USERLEVEL_USER,
-            Scientist = userLevelTypes::USERLEVEL_SCIENTIST,
-            Engineer =  userLevelTypes::USERLEVEL_ENGINEER
-        };
-
-        void setCurrentUserTypeProperty(userTypesProperty pUserType)
-        {
-            setCurrentUserType((userTypesProperty) pUserType);
-        }
-        userTypesProperty getCurrentUserTypeProperty()
-        {
-            return (userTypesProperty) getCurrentUserType();
-        }
-        */
-
 
 
     // BEGIN-STANDARD-PROPERTIES ======================================================
@@ -464,8 +402,6 @@ public:
 public:
     // END-STANDARD-PROPERTIES ========================================================
 
-
-
     private slots:
         void comboBoxItemSelected(int);
 
@@ -473,6 +409,11 @@ public:
 
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEConfiguredLayout::configurationTypesProperty)
+Q_DECLARE_METATYPE (QEConfiguredLayout::optionsLayoutProperty)
+Q_DECLARE_METATYPE (QEConfiguredLayout::UserLevels)
+Q_DECLARE_METATYPE (QEConfiguredLayout::DisplayAlarmStateOptions)
+#endif
 
-
-#endif // QECONFIGUREDLAYOUT_H
+#endif // QE_CONFIGURED_LAYOUT_H

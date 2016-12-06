@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -32,7 +32,7 @@
 #include "QEPvLoadSaveItem.h"
 #include "QEPvLoadSaveModel.h"
 
-#define DEBUG  qDebug () << "QEPvLoadSaveModel::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG  qDebug () << "QEPvLoadSaveModel.cpp" << __LINE__ << __FUNCTION__ << "  "
 
 //-----------------------------------------------------------------------------
 //
@@ -43,6 +43,7 @@ QEPvLoadSaveModel::QEPvLoadSaveModel (QTreeView* treeViewIn, QEPvLoadSave* paren
    this->owner = parent;
    this->treeView = treeViewIn;
    this->requestedInsertItem = NULL;
+   this->selectedItem = NULL;
 
    // The core item is a QTreeView/QAbstractItemModel artefact
    // Note: this item does not/must not have a parent.
@@ -54,7 +55,7 @@ QEPvLoadSaveModel::QEPvLoadSaveModel (QTreeView* treeViewIn, QEPvLoadSave* paren
 
    // Associate this model with the treeView.
    //
-   this->treeView->setModel (this);                              // tree is a widget
+   this->treeView->setModel (this);        // tree is a widget
 
    this->treeView->installEventFilter (this);
 

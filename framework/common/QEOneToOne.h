@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -29,6 +29,7 @@
 #define QE_ONE_TO_ONE
 
 #include <QHash>
+#include <QEPluginLibrary_global.h>
 
 /// This template provides a one-to-one mapping from one type, the Domain type,
 /// to a another, possiblely the same, type, the CoDomain type. Despite the
@@ -48,7 +49,7 @@
 // this sort of construct has caused issue on some platforms.
 //
 template <class D, class C>
-class QEOneToOne {
+class QEPLUGINLIBRARYSHARED_EXPORT QEOneToOne {
 private:
    QHash <D,C> forward;
    QHash <C,D> inverse;
@@ -94,15 +95,6 @@ public:
       return this->inverse.contains (key);
    }
 
-   /// Removes the assoication containing specified key.
-   ///
-   bool removeF (const D& key) const {
-      return this->forward.remove (key);
-   }
-   bool removeI (const C& key) const {
-      return this->inverse.remove (key);
-   }
-
    /// Extracts the b/a value associated with a/b key. If the association does
    /// not contain a/b key, then returns A ()/ B()  as default.
    ///
@@ -123,7 +115,21 @@ public:
    D valueI (const C& key, const D& defaultValue) const {
       return this-> inverse.value (key, defaultValue);
    }
-};
 
+   /// Removes the assoication containing specified key.
+   ///
+   bool removeF (const D& dkey) {
+      const C& ckey = this->valueF (dkey);
+      bool b1 = this->forward.remove (dkey);
+      bool b2 = this->inverse.remove (ckey);
+      return b1 && b2;
+   }
+   bool removeI (const C& ckey) {
+      const D& dkey = this->valueI (ckey);
+      bool b1 = this->forward.remove (dkey);
+      bool b2 = this->inverse.remove (ckey);
+      return b1 && b2;
+   }
+};
 
 #endif  // QE_ONE_TO_ONE

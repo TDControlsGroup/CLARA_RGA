@@ -28,9 +28,8 @@
 #ifndef QE_BIT_STATUS_MANAGER_H
 #define QE_BIT_STATUS_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEBitStatusManager :
    public QObject, public QDesignerCustomWidgetInterface {

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -117,7 +117,8 @@ void VariableManager::deactivate()
 // This is called by the establishConnection function of CA aware widgets based on this class, such as a QELabel.
 // If successfull it will return the QCaObject based object supplying data update signals
 //
-qcaobject::QCaObject* VariableManager::createVariable( unsigned int variableIndex )
+qcaobject::QCaObject* VariableManager::createVariable( unsigned int variableIndex,
+                                                       const bool do_subscribe )
 {
 
     // If the index is invalid do nothing
@@ -140,7 +141,7 @@ qcaobject::QCaObject* VariableManager::createVariable( unsigned int variableInde
 
             qcaItem[variableIndex]->setUserMessage( (UserMessage*)this );
 
-            if( subscribe )
+            if( do_subscribe )
                 qcaItem[variableIndex]->subscribe();
         }
     }

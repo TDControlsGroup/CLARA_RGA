@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEPeriodic_H
-#define QEPeriodic_H
+#ifndef QE_PERIODIC_H
+#define QE_PERIODIC_H
 
 #include <QFrame>
 #include <QPushButton>
@@ -147,9 +147,30 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPeriodic : public QFrame, public QEWidget {
     double getVariableTolerance2();
 
     // user info
+    // Used regardless of the user info source (text property or a file)
     // This is the entire set of user information as an XML string. Not an individual element's user information
     void setUserInfo( QString userInfo );
     QString getUserInfo();
+
+    // User info text.
+    // Used to manage the user info text property
+    // This is the entire set of user information as an XML string. Not an individual element's user information
+    void setUserInfoText( QString userInfo );
+    QString getUserInfoText();
+
+    // user info filename
+    // This is name of a file containing the entire set of user information as an XML string.
+    void setUserInfoFile( QString userInfoFileIn );
+    QString getUserInfoFile();
+
+    // user info source options
+    enum userInfoSourceOptions { USER_INFO_SOURCE_TEXT,
+                                 USER_INFO_SOURCE_FILE, };
+    void setUserInfoSourceOption( userInfoSourceOptions userInfoSourceOptionIn );
+    userInfoSourceOptions getUserInfoSourceOption();
+
+    // The user info has changed (from the user info setup dialog), so update the current user info source
+    void updateUserInfoSource();
 
     // Get user values for an element
     bool getElementValues( QString symbol, double* value1, double* value2 );
@@ -199,6 +220,10 @@ public slots:
     void setup();
     qcaobject::QCaObject* createQcaItem( unsigned int variableIndex  );
 
+    void writeUserInfoFile();
+    void readUserInfoFile();
+
+
     bool isConnected;
 
     QEPeriodicComponentData writeButtonData;
@@ -214,6 +239,10 @@ public slots:
     void updatePresentationOptions();
 
     float elementMatch( int i, bool haveFirstVariable, double lastData1, bool haveSecondVariable, double lastData2 );
+
+    QString userInfoText;
+    QString userInfoFile;
+    userInfoSourceOptions userInfoSourceOption;
 
     // Drag and Drop
 protected:
@@ -445,10 +474,27 @@ public:
     Q_PROPERTY(double variableTolerance1 READ getVariableTolerance1 WRITE setVariableTolerance1)
     Q_PROPERTY(double variableTolerance2 READ getVariableTolerance2 WRITE setVariableTolerance2)
 
-    Q_PROPERTY(QString userInfo READ getUserInfo WRITE setUserInfo)
+    // This property should be called userInfoText. It was named userInfo before there was a choise of user info sources (text property or file)
+    Q_PROPERTY(QString userInfo READ getUserInfoText WRITE setUserInfoText)
 
+    Q_PROPERTY(QString userInfoFile READ getUserInfoFile WRITE setUserInfoFile)
+
+    Q_ENUMS(UserInfoSourceOptions)
+    Q_PROPERTY(UserInfoSourceOptions userInfoSourceOption READ getUserInfoSourceOptionProperty WRITE setUserInfoSourceOptionProperty)
+    enum UserInfoSourceOptions { userInfoSourceText = QEPeriodic::USER_INFO_SOURCE_TEXT,
+                               userInfoSourceFile = QEPeriodic::USER_INFO_SOURCE_FILE };
+    void setUserInfoSourceOptionProperty( UserInfoSourceOptions userInfoSourceOption ){ setUserInfoSourceOption( (QEPeriodic::userInfoSourceOptions)userInfoSourceOption ); }
+    UserInfoSourceOptions getUserInfoSourceOptionProperty(){ return (UserInfoSourceOptions)getUserInfoSourceOption(); }
 };
 
 Q_DECLARE_METATYPE(QEPeriodic::userInfoStructArray)
 
-#endif // QEPeriodic_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEPeriodic::UserLevels)
+Q_DECLARE_METATYPE (QEPeriodic::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QEPeriodic::PresentationOptions)
+Q_DECLARE_METATYPE (QEPeriodic::VariableTypes)
+Q_DECLARE_METATYPE (QEPeriodic::UserInfoSourceOptions)
+#endif
+
+#endif // QE_PERIODIC_H

@@ -26,9 +26,8 @@
 #ifndef QRADIO_GROUP_MANAGER_H
 #define QRADIO_GROUP_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QRadioGroupManager: public QObject, public QDesignerCustomWidgetInterface {
    Q_OBJECT

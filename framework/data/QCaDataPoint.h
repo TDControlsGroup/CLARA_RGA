@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,10 +24,10 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QCADATAPOINT_H
-#define QCADATAPOINT_H
+#ifndef QCA_DATA_POINT_H
+#define QCA_DATA_POINT_H
 
-#include <QList>
+#include <QVector>
 #include <QMetaType>
 #include <QString>
 #include <QTextStream>
@@ -62,29 +62,51 @@ public:
 // Defines a list of data points.
 //
 // Note this class orginally extended QList<QCaDataPoint>, but this way of
-// specificying this class has issues with the Windows Visual Studio Compiler.
+// specifying this class has issues with the Windows Visual Studio Compiler.
 // It has now been modified to include a QList<QCaDataPoint> member. The
 // downside of this is that we must now provide list member access functions.
 //
 class QEPLUGINLIBRARYSHARED_EXPORT QCaDataPointList  {
 public:
    explicit QCaDataPointList ();
+   ~QCaDataPointList ();
 
-   // Provide access to the inner list.
+   // Provide access to the inner vector.
    //
-   void clear ()                               { data.clear ();         }
-   void removeLast ()                          { data.removeLast ();    }
-   void removeFirst ()                         { data.removeFirst ();   }
+   void reserve (const int size);
+   void clear ();
+   void removeLast ();
+   void removeFirst ();
    void append (const QCaDataPointList& other);
-   void append (const QCaDataPoint& r)         { data.append (r);       }
-   void replace (int i, const QCaDataPoint &t) { data.replace (i, t);   }
-   int count () const                          { return data.count ();  }
-   QCaDataPoint value (const int j) const;
-   QCaDataPoint last () const                  { return data.last ();   }
+   void append (const QCaDataPoint& other);
+   void replace (const int i, const QCaDataPoint& t);
+   int count () const;
 
-   // Resamples the source list on points into current list.
-   // Items are resamples into data points at fixed time intervals.
-   // No interploation - the "current" value is carried forward tp the next sample point(s).
+   QCaDataPoint value (const int j) const;
+   QCaDataPoint last () const;
+
+   // Truncates the list at the given position index.
+   // If the specified position index is beyond the end of the list, nothing happens.
+   //
+   void truncate (const int position);
+
+   // Returns index of the last point with a time <= searchTime;
+   // or returns default index value if no point satifies the criteria
+   // Uses a binary search to find point of iterest.
+   // Note: assumes that the data point list is in increasing time order.
+   //
+   int indexBeforeTime (const QCaDateTime& searchTime,
+                        const int defaultIndex) const;
+
+   // Return a reference to the point nearest to the specified time or NULL.
+   // WARNING - do not store this reference. To be consider valid during the
+   // processing of a single event only.
+   //
+   const QCaDataPoint* findNearestPoint (const QCaDateTime& searchTime) const;
+
+   // Resamples the source list of points into current list.
+   // Items are resampled into data points at fixed time intervals.
+   // No interpolation - the "current" value is carried forward to the next sample point(s).
    // Note: any previous data is lost.
    //
    void resample (const QCaDataPointList& source,
@@ -101,7 +123,7 @@ public:
    void toStream (QTextStream& target, bool withIndex, bool withRelativeTime)  const;
 
 private:
-   QList<QCaDataPoint> data;
+   QVector<QCaDataPoint> data;
 };
 
 // These types are used in inter thread signals - must be registered.
@@ -109,4 +131,4 @@ private:
 Q_DECLARE_METATYPE (QCaDataPoint)
 Q_DECLARE_METATYPE (QCaDataPointList)
 
-#endif  // QCADATAPOINT_H
+#endif  // QCA_DATA_POINT_H

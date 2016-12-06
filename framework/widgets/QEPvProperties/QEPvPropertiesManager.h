@@ -1,4 +1,5 @@
-/*
+/*  QEPvPropertiesManager.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,15 +24,12 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEPVPROPERTIESMANAGER_H
-#define QEPVPROPERTIESMANAGER_H
+#ifndef QE_PV_PROPERTIES_MANAGER_H
+#define QE_PV_PROPERTIES_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
-/*
-    ???
-*/
 class QEPLUGINLIBRARYSHARED_EXPORT QEPvPropertiesManager :
    public QObject, 
    public QDesignerCustomWidgetInterface 
@@ -39,23 +37,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEPvPropertiesManager :
    Q_OBJECT
    Q_INTERFACES (QDesignerCustomWidgetInterface)
 
- public:
-   QEPvPropertiesManager (QObject * parent = 0);
-
-   bool isContainer () const;
-   bool isInitialized () const;
-   QIcon icon () const;
-   //QString domXml() const;
-   QString group () const;
-   QString includeFile () const;
-   QString name () const;
-   QString toolTip () const;
-   QString whatsThis () const;
-   QWidget *createWidget (QWidget * parent);
-   void initialize (QDesignerFormEditorInterface * core);
-
- private:
-    bool initialized;
+   QE_DECLARE_PLUGIN_MANAGER (QEPvProperties)
 };
 
-#endif                          // QEPVPROPERTIESMANAGER_H
+#endif // QE_PV_PROPERTIES_MANAGER_H

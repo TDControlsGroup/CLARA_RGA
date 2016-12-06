@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -49,9 +49,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QAnalogSlider : public QFrame {
 
 Q_OBJECT
 public:
-   /// Speficies the value.
-   Q_PROPERTY (double value          READ getValue            WRITE setValue)
-
    /// Precision used for the display and editing of numbers. The default is 4.
    /// Strictly speaking, this should be an unsigned int, but designer int properties
    /// editor much 'nicer'.
@@ -86,6 +83,9 @@ public:
 
    /// Enables/disables the apply value capability.
    Q_PROPERTY (bool showApply        READ getShowApply        WRITE setShowApply)
+
+   /// Speficies the value.
+   Q_PROPERTY (double value          READ getValue            WRITE setValue)
 
 public:
    /// Create with default title.

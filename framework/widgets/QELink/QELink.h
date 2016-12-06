@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QELINK_H
-#define QELINK_H
+#ifndef QE_LINK_H
+#define QE_LINK_H
 
 #include <QLabel>
 #include <QEWidget.h>
@@ -120,4 +120,8 @@ class QEPLUGINLIBRARYSHARED_EXPORT QELink : public QLabel, QEWidget {
 
 };
 
-#endif // QELINK_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QELink::ConditionNames)
+#endif
+
+#endif   // QE_LINK_H

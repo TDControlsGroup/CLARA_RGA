@@ -24,8 +24,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QRADIO_GROUP_H
-#define QRADIO_GROUP_H
+#ifndef Q_RADIO_GROUP_H
+#define Q_RADIO_GROUP_H
 
 #include <QGridLayout>
 #include <QList>
@@ -52,7 +52,15 @@ public:
 
    Q_ENUMS (ButtonStyles)
 
+   /// Enumrations values used to select the button order.
+   //
+   enum ButtonOrders { rowMajor,    ///< row by row button order - the default
+                       colMajor };  ///< col by col button order
+
+   Q_ENUMS (ButtonOrders)
+
    Q_PROPERTY (QRadioGroup::ButtonStyles buttonStyle READ getButtonStyle  WRITE setButtonStyle)
+   Q_PROPERTY (QRadioGroup::ButtonOrders buttonOrder READ getButtonOrder  WRITE setButtonOrder)
    Q_PROPERTY (int columns                           READ getColumns      WRITE setColumns)
    Q_PROPERTY (int spacing                           READ getSpacing      WRITE setSpacing)
    Q_PROPERTY (QStringList strings                   READ getStrings      WRITE setStrings)   // max 256 strings.
@@ -91,6 +99,9 @@ public:
    void setButtonStyle (const ButtonStyles buttonStyle);
    ButtonStyles getButtonStyle () const;
 
+   void setButtonOrder (const ButtonOrders buttonOrder);
+   ButtonOrders getButtonOrder () const;
+
 signals:
    void valueChanged (const int value);
 
@@ -114,7 +125,8 @@ private:
    int cols;
    int space;
    ButtonStyles buttonStyle;
-   bool emitValueChangeInhibited;
+   ButtonOrders buttonOrder;
+   bool emitValueChangeInhibited;  // inhibits valueChanged signal when true
 
    void internalSetValue (const int value);
    QAbstractButton* createButton (QWidget* parent);
@@ -127,4 +139,9 @@ private slots:
    void buttonClicked (bool checked);
 };
 
-#endif // QRADIO_GROUP_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QRadioGroup::ButtonStyles)
+Q_DECLARE_METATYPE (QRadioGroup::ButtonOrders)
+#endif
+
+#endif // Q_RADIO_GROUP_H

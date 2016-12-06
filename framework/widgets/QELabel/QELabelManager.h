@@ -25,7 +25,7 @@
 #ifndef QELABELMANAGER_H
 #define QELABELMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

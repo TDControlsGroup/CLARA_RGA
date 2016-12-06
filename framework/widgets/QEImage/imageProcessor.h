@@ -48,7 +48,6 @@ public:
     ~imageProcessor();                                                  ///< Destructor
 
     // Image update
-    void setImageBuff();                                                ///< Ensure the image buffer used to process images is appropriatly sized. This is called whenever an image attribute changes that may affect the buffer size required.
     void setImage( const QByteArray& imageIn, unsigned long dataSize ); ///< Save the image data for analysis processing and display
     void buildImage();                                                  ///< Generate a new image.
 
@@ -74,8 +73,7 @@ public:
     int getElementCount();                                                         ///< Determine the element count expected based on the available dimensions
     bool validateDimensions();                                                     ///< Determine if the image dimensional information is valid.
     void getPixelRange( const QRect& area, unsigned int* min, unsigned int* max ); ///< Determine the range of pixel values an area of the image
-    bool hasImage(){ return !imageData.isEmpty(); }                                     ///< Return true if the current image is empty
-    bool hasImageBuff(){ return imageBuff.isEmpty(); }                             ///< Return true if the current image data buffer is empty
+    bool hasImage(){ return !imageData.isEmpty(); }                                ///< Return true if the current image is empty
     const unsigned char* getImageDataPtr( QPoint& pos );                           ///< Return a pointer to pixel data in the original image data.
     int getPixelValueFromData( const unsigned char* ptr );                         ///< Return a number representing a pixel intensity given a pointer into an image data buffer.
     double getFloatingPixelValueFromData( const unsigned char* ptr );              ///< Return a floating point number representing a pixel intensity given a pointer into an image data buffer.
@@ -96,15 +94,15 @@ public:
     QPoint rotateFlipToImagePoint( const QPoint& pos );                         ///< Transform a point from the original data to the image according to current rotation and flip options.
 
 
-    void run();
-    QWaitCondition imageSync;
-    QReadWriteLock imageWait;
-    QMutex imageLock;
-    bool finishNow;
-    imagePropertiesCore* next;
+    void                 run();     // Image processing thread starting point.
+    QWaitCondition       imageSync; // Communication between QEImage thread and image processing thread ('new image data ready to process'  or 'please finish')
+    QMutex               imageWait; // Lock used by imageSync
+    QMutex               imageLock; // Locks access to image data 'next' shared between QEImage thread and image processing thread
+    bool                 finishNow; // Flag to image processing thread that it should exit
+    imagePropertiesCore* next;      // Image related information passed to image processing thread and protected by imageLock
 
 signals:
-    void imageBuilt( QImage imageData, QString error );                         ///< An image has been generated from image data and in now ready for presentation
+    void imageBuilt( QImage image, QString error );                         ///< An image has been generated from image data and in now ready for presentation
 
 private:
 };

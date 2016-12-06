@@ -34,6 +34,8 @@
 #include <CaConnection.h>
 #include <CaObject.h>
 #include <QCaEventUpdate.h>
+#include <QCaObject.h>
+
 
 // The Qt event type for update events. This is allocated by Qt once at application startup.
 #if QT_VERSION >= 0x040400
@@ -61,4 +63,13 @@ QCaEventUpdate::QCaEventUpdate( qcaobject::QCaObject *emitterObjectIn, // The ob
     // Populate the update
     reason = newReason;
     dataPtr = newDataPtr;
+}
+
+/*
+   Delete an event holding a CA update
+*/
+QCaEventUpdate::~QCaEventUpdate()
+{
+    // Ensure no QCaObject still holds this event in its 'pending' list
+    qcaobject::QCaObject::deletingEventStatic( this );
 }

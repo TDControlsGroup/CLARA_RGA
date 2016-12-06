@@ -88,6 +88,9 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEForm : public QEAbstractWidget,
         void reloadLater(); // Slot for delaying form loading until after existing events have been processed
 
     protected:
+        void establishConnection( unsigned int variableIndex );
+        void clearUiFileNames ();   // clears uiFileName/fullUiFileName
+
         QString uiFileName; // As specified on creation
         QString fullUiFileName; // Full standard path
         // no implementation - void setVariableNameSubstitutions( QString variableNameSubstitutionsIn );
@@ -95,7 +98,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEForm : public QEAbstractWidget,
         bool resizeContents;
 
     private:
-        void establishConnection( unsigned int variableIndex );
         static void setEmbeddedFileMonitoringIsEnabled( QWidget* widget, bool fileMonitoringIsEnabled );
 
         QString title;                // GUI title (to be used by an application when presenting the GUI, such as in the title bar)
@@ -211,5 +213,9 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEForm : public QEAbstractWidget,
         QCaVariableNamePropertyManager variableNamePropertyManager; // Note, this is only used to manage the macro substitutions that will be passed down to the form's QE widgets. The form has no variable name
 
 };
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEForm::MessageFilterOptions)
+#endif
 
 #endif // QE_FORM_H

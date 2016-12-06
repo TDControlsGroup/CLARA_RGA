@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -28,6 +28,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QEPluginLibrary_global.h>
 
 class QEWidget;
 
@@ -52,7 +53,7 @@ class QEWidget;
 // numerical value must available as well. The signal value is true for non-zero
 // values and false for zero values.
 //
-class QEEmitter {
+class QEPLUGINLIBRARYSHARED_EXPORT QEEmitter {
 
 public:
    // Need both views as we cannot do dynamic castimng during construction

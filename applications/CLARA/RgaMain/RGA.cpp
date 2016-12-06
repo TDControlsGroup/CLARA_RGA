@@ -9,8 +9,6 @@ V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
 #include <QtUiTools>
 #include <QString>
 #include <QStringList>
-#include <cadef.h>
-#include "RgaCA.h"
 
 //Macro
 
@@ -24,16 +22,22 @@ V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
 RGA::RGA()
 {
 //Setup Main UI devices
-    //CA
-	RgaCA myCA;
 
+    stream = new QTextStream( stdout );
     DeviceName.push_back(QString(RGA1));
     DeviceName.push_back(QString(RGA2));
     DeviceName.push_back(QString(RGA3));
     DeviceName.push_back(QString(RGA4));
     DeviceName.push_back(QString(RGA5));
 	DeviceName.push_back(QString(RGA6));
-    ArchiverName="rga-arch";	
+
+    DynamicDeviceTitle.push_back(QString("RGA1"));
+    DynamicDeviceTitle.push_back(QString("RGA2"));
+    DynamicDeviceTitle.push_back(QString("RGA3"));
+    DynamicDeviceTitle.push_back(QString("RGA4"));
+    DynamicDeviceTitle.push_back(QString("RGA5"));
+    DynamicDeviceTitle.push_back(QString("RGA6"));
+    ArchiverName=ARCHNAME;	
     
 	//Masses to display on the summary plots
 	int summary_masses[]=SUMMARY_MASS_LIST;
@@ -45,14 +49,16 @@ RGA::RGA()
 	
 	for (unsigned int i = 0; i < DEVICES; i++)
 {
-	//Put the GET title commands into Device Title
-    DeviceTitle.push_back(DeviceName[i]+":GETNAME");
-	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
 
 	//Run the GET title commnad and swap the result into Device Title. This is used all over the place
-	//to label devcices so record the name in an array
-    //DeviceTitle[i]=myCA.GetData(DeviceTitle[i].toStdString().c_str());
-	printf("Number %d Name %s \n", i, DeviceTitle[i].toStdString().c_str() );
+	Messages.push_back    ( new UserMessage() );
+	StringFormat.push_back( new QEStringFormatting() );
+    DeviceTitle.push_back ( new QEString( DeviceName[i]+":GETNAME", this, StringFormat[i], i, Messages[i]));
+	//Connect the signals for a lable change to a slot to update non EPICS aware widgets
+	QObject::connect( DeviceTitle[i], SIGNAL( stringChanged( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ),
+                      this, SLOT( updateTitle( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
+	DeviceTitle[i]->subscribe();
+
     //Set up summary plots
     ov.push_back(new QMainWindow);
 	pmainBar.push_back(new Ui::mainBar);
@@ -84,16 +90,20 @@ RGA::~RGA()
 
 void  RGA::RGAMain()
 {
-
-    //Seupup slots for main UI: Make buttons work
-    QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
-    QObject::connect (pmain.barscan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
-    //QObject::connect (pmain.barstrip,  SIGNAL( clicked() ), this, SLOT( RGAFormShowStripPlot() ) );
-
+	//Usedfor PV naming
 	char catstring[40];
 	char varstring[40];	
 
-    
+    //Setup slots for main UI: Make buttons work
+    QObject::connect (pmain.anascan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowAnaPlot() ) );
+    QObject::connect (pmain.barscan,   SIGNAL( clicked() ), this, SLOT( RGAFormShowBarPlot() ) );
+
+	//Setup the archiving buttons
+    ((mymain.findChild<QGroupBox*>("Archiver") )->findChild<QEPushButton *>("archStart") )-> setProperty ("variable", ArchiverName+":ArchiveOn" );
+    ((mymain.findChild<QGroupBox*>("Archiver") )->findChild<QEPushButton *>("archStop") ) -> setProperty ("variable", ArchiverName+":Off" );
+	//Setup the archiving time
+    ((mymain.findChild<QGroupBox*>("Archiver") )->findChild<QELabel *>("archDt") ) -> setProperty ("variable", ArchiverName+":ONTIMER" );
+
 	
 	
 	for (unsigned int i = 0; i < DEVICES; i++)
@@ -102,67 +112,39 @@ void  RGA::RGAMain()
 		/* Main Window*/
 		//Fill in names and serial numbers of the devices
 		//Names
+        updateObject<QELabel*>("id_%d", "%s:GETNAME", "variable", 1, i);		
 
-	    sprintf(catstring,"id_%d",i+1);
-	    sprintf(varstring,"%s:GETNAME",DeviceName[i].toStdString().c_str());
-	    (mymain.findChild<QELabel *>(catstring) )-> setProperty ("variable", varstring );		
-
-
-		//Make button links from main to the summary plots
-	    sprintf(catstring,"summary%d",i+1);
-		sprintf(varstring,"%d",i);
-		mymain.findChild<QEPushButton *>(catstring)->setProperty("clickText",varstring);
-		QObject::connect (mymain.findChild<QEPushButton *>(catstring),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
-		
-		//Make button links from strip to the summary plots
-	    sprintf(catstring,"barstrip%d",i+1);
-		sprintf(varstring,"%d",i);
-		mymain.findChild<QEPushButton *>(catstring)->setProperty("clickText",varstring);
-		QObject::connect (mymain.findChild<QEPushButton *>(catstring),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowStripPlot(int) ) );
-
+		//Make button links from main to the summary plots and from strip plots
+        updateObject<QEPushButton*>("dummy", "%d", "clickText", 2, i);	
+	
 		//SN
-	    sprintf(catstring,"sn_%d",i+1);
-	    sprintf(varstring,"%s:GETSERIAL",DeviceName[i].toStdString().c_str());
-	    (mymain.findChild<QELabel *>(catstring) )-> setProperty ("variable", varstring );		
-
-
-        //Use custom widget to fill the LED and mode indicators in the main window	
-	    sprintf(catstring,"box_%d",i+1);
-        (mymain.findChild<RgaLed *>(catstring) )->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
-	    //Connect the percentage scan boxes to the EPICS records
-	    sprintf(catstring,"per%d",i+1);		
-	    sprintf(varstring,"%s:PERSCANNED",DeviceName[i].toStdString().c_str());
-	    ((mymain.findChild<QGroupBox *>("percentBox") )->findChild<QEAnalogProgressBar *>(catstring) )-> setProperty ("variable", varstring );
-
-		/*rgamainwindow*/
+        updateObject<QELabel*>("sn_%d", "%s:GETSERIAL", "variable", 1, i);
 		
-        //Use custom widget to fill the LED and mode indicators in the main window	
-	    sprintf(catstring,"status_%d",i+1);
-        (rgamain.findChild<RgaStatus *>(catstring))->setEPICS(DeviceTitle[i].toStdString().c_str(),DeviceName[i].toStdString().c_str());
-printf("Fill loop %i\n", i);
+	    //Connect the percentage scan boxes to the EPICS records
+        updateObject<QGroupBox*>("per%d", "%s:PERSCANNED", "variable", 3, i);
+
+	    //Update the main panel LED strips
+        updateObject<RgaLed*>("box_%d", "dummy", "dummy", 5, i);
+
+		//Update the summary panel boxes
+        updateObject<QGroupBox*>("status_%d", "dummy", "dummy", 6, i);
+		
 		/*Summary bar charts*/
 		for (unsigned int j=0; j< summaryMasses.size() ; j++)
 		{
-	      sprintf(catstring,"name_%02d",j+1);	
-		  sprintf(varstring,"%s:BAR:M%d.DESC \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
-	      ( (ov.at(i) )->findChild< QELabel*>(catstring)  )-> setProperty ("variable", varstring );
-	      sprintf(catstring,"pres_%02d",j+1);		 
-		  sprintf(varstring,"%s:BAR:M%d \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
-	      ( (ov.at(i) )->findChild< QELabel*>(catstring)  )-> setProperty ("variable", varstring );
-		  sprintf(catstring,"bar_%02d",j+1);
-		  ( (ov.at(i) )->findChild< QEAnalogIndicator*>(catstring)  )-> setProperty ("variable", varstring );
-		}	
 
-		
+		updateObject<QELabel*>("name_%02d", "%s:BAR:M%d.DESC", "variable", 4, i, j);
+		updateObject<QELabel*>("pres_%02d", "%s:BAR:M%d", "variable", 4, i, j);
+		updateObject<QEAnalogIndicator*>("bar_%02d", "%s:BAR:M%d", "variable", 4, i, j );
+		}	
+	
         /*Strip Chart*/
 		( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
         ( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )->yScaleModeSelected(QEStripChartNames::log);
 		for (unsigned int j=0; j< stripMasses.size() ; j++)
 		{
-		  sprintf(varstring,"%s:BAR:M%d \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);
-	      printf("%s \n", varstring);		 
+		  sprintf(varstring,"%s:BAR:M%d \n",DeviceName[i].toStdString().c_str(), summaryMasses[j]);	 
 	      ( (mystrip.at(i) )->findChild< QEStripChart*>("qestripchart")  )-> setPvName(j, varstring );
-
 		}	
 	}
 
@@ -172,15 +154,120 @@ printf("Fill loop %i\n", i);
   mytabs.show(); 
   
 }
+
+/*
+  Update objects
+*/
+template<class T>
+void RGA::updateObject(const char *catstring,const  char *varstring,const  char* property, int mode,int i, int j)
+{   
+    char catf[40];
+	char varf[40];
+
+
+	switch(mode){
+		
+	 case 1:
+	  //Lable: Add device name to the varstring
+	  sprintf(catf,catstring,i+1);
+	  sprintf(varf,varstring,DeviceName[i].toStdString().c_str());
+	  (mymain.findChild<T>(catf) )-> setProperty (property, varf );
+     break;
+	 
+	 case 2:
+	  //ClickText: Just use the varstring
+	  sprintf(catf,"summary%d",i+1);
+	  sprintf(varf,varstring,i);
+	  //Bar
+	  (mymain.findChild<T>(catf) )-> setProperty (property, varf );
+	  QObject::connect (mymain.findChild<T>(catf),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowBarSummary(int) ) );
+      //Strip
+	  sprintf(catf,"barstrip%d",i+1);
+	  (mymain.findChild<T>(catf) )-> setProperty (property, varf );
+	  QObject::connect (mymain.findChild<T>(catf),  SIGNAL( clicked(int) ), this, SLOT( RGAFormShowStripPlot(int) ) );
+
+     break;
+	 
+	 case 3:
+	  //Percent box
+	  sprintf(catf,catstring,i+1);
+	  sprintf(varf,varstring,DeviceName[i].toStdString().c_str());
+	  ((mymain.findChild<T>("percentBox") )->findChild<QEAnalogProgressBar *>(catf) )-> setProperty ("variable", varf );
+	 break;
+	 
+	 case 4:
+	  //Summary plots
+	  sprintf(catf,catstring,j+1);
+	  sprintf(varf,varstring,DeviceName[i].toStdString().c_str(), summaryMasses[j]);
+	  ((ov.at(i))->findChild<T>(catf))-> setProperty("variable",varf);
+	 break;
+	 
+	 case 5:
+	  //Main window LED display
+	  sprintf(catf,catstring,i+1);
+	  sprintf(varf,"%s",DeviceName[i].toStdString().c_str());
+      mymain.findChild<RgaLed*>(catf)->setEPICS(varf);
+ 	  
+	 break;
+
+	 case 6:
+	  //RGA summary screen
+
+	  //Filament LED
+	  sprintf(catf,catstring,i+1);
+	  sprintf(varf,"%s",DeviceName[i].toStdString().c_str());
+	  rgamain.findChild<RgaStatus*>(catf)->setEPICS(varf);
+	  break;
+	  }
+}
+
+const char* RGA::varString(const char* varstring, char* pvar, int i)
+{
+	  sprintf(pvar,varstring,DeviceName[i].toStdString().c_str());
+	  return pvar;
+}
+
+/*
+*
+* SLOTS:
+*
+*/
+
+void RGA::connectionChanged( QCaConnectionInfo& connectionInfo )
+{
+	      printf("Connection issue \n");
+}
+
+void RGA::updateTitle( const QString& data, QCaAlarmInfo&, QCaDateTime& timeStamp, const unsigned int &i )
+{
+    //Update objects that are not EPICS aware
+	printf("Connection data update %d: %s \n", i, data.toStdString().c_str() );
+    //Update the label
 	
+	//Use custom widget to fill the LED and mode indicators titles	
+	char catstring[40];
+    sprintf(catstring,"box_%d",i+1);
+    (mymain.findChild<RgaLed *>(catstring) )->setTitle(data.toStdString().c_str() );
+	
+    //Use custom widget to fill the LED and mode indicators in the main window	
+	sprintf(catstring,"status_%d",i+1);
+    (rgamain.findChild<RgaStatus *>(catstring))->setTitle(data.toStdString().c_str() );	
+    //Update the title box
+     DynamicDeviceTitle[i]=data.toStdString().c_str();
+}
+
 
 void  RGA::RGAFormShowAnaPlot()
 {
     pana.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pana.qeplotter->setXRange(0,200);
     QStringList pvs;
-    pvs << "=(S-.5)/32" << DeviceName[0]+":ANA" << DeviceName[1]+":ANA" << DeviceName[2]+":ANA" << DeviceName[3]+":ANA";
+    QStringList alias;
+    pvs << "=(S-.5)/32" << DeviceName[0]+":ANA" << DeviceName[1]+":ANA" << DeviceName[2]+":ANA" << DeviceName[3]+":ANA" << DeviceName[4]+":ANA" << DeviceName[5]+":ANA";
+    alias << "X " << DynamicDeviceTitle[0] << DynamicDeviceTitle[1] << DynamicDeviceTitle[2] << DynamicDeviceTitle[3] << DynamicDeviceTitle[4] << DynamicDeviceTitle[5];
+
     pana.qeplotter->setDataPvNameSet(pvs);
+    pana.qeplotter->setAliasNameSet(alias);
     myana.show();
 }
 void  RGA::RGAFormShowBarPlot()
@@ -188,8 +275,12 @@ void  RGA::RGAFormShowBarPlot()
     pbar.qeplotter->setYRange(MIN_YPRESSURE,MAX_YPRESSURE);
     pbar.qeplotter->setXRange(0,200);
     QStringList pvs;
-    pvs << "=(S-0.5)" << DeviceName[0]+":BAR" << DeviceName[1]+":BAR" << DeviceName[2]+":BAR" << DeviceName[3]+":BAR";
+    QStringList alias;
+    pvs << "=(S-0.5)" << DeviceName[0]+":BAR" << DeviceName[1]+":BAR" << DeviceName[2]+":BAR" << DeviceName[3]+":BAR" << DeviceName[4]+":BAR" << DeviceName[5]+":BAR";
+    alias << "X " << DynamicDeviceTitle[0] << DynamicDeviceTitle[1] << DynamicDeviceTitle[2] << DynamicDeviceTitle[3] << DynamicDeviceTitle[4] << DynamicDeviceTitle[5];
+
     pbar.qeplotter->setDataPvNameSet(pvs);
+    pbar.qeplotter->setAliasNameSet(alias);
     mybar.show();
 }
 void  RGA::RGAFormShowStripPlot(int summary)

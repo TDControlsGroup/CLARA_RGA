@@ -87,7 +87,7 @@ private:
 
     QImage currentImage;              // Latest camera image
     QImage refImage;                  // Latest camera image at the same resolution as the display - used for erasing markups when they are moved
-    bool createRefImage();
+    void   createRefImage();          // Create a reference image the same size as currently being viewed.
 
     double getScale();
 

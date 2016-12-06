@@ -1,4 +1,6 @@
-/*  This file is part of the EPICS QT Framework, initially developed at the
+/*  QEScript.h
+ *
+ *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or
@@ -22,8 +24,8 @@
  *    ricardo.fernandes@synchrotron.org.au
  */
 
-#ifndef QESCRIPT_H
-#define QESCRIPT_H
+#ifndef QE_SCRIPT_H
+#define QE_SCRIPT_H
 
 #include <QTableWidgetItem>
 #include <QPushButton>
@@ -58,9 +60,7 @@ class _QTableWidgetScript:public QTableWidget
     private:
         bool initialized;
 
-
     protected:
-
 
     public:
         _QTableWidgetScript(QWidget * pParent = 0);
@@ -68,12 +68,9 @@ class _QTableWidgetScript:public QTableWidget
         void resizeEvent(QResizeEvent *);
         void resize(int w, int h);
 
-
     private slots:
 
 };
-
-
 
 
 // ============================================================
@@ -81,7 +78,6 @@ class _QTableWidgetScript:public QTableWidget
 // ============================================================
 class _CopyPaste
 {
-
     private:
         bool enable;
         QString program;
@@ -116,10 +112,7 @@ class _CopyPaste
 
         void setLog(bool pLog);
         bool getLog();
-
 };
-
-
 
 
 // ============================================================
@@ -135,7 +128,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEScript:public QWidget, public QEWidget
     Q_OBJECT
 
     private:
-
 
     protected:
         QComboBox *qComboBoxScriptList;
@@ -162,9 +154,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEScript:public QWidget, public QEWidget
         bool editableTable;
         bool isExecuting;
 
-
     public:
-
         QEScript(QWidget *pParent = 0);
         virtual ~QEScript(){}
 
@@ -347,9 +337,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEScript:public QWidget, public QEWidget
         }
 
 
-
-
-
     // BEGIN-STANDARD-PROPERTIES ======================================================
     // Standard properties
     // These properties should be identical for every widget using them.
@@ -465,9 +452,6 @@ public:
 public:
     // END-STANDARD-PROPERTIES ========================================================
 
-
-
-
     private slots:
         void comboBoxScriptSelected(int);
 
@@ -495,13 +479,15 @@ public:
 
         void selectionChanged(const QItemSelection &, const QItemSelection &);
 
-
     signals:
         void selected(QString pFilename);
-
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEScript::scriptTypesProperty)
+Q_DECLARE_METATYPE (QEScript::optionsLayoutProperty)
+Q_DECLARE_METATYPE (QEScript::UserLevels)
+Q_DECLARE_METATYPE (QEScript::DisplayAlarmStateOptions)
+#endif
 
-
-#endif // QESCRIPT_H
-
+#endif // QE_SCRIPT_H

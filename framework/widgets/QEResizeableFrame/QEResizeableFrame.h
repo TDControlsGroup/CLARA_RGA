@@ -115,4 +115,8 @@ private:
    int allowedMax;
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEResizeableFrame::GrabbingEdges)
+#endif
+
 #endif  // QE_RESIZEABLE_FRAME_H

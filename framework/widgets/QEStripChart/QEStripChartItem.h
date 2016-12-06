@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef QSTRIPCHARTITEM_H
-#define QSTRIPCHARTITEM_H
+#ifndef QE_STRIP_CHART_ITEM_H
+#define QE_STRIP_CHART_ITEM_H
 
 #include <QColor>
 #include <QColorDialog>
@@ -47,10 +47,10 @@
 #include <QCaVariableNamePropertyManager.h>
 #include <QEArchiveManager.h>
 #include <persistanceManager.h>
-#include <QEWidget.h>
 #include <QEActionRequests.h>
 #include <QEExpressionEvaluation.h>
 #include <QEDisplayRanges.h>
+#include <QEPluginLibrary_global.h>
 
 #include "QEStripChart.h"
 #include "QEStripChartNames.h"
@@ -61,35 +61,39 @@
 //==============================================================================
 // This is essentially a private classes used soley by the QEStripChart widget.
 // We have to make is public so that it can be a pukka Q_OBJECT in order to
-// receive signals. We also need to make it a QEWidget so that we can find the
-// launch consumer.
+// receive signals.
 //
-class QEStripChartItem : public QWidget, private QEWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QEStripChartItem : public QWidget {
    Q_OBJECT
 public:
    explicit QEStripChartItem (QEStripChart* chart,
-                              unsigned int slot,
+                              const int slot,
                               QWidget* parent);
    virtual ~QEStripChartItem ();
 
-   bool isInUse ();
-   bool isCalculation ();
+   bool isInUse () const;
+   bool isCalculation () const;
 
-   void setPvName (QString pvName, QString substitutions);
-   QString getPvName ();
+   void setPvName (const QString& pvName, const QString& substitutions);
+   QString getPvName () const;
+   QString getEgu () const;
 
-   bool isScaled ();
+   bool isScaled () const;
+
+   // Resturns x (i.e. t) and y values as plotted taking into account value and time scaling.
+   //
+   QPointF dataPointToReal (const QCaDataPoint& point) const;
 
    // Following used to extract status for the context menu object.
    //
-   bool getUseReceiveTime () { return this->useReceiveTime; }
-   QEArchiveInterface::How getArchiveReadHow () { return this->archiveReadHow; }
-   QEStripChartNames::LineDrawModes getLineDrawMode () { return this->lineDrawMode; }
+   bool getUseReceiveTime () const { return this->useReceiveTime; }
+   QEArchiveInterface::How getArchiveReadHow () const { return this->archiveReadHow; }
+   QEStripChartNames::LineDrawModes getLineDrawMode () const { return this->lineDrawMode; }
 
    // NOTE: Where ever possible I spell colour properly.
    //
 public slots:
-   void setColour (const QColor&  colour);    // also used by colour dialog
+   void setColour (const QColor& colour);    // also used by colour dialog
 public:
    QColor getColour ();
 
@@ -102,10 +106,16 @@ public:
    QEDisplayRanges getBufferedMinMax (bool doScale);    // returns range of values that could be plotted
    QCaDataPointList determinePlotPoints ();
 
-   void readArchive ();
-   void normalise ();
-
+   void readArchive ();                                 // initiate archive read request
+   void normalise ();                                   // scale LOPR/HOPR to 0 .. 100
    void plotData ();
+
+   // Return a reference to the point, realtime or from archive, nearest to the
+   // specified time or NULL.
+   // WARNING - do not store this reference. To be consider valid during the
+   // processing of a single event only.
+   //
+   const QCaDataPoint* findNearestPoint (const QCaDateTime& searchTime) const;
 
    void saveConfiguration (PMElement & parentElement);
    void restoreConfiguration (PMElement & parentElement);
@@ -113,7 +123,6 @@ public:
    QCaVariableNamePropertyManager pvNameProperyManager;
 
 signals:
-   void itemContextMenuRequested (const unsigned int, const QPoint &);
    void requestAction (const QEActionRequests&);
 
 protected:
@@ -129,6 +138,7 @@ private:
    QPen getPen ();
    void plotDataPoints (const QCaDataPointList& dataPoints,
                         const bool isRealTime,
+                        const Qt::PenStyle penStyle,
                         QEDisplayRanges& plottedTrackRange);
 
    // Perform a pvNameDropEvent 'drop'.
@@ -140,7 +150,7 @@ private:
 
    // data members
    //
-   unsigned int slot;
+   int slot;
    bool isConnected;
    bool useReceiveTime;
    QEArchiveInterface::How archiveReadHow;
@@ -154,8 +164,17 @@ private:
    QEDisplayRanges historicalMinMax;
    QEDisplayRanges realTimeMinMax;
 
+   // Used to specify dash line joining historical to live data.
+   //
+   bool dashExists;
+   QCaDataPoint dashStart;
+   QCaDataPoint dashEnd;
+
+   // Used for first point maps to chart centre scaling.
+   //
    bool firstPointIsDefined;
    QCaDataPoint firstPoint;
+
    QEDisplayRanges displayedMinMax;
 
    QEArchiveAccess archiveAccess;
@@ -192,14 +211,15 @@ private slots:
    void newVariableNameProperty (QString pvName, QString substitutions, unsigned int slot);
 
    void setDataConnection (QCaConnectionInfo& connectionInfo, const unsigned int& variableIndex);
-   void setDataValue (const QVariant& value, QCaAlarmInfo& alarm, QCaDateTime& datetime, const unsigned int& variableIndex);
+   void setDataValue (const QVariant& value, QCaAlarmInfo& alarm,
+                      QCaDateTime& datetime, const unsigned int& variableIndex);
 
-   void setArchiveData (const QObject *userData, const bool okay, const QCaDataPointList &archiveData);
+   void setArchiveData (const QObject* userData, const bool okay, const QCaDataPointList& archiveData,
+                        const QString& pvName, const QString& supplementary);
 
    void letterButtonClicked (bool checked);
    void contextMenuRequested (const QPoint & pos);
    void contextMenuSelected  (const QEStripChartNames::ContextMenuOptions option);
-
 };
 
-#endif  // QSTRIPCHARTITEM_H
+#endif  // QE_STRIP_CHART_ITEM_H

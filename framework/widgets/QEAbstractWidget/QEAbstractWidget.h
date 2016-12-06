@@ -163,4 +163,9 @@ public:
     virtual ~QEAbstractWidget ();
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEAbstractWidget::UserLevels)
+Q_DECLARE_METATYPE (QEAbstractWidget::DisplayAlarmStateOptions)
+#endif
+
 #endif     // QE_ABSTRACTWIDGET_H

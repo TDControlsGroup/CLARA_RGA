@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,14 +23,15 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QESCRATCHPADMENU_H
-#define QESCRATCHPADMENU_H
+#ifndef QE_SCRATCH_PAD_MENU_H
+#define QE_SCRATCH_PAD_MENU_H
 
 #include <QAction>
 #include <QMenu>
 #include <QObject>
 #include <QWidget>
 #include <contextMenu.h>
+#include <QEAbstractDynamicWidget.h>
 
 class QEScratchPadMenu : public QMenu {
 Q_OBJECT
@@ -44,8 +45,15 @@ public:
    // contextMenu::CM_SPECIFIC_WIDGETS_START_HERE
    //
    enum ContextMenuOptions {
-      SCRATCHPAD_NONE = contextMenu::CM_SPECIFIC_WIDGETS_START_HERE,
+      SCRATCHPAD_NONE = QEAbstractDynamicWidget::ADWCM_SUB_CLASS_WIDGETS_START_HERE,
 
+      // Menu items for global QEWidget context menu
+      //
+      SCRATCHPAD_SORT_PV_NAMES,
+      SCRATCHPAD_CLEAR_ALL,
+
+      // Menu items for QEScratchPadMenu context menu.
+      //
       SCRATCHPAD_ADD_PV_NAME,
       SCRATCHPAD_PASTE_PV_NAME,
       SCRATCHPAD_EDIT_PV_NAME,
@@ -89,4 +97,4 @@ private slots:
    void contextMenuTriggered (QAction* selectedItem);
 };
 
-#endif  // QESCRATCHPADMENU_H
+#endif  // QE_SCRATCH_PAD_MENU_H

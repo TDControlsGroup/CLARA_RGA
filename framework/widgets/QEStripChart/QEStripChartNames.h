@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,18 +24,21 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QESTRIPCHARTNAMES_H
-#define QESTRIPCHARTNAMES_H
+#ifndef QE_STRIPCHART_NAMES_H
+#define QE_STRIPCHART_NAMES_H
 
 #include <QObject>
+#include <QString>
 #include <contextMenu.h>
+#include <QEAbstractDynamicWidget.h>
+#include <QEPluginLibrary_global.h>
 
 // Define strip chart specific names (enumerations).
 // We use a QObject as opposed to a namespace as this allows us leverage off the
 // meta object compiler output, specifically allows us to use the enumToString
 // and stringToEnum functions in QEUtilities.
 //
-class QEStripChartNames : public QObject {
+class QEPLUGINLIBRARYSHARED_EXPORT QEStripChartNames : public QObject {
    Q_OBJECT
 public:
 
@@ -49,6 +52,9 @@ public:
 
    Q_ENUMS (ChartTimeModes)
 
+   // A more user friendly version than enumToString.
+   static QString chartTimeModeStatus (const ChartTimeModes mode);
+
    enum ChartYRanges {
       manual,          // chart set manually via dialog
       operatingRange,  // i.e. HOPR/LOPR values
@@ -59,6 +65,9 @@ public:
    };
 
    Q_ENUMS (ChartYRanges)
+
+   // A more user friendly version than enumToString.
+   static QString chartYRangeStatus (const ChartYRanges yRange);
 
    enum PlayModes {
       play,            // run chart real time
@@ -107,7 +116,7 @@ public:
    // contextMenu::CM_SPECIFIC_WIDGETS_START_HERE
    //
    enum ContextMenuOptions {
-      SCCM_NONE = contextMenu::CM_SPECIFIC_WIDGETS_START_HERE,
+      SCCM_NONE = QEAbstractDynamicWidget::ADWCM_SUB_CLASS_WIDGETS_START_HERE,
 
       // Item specific menu options.
       //
@@ -168,4 +177,14 @@ public:
    static const int NumberPrefefinedItems = (SCCM_PREDEFINED_10 - SCCM_PREDEFINED_01 + 1);
 };
 
-#endif   // QESTRIPCHARTNAMES_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEStripChartNames::ChartTimeModes)
+Q_DECLARE_METATYPE (QEStripChartNames::ChartYRanges)
+Q_DECLARE_METATYPE (QEStripChartNames::PlayModes)
+Q_DECLARE_METATYPE (QEStripChartNames::StateModes)
+Q_DECLARE_METATYPE (QEStripChartNames::VideoModes)
+Q_DECLARE_METATYPE (QEStripChartNames::YScaleModes)
+Q_DECLARE_METATYPE (QEStripChartNames::LineDrawModes)
+#endif
+
+#endif   // QE_STRIPCHART_NAMES_H

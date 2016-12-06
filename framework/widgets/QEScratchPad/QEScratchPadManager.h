@@ -28,7 +28,7 @@
 #ifndef QESCRATCHPAD_MANAGER_H
 #define QESCRATCHPAD_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QEScratchPadManager : public QObject, public QDesignerCustomWidgetInterface {

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2011 Australian Synchrotron
+ *  Copyright (c) 2011,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -36,6 +36,7 @@
  *
  */
 
+#include <QDebug>
 #include <contextMenu.h>
 #include <QClipboard>
 #include <QApplication>
@@ -44,6 +45,8 @@
 #include <QEScaling.h>
 #include <QAction>
 #include <ContainerProfile.h>
+
+#define DEBUG qDebug() << "contextMenu" << __LINE__ << __FUNCTION__ << "  "
 
 // Flag common to all context menus.
 // true if 'dragging the variable
@@ -85,11 +88,23 @@ contextMenu::contextMenu( QEWidget* qewIn )
     hasConsumer = false;
     qew = qewIn;
     numberOfItems = 1;
+    menuSet = defaultMenuSet();
     object = new contextMenuObject( this );
 }
 
 contextMenu::~contextMenu()
 {
+}
+
+// Tests is primary PV is an array variable
+bool contextMenu::isArrayVariable () const
+{
+    bool result = false;
+    qcaobject::QCaObject* qca = this->qew->getQcaItem (0);
+    if( qca ){
+       result = (qca->getElementCount() >= 2);
+    }
+    return result;
 }
 
 // Build the QE generic context menu
@@ -140,6 +155,22 @@ QMenu* contextMenu::buildContextMenu()
         {
             a = new QAction( "Show in Scratch Pad",    menu ); a->setCheckable( false ); a->setData( CM_ADD_TO_SCRATCH_PAD ); menu->addAction( a );
             addSeparator = true;
+        }
+
+        // This menu items are really only sensible of array PVs, i.e. PVs with at leat two elements.
+        if( isArrayVariable() ) {
+
+           if( menuSet.contains( CM_ADD_TO_PLOTTER ))
+           {
+               a = new QAction( "Show in Plotter",    menu ); a->setCheckable( false ); a->setData( CM_ADD_TO_PLOTTER ); menu->addAction( a );
+               addSeparator = true;
+           }
+
+           if( menuSet.contains( CM_SHOW_AS_HISTOGRAM ))
+           {
+               a = new QAction( "Show as Historgram", menu ); a->setCheckable( false ); a->setData( CM_SHOW_AS_HISTOGRAM ); menu->addAction( a );
+               addSeparator = true;
+           }
         }
 
         if( addSeparator ) menu->addSeparator();
@@ -271,6 +302,16 @@ void contextMenu::setupContextMenu( const ContextMenuOptionSets& menuSetIn )
                       object, SLOT( showContextMenuSlot( const QPoint& )));
 }
 
+// Disconnect the supplied QE widget to a slot that will present the context menu.
+// This allows a "complex" widget that contains this widget to capture the custom
+// context menu request signal.
+void contextMenu::clearContextMenuRequestHandling()
+{
+   QWidget* qw = qew->getQWidget();
+   QObject::disconnect( qw, SIGNAL( customContextMenuRequested( const QPoint& )),
+                        object, SLOT( showContextMenuSlot( const QPoint& )));
+}
+
 // Update  the conext menu items that will be presented.
 void contextMenu::setContextMenuOptions( const ContextMenuOptionSets& menuSetIn )
 {
@@ -321,11 +362,19 @@ void contextMenu::contextMenuTriggered( int optionNum )
             doAddToStripChart();
             break;
 
-        case  contextMenu::CM_ADD_TO_SCRATCH_PAD:
+        case contextMenu::CM_ADD_TO_SCRATCH_PAD:
             doAddToScratchPad();
             break;
 
-       case  contextMenu::CM_GENERAL_PV_EDIT:
+        case contextMenu::CM_ADD_TO_PLOTTER:
+            doAddToPlotter();
+            break;
+
+        case contextMenu::CM_SHOW_AS_HISTOGRAM:
+            doShowAsHistogram();
+            break;
+
+        case contextMenu::CM_GENERAL_PV_EDIT:
             doGeneralPVEdit();
             break;
     }
@@ -394,6 +443,22 @@ void contextMenu::doAddToScratchPad()
 {
    QString pvName = copyVariable().trimmed();
    QEActionRequests request( QEActionRequests::actionScratchPad(), pvName );
+   if( !pvName.isEmpty() ) object->sendRequestAction( request );
+}
+
+// 'Show in Plotter' was selected from the menu
+void contextMenu::doAddToPlotter()
+{
+   QString pvName = copyVariable().trimmed();
+   QEActionRequests request( QEActionRequests::actionPlotter(), pvName );
+   if( !pvName.isEmpty() ) object->sendRequestAction( request );
+}
+
+// 'Show as Histogram' was selected from the menu
+void contextMenu::doShowAsHistogram()
+{
+   QString pvName = copyVariable().trimmed();
+   QEActionRequests request( QEActionRequests::actionShowInHisogram(), pvName );
    if( !pvName.isEmpty() ) object->sendRequestAction( request );
 }
 

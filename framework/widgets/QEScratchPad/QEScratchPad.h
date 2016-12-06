@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -28,6 +28,7 @@
 
 #include <QMenu>
 #include <QObject>
+#include <QPushButton>
 #include <QTimer>
 #include <QVariant>
 #include <QWidget>
@@ -35,7 +36,8 @@
 #include <QHBoxLayout>
 #include <QScrollArea>
 
-#include <QEFrame.h>
+#include <QEQuickSort.h>
+#include <QEAbstractDynamicWidget.h>
 #include <QELabel.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <persistanceManager.h>
@@ -50,20 +52,19 @@
 /// This class is a direct re-implementation of TScratch_Pad_Form out of the
 /// Delphi OPI framework.
 ///
-class QEPLUGINLIBRARYSHARED_EXPORT QEScratchPad : public QEFrame {
+class QEPLUGINLIBRARYSHARED_EXPORT QEScratchPad : public QEAbstractDynamicWidget, QEQuickSort {
    Q_OBJECT
 public:
-   explicit QEScratchPad (QWidget *parent = 0);
+   static const int NUMBER_OF_ITEMS = 72;
+
+   explicit QEScratchPad (QWidget* parent = 0);
    ~QEScratchPad ();
    QSize sizeHint () const;
-
-   static const int NUMBER_OF_ITEMS = 48;
 
    // Set (and clear if pvName is null).
    //
    void    setPvName (const int slot, const QString& pvName);
    QString getPvName (const int slot) const;
-
 
    // Selects/highlights row.
    //
@@ -90,7 +91,14 @@ signals:
 protected:
    // Overtide super class functions.
    //
+   void resizeEvent (QResizeEvent* event);
    void activated ();
+
+   QMenu* buildContextMenu ();                        // Build the Scratch Pad specific context menu
+   void contextMenuTriggered (int selectedItemNum);   // An action was selected from the context menu
+
+   bool itemLessThan (const int a, const int b, QObject* context = NULL) const;
+   void swapItems (const int a, const int b, QObject* context = NULL);
 
    // Drag and Drop - no drop to self.
    //
@@ -125,12 +133,12 @@ private:
    QLabel* titlePvName;
    QLabel* titleDescription;
    QLabel* titleValue;
-   QLabel* titleSpacer;    // corresponds to the vertical scroll bar
+   QPushButton* loadButton;
+   QPushButton* saveButton;
 
-   QHBoxLayout* titleLayout;
    QScrollArea* scrollArea;
    QWidget*     scrollContents;
-   QVBoxLayout* scrollLayout;   // manages BaseDataSets::frame items in scrollContents
+   QVBoxLayout* scrollLayout;   // manages DataSets::frame items in scrollContents
 
    QEPVNameSelectDialog* pvNameSelectDialog;
 
@@ -141,8 +149,9 @@ private:
    class DataSets {
    public:
       explicit DataSets ();
+      ~DataSets ();
 
-      bool isInUse () const { return !(this->thePvName.isEmpty ()); }
+      bool isInUse () const;
       void setHighLighted (const bool isHigh);
 
       QString thePvName;
@@ -155,22 +164,26 @@ private:
       QLabel* pvName;
       QELabel* description;
       QELabel* value;
-      QEScratchPadMenu* menu;
    };
 
-   DataSets items [NUMBER_OF_ITEMS];
+   // We keep menus and items in separate arrays. Items may be swapped, however
+   // menu items are fixed, always associated with the same slot position.
+   //
+   QEScratchPadMenu* menus [NUMBER_OF_ITEMS];
+   DataSets* items [NUMBER_OF_ITEMS];
 
    void createInternalWidgets ();
    void setSelectItem (const int slot, const bool toggle);
    int numberSlotsUsed () const;  // includes cleared slots
    void calcMinimumHeight ();
 
-   // Perform a pvNameDropEvent 'drop' when dropped onto internall widget.
+   // Perform a pvNameDropEvent 'drop' when dropped onto internal widget.
    //
    void pvNameDropEvent (const int slot, QDropEvent* event);
-   void addPvName (const QString& pvName);
+   int addPvName (const QString& pvName);
 
 private slots:
+   void intialResize ();
    void contextMenuRequested (const QPoint& pos);
    void contextMenuSelected  (const int slot, const QEScratchPadMenu::ContextMenuOptions option);
 };

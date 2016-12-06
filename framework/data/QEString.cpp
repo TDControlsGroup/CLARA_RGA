@@ -73,7 +73,7 @@ bool QEString::writeString( const QString &data, QString& message )
     }
     else
     {
-        message = QString( "Write failed. String not written was '" ).append( data ).append( "'. " ).append( formattedData.toString() );
+        message = QString( "Write failed, unabled to format: '" ).append( data ).append( "'." );
     }
     return ok;
 }
@@ -87,11 +87,72 @@ void QEString::writeString( const QString &data )
         qDebug() << message;
     }
 }
+
+/*
+    Take a new string value, insert into array data updating the arrayIndex slot, and write whole array to the database.
+    Formatting as per writeString.
+*/
+bool QEString::writeStringElement( const QString &data, QString& message )
+{
+   bool ok = false;
+   QVariant elementValue = stringFormat->formatValue( data, ok );
+   if( ok )
+   {
+       writeDataElement( elementValue );
+   }
+   else
+   {
+       message = QString( "Write element failed, unabled to format:'" ).append( data ).append( "'." );
+   }
+   return ok;
+
+}
+
+void QEString::writeStringElement( const QString& data )
+{
+    QString message;
+    bool ok = writeStringElement( data, message );
+    if( !ok )
+    {
+        qDebug() << message;
+    }
+}
+
+/*
+    Take a new string array and write it to the database.
+*/
+bool QEString::writeString( const QVector<QString> &data, QString& message )
+{
+   bool ok = false;
+   QVariant arrayValue = stringFormat->formatValue( data, ok );
+   if( ok )
+   {
+       writeData( arrayValue );
+   }
+   else
+   {
+      message = QString( "Write element failed, unabled to format string array." );
+   }
+
+   return ok;
+}
+
+void QEString::writeString( const QVector<QString>& data )
+{
+    QString message;
+    bool ok = writeString( data, message );
+    if( !ok )
+    {
+        qDebug() << message;
+    }
+}
+
 /*
     Take a new value from the database and emit a string,formatted
     as directed by the set of formatting information held by this class
 */
-void QEString::convertVariant( const QVariant& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int& variableIndex ) {
+void QEString::convertVariant( const QVariant& value, QCaAlarmInfo& alarmInfo,
+                               QCaDateTime& timeStamp, const unsigned int& variableIndex ) {
 
     // Set up variable details used by some formatting options
     stringFormat->setDbEgu( getEgu() );
@@ -99,7 +160,8 @@ void QEString::convertVariant( const QVariant& value, QCaAlarmInfo& alarmInfo, Q
     stringFormat->setDbPrecision( getPrecision() );
 
     // Format the data and send it
-    emit stringChanged( stringFormat->formatString( value ), alarmInfo, timeStamp, variableIndex );
+    const QString formatted = stringFormat->formatString( value, getArrayIndex () );
+    emit stringChanged( formatted, alarmInfo, timeStamp, variableIndex );
 }
 
 /*

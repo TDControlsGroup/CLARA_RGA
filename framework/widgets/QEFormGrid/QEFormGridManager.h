@@ -26,7 +26,7 @@
 #ifndef QEFORMGRIDMANAGER_H
 #define QEFORMGRIDMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

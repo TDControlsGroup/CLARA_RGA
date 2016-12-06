@@ -23,8 +23,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEGROUPBOX_H
-#define QEGROUPBOX_H
+#ifndef QE_GROUP_BOX_H
+#define QE_GROUP_BOX_H
 
 #include <QGroupBox>
 #include <QEWidget.h>
@@ -184,4 +184,9 @@ private:
     QString substitutedTitle;
 };
 
-#endif     // QEGROUPBOX_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEGroupBox::UserLevels)
+Q_DECLARE_METATYPE (QEGroupBox::DisplayAlarmStateOptions)
+#endif
+
+#endif     // QE_GROUP_BOX_H

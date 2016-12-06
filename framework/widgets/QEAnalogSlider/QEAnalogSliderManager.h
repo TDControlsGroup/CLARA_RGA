@@ -26,7 +26,7 @@
 #ifndef QE_ANALOG_SLIDER_MANAGER_H
 #define QE_ANALOG_SLIDER_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEDesignerPluginCommon.h>
 
 #include <QEPluginLibrary_global.h>

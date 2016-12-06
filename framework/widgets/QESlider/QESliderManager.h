@@ -22,33 +22,17 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QESLIDERMANAGER_H
-#define QESLIDERMANAGER_H
+#ifndef QE_SLIDER_MANAGER_H
+#define QE_SLIDER_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QESliderManager : public QObject, public QDesignerCustomWidgetInterface {
-     Q_OBJECT
-     Q_INTERFACES(QDesignerCustomWidgetInterface)
+    Q_OBJECT
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
 
-  public:
-    QESliderManager( QObject *parent = 0 );
-
-    bool isContainer() const;
-    bool isInitialized() const;
-    QIcon icon() const;
-    //QString domXml() const;
-    QString group() const;
-    QString includeFile() const;
-    QString name() const;
-    QString toolTip() const;
-    QString whatsThis() const;
-    QWidget *createWidget( QWidget *parent );
-    void initialize( QDesignerFormEditorInterface *core );
-
-  private:
-    bool initialized;
+    QE_DECLARE_PLUGIN_MANAGER (QESlider)
 };
 
-#endif // QESLIDERMANAGER_H
+#endif // QE_SLIDER_MANAGER_H

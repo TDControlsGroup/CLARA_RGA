@@ -142,6 +142,7 @@ include (data/data.pri)
 include (archive/archive.pri)
 include (widgets/QEWidget/QEWidget.pri)
 include (widgets/QEAbstractWidget/QEAbstractWidget.pri)
+#CLARA
 include (widgetsCLARA/QEAnalogIndicatorCLARA/QEAnalogIndicator.pri)
 include (widgets/QEAnalogProgressBar/QEAnalogProgressBar.pri)
 include (widgets/QEAnalogSlider/QEAnalogSlider.pri)
@@ -179,7 +180,9 @@ include (widgets/QEShape/QEShape.pri)
 include (widgets/QESimpleShape/QESimpleShape.pri)
 include (widgets/QESlider/QESlider.pri)
 include (widgets/QESpinBox/QESpinBox.pri)
-include (widgets/QEStripChart/QEStripChart.pri)
+#CLARA
+include (widgetsCLARA/QEStripChart/QEStripChart.pri)
+#include (widgets/QEStripChart/QEStripChart.pri)
 include (widgets/QESubstitutedLabel/QESubstitutedLabel.pri)
 include (widgets/QETable/QETable.pri)
 

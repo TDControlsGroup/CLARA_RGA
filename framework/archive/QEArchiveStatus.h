@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,8 +23,8 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEARCHIVESTATUS_H
-#define QEARCHIVESTATUS_H
+#ifndef QE_ARCHIVE_STATUS_H
+#define QE_ARCHIVE_STATUS_H
 
 #include <QObject>
 
@@ -65,6 +65,7 @@ private:
       QLabel* available;
       QLabel* read;
       QLabel* numberPVs;
+      QLabel* pending;
    };
 
    Rows rowList [NumberRows + 1];
@@ -78,4 +79,4 @@ private slots:
 
 };
 
-#endif  // QEARCHIVESTATUS_H 
+#endif  // QE_ARCHIVE_STATUS_H

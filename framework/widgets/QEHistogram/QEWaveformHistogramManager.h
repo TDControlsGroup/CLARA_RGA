@@ -27,9 +27,8 @@
 #ifndef QE_WAVEFORM_HISTOGRAM_MANAGER_H
 #define QE_WAVEFORM_HISTOGRAM_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 // QEWaveformHistogram plugin interface.
 //

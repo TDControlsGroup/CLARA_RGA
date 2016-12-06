@@ -61,19 +61,46 @@ void VideoWidget::markupSetCursor( QCursor cursor )
     setCursor( cursor );
 }
 
-// Ensure we have a reference image and it is the same size as the display
-// Returns true if a new reference image was created
-// Returns false if no new image was required.
-bool VideoWidget::createRefImage()
+// Ensure we have a reference image and it is the same size as the display.
+void VideoWidget::createRefImage()
 {
-    if( refImage.isNull() || refImage.size() != size() )
+    // Do nothing if the reference image has been set and is the correct size
+    // (it will not be set initially, or after a new image has arrived in which case it is cleared)
+    if( !refImage.isNull() && refImage.size() == size() )
     {
-        refImage = QImage( size(), QImage::Format_RGB32 );
-        return true;
+        return;
     }
+
+    // If the current image is present and is the same size as the the video widget,
+    // use the current image as the reference image.
+    // (cheap - creates a shallow copy)
+    if( !currentImage.isNull() && currentImage.size() == size() )
+    {
+        refImage = currentImage;
+    }
+
+    // If the current image is not present or the wrong size...
     else
     {
-        return false;
+        // Create a correctly sized reference image if one does not exist or it is the wrong size.
+        if( refImage.isNull() || refImage.size() != size() )
+        {
+            refImage = QImage( size(), QImage::Format_RGB32 );
+        }
+
+        // If the current image exists, draw it scaled into the reference image
+        QPainter refPainter( &refImage );
+        if( !currentImage.isNull() )
+        {
+            refPainter.drawImage( refImage.rect(), currentImage, currentImage.rect() );
+        }
+
+        // If the current image does not exists, blank the reference image
+        else
+        {
+            QColor bg(0, 0, 0, 255);
+            refPainter.fillRect(rect(), bg);
+        }
     }
 }
 
@@ -87,24 +114,8 @@ void VideoWidget::setNewImage( QImage image, QCaDateTime& time )
     // (cheap - creates a shallow copy)
     currentImage = image;
 
-    // Create a reference image the same as the display
-    // This is cheap if the display is the same size as the image - a shallow copy is done.
-    // It is more expensive if different sizes as a scaled version is created.
-    if( image.size() == size() )
-    {
-        // Use the input image as the reference image
-        // (cheap - creates a shallow copy)
-        refImage = image;
-    }
-    else
-    {
-        // Ensure we have a reference image and it is the correct size
-        createRefImage();
-
-        // Draw the scaled image into the reference image
-        QPainter refPainter( &refImage );
-        refPainter.drawImage( refImage.rect(), image, image.rect() );
-    }
+    // Invalidate the current reference image
+    refImage = QImage();
 
     // Note the time for markups
     setMarkupTime( time );
@@ -171,15 +182,10 @@ void VideoWidget::markupChange( QVector<QRect>& changedAreas )
 // Manage a paint event in the video widget
 void VideoWidget::paintEvent(QPaintEvent* event )
 {
-    // Ensure there is a reference image.
-    // If this creates one then there has never been an update yet, fill it with black. This is likely
-    // to be the first paint event occuring at creation before an image update has arrived.
-    if( createRefImage() )
-    {
-        QPainter refPainter( &refImage );
-        QColor bg(0, 0, 0, 255);
-        refPainter.fillRect(rect(), bg);
-    }
+    // Create the reference image.
+    // It may be created now if there has never been an update, which is likely
+    // at creation before an image update has arrived.
+    createRefImage();
 
     // Build a painter and only bother about the changed area
     QPainter painter(this);

@@ -1,11 +1,11 @@
 call %TOP%\env.bat
 
 set OLDPATH=%PATH%
-set EPICS_CA_ADDR_LIST=192.168.82.10 192.168.83.12 192.168.83.10
+set EPICS_CA_ADDR_LIST=192.168.83.255
 set EPICS_CA_MAX_ARRAY_BYTES=1000000
 set EPICS_LIBS=%EPICS_BASE%\lib\%EPICS_HOST_ARCH%
-set QWT_DESIGNER_PLUGIN=C:\Users\zgm95989\Desktop\qwt-6.1.2\designer\
-
+set QWT_DESIGNER_PLUGIN=%TOP%\framework\designer
+set QE_ARCHIVE_LIST=192.168.83.13:8888/cgi-bin/ArchiveDataServer.cgi
 REM Both needed for loading dll and runtime
 set DESIGNER=%TOP%\framework\designer
 set QT_PLUGIN_PATH=%DESIGNER%\..;%QWT_DESIGNER_PLUGIN%

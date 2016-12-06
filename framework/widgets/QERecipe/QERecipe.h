@@ -1,4 +1,6 @@
-/*  This file is part of the EPICS QT Framework, initially developed at the
+/*  QERecipe.h
+ *
+ *  This file is part of the EPICS QT Framework, initially developed at the
  *  Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or
@@ -22,12 +24,11 @@
  *    ricardo.fernandes@synchrotron.org.au
  */
 
-#ifndef QERECIPE_H
-#define QERECIPE_H
+#ifndef QE_RECIPE_H
+#define QE_RECIPE_H
 
 #include <QEConfiguredLayout.h>
 #include <QDomDocument>
-
 
 
 // ============================================================
@@ -39,7 +40,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERecipe:public QWidget, public QEWidget
     Q_OBJECT
 
     private:
-
 
     protected:
         QLabel *qLabelRecipeDescription;
@@ -55,7 +55,6 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERecipe:public QWidget, public QEWidget
         QString filename;
         int optionsLayout;
         int currentUserType;
-
 
     public:
 
@@ -204,11 +203,12 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERecipe:public QWidget, public QEWidget
         void buttonApplyClicked();
 
         void buttonReadClicked();
-
 };
 
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QERecipe::configurationTypesProperty)
+Q_DECLARE_METATYPE (QERecipe::optionsLayoutProperty)
+Q_DECLARE_METATYPE (QERecipe::userTypesProperty)
+#endif
 
-
-
-
-#endif // QERECIPE_H
+#endif // QE_RECIPE_H

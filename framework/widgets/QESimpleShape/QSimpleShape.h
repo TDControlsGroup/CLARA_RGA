@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -146,7 +146,7 @@ public:
 public:
    /// Construction
    ///
-   QSimpleShape (QWidget *parent = 0);
+   QSimpleShape (QWidget* parent = 0);
 
    /// Destruction
    virtual ~QSimpleShape () {}
@@ -159,13 +159,13 @@ public slots:
 public:
    int getValue () const;
 
-   void setModulus (int value);
+   void setModulus (const int value);
    int getModulus () const;
 
    void setStateSet (const QStringList& stateSet);
    QStringList getStateSet () const;
 
-   void setShape (Shapes value);
+   void setShape (const Shapes value);
    Shapes getShape () const;
 
    void setEdgeWidth (const int value);
@@ -174,25 +174,25 @@ public:
    void setEdgeColour (const QColor value);
    QColor getEdgeColour () const;
 
-   void setTextFormat (TextFormats value);
+   void setTextFormat (const TextFormats value);
    TextFormats getTextFormat () const;
 
-   void setFixedText (QString value);
+   void setFixedText (const QString& value);
    QString getFixedText () const;
 
-   void setFlashRate (QEScanTimers::ScanRates);
+   void setFlashRate (const QEScanTimers::ScanRates);
    QEScanTimers::ScanRates getFlashRate () const;
 
-   void setFlashOffColour (const QColor& colour);
+   void setFlashOffColour (const QColor colour);
    QColor getFlashOffColour () const;
 
    void setIsActive (const bool value);
    bool getIsActive () const;
 
-   void   setColourProperty (int slot, QColor color);
-   QColor getColourProperty (int slot) const;
+   void   setColourProperty (const int slot, const QColor color);
+   QColor getColourProperty (const int slot) const;
 
-   void  setFlashProperty (int slot, bool color);
+   void  setFlashProperty (int slot, const bool isFlashing);
    bool  getFlashProperty (int slot) const;
 
    // Property access READ and WRITE functions.
@@ -233,14 +233,14 @@ protected:
    virtual QColor getItemColour ();
 
 private:
-   void equaliseRect (QRect & rect);
+   void equaliseRect (QRect& rect);
    QString calcTextImage ();    // text image to be used.
 
    // Like painter.drawText, but centred on textCentre.
    // (painter.drawText aligns bottom left corner on given point).
    //
-   void drawText (QPainter & painter, QPoint & textCentre, QString & text);
-   void paintEvent (QPaintEvent *event);
+   void drawText (QPainter& painter, const QPoint& textCentre, const QString& text);
+   void paintEvent (QPaintEvent* event);
 
    Shapes shape;
    QStringList stateSet;
@@ -260,5 +260,10 @@ private:
 private slots:
    void flashTimeout (const bool);
 };
+
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QSimpleShape::Shapes)
+Q_DECLARE_METATYPE (QSimpleShape::TextFormats)
+#endif
 
 #endif // Q_SIMPLE_SHAPE_H

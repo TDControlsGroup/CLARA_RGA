@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013,2014 Australian Synchrotron
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,18 +23,18 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#include <QDebug>
-#include <alarm.h>
-#include <QECommon.h>
 #include <QESimpleShape.h>
+#include <alarm.h>
+#include <QDebug>
+#include <QECommon.h>
 
-#define DEBUG qDebug () << "QESimpleShape" << __LINE__ << __FUNCTION__
+#define DEBUG qDebug () << "QESimpleShape" << __LINE__ << __FUNCTION__ << "  "
 
 #define MAIN_PV_INDEX   0
 #define EDGE_PV_INDEX   1
 
 //-----------------------------------------------------------------------------
-// Macro fuction to enure varable has an expected value.
+// Macro fuction to enure varable index has an expected value.
 //
 #define ASSERT_PV_INDEX(vi, action)   {                                \
    if ((vi != MAIN_PV_INDEX) && (vi != EDGE_PV_INDEX)) {               \
@@ -47,8 +47,10 @@
 //-----------------------------------------------------------------------------
 // Constructor with no initialisation
 //
-QESimpleShape::QESimpleShape (QWidget* parent)
-   : QSimpleShape (parent), QEWidget (this)
+QESimpleShape::QESimpleShape (QWidget* parent) :
+   QSimpleShape (parent),
+   QEWidget (this),
+   QESingleVariableMethods (this, MAIN_PV_INDEX)
 {
    this->setup ();
 }
@@ -56,12 +58,20 @@ QESimpleShape::QESimpleShape (QWidget* parent)
 //-----------------------------------------------------------------------------
 // Constructor with known variable
 //
-QESimpleShape::QESimpleShape (const QString& variableNameIn, QWidget* parent)
-   : QSimpleShape (parent), QEWidget (this)
+QESimpleShape::QESimpleShape (const QString& variableNameIn, QWidget* parent) :
+   QSimpleShape (parent),
+   QEWidget (this),
+   QESingleVariableMethods (this, MAIN_PV_INDEX)
 {
    this->setup ();
    this->setVariableName (variableNameIn, 0);
    this->activate ();
+}
+
+//-----------------------------------------------------------------------------
+QESimpleShape::~QESimpleShape ()
+{
+    if (this->edge) delete this->edge;
 }
 
 //-----------------------------------------------------------------------------
@@ -71,9 +81,11 @@ void QESimpleShape::setup ()
 {
    QCaAlarmInfo invalid (NO_ALARM, INVALID_ALARM);
 
+   this->edge = new QESingleVariableMethods (this, EDGE_PV_INDEX);
+
    // Set up data
    //
-   // This control used a single data source
+   // This control uses two data sources
    //
    this->setNumVariables (2);
    this->setVariableAsToolTip (true);
@@ -84,7 +96,6 @@ void QESimpleShape::setup ()
    // Set the initial state
    // Widget is inactive until connected.
    //
-   this->arrayIndex = 0;
    this->isStaticValue = false;
    this->channelValue = 0;
    this->channelAlarmColour = this->getColor (invalid, 255);
@@ -98,41 +109,60 @@ void QESimpleShape::setup ()
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   this->variableNamePropertyManager.setVariableIndex (MAIN_PV_INDEX);
-   QObject::connect (&this->variableNamePropertyManager, SIGNAL (newVariableNameProperty    (QString, QString, unsigned int)),
-                     this,                               SLOT   (useNewVariableNameProperty (QString, QString, unsigned int)));
-
-   this->edgeVNPM.setVariableIndex (EDGE_PV_INDEX);
-   QObject::connect (&this->edgeVNPM, SIGNAL (newVariableNameProperty    (QString, QString, unsigned int)),
-                     this,            SLOT   (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->connectNewVariableNameProperty
+         (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->edge->connectNewVariableNameProperty
+         (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 }
 
 //------------------------------------------------------------------------------
 //
 void QESimpleShape::activated ()
 {
-   QCaAlarmInfo invalid (NO_ALARM, INVALID_ALARM);
-
    // Ensure widget returns to default state when (re-)activated.
    //
    this->setIsActive (false);
    this->channelValue = 0;
-   this->channelAlarmColour = this->getColor (invalid, 255);
+   this->channelAlarmColour = QColor ("#ffffff");   // white
    this->setValue (0);
+}
+
+//------------------------------------------------------------------------------
+//
+void QESimpleShape::setVariableNameSubstitutionsProperty (const QString& substitutions)
+{
+   // Apply to both parent/inherited instabce and edge instance.
+   //
+   QESingleVariableMethods::setVariableNameSubstitutionsProperty (substitutions);
+   this->edge->setVariableNameSubstitutionsProperty (substitutions);
+}
+
+//------------------------------------------------------------------------------
+//
+void QESimpleShape::setEdgeArrayIndex (const int arrayIndex)
+{
+   this->edge->setArrayIndex (arrayIndex);
+}
+
+//------------------------------------------------------------------------------
+//
+int QESimpleShape::getEdgeArrayIndex () const
+{
+   return this->edge->getArrayIndex ();
 }
 
 //------------------------------------------------------------------------------
 //
 void QESimpleShape::setEdgeVariableNameProperty (const QString& variableName)
 {
-   this->edgeVNPM.setVariableNameProperty (variableName);
+   this->edge->setVariableNameProperty (variableName);
 }
 
 //------------------------------------------------------------------------------
 //
 QString QESimpleShape::getEdgeVariableNameProperty () const
 {
-   return this->edgeVNPM.getVariableNameProperty ();
+   return this->edge->getVariableNameProperty ();
 }
 
 //------------------------------------------------------------------------------
@@ -185,12 +215,16 @@ qcaobject::QCaObject* QESimpleShape::createQcaItem (unsigned int variableIndex)
 
          // Apply currently defined array index.
          //
-         result->setArrayIndex (this->arrayIndex);
+         this->setQCaArrayIndex (result);
       }
 
    } else if (variableIndex == EDGE_PV_INDEX) {
       pvName = this->getSubstitutedVariableName (variableIndex);
       result = new QEInteger (pvName, this, &this->integerFormatting, variableIndex);
+
+      // Apply currently defined array index.
+      //
+      this->edge->setQCaArrayIndex (result);
 
    } else {
       result = NULL;         // Unexpected
@@ -312,11 +346,6 @@ void QESimpleShape::setShapeValue (const long &valueIn, QCaAlarmInfo & alarmInfo
          this->channelValue = valueIn;
          this->setValue ((int) valueIn);
 
-         // Signal a database value change to any Link (or other) widgets using one
-         // of the dbValueChanged.
-         //
-         this->emitDbValueChanged (MAIN_PV_INDEX);
-
          // This update is over, clear first update flag.
          //
          this->isFirstUpdate = false;
@@ -332,13 +361,19 @@ void QESimpleShape::setShapeValue (const long &valueIn, QCaAlarmInfo & alarmInfo
          }
          this->setEdgeColour (selectedEdgeColour);
          break;
-
    }
 
    // Invoke tool tip handling directly. We don;t want to interfer with the style
    // as widget draws it's own stuff with own, possibly clear, colours.
    //
    this->updateToolTipAlarm (alarmInfo.severityName (), variableIndex);
+
+   // Signal a database value change to any Link (or other) widgets using one
+   // of the dbValueChanged (for main variable only).
+   //
+   if (variableIndex == MAIN_PV_INDEX) {
+      this->emitDbValueChanged (MAIN_PV_INDEX);
+   }
 }
 
 //------------------------------------------------------------------------------
@@ -356,7 +391,7 @@ QString QESimpleShape::getItemText ()
             //
             result.setNum (this->channelValue);
          } else {
-            result = this->stringFormatting.formatString (this->channelValue);
+            result = this->stringFormatting.formatString (this->channelValue, this->getArrayIndex ());
          }
          break;
 
@@ -390,27 +425,6 @@ QColor QESimpleShape::getItemColour ()
 void QESimpleShape::stringFormattingChange()
 {
    this->update ();
-}
-
-//------------------------------------------------------------------------------
-//
-void QESimpleShape::setArrayIndex (const int arrayIndexIn)
-{
-   this->arrayIndex = MAX (0, arrayIndexIn);
-
-   qcaobject::QCaObject* qca = this->getQcaItem (MAIN_PV_INDEX);
-   if (qca) {
-      // Apply to qca object and force update
-      qca->setArrayIndex (this->arrayIndex);
-      qca->resendLastData ();
-   }
-}
-
-//------------------------------------------------------------------------------
-//
-int QESimpleShape::getArrayIndex () const
-{
-   return this->arrayIndex;
 }
 
 //------------------------------------------------------------------------------

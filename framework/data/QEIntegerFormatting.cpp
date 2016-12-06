@@ -1,4 +1,5 @@
-/*
+/*  QEIntegerFormatting.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -82,6 +83,24 @@ QVariant QEIntegerFormatting::formatValue( const long &integerValue, generic::ge
     //qDebug() << "QEIntegerFormatting::formatValue() Unknown value 'Generic' type: " << valueType;
     QVariant unknown;
     return unknown;
+}
+
+/*
+    Generate a value given an array of integer numbers, using formatting defined within this class.
+    The formatting mainly applies if formatting as a string. For example, what is
+    the number base? should a sign always be included? are leading zeros requried?
+    The formatting could include properties related to other types. For example, generate
+    an error if attempting to convert a negative integer to an unsigned integer.
+*/
+QVariant QEIntegerFormatting::formatValue( const QVector<long> &integerValue, generic::generic_types valueType )
+{
+   QList<QVariant> array;
+   int arraySize = integerValue.size();
+   for( int i = 0; i < arraySize; i++ )
+   {
+       array.append( formatValue( integerValue[i], valueType ));
+   }
+   return array;
 }
 
 /*
@@ -286,3 +305,5 @@ void QEIntegerFormatting::setRadix( unsigned int radixIn ) {
 unsigned int QEIntegerFormatting::getRadix() {
     return radix;
 }
+
+// end

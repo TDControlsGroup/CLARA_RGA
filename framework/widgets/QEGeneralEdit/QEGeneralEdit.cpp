@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -29,12 +29,17 @@
 
 #include "QEGeneralEdit.h"
 
-#define DEBUG qDebug () << "QEGeneralEdit" << __FUNCTION__ << __LINE__
+#define DEBUG qDebug () << "QEGeneralEdit" << __LINE__ << __FUNCTION__ << "  "
+
+#define PV_VARIABLE_INDEX      0
 
 //-----------------------------------------------------------------------------
 // Constructor with no initialisation
 //
-QEGeneralEdit::QEGeneralEdit (QWidget * parent):QEFrame (parent)
+QEGeneralEdit::QEGeneralEdit (QWidget* parent) :
+   QEFrame (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX)
+
 {
    this->commonSetup ();
 }
@@ -43,11 +48,13 @@ QEGeneralEdit::QEGeneralEdit (QWidget * parent):QEFrame (parent)
 // Constructor with known variable
 //
 QEGeneralEdit::QEGeneralEdit (const QString & variableNameIn,
-                              QWidget * parent):QEFrame (parent)
+                              QWidget* parent) :
+   QEFrame (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX)
 {
    this->commonSetup ();
    this->setVariableName (variableNameIn, 0);
-   activate();
+   this->activate ();
 }
 
 //---------------------------------------------------------------------------------
@@ -95,10 +102,7 @@ void QEGeneralEdit::commonSetup ()
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   QObject::connect
-       (&this->variableNamePropertyManager,
-               SIGNAL (newVariableNameProperty (QString, QString, unsigned int)),
-        this,  SLOT   (useNewVariableNameProperty (QString, QString, unsigned int)));
+   this->connectNewVariableNameProperty (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 }
 
 //------------------------------------------------------------------------------
@@ -117,10 +121,11 @@ void QEGeneralEdit::createInternalWidgets ()
    this->verticalLayout->addWidget (pvNameLabel);
 
    this->valueLabel = new QELabel (this);
+   this->valueLabel->setArrayAction (QEStringFormatting::INDEX);
    this->valueLabel->setFrameShape (QFrame::Panel);
    this->valueLabel->setFrameShadow (QFrame::Plain);
-   this->pvNameLabel->setMinimumHeight (19);
-   this->pvNameLabel->setMaximumHeight (19);
+   this->valueLabel->setMinimumHeight (19);
+   this->valueLabel->setMaximumHeight (19);
    this->verticalLayout->addWidget (valueLabel);
 
    this->numericEditWidget = new QENumericEdit (this);
@@ -142,6 +147,21 @@ void QEGeneralEdit::createInternalWidgets ()
    this->stringEditWidget->setVisible (true);  // allow one (at least at design time)
 }
 
+//------------------------------------------------------------------------------
+//
+void QEGeneralEdit::setArrayIndex (const int arrayIndex)
+{
+   // First call parent function.
+   //
+   QESingleVariableMethods::setArrayIndex (arrayIndex);
+
+   // And then apply to each internal widget
+   //
+   this->valueLabel->setArrayIndex (arrayIndex);
+   this->numericEditWidget->setArrayIndex (arrayIndex);
+   this->radioGroupPanel->setArrayIndex (arrayIndex);
+   this->stringEditWidget->setArrayIndex (arrayIndex);
+}
 
 //------------------------------------------------------------------------------
 // Implementation of QEWidget's virtual funtion to create the specific type of
@@ -161,6 +181,11 @@ qcaobject::QCaObject*  QEGeneralEdit::createQcaItem (unsigned int variableIndex)
    this->pvNameLabel->setText (pvName);
 
    result = new qcaobject::QCaObject (pvName, this, variableIndex);
+
+   // Apply currently defined array index.
+   //
+   this->setQCaArrayIndex (result);
+
    return result;
 }
 
@@ -177,6 +202,7 @@ void QEGeneralEdit::establishConnection (unsigned int variableIndex)
       DEBUG << "unexpected variableIndex" << variableIndex;
       return;
    }
+
    // Create a connection.
    // If successfull, the QCaObject object that will supply data update signals will be returned
    // Note createConnection creates the connection and returns reference to existing QCaObject.
@@ -230,7 +256,7 @@ void QEGeneralEdit::dataChanged (const QVariant& value, QCaAlarmInfo& alarmInfo,
 
       // Clear all three optional edit widgets.
       //
-      // Can't use regular widget setVisible as this get inter-twinggled with
+      // Can't use regular widget setVisible as this gets inter-twinggled with
       // the visibility set by the setting user level.
       //
       this->numericEditWidget->setRunVisible (false);
@@ -241,11 +267,25 @@ void QEGeneralEdit::dataChanged (const QVariant& value, QCaAlarmInfo& alarmInfo,
       this->radioGroupPanel->setVariableNameAndSubstitutions ("", "", 0);
       this->stringEditWidget->setVariableNameAndSubstitutions ("", "", 0);
 
+      QVariant workingValue = value;
+      QVariant::Type type = workingValue.type ();
+
+      if (type == QVariant::List) {
+         int ai = this->getArrayIndex();
+         if (ai >= 0 && ai < value.toList().count() ) {
+            // Convert this array element as a scalar update.
+            //
+            workingValue =value.toList().value(ai);
+            type = workingValue.type ();
+         } else {
+            DEBUG << " Array index out of bounds:" << ai;
+            return; // do nothing
+         }
+      }
 
       // Use data type to figure out which type of editting widget is most
       // appropriate.
       //
-      QVariant::Type type = value.type ();
       switch (type) {
          case QVariant::String:
             useThisWidget = this->stringEditWidget;

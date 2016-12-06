@@ -59,6 +59,7 @@
 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui
 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtANGLE
 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtXml
+-IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtNetwork
 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore
 -IC:/Qt/Qt5.7.0/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include
 -IC:/Qt/Qt5.7.0/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed

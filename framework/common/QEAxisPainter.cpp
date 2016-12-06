@@ -15,9 +15,15 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
+ *  Author:
+ *    Andrew Starritt
+ *  Contact details:
+ *    andrew.starritt@synchrotron.org.au
  */
+
+#include <math.h>
 
 #include <QDebug>
 #include <QFontMetrics>
@@ -49,13 +55,18 @@ QEAxisPainter::QEAxisPainter (QWidget* parent) : QWidget (parent)
    this->setMinimumHeight (20);
 
    this->bandList.clear ();
+   this->mModulo = 0.0;
+   this->mPrecision = 1;
    this->mMinimum = 0.0;
    this->mMaximum = 10.0;
    this->mMinorInterval = 0.2;
    this->mMajorMinorRatio = 5;   // => majorInterval = 1.0
    this->mIsLogScale = false;
-   this->mIndent = 20;
+   this->mHasAxisLine = false;
+   this->mTopLeftIndent = 20;
+   this->mRightBottomIndent = 20;
    this->mGap = 2;
+   this->mAutoFixedSize = false;
    this->mOrientation = Left_To_Right;
    this->mTextPosition = BelowLeft;
 
@@ -99,8 +110,8 @@ void QEAxisPainter::setMinimum (const double minimum)
    }
 
    this->iterator->reInitialise (this->mMinimum, this->mMaximum,
-                           this->mMinorInterval,
-                           this->mMajorMinorRatio, this->mIsLogScale);
+                                 this->mMinorInterval,
+                                 this->mMajorMinorRatio, this->mIsLogScale);
    this->update ();
 }
 
@@ -129,8 +140,8 @@ void QEAxisPainter::setMaximum (const double maximum)
    }
 
    this->iterator->reInitialise (this->mMinimum, this->mMaximum,
-                           this->mMinorInterval,
-                           this->mMajorMinorRatio, this->mIsLogScale);
+                                 this->mMinorInterval,
+                                 this->mMajorMinorRatio, this->mIsLogScale);
    this->update ();
 }
 
@@ -139,6 +150,45 @@ void QEAxisPainter::setMaximum (const double maximum)
 double QEAxisPainter::getMaximum  () const
 {
    return this->mMaximum;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEAxisPainter::setModulo (const double modulo)
+{
+   const double minModulo = (this->mMaximum - this->mMinimum) / 10.0;
+
+   this->mModulo = modulo;
+
+   // Ensure in range
+   //
+   if (this->mModulo > 0.0) {
+      this->mModulo = MAX (this->mModulo, +minModulo);
+   } else if (this->mModulo < 0.0) {
+      this->mModulo = MIN (this->mModulo, -minModulo);
+   }
+   this->update ();
+}
+
+//------------------------------------------------------------------------------
+//
+double QEAxisPainter::getModulo () const
+{
+   return this->mModulo;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEAxisPainter::setPrecision (const int precision)
+{
+   this->mPrecision = LIMIT (precision, 0, 6);
+}
+
+//------------------------------------------------------------------------------
+//
+int QEAxisPainter::getPrecision () const
+{
+   return this->mPrecision;
 }
 
 //------------------------------------------------------------------------------
@@ -153,8 +203,8 @@ void QEAxisPainter::setMinorInterval (const double minorInterval)
    this->mMinorInterval = MAX (limitedMin, dynamicMin);
 
    this->iterator->reInitialise (this->mMinimum, this->mMaximum,
-                           this->mMinorInterval,
-                           this->mMajorMinorRatio, this->mIsLogScale);
+                                 this->mMinorInterval,
+                                 this->mMajorMinorRatio, this->mIsLogScale);
    this->update ();
 }
 
@@ -162,7 +212,7 @@ void QEAxisPainter::setMinorInterval (const double minorInterval)
 //
 double QEAxisPainter::getMinorInterval  () const
 {
-    return this->mMinorInterval;
+   return this->mMinorInterval;
 }
 
 //------------------------------------------------------------------------------
@@ -174,8 +224,8 @@ void QEAxisPainter::setMajorMinorRatio (const int majorMinorRatio)
    this->mMajorMinorRatio = MAX (1, majorMinorRatio);
 
    this->iterator->reInitialise (this->mMinimum, this->mMaximum,
-                           this->mMinorInterval,
-                           this->mMajorMinorRatio, this->mIsLogScale);
+                                 this->mMinorInterval,
+                                 this->mMajorMinorRatio, this->mIsLogScale);
    this->update ();
 }
 
@@ -183,7 +233,22 @@ void QEAxisPainter::setMajorMinorRatio (const int majorMinorRatio)
 //
 int QEAxisPainter::getMajorMinorRatio () const
 {
-    return this->mMajorMinorRatio;
+   return this->mMajorMinorRatio;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEAxisPainter::setHasAxisLine (const bool hasAxisLine)
+{
+   this->mHasAxisLine = hasAxisLine;
+   this->update ();
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEAxisPainter::getHasAxisLine () const
+{
+   return this->mHasAxisLine;
 }
 
 //------------------------------------------------------------------------------
@@ -192,8 +257,8 @@ void QEAxisPainter::setLogScale (const bool value)
 {
    this->mIsLogScale = value;
    this->iterator->reInitialise (this->mMinimum, this->mMaximum,
-                           this->mMinorInterval,
-                           this->mMajorMinorRatio, this->mIsLogScale);
+                                 this->mMinorInterval,
+                                 this->mMajorMinorRatio, this->mIsLogScale);
    this->update ();
 }
 
@@ -251,9 +316,32 @@ QColor QEAxisPainter::getPenColour () const
 
 //------------------------------------------------------------------------------
 //
+void QEAxisPainter::setIndent (const int topLeftIndent, const int rightBottomIndent)
+{
+   this->mTopLeftIndent = MAX (topLeftIndent, 0);
+   this->mRightBottomIndent = MAX (rightBottomIndent, 0);
+   this->update ();
+}
+
+//------------------------------------------------------------------------------
+//
+int QEAxisPainter::getTopLeftIndent  () const
+{
+   return this->mTopLeftIndent;
+}
+
+//------------------------------------------------------------------------------
+//
+int QEAxisPainter::getRightBottomIndent  () const
+{
+   return this->mRightBottomIndent;
+}
+
+//------------------------------------------------------------------------------
+//
 void QEAxisPainter::setIndent (const int indent)
 {
-   this->mIndent = MAX (indent, 0);
+   this->setIndent (indent, indent);
    this->update ();
 }
 
@@ -261,7 +349,7 @@ void QEAxisPainter::setIndent (const int indent)
 //
 int QEAxisPainter::getIndent () const
 {
-   return this->mIndent;
+   return (this->mTopLeftIndent + this->mRightBottomIndent) / 2;
 }
 
 //------------------------------------------------------------------------------
@@ -277,6 +365,21 @@ void QEAxisPainter::setGap (const int gap)
 int QEAxisPainter::getGap  () const
 {
    return this->mGap;
+}
+
+//------------------------------------------------------------------------------
+//
+void QEAxisPainter::setAutoFixedSize (const bool enabled)
+{
+   this->mAutoFixedSize = enabled;
+   this->update ();
+}
+
+//------------------------------------------------------------------------------
+//
+bool QEAxisPainter::getAutoFixedSize () const
+{
+   return this->mAutoFixedSize;
 }
 
 
@@ -371,7 +474,7 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
    const int markerTick = 14;
    const int minorTick = 5;
    const int majorTick = 10;
-   const int pointSize = 7;
+   const int pointSize = this->font ().pointSize();
 
    QPainter painter (this);
    QPen pen;
@@ -383,7 +486,6 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
    int sign;
    int x_first, x_last;
    int y_first, y_last;
-   bool ok;
    bool isMajor;
    double value;
 
@@ -401,16 +503,16 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
 
       case Left_To_Right:
          sign = (this->mTextPosition == BelowLeft) ? +1 : -1;
-         x_first = this->mIndent;
-         x_last  = width - this->mIndent;
+         x_first = this->mTopLeftIndent;
+         x_last  = width - this->mRightBottomIndent;
          y_first = (this->mTextPosition == BelowLeft) ? this->mGap : height - this->mGap;
          y_last  = y_first;
          break;
 
       case Right_To_Left:
          sign = (this->mTextPosition == BelowLeft) ? +1 : -1;
-         x_first = width - this->mIndent;
-         x_last  = this->mIndent;
+         x_first = width - this->mRightBottomIndent;
+         x_last  = this->mTopLeftIndent;
          y_first = (this->mTextPosition == BelowLeft) ? this->mGap : height - this->mGap;
          y_last  = y_first;
          break;
@@ -419,16 +521,16 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
          sign = (this->mTextPosition == BelowLeft) ? -1 : +1;
          x_first = (this->mTextPosition == BelowLeft) ? width - this->mGap : this->mGap;
          x_last  = x_first;
-         y_first = this->mIndent;
-         y_last  = height - this->mIndent;
+         y_first = this->mTopLeftIndent;
+         y_last  = height - this->mRightBottomIndent;
          break;
 
       case Bottom_To_Top:
          sign = (this->mTextPosition == BelowLeft) ? -1 : +1;
          x_first = (this->mTextPosition == BelowLeft) ? width - this->mGap : this->mGap;
          x_last  = x_first;
-         y_first = height - this->mIndent;
-         y_last  = this->mIndent;
+         y_first = height - this->mRightBottomIndent;
+         y_last  = this->mTopLeftIndent;
          break;
 
       default:
@@ -437,6 +539,8 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
          return;
    }
 
+   // Draw color bands (if any)
+   //
    for (int j = 0; j < this->bandList.count (); j++) {
       const QEColourBand band = this->bandList.value (j);
       double fl, gl;
@@ -502,7 +606,6 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
       painter.drawLine (p1, p2);
    }
 
-
    // Draw actual axis
    //
    pen.setWidth (1);
@@ -513,8 +616,20 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
    pen.setColor (penColour);
    painter.setPen (pen);
 
-   for (ok = this->iterator->firstValue (value, isMajor); ok;
-        ok = this->iterator->nextValue  (value, isMajor)) {
+   // Draw line itself if required
+   //
+   if (this->mHasAxisLine) {
+      QPoint p1 = QPoint (x_first, y_first);
+      QPoint p2 = QPoint (x_last,  y_last);
+      painter.drawLine (p1, p2);
+   }
+
+   QFontMetrics fm = painter.fontMetrics ();
+   int maxTextWidth = 0;
+   int maxTextHeight = 0;
+
+   for (bool ok = this->iterator->firstValue (value, isMajor, MAX_MINOR_TICKS);
+        ok;  ok = this->iterator->nextValue  (value, isMajor)) {
 
       double f, g;
       int x, y;
@@ -538,16 +653,48 @@ void QEAxisPainter::paintEvent (QPaintEvent *)
       if (isMajor) {
          QString vt;
 
-         if (this->getLogScale () ) {
-            vt.sprintf ("%.0e", value);
-         } else {
-            vt = QString ("%1").arg (value,0, 'g', 4);
-            if (!vt.contains(".")) vt.append(".0");
+         double mvalue = value;
+         // Apply modulo processing if specified.
+         //
+         if (this->mModulo != 0.0) {
+            const double n = mvalue / this->mModulo;
+            if ((n < 0.0) || (n > 1.0)) {
+               mvalue -= floor (n) * this->mModulo;
+            }
          }
+
+         if (this->getLogScale ()) {
+            vt.setNum (mvalue, 'e', 0);
+            // vt.sprintf ("%.0e", mvalue);
+         } else {
+            vt.setNum (mvalue, 'f', this->mPrecision);
+            // vt = QString ("%1").arg (mvalue, 0, 'g', 4);
+            // if (!vt.contains(".")) vt.append(".0");
+         }
+
+         maxTextWidth = MAX (maxTextWidth, fm.width (vt));
+         maxTextHeight = 10;
 
          p2 = this->isLeftRight () ? QPoint (x, y + sign*(majorTick + 1)) :
                                      QPoint (x + sign*(majorTick + 1), y);
-         this->drawAxisText (painter, p2, vt, pointSize);
+
+         this->drawAxisText (painter, p2, vt);
+      }
+   }
+
+   if (this->mAutoFixedSize) {
+      if(this->isLeftRight ()) {
+         int requiredHeight = maxTextHeight + markerTick + this->mGap;
+         if ((this->minimumHeight () != requiredHeight) &&
+             (this->maximumHeight () != requiredHeight)) {
+            this->setFixedHeight (requiredHeight);
+         }
+      } else {
+         int requiredWidth = maxTextWidth + markerTick + this->mGap;
+         if ((this->minimumWidth () != requiredWidth) &&
+             (this->maximumWidth () != requiredWidth)) {
+            this->setFixedWidth (requiredWidth);
+         }
       }
    }
 }
@@ -562,10 +709,10 @@ double QEAxisPainter::calcFraction (const double x)
    //
    if (this->getLogScale ()) {
       result = (LOG10 (x)              - LOG10 (this->mMinimum)) /
-               (LOG10 (this->mMaximum) - LOG10 (this->mMinimum));
+            (LOG10 (this->mMaximum) - LOG10 (this->mMinimum));
    } else {
       result = (x              - this->mMinimum) /
-               (this->mMaximum - this->mMinimum);
+            (this->mMaximum - this->mMinimum);
    }
    result = LIMIT (result, 0.0, 1.0);
 
@@ -573,16 +720,12 @@ double QEAxisPainter::calcFraction (const double x)
 }
 
 //------------------------------------------------------------------------------
-// Depending on orientation/edge, draws the text releatibe to mominated position.
+// Depending on orientation/edge, draws the text releative to nominated position.
 //
 void QEAxisPainter::drawAxisText (QPainter& painter, const QPoint& position,
-                                  const QString& text, const int pointSize)
+                                  const QString& text)
 {
    QFont pf (this->font ());
-
-   if (pointSize > 0) {
-      pf.setPointSize (pointSize);
-   }
    painter.setFont (pf);
 
    QFontMetrics fm = painter.fontMetrics ();

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2012 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QELINEEDIT_H
-#define QELINEEDIT_H
+#ifndef QE_LINE_EDIT_H
+#define QE_LINE_EDIT_H
 
 #include <QLineEdit>
 #include <QEWidget.h>
@@ -37,8 +37,9 @@
 
 
 class QEPLUGINLIBRARYSHARED_EXPORT QELineEdit :
-      public QEGenericEdit, public QEStringFormattingMethods {
-
+      public QEGenericEdit,
+      public QEStringFormattingMethods
+{
     Q_OBJECT
 
     // Single variable properties, control widget properties and standard properties are
@@ -175,10 +176,6 @@ public:
     /// \li APPEND - treat array as an array of numbers and format a string containing them all with a space between each. For example, an array of three numbers 10, 11 and 12 will be formatted as '10 11 12'.
     /// \li INDEX - Extract a single item from the array. The item is then formatted as any other non array data would be. The item selected is determined by the arrayIndex property. For example, if arrayIndex property is 1, an array of three numbers 10, 11 and 12 will be formatted as '11'.
     Q_PROPERTY(ArrayActions arrayAction READ getArrayActionProperty WRITE setArrayActionProperty)
-
-    /// Index used to select a single item of data for formatting from an array of data. Default is 0.
-    /// Only used when the arrayAction property is INDEX. Refer to the arrayAction property for more details.
-    Q_PROPERTY(unsigned int arrayIndex READ getArrayIndex WRITE setArrayIndex)
 public:
     // END-STRING-FORMATTING-PROPERTIES ===============================================
 
@@ -241,4 +238,11 @@ private:
 
 };
 
-#endif // QELINEEDIT_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QELineEdit::Formats)
+Q_DECLARE_METATYPE (QELineEdit::Separators)
+Q_DECLARE_METATYPE (QELineEdit::Notations)
+Q_DECLARE_METATYPE (QELineEdit::ArrayActions)
+#endif
+
+#endif   // QE_LINE_EDIT_H

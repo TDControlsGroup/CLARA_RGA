@@ -23,12 +23,11 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QERADIOGROUPMANAGER_H
-#define QERADIOGROUPMANAGER_H
+#ifndef QE_RADIO_GROUP_MANAGER_H
+#define QE_RADIO_GROUP_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
-#include <QEPluginLibrary_global.h>
 #include <QEDesignerPluginCommon.h>
+#include <QEPluginLibrary_global.h>
 
 class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroupManager: public QObject, public QDesignerCustomWidgetInterface {
    Q_OBJECT
@@ -37,4 +36,4 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroupManager: public QObject, public Q
    QE_DECLARE_PLUGIN_MANAGER (QERadioGroup)
 };
 
-#endif                          // QERADIOGROUPMANAGER_H
+#endif                          // QE_RADIO_GROUP_MANAGER_H

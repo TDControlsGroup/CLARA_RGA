@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013,2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -39,7 +39,9 @@
 //-----------------------------------------------------------------------------
 // Constructor with no initialisation
 //
-QERadioGroup::QERadioGroup (QWidget* parent) : QEAbstractWidget (parent)
+QERadioGroup::QERadioGroup (QWidget* parent) :
+   QEAbstractWidget (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX)
 {
    this->commonSetup (" QERadioGroup ");
 }
@@ -47,7 +49,9 @@ QERadioGroup::QERadioGroup (QWidget* parent) : QEAbstractWidget (parent)
 //-----------------------------------------------------------------------------
 // Constructor with known variable
 //
-QERadioGroup::QERadioGroup (const QString& variableNameIn, QWidget* parent) : QEAbstractWidget (parent)
+QERadioGroup::QERadioGroup (const QString& variableNameIn, QWidget* parent) :
+   QEAbstractWidget (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX)
 {
    this->commonSetup (" QERadioGroup ");
    this->setVariableName (variableNameIn, PV_VARIABLE_INDEX);
@@ -58,12 +62,19 @@ QERadioGroup::QERadioGroup (const QString& variableNameIn, QWidget* parent) : QE
 // Constructor with title and known variable
 //
 QERadioGroup::QERadioGroup (const QString& title, const QString& variableNameIn,
-                            QWidget* parent) : QEAbstractWidget (parent)
+                            QWidget* parent) :
+   QEAbstractWidget (parent),
+   QESingleVariableMethods (this, PV_VARIABLE_INDEX)
 {
    this->commonSetup (title);
    this->setVariableName (variableNameIn, PV_VARIABLE_INDEX);
-   activate();
+   this->activate();
 }
+
+//-----------------------------------------------------------------------------
+// Place holder
+//
+QERadioGroup::~QERadioGroup() { }
 
 //-----------------------------------------------------------------------------
 // Setup common to all constructors
@@ -124,10 +135,17 @@ void QERadioGroup::commonSetup (const QString& title)
    // The variable name property manager class only delivers an updated
    // variable name after the user has stopped typing.
    //
-   this->vnpm.setVariableIndex (PV_VARIABLE_INDEX);
+   this->connectNewVariableNameProperty
+         (SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+
+   // Set up a connection to recieve variable name property changes
+   // The variable name property manager class only delivers an updated
+   // variable name after the user has stopped typing.
+   //
+   this->titleVnpm.setVariableIndex (TITLE_VARIABLE_INDEX);
    QObject::connect
-       (&this->vnpm, SIGNAL (newVariableNameProperty  (QString, QString, unsigned int)),
-        this,        SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
+       (&this->titleVnpm, SIGNAL (newVariableNameProperty  (QString, QString, unsigned int)),
+        this,             SLOT (useNewVariableNameProperty (QString, QString, unsigned int)));
 }
 
 //---------------------------------------------------------------------------------
@@ -163,6 +181,10 @@ qcaobject::QCaObject* QERadioGroup::createQcaItem (unsigned int variableIndex)
       case PV_VARIABLE_INDEX:
          result = new QEInteger (this->getSubstitutedVariableName (variableIndex),
                                  this, &this->integerFormatting, variableIndex);
+
+         // Apply current array index to new QCaObject
+         //
+         this->setQCaArrayIndex (result);
          break;
 
       case TITLE_VARIABLE_INDEX:
@@ -177,6 +199,16 @@ qcaobject::QCaObject* QERadioGroup::createQcaItem (unsigned int variableIndex)
    }
 
    return result;
+}
+
+//------------------------------------------------------------------------------
+//
+void QERadioGroup::activated ()
+{
+   // Ensure widget returns to default state when (re-)activated.
+   //
+   this->setStyleSheet ("");
+   this->internalWidget->setValue (-1);
 }
 
 //------------------------------------------------------------------------------
@@ -295,18 +327,18 @@ void QERadioGroup::valueUpdate (const long &value,
    }
    this->internalWidget->setValue (selectedIndex);
 
+   // Invoke common alarm handling processing.
+   // Only first "variable" is a PV.
+   //
+   this->setNumberToolTipVariables (1);
+   this->processAlarmInfo (alarmInfo, variableIndex);
+
    // Signal a database value change to any Link (or other) widgets using one
    // of the dbValueChanged.
    //
    QString formattedText;
    formattedText = this->internalWidget->getStrings ().value (selectedIndex, "unknown");
    this->emitDbValueChanged (formattedText, PV_VARIABLE_INDEX);
-
-   // Invoke common alarm handling processing.
-   // Only first "variable" is a PV.
-   //
-   this->setNumberToolTipVariables (1);
-   this->processAlarmInfo (alarmInfo, variableIndex);
 }
 
 //---------------------------------------------------------------------------------
@@ -392,7 +424,7 @@ void QERadioGroup::internalValueChanged (const int selectedIndex)
          return;
       }
 
-      // Get thevalue associated with this button.
+      // Get the value associated with this button.
       //
       value = this->valueToIndex.valueI (selectedIndex);
 
@@ -404,7 +436,7 @@ void QERadioGroup::internalValueChanged (const int selectedIndex)
 
       // Write the value
       //
-      qca->writeInteger (value);
+      qca->writeIntegerElement (value);
    }
 }
 
@@ -423,9 +455,13 @@ void QERadioGroup::useNewVariableNameProperty (QString variableName,
 {
    this->setVariableNameAndSubstitutions (variableName, substitutions, variableIndex);
 
-   // Both the variable name and the title use the same default substitution string.
+
+   // Both the variable name and the title use the same useNewVariableNameProperty slot.
    //
-   this->internalWidget->setTitle (this->getSubstitutedVariableName (TITLE_VARIABLE_INDEX));
+   if (variableIndex == TITLE_VARIABLE_INDEX) {
+      QString title = this->getSubstitutedVariableName (variableIndex);
+      this->internalWidget->setTitle (title);
+   }
 }
 
 
@@ -433,39 +469,32 @@ void QERadioGroup::useNewVariableNameProperty (QString variableName,
 // Properties
 // Update variable name etc.
 //
-void QERadioGroup::setVariableNameProperty (const QString& variableName)
-{
-   this->vnpm.setVariableNameProperty (variableName);
-}
-
-QString QERadioGroup::getVariableNameProperty () const
-{
-   return this->vnpm.getVariableNameProperty ();
-}
 
 //------------------------------------------------------------------------------
 //
-void QERadioGroup::setSubstitutionsProperty (const QString& substitutions)
+void QERadioGroup::setVariableNameSubstitutionsProperty (const QString& substitutions)
 {
-   this->vnpm.setSubstitutionsProperty (substitutions);
-}
+   // Call parent function
+   //
+   QESingleVariableMethods::setVariableNameSubstitutionsProperty (substitutions);
 
-QString QERadioGroup::getSubstitutionsProperty () const
-{
-   return this->vnpm.getSubstitutionsProperty ();
+   // Also update title substitutions.
+   //
+   this->titleVnpm.setSubstitutionsProperty (substitutions);
 }
 
 //------------------------------------------------------------------------------
 //
 void QERadioGroup::setSubstitutedTitleProperty (const QString& substitutedTitle)
 {
-   this->setVariableName (substitutedTitle, TITLE_VARIABLE_INDEX);
-   this->internalWidget->setTitle (this->getSubstitutedVariableName (TITLE_VARIABLE_INDEX));
+   this->titleVnpm.setVariableNameProperty (substitutedTitle);
 }
 
+//------------------------------------------------------------------------------
+//
 QString QERadioGroup::getSubstitutedTitleProperty () const
 {
-   return this->getOriginalVariableName (TITLE_VARIABLE_INDEX);
+   return this->titleVnpm.getVariableNameProperty();
 }
 
 //------------------------------------------------------------------------------

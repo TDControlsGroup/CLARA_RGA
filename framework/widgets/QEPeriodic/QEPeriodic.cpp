@@ -47,6 +47,9 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QXmlStreamAttributes>
+#include <QTextStream>
+#include <QDesignerFormWindowInterface>
+#include <QDesignerFormWindowCursorInterface>
 
 // Table containing all static element information
 // (Another table - userInfo - contains dynamic element information that varies from instance to instance of this class)
@@ -214,6 +217,9 @@ void QEPeriodic::setup() {
     readbackLabel = NULL;
     presentationOption = PRESENTATION_BUTTON_ONLY;
     updatePresentationOptions();
+
+    // Default to using user info text property as the source for user information
+    userInfoSourceOption = USER_INFO_SOURCE_TEXT;
 
     // Set up data
     // This control uses:
@@ -948,6 +954,68 @@ double QEPeriodic::getVariableTolerance2()
     return variableTolerance2;
 }
 
+// User Info Source option
+void QEPeriodic::setUserInfoSourceOption( userInfoSourceOptions userInfoSourceOptionIn )
+{
+    // Do nothing if no change
+    if( userInfoSourceOption == userInfoSourceOptionIn )
+    {
+        return;
+    }
+
+    // Save the new option
+    userInfoSourceOption = userInfoSourceOptionIn;
+
+    // Set the user info from the appropriate source
+    switch( userInfoSourceOption )
+    {
+        case QEPeriodic::USER_INFO_SOURCE_TEXT:
+            setUserInfo( userInfoText );
+            break;
+
+        case QEPeriodic::USER_INFO_SOURCE_FILE:
+            readUserInfoFile();
+    }
+}
+
+QEPeriodic::userInfoSourceOptions QEPeriodic::getUserInfoSourceOption()
+{
+    return userInfoSourceOption;
+}
+
+
+
+// User info file text.
+// Save the text, and if using the text as the source of the user information, update it from the text
+void QEPeriodic::setUserInfoText( QString userInfoTextIn )
+{
+    userInfoText = userInfoTextIn;
+    if( userInfoSourceOption == QEPeriodic::USER_INFO_SOURCE_TEXT )
+    {
+        setUserInfo( userInfoText );
+    }
+}
+QString QEPeriodic::getUserInfoText()
+{
+    return userInfoText;
+}
+
+// User info file name.
+// Save the filename, and if using the file as the source of the user information, update it from the file
+void QEPeriodic::setUserInfoFile( QString userInfoFileIn )
+{
+    // Save the filename
+    userInfoFile = userInfoFileIn;
+    if( userInfoSourceOption == QEPeriodic::USER_INFO_SOURCE_FILE )
+    {
+        readUserInfoFile();
+    }
+}
+QString QEPeriodic::getUserInfoFile()
+{
+    return userInfoFile;
+}
+
 // Parse and use an XML string representing the widget's user info.
 // The user info includes attributes for each element in the table such as
 // if the element is selectable, and what the user defined values are for an element.
@@ -1008,6 +1076,7 @@ void QEPeriodic::setUserInfo( QString inStr )
             }
         }
     }
+
 //    if (xml.hasError()) {
 //        qDebug() << xml.errorString();
 //    }
@@ -1021,9 +1090,6 @@ void QEPeriodic::setUserInfo( QString inStr )
 QString QEPeriodic::getUserInfo()
 {
     QString outStr;
-    QString value1;
-    QString value2;
-    QString elementText;
     QXmlStreamWriter xml( &outStr );
     xml.writeStartElement("elements");
     for( int i = 0; i < NUM_ELEMENTS; i++ )
@@ -1060,6 +1126,94 @@ QString QEPeriodic::getUserInfo()
     xml.writeEndElement();
 
     return outStr;
+}
+
+// The user info has changed (from the user info setup dialog), so update the current user info source
+void QEPeriodic::updateUserInfoSource()
+{
+    // Set the appropriate user info source from the current user info
+    switch( userInfoSourceOption )
+    {
+        // Source is the text property, update the property
+        case QEPeriodic::USER_INFO_SOURCE_TEXT:
+            if (QDesignerFormWindowInterface *formWindow = QDesignerFormWindowInterface::findFormWindow( this ))
+            {
+                formWindow->cursor()->setProperty("userInfo", getUserInfo() );
+            }
+            break;
+
+        // Source is a file, update the file
+        case QEPeriodic::USER_INFO_SOURCE_FILE:
+            writeUserInfoFile();
+    }
+
+}
+
+// Write the user info file
+void QEPeriodic::writeUserInfoFile()
+{
+    // Do nothing if no file name is available
+    if( userInfoFile.isEmpty() )
+    {
+        return;
+    }
+
+    // Apply substitutions to the filename
+    QString substitutedFileName = this->substituteThis( userInfoFile );
+
+    // Find the file
+    QFile* file = QEWidget::findQEFile( substitutedFileName );
+    if( !file )
+    {
+        qDebug() << "Could not find QEPeriodic 'userInfo' file: " << userInfoFile << "(with substitutions applied:" << substitutedFileName << ")";
+        return;
+    }
+
+    // Open the file
+    if( !file->open(QIODevice::WriteOnly | QFile::Truncate ) )
+    {
+        qDebug() << "Could not open QEPeriodic 'userInfo' file for writing: " << userInfoFile << "(with substitutions applied:" << substitutedFileName << ")";
+        return;
+    }
+
+    // Write the file
+    QTextStream out( file );
+    QString contents = getUserInfo();
+    contents.replace(">",">\n" );
+    contents.replace("<element ","  <element " );
+    out << contents;
+
+    // Close the file
+    file->close();
+}
+
+// Read the user info file.
+void QEPeriodic::readUserInfoFile()
+{
+    // Apply substitutions to the filename
+    QString substitutedFileName = this->substituteThis( userInfoFile );
+
+    // Find the file
+    QFile* file = QEWidget::findQEFile( substitutedFileName );
+    if( !file )
+    {
+        qDebug() << "Could not find QEPeriodic 'userInfo' file: " << userInfoFile << "(with substitutions applied:" << substitutedFileName << ")";
+        return;
+    }
+
+    // Open the file
+    if( !file->open(QIODevice::ReadOnly) )
+    {
+        qDebug() << "Could not open QEPeriodic 'userInfo' file for reading: " << userInfoFile << "(with substitutions applied:" << substitutedFileName << ")";
+        return;
+    }
+
+    // Set the user info from the file
+    QTextStream in( file );
+    setUserInfo( in.readAll() );
+
+    // Close the file
+    file->close();
 }
 
 // end

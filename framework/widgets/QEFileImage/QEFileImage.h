@@ -1,4 +1,5 @@
-/*
+/*  QEFileImage.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -22,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEFILEIMAGE_H
-#define QEFILEIMAGE_H
+#ifndef QE_FILE_IMAGE_H
+#define QE_FILE_IMAGE_H
 
 #include <QLabel>
 #include <QFileSystemWatcher>
@@ -254,4 +255,9 @@ public:
 
 };
 
-#endif // QEFILEIMAGE_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEFileImage::UserLevels)
+Q_DECLARE_METATYPE (QEFileImage::DisplayAlarmStateOptions)
+#endif
+
+#endif // QE_FILE_IMAGE_H

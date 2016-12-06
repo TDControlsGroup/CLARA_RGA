@@ -28,8 +28,8 @@
 #ifndef QE_PLATFORM_H
 #define QE_PLATFORM_H
 
-
 #include <Qt>
+#include <QtGlobal>
 #include <QEPluginLibrary_global.h>
 
 /// Geneal purpose platform specific functions used to hide compiler, environment

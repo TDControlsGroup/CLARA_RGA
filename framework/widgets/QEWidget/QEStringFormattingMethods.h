@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2015 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -23,12 +23,13 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QEStringFORMATTINGMETHODS_H
-#define QEStringFORMATTINGMETHODS_H
+#ifndef QE_STRING_FORMATTING_METHODS_H
+#define QE_STRING_FORMATTING_METHODS_H
 
+#include <QEPluginLibrary_global.h>
 #include <QEStringFormatting.h>
 
-class QEStringFormattingMethods {
+class QEPLUGINLIBRARYSHARED_EXPORT QEStringFormattingMethods {
 
   public:
     virtual ~QEStringFormattingMethods(){}
@@ -81,10 +82,6 @@ class QEStringFormattingMethods {
     void setArrayAction( QEStringFormatting::arrayActions arrayAction );
     QEStringFormatting::arrayActions getArrayAction() const;
 
-    // arrayIndex
-    void setArrayIndex( unsigned int arrayIndex );
-    unsigned int getArrayIndex() const;
-
     // Access underlying local enumerations object (as opposed to property string)
     QELocalEnumeration getLocalEnumerationObject() const;
 
@@ -92,4 +89,4 @@ class QEStringFormattingMethods {
     QEStringFormatting stringFormatting;
 };
 
-#endif // QEStringFORMATTINGMETHODS_H
+#endif // QE_STRING_FORMATTING_METHODS_H

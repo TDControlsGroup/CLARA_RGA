@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013, 2014 Australian Synchrotron
+ *  Copyright (c) 2013,2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -38,26 +38,32 @@
 #include <QRadioGroup.h>
 
 #include <QCaObject.h>
-#include <QEWidget.h>
 #include <QEInteger.h>
 #include <QEIntegerFormatting.h>
 #include <QELocalEnumeration.h>
+#include <QESingleVariableMethods.h>
 #include <QCaVariableNamePropertyManager.h>
 #include <QEPluginLibrary_global.h>
-#include <QEGroupBox.h>
 #include <QEOneToOne.h>
 
 // QEAbstractWidget provides all standard QEWidget properties
 //
-class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroup : public QEAbstractWidget {
+class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroup :
+      public QEAbstractWidget,
+      public QESingleVariableMethods {
 
    Q_OBJECT
 
-   // QERadioGroup specific properties ===============================================
+   // BEGIN-SINGLE-VARIABLE-V2-PROPERTIES ===============================================
+   // Single Variable properties
+   // These properties should be identical for every widget using a single variable.
+   // WHEN MAKING CHANGES: Use the update_widget_properties script in the resources
+   // directory.
+   //
    // Note, a property macro in the form 'Q_PROPERTY(QString variableName READ ...' doesn't work.
    // A property name ending with 'Name' results in some sort of string a variable being displayed,
    // but will only accept alphanumeric and won't generate callbacks on change.
-
+public:
    /// EPICS variable name (CA PV)
    ///
    Q_PROPERTY (QString variable READ getVariableNameProperty WRITE setVariableNameProperty)
@@ -66,12 +72,22 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroup : public QEAbstractWidget {
    /// Values may be quoted strings. For example, 'PUMP=PMP3, NAME = "My Pump"'
    /// These substitutions are applied to variable names for all QE widgets.
    /// In some widgets are are also used for other purposes.
-   Q_PROPERTY (QString variableSubstitutions READ getSubstitutionsProperty WRITE setSubstitutionsProperty)
+   ///
+   Q_PROPERTY (QString variableSubstitutions READ getVariableNameSubstitutionsProperty WRITE setVariableNameSubstitutionsProperty)
 
+   /// Index used to select a single item of data for processing. The default is 0.
+   ///
+   Q_PROPERTY (int arrayIndex READ getArrayIndex WRITE setArrayIndex)
+   //
+   // END-SINGLE-VARIABLE-V2-PROPERTIES =================================================
+
+   // QERadioGroup specific properties ===============================================
+   //
    /// Group box title text to be substituted.
    /// This text will be copied to the group box title text after applying any macro substitutions
    /// from the variableSubstitutions property.
    /// The former is depricated and included for backward compatabilty only and not presented on designer.
+   ///
    Q_PROPERTY (QString substitutedTitle READ getSubstitutedTitleProperty WRITE setSubstitutedTitleProperty  DESIGNABLE false)
    Q_PROPERTY (QString title            READ getSubstitutedTitleProperty WRITE setSubstitutedTitleProperty)
 
@@ -79,12 +95,12 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroup : public QEAbstractWidget {
    ///
    Q_PROPERTY (int columns READ getColumns WRITE setColumns)
 
-   /// Interay layout margins and spacing - defayult to 4.
+   /// Interay layout margins and spacing - defaults to 4.
    ///
    Q_PROPERTY (int spacing READ getSpacing WRITE setSpacing)
 
    /// Use database enumerations - defaults to true.
-   /// False implies use local enumeration.
+   /// False implies use of local enumeration.
    ///
    Q_PROPERTY (bool useDbEnumerations READ getUseDbEnumerations WRITE setUseDbEnumerations)
 
@@ -92,9 +108,13 @@ class QEPLUGINLIBRARYSHARED_EXPORT QERadioGroup : public QEAbstractWidget {
    ///
    Q_PROPERTY (QString localEnumeration READ getLocalEnumerations WRITE setLocalEnumerations)
 
-   /// Allows selection of buttom style (Radio or Push)
+   /// Allows selection of buttom style (Radio (default) or Push)
    ///
    Q_PROPERTY (QRadioGroup::ButtonStyles buttonStyle READ getButtonStyle WRITE setButtonStyle)
+
+   /// Allows selection of buttom order (rowMajor (default) or colMajor)
+   ///
+   Q_PROPERTY (QRadioGroup::ButtonOrders buttonOrder READ getButtonOrder WRITE setButtonOrder)
    //
    // End of QERadioGroup specific properties =========================================
 
@@ -120,15 +140,12 @@ public:
    explicit QERadioGroup (const QString& title, const QString& variableName, QWidget* parent = 0);
 
    /// Destruction
-   virtual ~QERadioGroup(){}
+   virtual ~QERadioGroup ();
 
    int getCurrentIndex () const;
 
-   void setVariableNameProperty (const QString& variableName);
-   QString getVariableNameProperty () const;
-
-   void setSubstitutionsProperty (const QString& substitutions);
-   QString getSubstitutionsProperty () const;
+   // Hide/override parent function out of QESingleVariableMethods.
+   void setVariableNameSubstitutionsProperty (const QString& substitutions);
 
    void setSubstitutedTitleProperty (const QString& substitutedTitle);
    QString getSubstitutedTitleProperty () const;
@@ -144,6 +161,7 @@ public:
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (internalWidget, int, getColumns, setColumns)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (internalWidget, int, getSpacing, setSpacing)
    QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (internalWidget, QRadioGroup::ButtonStyles, getButtonStyle, setButtonStyle)
+   QE_EXPOSE_INTERNAL_OBJECT_FUNCTIONS (internalWidget, QRadioGroup::ButtonOrders, getButtonOrder, setButtonOrder)
 
 signals:
    // Note, the following signals are common to many QE widgets,
@@ -176,6 +194,7 @@ protected:
 
    // override QEWidget fnctions.
    //
+   void activated ();
    void establishConnection (unsigned int variableIndex);
    qcaobject::QCaObject* createQcaItem (unsigned int variableIndex);
 
@@ -198,8 +217,6 @@ private:
    QRadioGroup* internalWidget;
    QHBoxLayout* layout;         // holds the internal widget - any layout type will do
 
-   typedef QEOneToOne<int, int> ValueIndexAssociations;
-
    // Use of the local enumerations means that we could have sparce mapping,
    // e.g.: 1 => Red, 5 => Blue, 63 => Green.  Therefore we need to create
    // and maintain a two way value to index association.
@@ -208,6 +225,7 @@ private:
    //   value  5  <==> radio group index 1 (text "Blue")
    //   value 63  <==> radio group index 2 (text "Green")
    //
+   typedef QEOneToOne<int, int> ValueIndexAssociations;
    ValueIndexAssociations valueToIndex;
 
    bool useDbEnumerations;
@@ -216,7 +234,7 @@ private:
    QEIntegerFormatting integerFormatting;
    QELocalEnumeration localEnumerations;
 
-   QCaVariableNamePropertyManager vnpm;
+   QCaVariableNamePropertyManager titleVnpm;
 
 private slots:
    void connectionChanged (QCaConnectionInfo& connectionInfo,

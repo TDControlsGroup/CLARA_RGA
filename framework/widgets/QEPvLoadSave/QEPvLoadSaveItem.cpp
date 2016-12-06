@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -33,7 +33,7 @@
 #include "QEPvLoadSave.h"
 #include "QEPvLoadSaveItem.h"
 
-#define DEBUG  qDebug () << "QEPvLoadSaveItem::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG  qDebug () << "QEPvLoadSaveItem" << __LINE__ << __FUNCTION__ << "  "
 
 static const QVariant nilValue (QVariant::Invalid);
 
@@ -82,9 +82,10 @@ QEPvLoadSaveItem::QEPvLoadSaveItem (const QString & nodeNameIn,
       //
       this->archiveAccess = new QEArchiveAccess (this);
 
-      this->connect (this->archiveAccess, SIGNAL (setArchiveData ( const QObject*, const bool, const QCaDataPointList&)),
-                     this,                SLOT   (setArchiveData ( const QObject*, const bool, const QCaDataPointList&)));
-
+      this->connect (this->archiveAccess,
+                     SIGNAL (setArchiveData (const QObject*, const bool, const QCaDataPointList&, const QString&, const QString&)),
+                     this,
+                     SLOT   (setArchiveData (const QObject*, const bool, const QCaDataPointList&, const QString&, const QString&)));
    }
 }
 
@@ -421,8 +422,11 @@ void  QEPvLoadSaveItem::dataChanged (const QVariant& valueIn, QCaAlarmInfo& alar
 
 //-----------------------------------------------------------------------------
 //
-void QEPvLoadSaveItem::setArchiveData (const QObject*, const bool okay, const QCaDataPointList & dataPointList)
+void QEPvLoadSaveItem::setArchiveData (const QObject*, const bool okay, const QCaDataPointList& dataPointList,
+                                       const QString& /* pvName */ , const QString& /* supplementary */)
 {
+   // DEBUG << pvName << okay << supplementary;
+
    if (okay && dataPointList.count() > 0) {
       QCaDataPoint item = dataPointList.value (0);
 

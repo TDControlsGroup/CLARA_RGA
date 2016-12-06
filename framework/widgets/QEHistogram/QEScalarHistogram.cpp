@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -57,8 +57,11 @@ QEScalarHistogram::QEScalarHistogram (QWidget * parent) : QEFrame (parent)
    this->histogram->setFrameShadow (QFrame::Plain);
    this->histogram->setAutoScale (true);
 
-   this->histogram->setMouseTracking (true);
-   this->histogram->installEventFilter (this);
+   QObject::connect (this->histogram, SIGNAL (mouseIndexChanged    (const int)),
+                     this,            SLOT   (mouseIndexChangedSlot (const int)));
+
+   QObject::connect (this->histogram, SIGNAL (mouseIndexPressed    (const int, const Qt::MouseButton)),
+                     this,            SLOT   (mouseIndexPressedSlot (const int, const Qt::MouseButton)));
 
    this->mScaleMode = Manual;
 
@@ -239,8 +242,6 @@ void QEScalarHistogram::updateHistogramScale ()
    }
 }
 
-
-
 //------------------------------------------------------------------------------
 // Update the histogram bar value
 // This is the slot used to recieve data updates from a QCaObject based class.
@@ -276,6 +277,25 @@ void QEScalarHistogram::setChannelValue (const double& value,
    // Invoke for tool tip processing directly.
    //
    this->updateToolTipAlarm (alarmInfo.severityName (), variableIndex);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEScalarHistogram::mouseIndexChangedSlot (const int index)
+{
+   this->genReadOut (index);
+   emit this->mouseIndexChanged (index);
+}
+
+//------------------------------------------------------------------------------
+//
+void QEScalarHistogram::mouseIndexPressedSlot (const int index,
+                                              const Qt::MouseButton button)
+{
+   // Used by context menu as well as drag-and-drop processing.
+   //
+   this->selectedChannel = index;
+   emit this->mouseIndexPressed (index, button);
 }
 
 //------------------------------------------------------------------------------
@@ -368,48 +388,6 @@ void QEScalarHistogram::genReadOut (const int index)
       text = "";
    }
    this->setReadOut (text);
-}
-
-//==============================================================================
-// Events.
-//
-bool QEScalarHistogram::eventFilter (QObject *obj, QEvent *event)
-{
-   const Qt::MouseButtons leftRight= Qt::LeftButton | Qt::RightButton;
-   const QEvent::Type type = event->type ();
-   QMouseEvent* mouseEvent = NULL;
-   Qt::MouseButton button;
-
-   switch (type) {
-
-      case QEvent::MouseButtonPress:
-         mouseEvent = static_cast<QMouseEvent *> (event);
-         button = mouseEvent->button();
-         if ((obj == this->histogram) && ((button & leftRight) != 0)) {
-            // We are about to launch the context menu or drag variable or data.
-            // Identify current item (if any).
-            //
-            QMouseEvent*mouseEvent = static_cast<QMouseEvent *> (event);
-            this->selectedChannel = this->histogram->indexOfPosition (mouseEvent->pos ());
-            // event has not fully handled - fall through.
-         }
-         break;
-
-      case QEvent::MouseMove:
-         mouseEvent = static_cast<QMouseEvent *> (event);
-         if (obj == this->histogram) {
-            int index = this->histogram->indexOfPosition (mouseEvent->pos ());
-            this->genReadOut (index);
-            return true; // event has been handled.
-         }
-         break;
-
-      default:
-         // Just fall through
-         break;
-   }
-
-   return false; // we did not handle this event.
 }
 
 //==============================================================================

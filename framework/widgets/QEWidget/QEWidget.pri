@@ -13,10 +13,12 @@ HEADERS += \
     widgets/QEWidget/UserMessage.h \
     widgets/QEWidget/contextMenu.h \
     widgets/QEWidget/QEWidget.h \
+    widgets/QEWidget/QEWidgetProperties.h \
     widgets/QEWidget/managePixmaps.h \
     widgets/QEWidget/QEDragDrop.h \
     widgets/QEWidget/styleManager.h \
     widgets/QEWidget/standardProperties.h \
+    widgets/QEWidget/QESingleVariableMethods.h \
     widgets/QEWidget/QEStringFormattingMethods.h \
     widgets/QEWidget/QEToolTip.h \
     widgets/QEWidget/QEDesignerPlugin.h \
@@ -33,10 +35,12 @@ SOURCES += \
     widgets/QEWidget/UserMessage.cpp \
     widgets/QEWidget/contextMenu.cpp \
     widgets/QEWidget/QEWidget.cpp \
+    widgets/QEWidget/QEWidgetProperties.cpp \
     widgets/QEWidget/managePixmaps.cpp \
     widgets/QEWidget/QEDragDrop.cpp \
     widgets/QEWidget/styleManager.cpp \
     widgets/QEWidget/standardProperties.cpp \
+    widgets/QEWidget/QESingleVariableMethods.cpp \
     widgets/QEWidget/QEStringFormattingMethods.cpp \
     widgets/QEWidget/QEToolTip.cpp \
     widgets/QEWidget/QEDesignerPlugin.cpp \

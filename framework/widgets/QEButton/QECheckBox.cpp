@@ -1,4 +1,5 @@
-/*
+/*  QECheckBox.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -66,7 +67,7 @@ void QECheckBox::setup() {
 
     // Set up a connection to recieve variable name property changes
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    QObject::connect( &variableNamePropertyManager, SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int) ) );
+    connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 }
 
 // Slot to receiver a 'process completed' signal from the application launcher
@@ -90,3 +91,5 @@ QVariant QECheckBox::copyData()
 {
     return QVariant( isChecked() );
 }
+
+// end

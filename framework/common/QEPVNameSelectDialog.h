@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,12 +24,13 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEPVNAME_SELECT_DIALOG_H
-#define QEPVNAME_SELECT_DIALOG_H
+#ifndef QE_PVNAME_SELECT_DIALOG_H
+#define QE_PVNAME_SELECT_DIALOG_H
 
 #include <QString>
 #include <QWidget>
 #include <QEDialog.h>
+#include <QEPluginLibrary_global.h>
 
 namespace Ui {
    class QEPVNameSelectDialog;
@@ -38,7 +39,7 @@ namespace Ui {
 /*
  * Manager class for the QEPVNameSelectDialog.ui compiled form.
  */
-class QEPVNameSelectDialog : public QEDialog
+class QEPLUGINLIBRARYSHARED_EXPORT QEPVNameSelectDialog : public QEDialog
 {
    Q_OBJECT
 
@@ -54,21 +55,20 @@ protected:
 
 private:
    Ui::QEPVNameSelectDialog *ui;
-   static QWidget *helpUi;
    QString originalPvName;
    bool returnIsMasked;
 
    void applyFilter ();
-   void closeHelp ();
 
 private slots:
    void filterEditReturnPressed ();
    void filterEditingFinished ();
    void editTextChanged (const QString &);
    void helpClicked (bool checked);
+   void clearClicked (bool checked);
 
    void on_buttonBox_rejected ();
    void on_buttonBox_accepted ();
 };
 
-#endif  // QEPVNAME_SELECT_DIALOG_H
+#endif  // QE_PVNAME_SELECT_DIALOG_H

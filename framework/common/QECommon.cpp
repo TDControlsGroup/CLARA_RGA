@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013,2014 Australian Synchrotron.
+ *  Copyright (c) 2013,2014,2016  Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -251,7 +251,6 @@ int QEUtilities::getTimeZoneOffset (const QDateTime& atTime)
 QString QEUtilities::getTimeZoneTLA (const Qt::TimeSpec timeSpec, const QDateTime & atTime)
 {
    QString result;
-   int actualOffset;
 
    switch (timeSpec) {
       case Qt::UTC:
@@ -259,25 +258,28 @@ QString QEUtilities::getTimeZoneTLA (const Qt::TimeSpec timeSpec, const QDateTim
          break;
 
       case Qt::LocalTime:
-         // Get offset and convert to hours
-         //
-         actualOffset = QEUtilities::getTimeZoneOffset (atTime);
-
 #ifdef _XOPEN_SOURCE
 #include <time.h>
-         // Ensure zone information initialised.
-         //
-         tzset ();
-
-         // timezone is seconds West of GMT, whereas actualOffset is seconds East,
-         // hence the negation in the equality test.
-         //
-         if ((actualOffset == -timezone) || (daylight == 0) ) {
-            result = tzname [0];
-         } else {
-            // offsets not equal and daylight available - use it.
+         {
+            // Get offset and convert to hours
             //
-            result = tzname [1];
+            int actualOffset;
+            actualOffset = QEUtilities::getTimeZoneOffset (atTime);
+
+            // Ensure zone information initialised.
+            //
+            tzset ();
+
+            // timezone is seconds West of GMT, whereas actualOffset is seconds East,
+            // hence the negation in the equality test.
+            //
+            if ((actualOffset == -timezone) || (daylight == 0) ) {
+               result = tzname [0];
+            } else {
+               // offsets not equal and daylight available - use it.
+               //
+               result = tzname [1];
+            }
          }
 #else
          // Not sure what Windows has to offer (yet).

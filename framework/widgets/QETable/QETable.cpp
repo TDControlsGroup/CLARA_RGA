@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2014 Australian Synchrotron.
+ *  Copyright (c) 2014,2016 Australian Synchrotron.
  *
  *  Author:
  *    Andrew Starritt
@@ -278,7 +278,7 @@ void QETable::DataSets::rePopulateData ()
 // Constructor with no initialisation
 //=============================================================================
 //
-QETable::QETable (QWidget* parent) : QEAbstractWidget (parent)
+QETable::QETable (QWidget* parent) : QEAbstractDynamicWidget (parent)
 {
    // Create internal widget. We always have at least one row and one col.
    //
@@ -362,6 +362,10 @@ QETable::QETable (QWidget* parent) : QEAbstractWidget (parent)
 
    this->table->setMouseTracking (true);   // need this for cell entered.
 }
+
+//---------------------------------------------------------------------------------
+//
+QETable::~QETable () { }
 
 //---------------------------------------------------------------------------------
 //
@@ -459,7 +463,7 @@ void QETable::activated ()
 //
 QMenu* QETable::buildContextMenu ()
 {
-   QMenu* menu = QEAbstractWidget::buildContextMenu ();
+   QMenu* menu = QEAbstractDynamicWidget::buildContextMenu ();
    QAction* action;
 
    menu->addSeparator ();
@@ -496,7 +500,7 @@ void QETable::contextMenuTriggered (int selectedItemNum)
       default:
          // Call parent class function.
          //
-         QEAbstractWidget::contextMenuTriggered (selectedItemNum);
+         QEAbstractDynamicWidget::contextMenuTriggered (selectedItemNum);
          break;
    }
 }
@@ -925,20 +929,6 @@ Qt::Orientation QETable::getOrientation () const
    return this->orientation;
 }
 
-//---------------------------------------------------------------------------------
-//
-void QETable::addVariableName (const QString& pvName)
-{
-   for (int slot = 0; slot < ARRAY_LENGTH (this->dataSet); slot++) {
-      if (this->dataSet [slot].isInUse() == false) {
-         // Found an empty slot.
-         //
-         this->setVariableName (slot, pvName);
-         break;
-      }
-   }
-}
-
 //==============================================================================
 // Copy / Paste
 //
@@ -996,23 +986,31 @@ QVariant QETable::copyData ()
    return QVariant (result);
 }
 
+
 //------------------------------------------------------------------------------
 //
-void QETable::paste (QVariant v)
+int QETable::addPvName (const QString& pvName)
 {
-   QStringList pvNameList;
+   int result = -1;
 
-   pvNameList = QEUtilities::variantToStringList (v);
-   for (int j = 0; j < pvNameList.count (); j++) {
-      this->addVariableName (pvNameList.value (j));
+   for (int slot = 0; slot < ARRAY_LENGTH (this->dataSet); slot++) {
+      if (this->dataSet [slot].isInUse() == false) {
+         // Found an empty slot.
+         //
+         this->setVariableName (slot, pvName);
+         result = slot;
+         break;
+      }
    }
+
+   return result;
 }
 
 //------------------------------------------------------------------------------
 //
 void QETable::saveConfiguration (PersistanceManager* pm)
 {
-   const QString formName = this->persistantName ("QETable");
+   const QString formName = this->getPersistantName ();
    PMElement formElement = pm->addNamedConfiguration (formName);
 
    // Save each active PV.
@@ -1036,7 +1034,7 @@ void QETable::restoreConfiguration (PersistanceManager* pm, restorePhases restor
 {
    if (restorePhase != FRAMEWORK) return;
 
-   const QString formName = this->persistantName ("QETable");
+   const QString formName = this->getPersistantName ();
    PMElement formElement = pm->getNamedConfiguration (formName);
 
    // Restore each PV.

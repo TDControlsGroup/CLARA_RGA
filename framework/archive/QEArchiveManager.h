@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -38,6 +38,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QVariant>
 #include <QTimer>
 
 #include <QCaDateTime.h>
@@ -45,7 +46,7 @@
 #include <UserMessage.h>
 #include <QEPluginLibrary_global.h>
 
-// This class provides user access to the archives and indirect control of the
+// This class provides user access to the archives and indirect usage of the
 // underlying QEArchiveManager.
 //
 // Currently only handles scalar values but can/will be extended to
@@ -59,7 +60,7 @@
 class QEPLUGINLIBRARYSHARED_EXPORT QEArchiveAccess : public QObject, UserMessage {
    Q_OBJECT
 public:
-   explicit QEArchiveAccess (QObject * parent = 0);
+   explicit QEArchiveAccess (QObject* parent = 0);
    virtual ~QEArchiveAccess ();
 
    unsigned int getMessageSourceId ();
@@ -76,6 +77,7 @@ public:
 
    // Requests re-transmission of archive status.
    // Returned status is via archiveStatus signal.
+   // This info re-emitted on change, but this allows an (initial) status quo update.
    //
    void resendStatus ();
 
@@ -115,6 +117,7 @@ public:
       int available;     // number of archives
       int read;          // number of archives suiccessfully read
       int numberPVs;     //
+      int pending;       // number of outstanding request/responces
    };
 
    typedef QList<Status> StatusList;
@@ -137,15 +140,20 @@ public:
       QObject* userData;
       bool isSuccess;
       QCaDataPointList pointsList;
+      QString pvName;
+      QString supplementary;  // error info when not successfull
    };
-
 
 signals:
    // Signals back to users in response to above service requests.
    //
-   void archiveStatus  (const QEArchiveAccess::StatusList&);
-   void setArchiveData (const QObject*, const bool, const QCaDataPointList &);
+   void archiveStatus  (const QEArchiveAccess::StatusList& statusList);
+   void setArchiveData (const QObject* userData, const bool isOkay,
+                        const QCaDataPointList& pointsList,
+                        const QString& pvName, const QString& supplementary);
 
+   // Depricated
+   void setArchiveData (const QObject*, const bool, const QCaDataPointList&);
 
    // Requests responses to/from the Archive Manager.
    // NOTE: response goes to all archive access instances.
@@ -164,7 +172,7 @@ private slots:
    friend class QEArchiveManager;
 };
 
-// These type are distributed via the signal/slot mechanism. Muset
+// These type are distributed via the signal/slot mechanism. Must
 // declare then as such (here) and register them (within implementation).
 //
 Q_DECLARE_METATYPE (QEArchiveAccess::States)

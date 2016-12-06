@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -24,17 +24,18 @@
  */
 
 #include <QDebug>
+#include <QFileDialog>
 #include <QColor>
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
 
 #include <QECommon.h>
-#include <QEPvPropertiesUtilities.h>
+#include <QERecordFieldName.h>
 
 #include "QEScratchPad.h"
 
-#define DEBUG qDebug() << "QEScratchPad::" << __FUNCTION__ << ":" << __LINE__
+#define DEBUG qDebug() << "QEScratchPad::" << __LINE__ << __FUNCTION__ << "  "
 
 static const QColor clHighLight (0xFFFFFF);
 static const QColor clInUse     (0xE8E8E8);
@@ -52,10 +53,11 @@ static const int spacing = 2;
 //
 void QEScratchPad::createInternalWidgets ()
 {
-   const int frameHeight = 19;
-   const int horMargin = 2;    // 19 - 2 - 2 => widget height is 15
-   const int horSpacing = 12;
-   const int indent = 6;
+   static const int titleFrameHeight = 28;
+   static const int itemFrameHeight = 19;
+   static const int horMargin = 2;    // 19 - 2 - 2 => widget height is 15
+   static const int horSpacing = 12;
+   static const int indent = 6;
 
    // Main layout.
    //
@@ -64,28 +66,34 @@ void QEScratchPad::createInternalWidgets ()
    this->vLayout->setSpacing (1);
 
    this->titleFrame = new QFrame (this);
-   this->titleFrame->setFixedHeight (frameHeight);
+   this->titleFrame->setFixedHeight (titleFrameHeight);
 
-   this->titlePvName = new QLabel ("PV Name", this->titleFrame );
+   this->titlePvName = new QLabel ("PV Name", this->titleFrame);
    this->titlePvName->setIndent (indent);
 
-   this->titleDescription = new QLabel ("Description", this->titleFrame );
+   this->titleDescription = new QLabel ("Description", this->titleFrame);
    this->titleDescription->setIndent (indent);
 
-   this->titleValue = new QLabel ("Value", this->titleFrame );
+   this->titleValue = new QLabel ("Value", this->titleFrame);
    this->titleValue->setIndent (indent);
 
-   this->titleSpacer = new QLabel (this->titleFrame);
-   this->titleSpacer->setFixedWidth (12);  // corresponds to the vertical scroll bar
+   this->loadButton = new QPushButton (this->titleFrame);
+   this->loadButton->setIcon (QIcon (":/qe/stripchart/open_file.png"));
+   this->loadButton->setFocusPolicy (Qt::NoFocus);
+   this->loadButton->setToolTip (" Load scratch pad configuration ");
+   this->loadButton->setFixedSize (26, 26);
+   // We discard the signal bool parameter
+   QObject::connect (this->loadButton, SIGNAL (clicked ()),
+                     this, SLOT (loadWidgetConfiguration ()));
 
-   this->titleLayout = new QHBoxLayout (this->titleFrame);
-   this->titleLayout->setMargin (horMargin);
-   this->titleLayout->setSpacing (horSpacing);
+   this->saveButton = new QPushButton (this->titleFrame);
+   this->saveButton->setIcon (QIcon (":/qe/stripchart/save_file.png"));
+   this->saveButton->setFocusPolicy (Qt::NoFocus);
+   this->saveButton->setToolTip (" Save scratch pad configuration ");
+   this->saveButton->setFixedSize (26, 26);
+   QObject::connect (this->saveButton, SIGNAL (clicked ()),
+                     this, SLOT (saveWidgetConfiguration ()));
 
-   this->titleLayout->addWidget (this->titlePvName);
-   this->titleLayout->addWidget (this->titleDescription);
-   this->titleLayout->addWidget (this->titleValue);
-   this->titleLayout->addWidget (this->titleSpacer);
    this->vLayout->addWidget (this->titleFrame);
 
    this->scrollArea = new QScrollArea (this);
@@ -114,12 +122,14 @@ void QEScratchPad::createInternalWidgets ()
 
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
 
-      DataSets* item = &(this->items [slot]);
+      this->items [slot] = new DataSets ();  // allocate item.
 
-      item->menu = new QEScratchPadMenu (slot, this->scrollContents);
+      DataSets* item = this->items [slot];
+
+      this->menus [slot] = new QEScratchPadMenu (slot, this->scrollContents);
 
       item->frame = new QFrame (this);
-      item->frame->setFixedHeight (frameHeight);
+      item->frame->setFixedHeight (itemFrameHeight);
       item->frame->setAcceptDrops (true);
       item->frame->installEventFilter (this);
       item->frame->setContextMenuPolicy (Qt::CustomContextMenu);
@@ -167,8 +177,8 @@ void QEScratchPad::createInternalWidgets ()
       QObject::connect (item->frame, SIGNAL (customContextMenuRequested (const QPoint &)),
                         this,        SLOT   (contextMenuRequested (const QPoint &)));
 
-      QObject::connect (item->menu, SIGNAL (contextMenuSelected (const int, const QEScratchPadMenu::ContextMenuOptions)),
-                        this,       SLOT   (contextMenuSelected (const int, const QEScratchPadMenu::ContextMenuOptions)));
+      QObject::connect (this->menus [slot], SIGNAL (contextMenuSelected (const int, const QEScratchPadMenu::ContextMenuOptions)),
+                        this,               SLOT   (contextMenuSelected (const int, const QEScratchPadMenu::ContextMenuOptions)));
    }
 
    this->scrollLayout->addStretch ();
@@ -177,7 +187,6 @@ void QEScratchPad::createInternalWidgets ()
    this->pvNameSelectDialog = new QEPVNameSelectDialog (this);
 }
 
-
 //=================================================================================
 // DataSets
 //=================================================================================
@@ -185,6 +194,18 @@ void QEScratchPad::createInternalWidgets ()
 QEScratchPad::DataSets::DataSets () {
    this->thePvName = "";
    this->isHighLighted = false;
+}
+
+//---------------------------------------------------------------------------------
+//
+QEScratchPad::DataSets::~DataSets () {
+}
+
+//---------------------------------------------------------------------------------
+//
+bool QEScratchPad::DataSets::isInUse () const
+{
+   return !(this->thePvName.isEmpty ());
 }
 
 //---------------------------------------------------------------------------------
@@ -213,9 +234,8 @@ void QEScratchPad::DataSets::setHighLighted (const bool isHighLightedIn)
 // QEScratchPad
 //=================================================================================
 //
-QEScratchPad::QEScratchPad (QWidget* parent) : QEFrame (parent)
+QEScratchPad::QEScratchPad (QWidget* parent) : QEAbstractDynamicWidget (parent), QEQuickSort ()
 {
-
    this->createInternalWidgets ();
 
    this->setNumVariables (0);
@@ -239,19 +259,66 @@ QEScratchPad::QEScratchPad (QWidget* parent) : QEFrame (parent)
    //
    this->setupContextMenu ();
    this->setNumberOfContextMenuItems (ARRAY_LENGTH (this->items));
+
+   // Ensure we do the resize processing.
+   //
+   QTimer::singleShot (20, this, SLOT (intialResize ()));
+   QTimer::singleShot (200, this, SLOT (intialResize ()));
 }
 
 //---------------------------------------------------------------------------------
 //
 QEScratchPad::~QEScratchPad ()
 {
-   // place holder
+   for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
+      if (this->items [slot]) {
+         delete this->items [slot];
+      }
+   }
 }
 
 //------------------------------------------------------------------------------
 //
 QSize QEScratchPad::sizeHint () const {
    return QSize (800, 50);
+}
+
+//------------------------------------------------------------------------------
+// manage titleFrame layout.  We use the automatoc layout of one of the
+// items to guide the layout of the title frame.
+//
+void QEScratchPad::resizeEvent (QResizeEvent*)
+{
+   const int horOffset = 2;
+   const int verOffset = 8;
+
+   DataSets* item = this->items [0];   // use of slot 0 is arbitary.
+
+   QRect geo;
+   int left;
+
+   geo = item->pvName->geometry ();
+   geo.translate (horOffset, verOffset);
+   this->titlePvName->setGeometry (geo);
+
+   geo = item->description->geometry ();
+   geo.translate (horOffset, verOffset);
+   this->titleDescription->setGeometry (geo);
+
+   geo = item->value->geometry ();
+   geo.translate (horOffset, verOffset);
+   geo.setWidth (geo.width() - 44);
+   this->titleValue->setGeometry (geo);
+
+   left = geo.right() + 8;
+   geo = this->loadButton->geometry();
+   geo.moveLeft (left);   // absolute (as opposed to relative) move.
+   this->loadButton->setGeometry (geo);
+
+   left = geo.right() + 4;
+   geo = this->saveButton->geometry();
+   geo.moveLeft (left);   // absolute (as opposed to relative) move.
+   this->saveButton->setGeometry (geo);
 }
 
 //---------------------------------------------------------------------------------
@@ -273,8 +340,8 @@ int QEScratchPad::findSlot (QObject *obj) const
    int result = -1;
 
    for (int slot = 0 ; slot < ARRAY_LENGTH (this->items); slot++) {
-      if ((obj == this->items [slot].frame) ||
-          (obj == this->items [slot].pvName)) {
+      if ((obj == this->items [slot]->frame) ||
+          (obj == this->items [slot]->pvName)) {
          // found it.
          //
          result = slot;
@@ -295,7 +362,7 @@ int QEScratchPad::numberSlotsUsed () const
    //
    last = -1;
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      if (this->items [slot].isInUse ()) {
+      if (this->items [slot]->isInUse ()) {
          last = slot;
       }
    }
@@ -321,11 +388,62 @@ void QEScratchPad::calcMinimumHeight ()
    // Set visibility accordingly
    //
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      this->items [slot].frame->setVisible (slot < count);
+      this->items [slot]->frame->setVisible (slot < count);
    }
 
    delta_top = 20;
    this->scrollContents->setFixedHeight ((delta_top * count) + 10);
+}
+
+//---------------------------------------------------------------------------------
+//
+bool QEScratchPad::itemLessThan (const int a, const int b, QObject*) const
+{
+   if (a == b) {
+      return false;  // same, so not less than
+   }
+
+   return (this->items [a]->pvName->text() < this->items [b]->pvName->text());
+}
+
+//---------------------------------------------------------------------------------
+//
+void QEScratchPad::swapItems (const int p, const int q, QObject*)
+{
+   const int a = MIN (p, q);   // order
+   const int b = MAX (p, q);
+
+   SLOT_CHECK (a,);
+   SLOT_CHECK (b,);
+   if (a == b) {
+      return;  // nothing do do
+   }
+
+   // Swap order in vertical layout and in DataSets items.
+   // Alas we have to swap both. Swap must be consistant.
+   // Note: we Last later item first.
+   //
+   QLayoutItem* bLayoutItem = this->scrollLayout->takeAt (b);
+   QLayoutItem* aLayoutItem = this->scrollLayout->takeAt (a);
+
+   // QVBoxLayout::insertItem is protected (at least in QT 4)
+   // This subclass created to allow access to the insertItem method.
+   //
+   class ProtectedAccess : public QVBoxLayout {
+   public:
+      void insertLayoutItem (int index, QLayoutItem * item) {
+         this->insertItem (index, item);
+      }
+   };
+   ProtectedAccess* pa = static_cast <ProtectedAccess*> (this->scrollLayout);
+
+   pa->insertLayoutItem (a, bLayoutItem);
+   pa->insertLayoutItem (b, aLayoutItem);
+
+   DataSets* tempItemRef = NULL;
+   tempItemRef = this->items [a];
+   this->items [a] = this->items [b];
+   this->items [b] = tempItemRef;
 }
 
 //---------------------------------------------------------------------------------
@@ -348,19 +466,19 @@ void QEScratchPad::setSelectItem (const int slot, const bool toggle)
 
    if (this->selectedItem != previousSelection) {
       if (previousSelection != NULL_SELECTION) {
-         DataSets* item = &(this->items [previousSelection]);
+         DataSets* item = this->items [previousSelection];
          item->frame->setStyleSheet ("");
       }
 
       if (this->selectedItem != NULL_SELECTION) {
-         DataSets* item = &(this->items [this->selectedItem]);
+         DataSets* item = this->items [this->selectedItem];
          QString styleSheet = QEUtilities::colourToStyle (clSelected);
          item->frame->setStyleSheet (styleSheet);
       }
    }
 
    if (this->selectedItem  != NULL_SELECTION)  {
-      DataSets* item = &(this->items [this->selectedItem]);
+      DataSets* item = this->items [this->selectedItem];
       this->scrollArea->ensureWidgetVisible (item->frame, 0, spacing);
    }
 
@@ -373,6 +491,13 @@ void QEScratchPad::setSelectItem (const int slot, const bool toggle)
 
 //---------------------------------------------------------------------------------
 //
+void QEScratchPad::intialResize ()
+{
+    this->resizeEvent (NULL);
+}
+
+//---------------------------------------------------------------------------------
+//
 void QEScratchPad::contextMenuRequested (const QPoint& pos)
 {
    QObject *obj = this->sender();   // who sent the signal.
@@ -381,10 +506,11 @@ void QEScratchPad::contextMenuRequested (const QPoint& pos)
 
    QWidget* w = dynamic_cast<QWidget*> (obj);
    if (w) {
-      DataSets* item = &(this->items [slot]);
+      QEScratchPadMenu* menu = this->menus [slot];
+      DataSets* item = this->items [slot];
       QPoint golbalPos = w->mapToGlobal(pos);
-      item->menu->setIsInUse (item->isInUse ());
-      item->menu->exec (golbalPos, 0);
+      menu->setIsInUse (item->isInUse ());
+      menu->exec (golbalPos, 0);
    }
 }
 
@@ -410,7 +536,7 @@ void QEScratchPad::contextMenuSelected (const int slot, const QEScratchPadMenu::
       case QEScratchPadMenu::SCRATCHPAD_ADD_PV_NAME:
       case QEScratchPadMenu::SCRATCHPAD_EDIT_PV_NAME:
          this->pvNameSelectDialog->setPvName (this->getPvName (slot));
-         n = this->pvNameSelectDialog->exec (this->items [slot].pvName);
+         n = this->pvNameSelectDialog->exec (this->items [slot]->pvName);
          if (n == 1) {
             this->setPvName (slot, this->pvNameSelectDialog->getPvName ());
          }
@@ -468,17 +594,22 @@ void QEScratchPad::pvNameDropEvent (const int slot, QDropEvent *event)
 
 //---------------------------------------------------------------------------------
 //
-void QEScratchPad::addPvName (const QString& pvName)
+int QEScratchPad::addPvName (const QString& pvName)
 {
+   int result = -1;
+
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      DataSets* item = &(this->items [slot]);
+      DataSets* item = this->items [slot];
       if (item->isInUse() == false) {
          // Found an empty slot.
          //
          this->setPvName (slot, pvName);
+         result = slot;
          break;
       }
    }
+
+   return result;
 }
 
 //---------------------------------------------------------------------------------
@@ -494,16 +625,27 @@ void QEScratchPad::showEvent (QShowEvent* /*event*/ )
 //
 void QEScratchPad::keyPressEvent (QKeyEvent * event)
 {
-   switch (event->key ()) {
+   const int key = event->key ();
+   const Qt::KeyboardModifiers modifier = event->modifiers();
+   const bool isShift = ((modifier & Qt::ShiftModifier) != 0);
+   const int lastSlotUsed = this->numberSlotsUsed () - 1;
+
+   switch (key) {
 
       case Qt::Key_Up:
          if (this->selectedItem >= 0) {
+            if (isShift && (this->selectedItem > 0)) {
+               this->swapItems (this->selectedItem, this->selectedItem - 1);
+            }
             this->setSelectItem (this->selectedItem - 1, false);
          }
          break;
 
       case Qt::Key_Down:
-         if (this->selectedItem + 1 < this->numberSlotsUsed ()) {
+         if (this->selectedItem < lastSlotUsed) {
+            if (isShift && (this->selectedItem >= 0)) {
+               this->swapItems (this->selectedItem, this->selectedItem + 1);
+            }
             this->setSelectItem (this->selectedItem + 1, false);
          }
          break;
@@ -548,13 +690,13 @@ bool QEScratchPad::eventFilter (QObject *obj, QEvent *event)
             // Can only drop if text and not in use.
             //
             if ((dragEnterEvent->mimeData()->hasText ()) &&
-                (!this->items [slot].isInUse ())) {
+                (!this->items [slot]->isInUse ())) {
                dragEnterEvent->setDropAction (Qt::CopyAction);
                dragEnterEvent->accept ();
-               this->items [slot].setHighLighted (true);
+               this->items [slot]->setHighLighted (true);
             } else {
                dragEnterEvent->ignore ();
-               this->items [slot].setHighLighted (false);
+               this->items [slot]->setHighLighted (false);
             }
             return true;
          }
@@ -563,7 +705,7 @@ bool QEScratchPad::eventFilter (QObject *obj, QEvent *event)
       case QEvent::DragLeave:
          slot = this->findSlot (obj);
          if (slot >= 0) {
-            this->items [slot].setHighLighted (false);
+            this->items [slot]->setHighLighted (false);
             return true;
          }
          break;
@@ -573,7 +715,7 @@ bool QEScratchPad::eventFilter (QObject *obj, QEvent *event)
          if (slot >= 0) {
             QDropEvent* dropEvent = static_cast<QDropEvent*> (event);
             this->pvNameDropEvent (slot, dropEvent);
-            this->items [slot].setHighLighted (false);
+            this->items [slot]->setHighLighted (false);
             return true;
          }
          break;
@@ -616,7 +758,7 @@ void QEScratchPad::setPvNameSet (const QStringList& pvNameSet)
 
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
       QString pvName = pvNameSet.value (slot, "");
-      this->setPvName( slot, pvName);
+      this->setPvName (slot, pvName);
    }
 
    this->emitPvNameSetChangeInhibited = false;
@@ -632,7 +774,7 @@ QStringList QEScratchPad::getPvNameSet () const
    //
    result.clear ();
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      if (this->items [slot].isInUse ()) {
+      if (this->items [slot]->isInUse ()) {
          QString pvName = this->getPvName (slot);
          result.append (pvName);
       }
@@ -647,7 +789,10 @@ void QEScratchPad::setPvName (const int slot, const QString& pvName)
    SLOT_CHECK (slot,);
    QString descPv;
 
-   DataSets* item = &(this->items [slot]);
+   DataSets* item = this->items [slot];
+
+   item->description->deactivate ();
+   item->value->deactivate ();
 
    item->thePvName = pvName.trimmed ();
    item->pvName->setText (item->thePvName);
@@ -660,6 +805,11 @@ void QEScratchPad::setPvName (const int slot, const QString& pvName)
       descPv = QERecordFieldName::fieldPvName (item->thePvName, "DESC");
       item->description->setVariableNameAndSubstitutions (descPv, "", 0);
       item->value->setVariableNameAndSubstitutions (item->thePvName, "", 0);
+
+      // Ensure we always active irrespective of the profile DontActivateYet state.
+      //
+      item->description->activate ();
+      item->value->activate ();
 
       item->pvName->setStyleSheet (QEUtilities::colourToStyle (clInUse));
       item->description->setStyleSheet (QEUtilities::colourToStyle (clInUse));
@@ -688,7 +838,7 @@ void QEScratchPad::setPvName (const int slot, const QString& pvName)
 QString QEScratchPad::getPvName (const int slot) const
 {
    SLOT_CHECK (slot, "");
-   return this->items [slot].thePvName;
+   return this->items [slot]->thePvName;
 }
 
 //---------------------------------------------------------------------------------
@@ -703,8 +853,60 @@ void QEScratchPad::activated ()
 }
 
 //---------------------------------------------------------------------------------
-// We disalow self drop. We don't need to do this in dragEnterEvent as
-// dragMoveEvent called immedatley afterwards.
+//
+QMenu* QEScratchPad::buildContextMenu ()
+{
+   const int n = this->numberSlotsUsed ();
+
+   QMenu* menu = QEAbstractDynamicWidget::buildContextMenu ();  // build parent context menu
+   QAction* action;
+
+   menu->addSeparator ();
+
+   action = new QAction ("Sort By PV Name", menu);
+   action->setCheckable (false);
+   action->setEnabled (n >= 2);   // need two or more to tango.
+   action->setData (QEScratchPadMenu::SCRATCHPAD_SORT_PV_NAMES);
+   menu->addAction (action);
+
+   action = new QAction ("Clear All", menu);
+   action->setCheckable (false);
+   action->setEnabled (n >= 1);
+   action->setData (QEScratchPadMenu::SCRATCHPAD_CLEAR_ALL);
+   menu->addAction (action);
+
+   return menu;
+}
+
+//---------------------------------------------------------------------------------
+//
+void QEScratchPad::contextMenuTriggered (int selectedItemNum)
+{
+   const int n = this->numberSlotsUsed ();
+
+   switch (selectedItemNum) {
+      case QEScratchPadMenu::SCRATCHPAD_SORT_PV_NAMES:
+         this->setSelectItem (NULL_SELECTION, false);
+         this->sort (0, n-1, NULL);
+         break;
+
+      case QEScratchPadMenu::SCRATCHPAD_CLEAR_ALL:
+         for (int slot = 0; slot < n; slot++) {
+            this->setPvName (slot, "");
+         }
+         break;
+
+      default:
+         // process parent context menu
+         //
+         QEAbstractDynamicWidget::contextMenuTriggered (selectedItemNum);
+         break;
+   }
+}
+
+//---------------------------------------------------------------------------------
+// We disallow self drop. We don't need to do this in dragEnterEvent as
+// dragMoveEvent called immediatley afterwards.
 //
 void QEScratchPad::dragMoveEvent (QDragMoveEvent* event)
 {
@@ -739,7 +941,6 @@ void QEScratchPad::dragMoveEvent (QDragMoveEvent* event)
    //
    event->acceptProposedAction ();
    return;
-
 }
 
 //---------------------------------------------------------------------------------
@@ -752,7 +953,7 @@ QString QEScratchPad::copyVariable ()
    //
    result = "";
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      if (this->items [slot].isInUse ()) {
+      if (this->items [slot]->isInUse ()) {
          QString pvName = this->getPvName (slot);
          if (!result.isEmpty()) result.append (" ");
          result.append (pvName);
@@ -769,9 +970,9 @@ QVariant QEScratchPad::copyData ()
 
    result = "\n";
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      if (this->items [slot].isInUse ()) {
+      if (this->items [slot]->isInUse ()) {
          QString pvName = this->getPvName (slot);
-         QString pvValue = this->items [slot].value->text ();
+         QString pvValue = this->items [slot]->value->text ();
 
          result.append (QString ("%1\t%2\n").arg (pvName, -40).arg (pvValue));
 
@@ -797,7 +998,7 @@ void QEScratchPad::paste (QVariant s)
 //
 void QEScratchPad::saveConfiguration (PersistanceManager* pm)
 {
-   const QString formName = this->persistantName ("QEScratchPad");
+   const QString formName = this->getPersistantName();
 
    PMElement formElement = pm->addNamedConfiguration (formName);
 
@@ -806,7 +1007,7 @@ void QEScratchPad::saveConfiguration (PersistanceManager* pm)
    PMElement pvListElement = formElement.addElement ("PV_List");
 
    for (int slot = 0; slot < ARRAY_LENGTH (this->items); slot++) {
-      DataSets* item = &(this->items [slot]);
+      DataSets* item = this->items [slot];
       if (item->isInUse()) {
          PMElement pvElement = pvListElement.addElement ("PV");
          pvElement.addAttribute ("id", slot);
@@ -821,7 +1022,7 @@ void QEScratchPad::restoreConfiguration (PersistanceManager* pm, restorePhases r
 {
    if (restorePhase != FRAMEWORK) return;
 
-   const QString formName = this->persistantName ("QEScratchPad");
+   const QString formName = this->getPersistantName ();
 
    PMElement formElement = pm->getNamedConfiguration (formName);
 

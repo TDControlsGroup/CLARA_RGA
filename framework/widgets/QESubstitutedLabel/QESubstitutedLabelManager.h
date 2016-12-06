@@ -1,4 +1,5 @@
-/*
+/*  QESubstitutedLabelManager.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -22,10 +23,10 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QESUBSTITUTEDLABELMANAGER_H
-#define QESUBSTITUTEDLABELMANAGER_H
+#ifndef QE_SUBSTITUTED_LABEL_MANAGER_H
+#define QE_SUBSTITUTED_LABE_LMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*
@@ -54,4 +55,4 @@ class QEPLUGINLIBRARYSHARED_EXPORT QESubstitutedLabelManager : public QObject, p
     bool initialized;
 };
 
-#endif // QESUBSTITUTEDLABELMANAGER_H
+#endif // QE_SUBSTITUTED_LABE_LMANAGER_H

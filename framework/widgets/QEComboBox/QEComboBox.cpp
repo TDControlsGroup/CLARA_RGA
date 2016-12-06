@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2013, 2014 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2013,2014,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -35,14 +35,22 @@
 /*
     Construct a combo box with no variable specified yet
 */
-QEComboBox::QEComboBox( QWidget *parent ) : QComboBox( parent ), QEWidget( this ) {
+QEComboBox::QEComboBox( QWidget *parent ) :
+    QComboBox( parent ),
+    QESingleVariableMethods ( this, 0 ),
+    QEWidget( this )
+{
     setup();
 }
 
 /*
     Construct a combo box with a variable specified
 */
-QEComboBox::QEComboBox( const QString &variableNameIn, QWidget *parent ) : QComboBox( parent ), QEWidget( this ) {
+QEComboBox::QEComboBox( const QString &variableNameIn, QWidget *parent ) :
+    QComboBox( parent ),
+    QESingleVariableMethods ( this, 0 ),
+    QEWidget( this )
+{
     setVariableName( variableNameIn, 0 );
 
     setup();
@@ -76,6 +84,7 @@ void QEComboBox::setup() {
     isConnected = false;
 
     ignoreSingleShotRead = false;
+    isAllowFocusUpdate = false;
 
     // Use standard context menu
     setupContextMenu();
@@ -86,7 +95,7 @@ void QEComboBox::setup() {
 
     // Set up a connection to recieve variable name property changes
     // The variable name property manager class only delivers an updated variable name after the user has stopped typing
-    QObject::connect( &variableNamePropertyManager, SIGNAL( newVariableNameProperty( QString, QString, unsigned int ) ), this, SLOT( useNewVariableNameProperty( QString, QString, unsigned int) ) );
+    connectNewVariableNameProperty( SLOT ( useNewVariableNameProperty( QString, QString, unsigned int ) ) );
 }
 
 /*
@@ -95,8 +104,15 @@ void QEComboBox::setup() {
 */
 qcaobject::QCaObject* QEComboBox::createQcaItem( unsigned int variableIndex ) {
 
+    qcaobject::QCaObject* result = NULL;
+
     // Create the item as a QEInteger
-    return new QEInteger( getSubstitutedVariableName( variableIndex ), this, &integerFormatting, variableIndex );
+    result = new QEInteger( getSubstitutedVariableName( variableIndex ), this, &integerFormatting, variableIndex );
+
+    // Apply current array index to new QCaObject
+    setQCaArrayIndex( result );
+
+    return result;
 }
 
 /*
@@ -208,21 +224,17 @@ void QEComboBox::setValueIfNoFocus( const long& value,QCaAlarmInfo& alarmInfo, Q
         index = -1;
     }
 
-    // Signal a database value change to any Link (or other) widgets using one
-    // of the dbValueChanged.
-    emitDbValueChanged( this->itemText( index ), 0 );
-
-
     // Save the last database value
     lastValue = value;
 
     // Update the text if appropriate.
-    // If the user is editing the object then updates will be
-    // inapropriate, unless it is the first update.
+    // If the user is editing the object then updates will be inapropriate, unless
+    // it is the first update or allow updated while focused explicitly permitted.
     // !!It would be best to not update if the user has started interacting with
     // the combo box in a similar way to QELine edit where isModified() is used
-    // to restrict updates.
-    if( !hasFocus() || isFirstUpdate )
+    // to restrict updates. Allow if the form designer has specifically allowed
+    // updates while the widget has focus.
+    if( isAllowFocusUpdate || !hasFocus() || isFirstUpdate )
     {
         setCurrentIndex( index );
 
@@ -235,6 +247,10 @@ void QEComboBox::setValueIfNoFocus( const long& value,QCaAlarmInfo& alarmInfo, Q
 
     // First (and subsequent) update is now over
     isFirstUpdate = false;
+
+    // Signal a database value change to any Link (or other) widgets using one
+    // of the dbValueChanged.
+    emitDbValueChanged( this->itemText( index ), 0 );
 }
 
 /*
@@ -341,7 +357,7 @@ void QEComboBox::userValueChanged( int index ) {
         }
 
         // Write the value
-        qca->writeInteger( (long)value );
+        qca->writeIntegerElement( value );
 
         // Notify user changes
         QStringList enumerations = qca->getEnumerations();
@@ -383,7 +399,7 @@ void QEComboBox::writeNow()
         value = valueToIndex.valueI (index);
 
         // Write the value
-        qca->writeInteger( value );
+        qca->writeIntegerElement( value );
     }
 }
 
@@ -429,7 +445,7 @@ void QEComboBox::setWriteOnChange( bool writeOnChangeIn )
 {
     writeOnChange = writeOnChangeIn;
 }
-bool QEComboBox::getWriteOnChange()
+bool QEComboBox::getWriteOnChange() const
 {
     return writeOnChange;
 }
@@ -439,7 +455,7 @@ void QEComboBox::setSubscribe( bool subscribeIn )
 {
     subscribe = subscribeIn;
 }
-bool QEComboBox::getSubscribe()
+bool QEComboBox::getSubscribe() const
 {
     return subscribe;
 }
@@ -453,7 +469,7 @@ void QEComboBox::setUseDbEnumerations( bool useDbEnumerationsIn )
     }
 }
 
-bool QEComboBox::getUseDbEnumerations()
+bool QEComboBox::getUseDbEnumerations() const
 {
     return useDbEnumerations;
 }
@@ -467,9 +483,20 @@ void QEComboBox::setLocalEnumerations( const QString & localEnumerationsIn )
     }
 }
 
-QString QEComboBox::getLocalEnumerations()
+QString QEComboBox::getLocalEnumerations() const
 {
     return localEnumerations.getLocalEnumeration();
+}
+
+// set allow updates while widget has focus.
+void QEComboBox::setAllowFocusUpdate( bool allowFocusUpdateIn )
+{
+    isAllowFocusUpdate = allowFocusUpdateIn;
+}
+
+bool QEComboBox::getAllowFocusUpdate() const
+{
+    return isAllowFocusUpdate;
 }
 
 // end

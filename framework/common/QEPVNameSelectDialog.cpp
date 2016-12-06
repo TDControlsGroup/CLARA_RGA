@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -28,7 +28,6 @@
 #include <QDebug>
 #include <QRegExp>
 #include <QStringList>
-#include <QUiLoader>
 
 #include <QEPVNameSelectDialog.h>
 #include <ui_QEPVNameSelectDialog.h>
@@ -37,17 +36,13 @@
 #include <QEArchiveManager.h>
 #include <QEScaling.h>
 
-#define DEBUG  qDebug () << "QEPVNameSelectDialog::" << __FUNCTION__ << __LINE__
-
-static const QString filterHelpFilename (":/qe/common/QEPVNameSelectFilterHelp.ui");
-
-QWidget* QEPVNameSelectDialog::helpUi = NULL;
+#define DEBUG  qDebug () << "QEPVNameSelectDialog:" << __LINE__ << __FUNCTION__ << "  "
 
 //------------------------------------------------------------------------------
 //
 QEPVNameSelectDialog::QEPVNameSelectDialog (QWidget *parent) :
-      QEDialog (parent),
-      ui (new Ui::QEPVNameSelectDialog)
+   QEDialog (parent),
+   ui (new Ui::QEPVNameSelectDialog)
 {
    this->ui->setupUi (this);
 
@@ -55,24 +50,12 @@ QEPVNameSelectDialog::QEPVNameSelectDialog (QWidget *parent) :
    //
    this->setSourceWidget (this->ui->pvNameEdit);
 
-   // Load help ui file - do this only once.
-   // NOTE: We use loader directly rather than requesting the application (QEGui) to
-   // do this for us. The help ui file contains static text, no EPICS aware widgets.
-   //
-   // The dialog is modal. Do we need a mutex??
-   //
-   if (!QEPVNameSelectDialog::helpUi) {
-      QFile helpUiFile (filterHelpFilename);
-      if (helpUiFile.open (QIODevice::ReadOnly)) {
-         QUiLoader loader;
-
-         QEPVNameSelectDialog::helpUi = loader.load (&helpUiFile, NULL);
-         QEScaling::applyToWidget (QEPVNameSelectDialog::helpUi);
-         helpUiFile.close ();
-      }
-   }
-
    this->returnIsMasked = false;
+
+   this->ui->help_frame->setVisible (false);
+   this->setFixedHeight (this->ui->frame_1->minimumHeight() +
+                         this->ui->frame_2->minimumHeight() +
+                         this->ui->frame_2->minimumHeight() );
 
    // Initiate PV name retreval if needs be.
    // initialise () is idempotent.
@@ -90,6 +73,9 @@ QEPVNameSelectDialog::QEPVNameSelectDialog (QWidget *parent) :
 
    QObject::connect (this->ui->helpButton,  SIGNAL (clicked       (bool)),
                      this,                  SLOT   (helpClicked   (bool)));
+
+   QObject::connect (this->ui->clearButton, SIGNAL (clicked       (bool)),
+                     this,                  SLOT   (clearClicked  (bool)));
 
 #ifndef QT_NO_COMPLETER
    // Could not get completer to work - yet.
@@ -137,15 +123,13 @@ void QEPVNameSelectDialog::applyFilter ()
    QRegExp regExp (pattern, Qt::CaseSensitive, QRegExp::RegExp);
    QEPvNameSearch findNames (QEArchiveAccess::getAllPvNames ());
 
-   int n;
-
    this->ui->pvNameEdit->clear ();
 
    // QEArchiveAccess ensures the list is sorted.
    //
    this->ui->pvNameEdit->insertItems (0, findNames.getMatchingPvNames (regExp, true));
 
-   n = this->ui->pvNameEdit->count ();
+   int n = this->ui->pvNameEdit->count ();
    if ((n == 0) && (!this->originalPvName.isEmpty ())) {
       this->ui->pvNameEdit->insertItem (0, this->originalPvName, QVariant ());
       this->ui->pvNameEdit->setCurrentIndex (0);
@@ -188,18 +172,43 @@ void QEPVNameSelectDialog::editTextChanged (const QString&)
 //
 void QEPVNameSelectDialog::helpClicked (bool /* checked */ )
 {
-   if (QEPVNameSelectDialog::helpUi) {
-      QEPVNameSelectDialog::helpUi->show ();
+   // Toggle visibility.
+   //
+   const bool helpIsVis = !this->ui->help_frame->isVisible();
+
+   this->ui->help_frame->setVisible (helpIsVis);
+
+   const int requiredHelpHeight =
+         helpIsVis ? this->ui->help_frame->minimumHeight() : 0;
+
+   this->setFixedHeight (this->ui->frame_1->minimumHeight() +
+                         this->ui->frame_2->minimumHeight() +
+                         this->ui->frame_2->minimumHeight() +
+                         requiredHelpHeight);
+
+   // Expand width if needs be.
+   //
+   if (helpIsVis) {
+      QRect geo = this->geometry();
+      int m = this->ui->help_frame->minimumWidth();
+      if (m > geo.width()) {
+         geo.setWidth (m);
+         this->setGeometry (geo);
+      }
    }
+
+   // And update button text.
+   //
+   const QString helpButtonText = helpIsVis ? "Hide" : "Help";
+   this->ui->helpButton->setText (helpButtonText);
 }
 
 //------------------------------------------------------------------------------
 //
-void QEPVNameSelectDialog::closeHelp ()
+void QEPVNameSelectDialog::clearClicked (bool /* checked */ )
 {
-   if (QEPVNameSelectDialog::helpUi) {
-      QEPVNameSelectDialog::helpUi->close ();
-   }
+   this->ui->pvNameEdit->clear();
+   this->ui->pvNameEdit->setCurrentIndex (0);
 }
 
 //------------------------------------------------------------------------------
@@ -207,7 +216,6 @@ void QEPVNameSelectDialog::closeHelp ()
 //
 void QEPVNameSelectDialog::closeEvent (QCloseEvent * event)
 {
-   this->closeHelp ();
    QEDialog::closeEvent (event);
 }
 
@@ -222,7 +230,6 @@ void QEPVNameSelectDialog::on_buttonBox_accepted ()
    }
 
    if (!this->getPvName().isEmpty ()) {
-      this->closeHelp ();
       this->accept ();
    }
 }
@@ -232,7 +239,6 @@ void QEPVNameSelectDialog::on_buttonBox_accepted ()
 //
 void QEPVNameSelectDialog::on_buttonBox_rejected ()
 {
-   this->closeHelp ();
    this->close ();
 }
 

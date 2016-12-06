@@ -26,7 +26,7 @@
 #ifndef QERECIPEPLUGINMANAGER_H
 #define QERECIPEPLUGINMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 

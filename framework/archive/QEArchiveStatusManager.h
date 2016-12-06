@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -23,39 +23,23 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
-#ifndef QEARCHIVESTATUSMANAGER_H
-#define QEARCHIVESTATUSMANAGER_H
+#ifndef QE_ARCHIVE_STATUS_MANAGER_H
+#define QE_ARCHIVE_STATUS_MANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
 #include <QEPluginLibrary_global.h>
+#include <QEDesignerPluginCommon.h>
 
 /*
-    Plugin manager for QEFrame widget
+    Plugin manager for QEArchiveStatus widget
 */
 class QEPLUGINLIBRARYSHARED_EXPORT QEArchiveStatusManager :
       public QObject,
       public QDesignerCustomWidgetInterface {
 
-Q_OBJECT
-Q_INTERFACES (QDesignerCustomWidgetInterface)
+   Q_OBJECT
+   Q_INTERFACES (QDesignerCustomWidgetInterface)
 
-public:
-   QEArchiveStatusManager (QObject * parent = 0);
-
-   bool isContainer () const;
-   bool isInitialized () const;
-   QIcon icon () const;
-   //QString domXml() const;
-   QString group () const;
-   QString includeFile () const;
-   QString name () const;
-   QString toolTip () const;
-   QString whatsThis () const;
-   QWidget *createWidget (QWidget * parent);
-   void initialize (QDesignerFormEditorInterface * core);
-
-private:
-    bool initialized;
+   QE_DECLARE_PLUGIN_MANAGER (QEArchiveStatus)
 };
 
-#endif  // QEARCHIVESTATUSMANAGER_H 
+#endif  // QE_ARCHIVE_STATUS_MANAGER_H

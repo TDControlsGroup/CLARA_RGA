@@ -26,7 +26,7 @@
 #ifndef QEGENERALEDITMANAGER_H
 #define QEGENERALEDITMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 //

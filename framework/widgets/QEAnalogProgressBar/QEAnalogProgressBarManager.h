@@ -25,7 +25,7 @@
 #ifndef QEANALOGPROGRESSBARMANAGER_H
 #define QEANALOGPROGRESSBARMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

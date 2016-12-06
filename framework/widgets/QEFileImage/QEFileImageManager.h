@@ -25,7 +25,7 @@
 #ifndef QEFILEIMAGEMANAGER_H
 #define QEFILEIMAGEMANAGER_H
 
-#include <QDesignerCustomWidgetInterface>
+#include <QEDesignerPluginCommon.h>
 #include <QEPluginLibrary_global.h>
 
 /*

@@ -344,7 +344,7 @@ windowCustomisationMenuItem::windowCustomisationMenuItem(
     log.add( "Adding placeholder menu item: ",  title );
 }
 
-// Construct instance of class defining an item that will be associated with an existing dock (assocaition is by dock title)
+// Construct instance of class defining an item that will be associated with an existing dock (association is by dock title)
 windowCustomisationMenuItem::windowCustomisationMenuItem(
                       customisationLog& log,                               // Log of customisation files loaded for diagnosis.
 

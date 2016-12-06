@@ -1,4 +1,5 @@
-/*
+/*  imageProcessor.cpp
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2015 Australian Synchrotron
+ *  Copyright (c) 2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -26,11 +27,14 @@
 // information such as brightness, contrast, flip, rotate, canvas size, etc.
 // The work is performed in a dedicated thread .
 
+#include <QDebug>
 #include <QMutexLocker>
 #include "imageProcessor.h"
 #include "imageDataFormats.h"
 #include <colourConversion.h>
 #include <math.h>
+
+#define DEBUG qDebug () << "imageProcessor" << __LINE__ << __FUNCTION__ << " "
 
 // Constructor
 imageProcessor::imageProcessor()
@@ -40,21 +44,15 @@ imageProcessor::imageProcessor()
     finishNow = false;
 
     // Manage image processing thread
-    imageWait.lockForWrite();
     start();
 }
 
 // Destructor
 imageProcessor::~imageProcessor()
 {
-// !!!!!! Getting the following errors on application exit
-// QMutex: destroying locked mutex
-// QWaitCondition: Destroyed while threads are still waiting
-// QThread: Destroyed while thread is still running
-
     // If any outstanding images to process, get rid of it
     finishNow = true;
-    {
+    {// set scope of QMutexLocker
         QMutexLocker locker( &imageLock );
         if( next )
         {
@@ -63,14 +61,14 @@ imageProcessor::~imageProcessor()
         }
     }
 
-    // !!!!!!!! This is not robust.
-    // !!!!!!!! At this point the thread may not return to
-    // !!!!!!!! waiting before the following wake, so it will
-    // !!!!!!!! not wake and catch the 'please finish' flag.
-
-
-    // Ask the image processing thread to exit
-    imageSync.wakeOne();
+    // Ask the image processing thread to exit.
+    // imageWait lock is acquired to ensure the image processing thread is waiting for image data
+    // as it is only in this state that it will notice the 'wakeOne' call.
+    // (the lock is normally held by the imaging processing thread and released while waiting)
+    {// set scope of QMutexLocker
+        QMutexLocker locker( &imageWait );
+        imageSync.wakeOne();
+    }
 
     // Wait for the thread to exit
     wait();
@@ -79,6 +77,9 @@ imageProcessor::~imageProcessor()
 // Image processing thread
 void imageProcessor::run()
 {
+    // Lock mutex that QEimage will be waiting on before signling this thread to finish
+    QMutexLocker locker1( &imageWait );
+
     // Snapshot of all information required for image processing
     imagePropertiesCore* core = NULL;
 
@@ -100,7 +101,7 @@ void imageProcessor::run()
 
             // Get the next snapshot of image data and all the related image information
             {// set scope of QMutexLocker
-                QMutexLocker locker( &imageLock );
+                QMutexLocker locker2( &imageLock );
                 core = next;
                 next = NULL;
             }
@@ -114,16 +115,6 @@ void imageProcessor::run()
                 // Deliver the image to the widget
                 emit imageBuilt( image, "" );
 
-                // Realease the content of any previous buffer that
-                // earlier QImages may have still been referencing.
-
-                // !!!!!!!! This is not correct. The slot called by the emit above is
-// unlikely to be complete yet.
-// It is not naturally synchronous when in another thread.
-// Force synchronous? I'd rather not...
-
-                lastImageBuff.clear();
-
                 // Discard the image information
                 delete core;
                 core = NULL;
@@ -135,29 +126,6 @@ void imageProcessor::run()
                 break;
             }
         }
-    }
-}
-
-// Set the image buffer used for generating images so it will be large enough to hold the processed image.
-void imageProcessor::setImageBuff()
-{
-    // Do nothing if there are no image dimensions yet
-    if( !imageBuffWidth || !imageBuffHeight )
-        return;
-
-    // Determine buffer size
-    unsigned long buffSize = IMAGEBUFF_BYTES_PER_PIXEL * imageBuffWidth * imageBuffHeight;
-
-    // Resize buffer
-    // Note, not efficient to resize to same size - it actually does a reallocation
-    // of memory (on Qt 5.1 on windows at least)
-    if( (unsigned long)(imageBuff.size()) != buffSize )
-    {
-        // Keep the last buffer untill a the next image is
-        // generated to ensure any previous QImages still
-        // referencing the buffer data remain sound
-        lastImageBuff = imageBuff;
-        imageBuff.resize( buffSize );
     }
 }
 
@@ -233,8 +201,7 @@ void imageProcessor::buildImage()
     // Determine the number of pixels to process
     // If something is wrong, do nothing
     unsigned long pixelCount = imageBuffWidth*imageBuffHeight;
-    if(( pixelCount * bytesPerPixel > (unsigned long)imageData.size() ) ||
-       ( pixelCount * IMAGEBUFF_BYTES_PER_PIXEL > (unsigned long)imageBuff.size() ))
+    if( pixelCount * bytesPerPixel > (unsigned long)imageData.size() )
     {
         emit imageBuilt( QImage(), errorText ); // !!! should clear the image by delivering non null blank image???
         return;
@@ -260,7 +227,6 @@ void imageProcessor::buildImage()
 
         // Package up the current image data and all related information
         next = new imagePropertiesCore( imageData,
-                                        imageBuff,
                                         imageBuffWidth,
                                         imageBuffHeight,
                                         getScanOption(),
@@ -276,8 +242,8 @@ void imageProcessor::buildImage()
                                         rotatedImageBuffHeight() );
     }
 
-// Include the following two lines to skip processing in seperate thread.
-// Call processing in this thread instead
+// For testing you can include the following two lines to skip processing
+// in a seperate thread and call processing in this thread instead:
 //    emit imageBuilt( next->buildImageCore(), "" );
 //    return;
 
@@ -288,7 +254,6 @@ void imageProcessor::buildImage()
 // Package up image data along with all the information
 // needed to process it and generate a QImage.
 imagePropertiesCore::imagePropertiesCore( QByteArray imageDataIn,
-                                          QByteArray imageBuffIn,
                                           unsigned long imageBuffWidthIn,
                                           unsigned long imageBuffHeightIn,
                                           int scanOptionIn,
@@ -304,7 +269,6 @@ imagePropertiesCore::imagePropertiesCore( QByteArray imageDataIn,
                                           unsigned int rotatedImageBuffHeightIn )
 {
     imageData = imageDataIn;
-    imageBuff = imageBuffIn;
     imageBuffWidth = imageBuffWidthIn;
     imageBuffHeight = imageBuffHeightIn;
     scanOption = scanOptionIn;
@@ -325,10 +289,14 @@ imagePropertiesCore::imagePropertiesCore( QByteArray imageDataIn,
 // The image is generated in a seperate thread after preperation by imageProcessor::buildImage()
 QImage imagePropertiesCore::buildImageCore()
 {
+    // Create image ready for building the image data
+    QImage image( rotatedImageBuffWidth, rotatedImageBuffHeight, QImage::Format_RGB32 );
+
     // Set up input and output pointers and counters ready to process each pixel
     // Note, must be constData() - not data() - to avoid a reallocation of the data
     const unsigned char* dataIn = (unsigned char*)imageData.constData();
-    imageDisplayProperties::rgbPixel* dataOut = (imageDisplayProperties::rgbPixel*)(imageBuff.constData());
+    // constBits is 4.8 or later. We want the read/write bits anyway.
+    imageDisplayProperties::rgbPixel* dataOut = (imageDisplayProperties::rgbPixel*)(image.bits());
     unsigned long buffIndex = 0;
     unsigned long dataIndex = 0;
 
@@ -420,7 +388,7 @@ QImage imagePropertiesCore::buildImageCore()
         pixelRange = 1;
     }
 
-    unsigned int mask = (1<<bitDepth)-1;
+    unsigned int mask = ((unsigned long)(1)<<bitDepth)-1;
 
     // Prepare for building image stats while processing image data
     unsigned int maxP = 0;
@@ -428,6 +396,7 @@ QImage imagePropertiesCore::buildImageCore()
     unsigned int valP;
     unsigned int binShift = (bitDepth<8)?0:bitDepth-8;
     unsigned int bin;
+    unsigned int bins[HISTOGRAM_BINS]; // Bins used for generating a pixel histogram
     for( int i = 0; i < HISTOGRAM_BINS; i++ )
     {
         bins[i]=0;
@@ -585,7 +554,7 @@ QImage imagePropertiesCore::buildImageCore()
 
             // Pre-calculate data shift and mask nessesary to obtain most significant 8 bits
             int shift = (bitDepth<=8)?0:bitDepth-8;
-            quint32 mask = (1<<bitDepth)-1;
+            quint32 mask = ((unsigned long)(1)<<bitDepth)-1;
 
             // Loop through the input data
             // The loop order is based on current flip and rotation and so will not nessesarily
@@ -1031,9 +1000,8 @@ QImage imagePropertiesCore::buildImageCore()
         imageDisplayProps->setStatistics( minP, maxP, bitDepth, bins, pixelLookup );
     }
 
-    // Generate a frame from the data
-    QImage frameImage( (uchar*)(imageBuff.constData()), rotatedImageBuffWidth, rotatedImageBuffHeight, QImage::Format_RGB32 );
-    return frameImage;
+    // Return the image
+    return image;
 }
 
 // Set the image width
@@ -1340,7 +1308,7 @@ unsigned int imageProcessor::maxPixelValue()
         case imageDataFormats::BAYERGR:
         case imageDataFormats::BAYERRG:
         case imageDataFormats::MONO:
-            result = (1<<bitDepth)-1;
+            result = ((unsigned long)(1)<<bitDepth)-1;
             break;
 
         case imageDataFormats::RGB1:
@@ -1614,7 +1582,7 @@ int imageProcessor::getPixelValueFromData( const unsigned char* ptr )
                     usableDepth = imageDataSize*8;
                 }
 
-                quint32 mask = (1<<usableDepth)-1;
+                quint32 mask = ((unsigned long)(1)<<usableDepth)-1;
 
                 return (*((quint32*)ptr))&mask;
             }
@@ -2173,3 +2141,5 @@ QPoint imageProcessor::rotateFlipToImagePoint( const QPoint& pos )
 
     return posTr;
 }
+
+// end

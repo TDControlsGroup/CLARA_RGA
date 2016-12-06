@@ -1,4 +1,5 @@
-/*
+/*  QEFloating.h
+ *
  *  This file is part of the EPICS QT Framework, initially developed at the Australian Synchrotron.
  *
  *  The EPICS QT Framework is free software: you can redistribute it and/or modify
@@ -14,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010 Australian Synchrotron
+ *  Copyright (c) 2009, 2010, 2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -47,6 +48,7 @@ class QEPLUGINLIBRARYSHARED_EXPORT QEFloating : public qcaobject::QCaObject {
 
   public slots:
     void writeFloating( const double &data );
+    void writeFloatingElement( const double &data );
     void writeFloating( const QVector<double> &data );
 
   private:

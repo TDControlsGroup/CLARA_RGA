@@ -15,10 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies). Australian Synchrotron
- *  Contact: http://www.qt-project.org/legal
- *
- *  Copyright (c) Australian Synchrotron 2013
+ *  Copyright (C) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -67,7 +64,7 @@
 /// both of which inherited from the QEPvLoadSaveItem base class
 ///
 class QEPvLoadSaveItem : public QObject {
-Q_OBJECT
+   Q_OBJECT
 protected:
    // This is an effectivly an abstract class; by making this function protected
    // we stop QEPvLoadSaveItem class objects being created.
@@ -172,7 +169,8 @@ private slots:
    void connectionChanged (QCaConnectionInfo& connectionInfo, const unsigned int& variableIndex);
    void dataChanged (const QVariant& value, QCaAlarmInfo& alarmInfo, QCaDateTime& timeStamp, const unsigned int& variableIndex);
 
-   void setArchiveData (const QObject* userData, const bool okay, const QCaDataPointList& archiveData);
+   void setArchiveData (const QObject* userData, const bool okay, const QCaDataPointList& archiveData,
+                        const QString& pvName, const QString& supplementary);
 };
 
 

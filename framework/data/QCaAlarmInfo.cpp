@@ -28,6 +28,70 @@
 #include <alarm.h>
 #include <QCaAlarmInfo.h>
 
+// Default standard colors.
+// These string lists are index by alarm severity
+//
+const QStringList QCaAlarmInfo::defaultStyleColorNames = QStringList ()
+        << "#e0eee0"    // pale green
+        << "#ffff00"    // yellow
+        << "#ff8080"    // pale red
+        << "#ffffff";   // white
+
+const QStringList QCaAlarmInfo::defaultColorNames = QStringList ()
+        << "#00ff00"    // green
+        << "#ffff00"    // yellow
+        << "#ff0000"    // red
+        << "#ffffff";   // white
+
+
+// Current standard colors.
+// These string lists are index by alarm severity
+//
+QStringList QCaAlarmInfo::styleColorNames = QCaAlarmInfo::defaultStyleColorNames;
+QStringList QCaAlarmInfo::colorNames = QCaAlarmInfo::defaultColorNames;
+
+/*
+   Update/extract current style names.
+ */
+void QCaAlarmInfo::setStyleColorNames( const QStringList& styleColorNamesIn )
+{
+    styleColorNames = styleColorNamesIn;
+}
+
+QStringList QCaAlarmInfo::getStyleColorNames()
+{
+   return styleColorNames;
+}
+
+/*
+   Update/extract current color names.
+ */
+void QCaAlarmInfo::setColorNames( const QStringList& colorNamesIn )
+{
+    colorNames = colorNamesIn;
+}
+
+QStringList QCaAlarmInfo::getColorNames()
+{
+   return colorNames;
+}
+
+/*
+   Extract constant default color style names.
+ */
+QStringList QCaAlarmInfo::getDefaultStyleColorNames()
+{
+   return defaultStyleColorNames;
+}
+
+/*
+   Extract constant default color names.
+ */
+QStringList QCaAlarmInfo::getDefaultColorNames()
+{
+   return defaultColorNames;
+}
+
 /*
   Construct an empty instance.
   By default there is no alarm present.
@@ -140,14 +204,7 @@ QString QCaAlarmInfo::style() const
  */
 QString QCaAlarmInfo::getStyleColorName() const
 {
-    switch( severity )
-    {
-        case NO_ALARM:      return "#e0eae0"; // pale green
-        case MINOR_ALARM:   return "#ffff00"; // yellow
-        case MAJOR_ALARM:   return "#ff8080"; // red
-        case INVALID_ALARM: return "#ffffff"; // white
-        default:            return "#ffffff"; // white
-    }
+    return styleColorNames.value( int(severity), "#ffffff" );
 }
 
 
@@ -156,14 +213,7 @@ QString QCaAlarmInfo::getStyleColorName() const
  */
 QString QCaAlarmInfo::getColorName() const
 {
-    switch( severity )
-    {
-        case NO_ALARM:      return "#00ff00"; // green
-        case MINOR_ALARM:   return "#ffff00"; // yellow
-        case MAJOR_ALARM:   return "#ff0000"; // red
-        case INVALID_ALARM: return "#ffffff"; // white
-        default:            return "#ffffff"; // white
-    }
+    return colorNames.value( int(severity), "#ffffff" );
 }
 
 /*

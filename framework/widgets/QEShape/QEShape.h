@@ -23,8 +23,8 @@
  *    andrew.rhyder@synchrotron.org.au
  */
 
-#ifndef QESHAPE_H
-#define QESHAPE_H
+#ifndef QE_SHAPE_H
+#define QE_SHAPE_H
 
 #include <QEInteger.h>
 #include <QEWidget.h>
@@ -734,4 +734,11 @@ private:
     QColor getColor10Property(){ return getColor( 9 ); }
 };
 
-#endif // QESHAPE_H
+#ifdef QE_DECLARE_METATYPE_IS_REQUIRED
+Q_DECLARE_METATYPE (QEShape::UserLevels)
+Q_DECLARE_METATYPE (QEShape::DisplayAlarmStateOptions)
+Q_DECLARE_METATYPE (QEShape::animationOptions)
+Q_DECLARE_METATYPE (QEShape::shapeOptions)
+#endif
+
+#endif // QE_SHAPE_H

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2013 Australian Synchrotron
+ *  Copyright (c) 2013,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -26,8 +26,8 @@
 /* The QEPvPropertiesUtilities class provides utilities for the main QEPvProperties widget.
  */
 
-#ifndef QEPVPROPERTIES_UTILITIES_H
-#define QEPVPROPERTIES_UTILITIES_H
+#ifndef QE_PV_PROPERTIES_UTILITIES_H
+#define QE_PV_PROPERTIES_UTILITIES_H
 
 #include <QList>
 #include <QString>
@@ -42,11 +42,11 @@ class QERecordSpec : public QStringList {
 public:
    explicit QERecordSpec (const QString recordType);
 
-   QString getRecordType ();
+   QString getRecordType () const;
 
    // If index is out of bounds, this function returns ""
    //
-   QString getFieldName (const int index);
+   QString getFieldName (const int index) const;
 
 private:
    QString recordType;
@@ -59,59 +59,13 @@ private:
 class QERecordSpecList : public QList< QERecordSpec *> {
 public:
    QERecordSpecList ();
-   QERecordSpec *find (const QString recordType);
-   void appendOrReplace (QERecordSpec *recordSpec);
+   QERecordSpec* find (const QString recordType) const;
+   void appendOrReplace (QERecordSpec* recordSpec);
 
    bool processRecordSpecFile (const QString& filename);
 
 private:
-   int findSlot (const QString recordType);
+   int findSlot (const QString recordType) const;
 };
 
-
-//------------------------------------------------------------------------------
-// All functions are static.
-//
-class QERecordFieldName {
-public:
-   // Converts PV name to record name, e.g.:
-   //
-   // SR11BCM01:CURRENT_MONITOR.PREC => SR11BCM01:CURRENT_MONITOR
-   // SR11BCM01:CURRENT_MONITOR.VAL  => SR11BCM01:CURRENT_MONITOR
-   // SR11BCM01:CURRENT_MONITOR      => SR11BCM01:CURRENT_MONITOR
-   //
-   static QString recordName (const QString & pvName);
-
-   // Converts PV name to field name, e.g.:
-   //
-   // SR11BCM01:CURRENT_MONITOR.PREC => PREC
-   // SR11BCM01:CURRENT_MONITOR.VAL  => VAL
-   // SR11BCM01:CURRENT_MONITOR      => VAL (it's the default)
-   //
-   static QString fieldName (const QString & pvName);
-
-   // From field PV name
-   // (SR11BCM01:CURRENT_MONITOR.PREC, EGU) => SR11BCM01:CURRENT_MONITOR.EGU
-   // (SR11BCM01:CURRENT_MONITOR,      EGU) => SR11BCM01:CURRENT_MONITOR.EGU
-   //
-   static QString fieldPvName (const QString & pvName, const QString & field);
-
-   // Form pseudo field record type PV name.
-   // SR11BCM01:CURRENT_MONITOR.PREC => SR11BCM01:CURRENT_MONITOR.RTYP
-   //
-   static QString rtypePvName (const QString & pvName);
-
-   // This function indicates if the given string is a valid PV name,
-   // not ony in the pureset EPICS sense, but that it also conforms to
-   // the naming standard.
-   //
-   static bool pvNameIsValid (const QString & pvName);
-
-   // Remove any qualifiers (e.g. " CPP") prior to validaing name.
-   // Modified name set in pvName is valid, otherwise cleared.
-   //
-   static bool extractPvName (const QString & item, QString & pvName);
-};
-
-
-# endif  // QEPVPROPERTIES_UTILITIES_H
+# endif  // QE_PV_PROPERTIES_UTILITIES_H

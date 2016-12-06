@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2012 Australian Synchrotron
+ *  Copyright (c) 2012,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Starritt
@@ -40,7 +40,7 @@
 
 #include <QEArchiveManager.h>
 
-#define DEBUG  qDebug () << "QEArchiveManager::" <<  __FUNCTION__  << ":" << __LINE__
+#define DEBUG  qDebug () << "QEArchiveManager" << __LINE__ <<  __FUNCTION__  << "  "
 
 
 //------------------------------------------------------------------------------
@@ -258,12 +258,12 @@ void QEArchiveManager::setup ()
 
    this->resendStatus ();
 
-   // Lastly connect timer to re interogatethe archiver automatically once a day.
+   // Lastly connect timer to re interogate the archiver automatically once a day.
    //
    connect (this->timer, SIGNAL (timeout ()),
             this,        SLOT   (timeout ()));
 
-   this->timer->start (24*3600*1000);
+   this->timer->start (24*3600*1000);    // mSec
 }
 
 //------------------------------------------------------------------------------
@@ -395,6 +395,7 @@ void QEArchiveManager::resendStatus ()
       status.available = archiveInterface->available;
       status.read = archiveInterface->read;
       status.numberPVs = archiveInterface->numberPVs;
+      status.pending = archiveInterface->getNumberPending();
 
       statusList.append (status);
    }
@@ -434,7 +435,7 @@ public:
 //
 void QEArchiveManager::archivesResponse (const QObject * userData,
                                          const bool isSuccess,
-                                         const QEArchiveInterface::ArchiveList & archiveListIn)
+                                         const QEArchiveInterface::ArchiveList& archiveListIn)
 {
    QMutexLocker locker (archiveDataMutex);
 
@@ -470,7 +471,7 @@ void QEArchiveManager::archivesResponse (const QObject * userData,
 
    }
 
-   singletonManager->resendStatus ();
+   this->resendStatus ();
 }
 
 //------------------------------------------------------------------------------
@@ -492,6 +493,7 @@ void QEArchiveManager::nextRequest (const int requestIndex)
 
    // DEBUG <<  archive.key << pattern;
    interface->namesRequest (context, archive.key, pattern);
+   this->resendStatus ();
 }
 
 //------------------------------------------------------------------------------
@@ -597,7 +599,7 @@ void QEArchiveManager::pvNamesResponse (const QObject * userData,
    }
 
    delete context;
-   singletonManager->resendStatus ();
+   this->resendStatus ();
 }
 
 
@@ -606,13 +608,16 @@ void QEArchiveManager::pvNamesResponse (const QObject * userData,
 class ValuesResponseContext : public QObject {
 public:
    const QEArchiveAccess* archiveAccess;
+   QString pvName;
    QObject* userData;
 
    // constructor
    ValuesResponseContext (const QEArchiveAccess* archiveAccessIn,
+                          const QString& pvNameIn,
                           QObject* userDataIn)
    {
       this->archiveAccess = archiveAccessIn;
+      this->pvName = pvNameIn;
       this->userData = userDataIn;
    }
 };
@@ -637,6 +642,16 @@ void QEArchiveManager::readArchiveRequest (const QEArchiveAccess* archiveAccess,
    QCaDateTime useEnd;
    int overlap;
    QString message;
+
+   QEArchiveAccess::PVDataResponses response;
+
+   // Initialise failed response.
+   //
+   response.pvName = request.pvName;
+   response.userData = request.userData;
+   response.isSuccess = false;
+   response.pointsList.clear ();
+   response.supplementary = "fail";
 
    // Is this PV currently being archived?
    //
@@ -690,7 +705,7 @@ void QEArchiveManager::readArchiveRequest (const QEArchiveAccess* archiveAccess,
 
          // Create a reasponse context.
          //
-         ValuesResponseContext* context = new  ValuesResponseContext (archiveAccess, request.userData);
+         ValuesResponseContext* context = new  ValuesResponseContext (archiveAccess, request.pvName, request.userData);
 
          // The interface signals return data to the valuesResponse slot in the QEArchiveManager
          // object which (using supplied context) emits QEArchiveAccess setArchiveData signal on behalf
@@ -700,12 +715,16 @@ void QEArchiveManager::readArchiveRequest (const QEArchiveAccess* archiveAccess,
                                               request.startTime, request.endTime,
                                               request.count, request.how,
                                               pvNames, request.element);
+         this->resendStatus ();
 
       } else {
          message = "Archive Manager: PV ";
          message.append (request.pvName);
          message.append (" has no matching time overlaps.");
          this->sendMessage (message, message_types (MESSAGE_TYPE_WARNING));
+
+         response.supplementary = message;
+         emit this->readArchiveResponse (archiveAccess, response);
       }
 
    } else {
@@ -713,6 +732,9 @@ void QEArchiveManager::readArchiveRequest (const QEArchiveAccess* archiveAccess,
       message.append (request.pvName);
       message.append (" not found in archive.");
       this->sendMessage (message, message_types (MESSAGE_TYPE_WARNING));
+
+      response.supplementary = message;
+      emit this->readArchiveResponse (archiveAccess, response);
    }
 }
 
@@ -733,11 +755,14 @@ void QEArchiveManager::valuesResponse (const QObject* userData,
       if (response.isSuccess) {
          response.pointsList = valuesList.value (0).dataPoints;
       }
+      response.pvName = context->pvName;
+      response.supplementary = response.isSuccess ? "okay" : "archiver response failure";
 
       emit this->readArchiveResponse (context->archiveAccess, response);
-
+	  
       delete context;
    }
+   this->resendStatus ();
 }
 
 //==============================================================================
@@ -858,7 +883,13 @@ void QEArchiveAccess::readArchiveResponse (const QEArchiveAccess* archiveAccess,
    // Filter and re-broadcast status signal.
    //
    if (archiveAccess == this) {
-      emit this->setArchiveData (response.userData, response.isSuccess, response.pointsList);
+      emit this->setArchiveData (response.userData, response.isSuccess,
+                                 response.pointsList, response.pvName,
+                                 response.supplementary);
+
+      // Depricated form.
+      emit this->setArchiveData (response.userData, response.isSuccess,
+                                 response.pointsList);
    }
 }
 

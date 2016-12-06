@@ -23,6 +23,15 @@
  *    andrew.starritt@synchrotron.org.au
  */
 
+// Ensure uint64_t is available for all compilers
+#ifdef __cplusplus
+ #ifdef _STDINT_H
+  #undef _STDINT_H
+ #endif
+ # include <stdint.h>
+
+#endif
+
 #include <QtDesigner>
 #include <QDebug>
 #include <QStringList>

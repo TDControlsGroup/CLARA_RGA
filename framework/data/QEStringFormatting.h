@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with the EPICS QT Framework.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Copyright (c) 2009, 2010, 2015 Australian Synchrotron
+ *  Copyright (c) 2009,2010,2015,2016 Australian Synchrotron
  *
  *  Author:
  *    Andrew Rhyder
@@ -25,12 +25,13 @@
 
 // Formats the string for QEString data.
 
-#ifndef QESTRINGFORMATTING_H
-#define QESTRINGFORMATTING_H
+#ifndef QE_STRING_FORMATTING_H
+#define QE_STRING_FORMATTING_H
 
 #include <QVariant>
 #include <QString>
 #include <QStringList>
+#include <QVector>
 #include <QDataStream>
 #include <QTextStream>
 
@@ -82,8 +83,9 @@ public:
     //   - Format a string based on a value
     //   - Translate a string and generate a value
     //===============================================
-    QString formatString( const QVariant& value ) const;
+    QString formatString( const QVariant& value, int arrayIndex = 0 ) const;  // default depricated and will be removed.
     QVariant formatValue( const QString& text, bool& ok );
+    QVariant formatValue( const QVector<QString>& text, bool& ok );
 
 
     // Functions to set up formatting information from the database
@@ -101,7 +103,6 @@ public:
     void setRadix( const int radix );
     void setNotation( notations notation );
     void setArrayAction( arrayActions arrayActionIn );
-    void setArrayIndex( unsigned int arrayIndexIn );
     void setAddUnits( bool addUnits );
     void setLocalEnumeration( QString/*localEnumerationList*/ localEnumerationIn );
 
@@ -115,7 +116,6 @@ public:
     unsigned int getRadix() const;
     notations    getNotation() const;
     arrayActions getArrayAction() const;
-    unsigned int getArrayIndex() const;
     bool         getAddUnits() const;
     QString      getLocalEnumeration() const;
     QELocalEnumeration getLocalEnumerationObject() const;
@@ -160,7 +160,6 @@ public:
     int precision;                   // Floating point precision. Used if 'useDbPrecision' is false.
     QELocalEnumeration localEnumerations;  // Local enumeration values.
     arrayActions arrayAction;       // Action to take when processing array or waveform data
-    unsigned int arrayIndex;        // Index into array or waveform to use when into arrayAction is 'INDEX'
 };
 
-#endif // QESTRINGFORMATTING_H
+#endif // QE_STRING_FORMATTING_H
