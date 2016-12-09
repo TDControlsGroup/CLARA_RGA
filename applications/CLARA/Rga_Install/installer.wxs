@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="{07cdd126-8d87-46cf-87b0-8731980619fa}"
+    Name="RGA monitor setup"
+    Language="1033" Version="1.0.0.0" Manufacturer="STFC"
+    UpgradeCode="4b2952e6-8ce6-4254-9796-aa510afe5fc0">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" />
+
+    <Media Id="1" Cabinet="RGA.cab" EmbedCab="yes" />
+
+
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="RGADisplay">
+          <Component Id="GROUP" Guid="{EF7B815A-2B6B-485B-984B-8FD43F1ED894}">
+            <File Id="FILE1"  Source="ca.dll" />
+            <File Id="FILE2"  Source="caRepeater.exe" />
+            <File Id="FILE3"  Source="Com.dll" />
+            <File Id="FILE4"  Source="installer.wixobj" />
+            <File Id="FILE5"  Source="installer.wxs" />
+            <File Id="FILE6"  Source="libgcc_s_dw2-1.dll" />
+            <File Id="FILE7"  Source="libstdc++-6.dll" />
+            <File Id="FILE8"  Source="libwinpthread-1.dll" />
+            <File Id="FILE9"  Source="QEPlugin.dll" />
+            <File Id="FILE10" Source="Qt5Core.dll" />
+            <File Id="FILE11" Source="Qt5Designer.dll" />
+            <File Id="FILE12" Source="Qt5Gui.dll" />
+            <File Id="FILE13" Source="Qt5Network.dll" />
+            <File Id="FILE14" Source="Qt5OpenGL.dll" />
+            <File Id="FILE15" Source="Qt5PrintSupport.dll" />
+            <File Id="FILE16" Source="Qt5Svg.dll" />
+            <File Id="FILE17" Source="Qt5Widgets.dll" />
+            <File Id="FILE18" Source="Qt5Xml.dll" />
+            <File Id="FILE19" Source="qwt.dll" />
+            <File Id="FILE20" Source="Rga.exe"/>
+            <File Id="FILE21" Source="pipes.ico"/>
+            <Environment Id='UpdatePath1' Name='QE_ARCHIVE_LIST' Action='set' Permanent='no' System='no' Part='last' Value='192.168.83.13:8888/cgi-bin/ArchiveDataServer.cgi' />
+            <Environment Id='UpdatePath2' Name='EPICS_CA_ADDR_LIST' Action='set' Permanent='no' System='no' Part='last' Value='192.168.83.255' />
+            <Environment Id='UpdatePath3' Name='EPICS_CA_MAX_ARRAY_BYTES' Action='set' Permanent='no' System='no' Part='last' Value='1000000' />
+          </Component>
+
+
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuSubfolder" Name="RGA Display">
+          <Component Id="ApplicationShortcuts" Guid="*">
+            <Shortcut Id="ApplicationShortcut1" Name="Rga Monitor" Description="Rga monitor application"
+                     Target="[INSTALLDIR]rga.exe" WorkingDirectory="INSTALLDIR" Icon="icon.ico"/>
+            <RegistryValue Root="HKCU" Key="Software\RGADisplay\RGAMonitorSC"
+                      Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop">
+        <Component Id="ApplicationShortcutsDesktop" Guid="*">
+          <Shortcut Id="ApplicationShortcut2" Name="Rga Monitor" Description="Rga monitor application"
+                   Target="[INSTALLDIR]rga.exe" WorkingDirectory="INSTALLDIR" Icon="icon.ico"/>
+          <RegistryValue Root="HKCU" Key="Software\RGADisplay\RGAMonitorDT"
+                    Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+          <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+        </Component>
+      </Directory>
+
+
+    </Directory>
+
+    <Feature Id="ProductFeature" Level="1">
+      <ComponentRef Id="GROUP" />
+      <ComponentRef Id="ApplicationShortcuts"/>
+      <ComponentRef Id="ApplicationShortcutsDesktop"/>
+
+    </Feature>
+    <Icon Id="icon.ico" SourceFile="pipes.ico" />
+  </Product>
+</Wix>

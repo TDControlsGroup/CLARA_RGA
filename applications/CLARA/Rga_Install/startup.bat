@@ -1,0 +1,5 @@
+set PATH=""
+set EPICS_CA_ADDR_LIST=192.168.83.255
+set EPICS_CA_MAX_ARRAY_BYTES=1000000
+set QE_ARCHIVE_LIST=192.168.83.13:8888/cgi-bin/ArchiveDataServer.cgi
+Rga.exe

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="TARGETDIR">
+            <Directory Id="dir1BEF1B50CB88A8F52AA498BFB3241380" Name="Rga_Install">
+                <Component Id="cmp5D6FC8BFEE3FED04B251232168BAE4AD" Guid="{EF7B815A-2B6B-485B-984B-8FD43F1ED894}">
+                    <File Id="fil6739F2FCD92AD0F77AA571B713769974" KeyPath="yes" Source="SourceDir\ca.dll" />
+                </Component>
+                <Component Id="cmpF062F96201EE780FB75B689F290FB77B" Guid="{CA50A404-F27B-4B6B-B006-53D220A3DF80}">
+                    <File Id="fil3D64B8CAC75BBBAF8FE491D573CE5219" KeyPath="yes" Source="SourceDir\caRepeater.exe" />
+                </Component>
+                <Component Id="cmp3CC0CA8FA95486B71DA9616654EE2161" Guid="{82AC5E8E-6090-476F-9001-8998566C0D76}">
+                    <File Id="filE2CC75F2F450B0D335BCA1F00B20B563" KeyPath="yes" Source="SourceDir\Com.dll" />
+                </Component>
+                <Component Id="cmpC52B9D1CB3263FDCCD6F2704C002AA78" Guid="{3301CB4F-F9F5-4757-8B2D-1BCA325BC20E}">
+                    <File Id="fil09039D55EF5C5A47A8F03994BC9AFA2B" KeyPath="yes" Source="SourceDir\installer.wixobj" />
+                </Component>
+                <Component Id="cmpB9997C372E68610709D1B9FDC2EA6B4A" Guid="{6FEFD067-E9A7-4FD3-BC81-8916B70F14EF}">
+                    <File Id="fil4B51396299B3E90F005A9832E4D37810" KeyPath="yes" Source="SourceDir\installer.wxs" />
+                </Component>
+                <Component Id="cmp543F56CDCD48CAAAD5DB886602C483FD" Guid="{AF313430-FE06-4BB4-9385-D047295F8673}">
+                    <File Id="filC9B398A8394DD37F78DD85134156D06F" KeyPath="yes" Source="SourceDir\libgcc_s_dw2-1.dll" />
+                </Component>
+                <Component Id="cmp45F5827E66B7B8D6F16BF981F5DC2808" Guid="{67F7721C-B92B-401F-A8BF-C49A52C63560}">
+                    <File Id="fil76207D4A38D9FDA85624E13055AF9CDD" KeyPath="yes" Source="SourceDir\libstdc++-6.dll" />
+                </Component>
+                <Component Id="cmp1833C29FECF695C47F4517EF534A2A3D" Guid="{A88EAD7C-01AA-43BF-BCC4-D4D87497A4CD}">
+                    <File Id="fil49425C47AACF38F220DECA3C12D663FB" KeyPath="yes" Source="SourceDir\libwinpthread-1.dll" />
+                </Component>
+                <Component Id="cmp3F3E6E41F3B1416F096C0EB60E319EED" Guid="{AAFDC59B-C3F0-4B65-A9B6-EFD75B3B7BE7}">
+                    <File Id="fil089F2170F7E9F101DC39B8F9DEF51977" KeyPath="yes" Source="SourceDir\QEPlugin.dll" />
+                </Component>
+                <Component Id="cmpFF8E2967D7D61545380338BB713DAF67" Guid="{0575971C-DA7A-4A4E-B8BF-09B9903F88E0}">
+                    <File Id="filEE964CC6FF12D5E6708AA719477B522A" KeyPath="yes" Source="SourceDir\Qt5Core.dll" />
+                </Component>
+                <Component Id="cmpF3704F48C3DA091CC8BDF45599E46D47" Guid="{BC75C818-7EE6-4DF9-8E64-63FAA4FE4C07}">
+                    <File Id="fil755554C043C04905D594274053381EC3" KeyPath="yes" Source="SourceDir\Qt5Designer.dll" />
+                </Component>
+                <Component Id="cmp9E6BC061577C3092F9511E6FCDA4F833" Guid="{0C9A82BC-E826-4DD0-B704-4C0F93244D42}">
+                    <File Id="fil9BA3B060A83FBC9D387676B2EF794025" KeyPath="yes" Source="SourceDir\Qt5Gui.dll" />
+                </Component>
+                <Component Id="cmpAEFE00A8C3C571A1A3643D14AD3CB01B" Guid="{AAB7F5FB-1962-46A7-9CDF-BC9F21353AA3}">
+                    <File Id="filD870D1DBE7F91316CAA7DB321E4F29BD" KeyPath="yes" Source="SourceDir\Qt5Network.dll" />
+                </Component>
+                <Component Id="cmpFB426585CB2DB35ADCEA3B057533799F" Guid="{907D6CF2-E78D-41E8-9512-F019F655DD26}">
+                    <File Id="fil8785AA302B5117CD15B7FC5CF9CAF7A9" KeyPath="yes" Source="SourceDir\Qt5OpenGL.dll" />
+                </Component>
+                <Component Id="cmp2ED1FB94D893343A55412A74F170FE19" Guid="{C33A5B1D-A497-4424-9C0E-4C3BB2DE65AE}">
+                    <File Id="fil660AFC296CC2A750F71B5910527114BA" KeyPath="yes" Source="SourceDir\Qt5PrintSupport.dll" />
+                </Component>
+                <Component Id="cmp5D3F2EB71FD2A70A9CFDB4CB812BA38D" Guid="{AE714336-556C-45CF-9F24-C79109F7690E}">
+                    <File Id="fil1CF256FFD6901E801E30A2AFDA01823B" KeyPath="yes" Source="SourceDir\Qt5Svg.dll" />
+                </Component>
+                <Component Id="cmpE1ABD6C90C24C7909998A908FA00E5F7" Guid="{4011305B-4C6F-4F82-AB6A-94A62B54C612}">
+                    <File Id="fil85644B1A61499F499FE75F4508930133" KeyPath="yes" Source="SourceDir\Qt5Widgets.dll" />
+                </Component>
+                <Component Id="cmp8F48E9DB1DFDE70D651FECAAAB845B10" Guid="{45BE18A0-CB7A-4890-99F8-78D18828219B}">
+                    <File Id="fil5662AA7B1087AB67DBDE16D90358D55B" KeyPath="yes" Source="SourceDir\Qt5Xml.dll" />
+                </Component>
+                <Component Id="cmp8763ECA21BA1A846FBD0AB978B78AB8D" Guid="{2FC20B62-F589-4E57-A7F3-1B96038EFF0E}">
+                    <File Id="fil89E29A634FE660F7ECF1075E0B685B3B" KeyPath="yes" Source="SourceDir\qwt.dll" />
+                </Component>
+                <Component Id="cmp9ECD11510C95270D97558CD1F85DA1D5" Guid="{73CA4A0D-CBDF-4572-AE83-C290350C09D8}">
+                    <File Id="fil16166853D05A2A047F3866E149640D4D" KeyPath="yes" Source="SourceDir\Rga.exe" />
+                </Component>
+                <Component Id="cmpB2B912E48C9BA9E5B65119E4F21E89DE" Guid="{41BD6CFF-D5B3-411E-84F6-AF47F25762C8}">
+                    <File Id="fil96C61B53FC8CC648ABEC4339E4090121" KeyPath="yes" Source="SourceDir\startup.bat" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="rga">
+            <ComponentRef Id="cmp5D6FC8BFEE3FED04B251232168BAE4AD" />
+            <ComponentRef Id="cmpF062F96201EE780FB75B689F290FB77B" />
+            <ComponentRef Id="cmp3CC0CA8FA95486B71DA9616654EE2161" />
+            <ComponentRef Id="cmpC52B9D1CB3263FDCCD6F2704C002AA78" />
+            <ComponentRef Id="cmpB9997C372E68610709D1B9FDC2EA6B4A" />
+            <ComponentRef Id="cmp543F56CDCD48CAAAD5DB886602C483FD" />
+            <ComponentRef Id="cmp45F5827E66B7B8D6F16BF981F5DC2808" />
+            <ComponentRef Id="cmp1833C29FECF695C47F4517EF534A2A3D" />
+            <ComponentRef Id="cmp3F3E6E41F3B1416F096C0EB60E319EED" />
+            <ComponentRef Id="cmpFF8E2967D7D61545380338BB713DAF67" />
+            <ComponentRef Id="cmpF3704F48C3DA091CC8BDF45599E46D47" />
+            <ComponentRef Id="cmp9E6BC061577C3092F9511E6FCDA4F833" />
+            <ComponentRef Id="cmpAEFE00A8C3C571A1A3643D14AD3CB01B" />
+            <ComponentRef Id="cmpFB426585CB2DB35ADCEA3B057533799F" />
+            <ComponentRef Id="cmp2ED1FB94D893343A55412A74F170FE19" />
+            <ComponentRef Id="cmp5D3F2EB71FD2A70A9CFDB4CB812BA38D" />
+            <ComponentRef Id="cmpE1ABD6C90C24C7909998A908FA00E5F7" />
+            <ComponentRef Id="cmp8F48E9DB1DFDE70D651FECAAAB845B10" />
+            <ComponentRef Id="cmp8763ECA21BA1A846FBD0AB978B78AB8D" />
+            <ComponentRef Id="cmp9ECD11510C95270D97558CD1F85DA1D5" />
+            <ComponentRef Id="cmpB2B912E48C9BA9E5B65119E4F21E89DE" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
