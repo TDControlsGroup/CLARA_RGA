@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RgaArchiver</name>
+    </assembly>
+    <members>
+        <member name="T:RgaArchiver.App">
+            <summary>
+            Interaction logic for App.xaml
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:RgaArchiver.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:RgaArchiver.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:RgaArchiver.RgaArchiveAccess">
+             <summary>
+             Set a PV and either return a range of PV over time or return a waveform and a reange of an element over time
+             Waveforms are always returned at a point in time set with the From
+             As there is a lot of data over untriggered time ranges, the values are averaged and zero values are dropped
+             If an element of the waveform is set that will be returned with a range
+             The rgaFrom and rgaTo date, default to December 2016, when we had data
+             The other params will default as well.
+            
+             Use the DataContainer to hold data returned from this class
+             </summary>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.rgaFrom">
+             <value>From date yyyy,mm,dd,hh,mm,ss</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.rgaTo">
+             <value>To date yyyy,mm,dd,hh,mm,ss</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.bins">
+             <value>Number of bins over range (100). The average value is taken</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.rgaURL">
+             <value>Archiver appliance URL</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.pvRoot">
+             <value>Pv root (CLA-GUN-VAC-RGA-0)</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.pv">
+             <value>Pv (BAR)</value>
+        </member>
+        <member name="P:RgaArchiver.RgaArchiveAccess.mass">
+             <value>Mass range from a waveform (Mass 1)</value>
+        </member>
+        <member name="M:RgaArchiver.RgaArchiveAccess.GetArchive">
+             <value>Get values from the archive</value>
+        </member>
+        <member name="M:RgaArchiver.RgaArchiveAccess.GetData(System.Int32)">
+            <summary>
+            Get the data from the archive range
+            </summary>
+        </member>
+        <member name="T:RgaArchiver.MainWindow">
+            <summary>
+             App to access RGA information for CLARA from the archive
+            </summary>
+            
+            <remarks>
+             DataContainer: 
+              Array of DataElemet over a range of time in seconds
+             DataElement:
+              Array of RgaElements
+             RgaElement:
+              Array of PvSamples
+             PvSample: Sturucture holding postfix RGA PV info for one moment in time 
+            </remarks>
+            
+            <remarks>
+            DataToArchive: Manage the data container for RgaArchiveAccess
+            </remarks>
+            
+            <remarks>
+            DataToArchive: Manage the data container for Plot data
+            </remarks>
+            
+            <remarks>  
+             RgaArchiveAccess: connect and read from the archive app
+            </remarks>
+            
+            <remarks> 
+             PlotApp: OxyPlot model for Bar and Ana or PV vs time
+            </remarks>
+            
+             <summary>
+             Interaction logic for MainWindow.xaml
+             </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="M:RgaArchiver.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RgaArchiver.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:RgaArchiver.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:RgaArchiver.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

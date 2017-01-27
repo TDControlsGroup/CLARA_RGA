@@ -1,0 +1,8 @@
+#PV list. First line is archiver and the next are RGA. If length/format changes, then modify rga.cpp
+CLA-SRV-VAC-RGA
+EBT-HRG1-RGA-01
+CLA-LAS-VAC-RGA-01
+CLA-S02-VAC-RGA-01
+CLA-LLSH1-VAC-RGA-01
+CLA-LRG1-VAC-RGA-01
+CLA-S01-VAC-RGA-01

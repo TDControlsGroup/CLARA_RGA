@@ -63,6 +63,7 @@
 #define DEVICES 6
 
 //RGA List
+/*
 #define ARCHNAME "CLA-SRV-VAC-RGA"
 
 #define RGA1 "CLA-LLS-VAC-RGA1"
@@ -71,7 +72,7 @@
 #define RGA4 "rga4"
 #define RGA5 "rga5"
 #define RGA6 "rga6"
-
+*/
 
 //SUMMARY_SIZE == Elements in SUMMARY_MASS_LIST
 #define SUMMARY_SIZE 14

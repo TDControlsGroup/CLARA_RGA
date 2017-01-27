@@ -4,12 +4,14 @@ V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
 ****************************************************************************/
 
 //! [0]
-#include <iostream>
+
 #include <stdio.h>
 #include <QtUiTools>
 #include <QString>
 #include <QStringList>
-
+#include <QFile>
+#include <QIODevice>
+#include <QTextStream>
 //Macro
 
 
@@ -22,22 +24,44 @@ V1.2 Macro subsitiutions removed for C++ methods as this is more uniform
 RGA::RGA()
 {
 //Setup Main UI devices
+//Read from file so we can update Pvs at a later date
 
-    stream = new QTextStream( stdout );
-    DeviceName.push_back(QString(RGA1));
-    DeviceName.push_back(QString(RGA2));
-    DeviceName.push_back(QString(RGA3));
-    DeviceName.push_back(QString(RGA4));
-    DeviceName.push_back(QString(RGA5));
-	DeviceName.push_back(QString(RGA6));
+QFile file("RGALIST.txt");
+if(!file.open(QIODevice::ReadOnly)) {
+    QMessageBox::information(0, "error", file.errorString());
+	exit(-1);
+}
+QTextStream in(&file);
 
+//First line just a comment
+in.readLine();
+//Get Archive name from the next line
+ArchiverName=in.readLine();
+
+//Six rga names
+while(!in.atEnd()) {
+	QString temp=in.readLine();
+	qDebug() << temp; 
+	if (!(temp.isEmpty())){DeviceName.push_back(temp);}
+}
+
+file.close();
+
+//End of file read (this should be a function)
+
+//Set up dynamic lable names
     DynamicDeviceTitle.push_back(QString("RGA1"));
     DynamicDeviceTitle.push_back(QString("RGA2"));
     DynamicDeviceTitle.push_back(QString("RGA3"));
     DynamicDeviceTitle.push_back(QString("RGA4"));
     DynamicDeviceTitle.push_back(QString("RGA5"));
     DynamicDeviceTitle.push_back(QString("RGA6"));
-    ArchiverName=ARCHNAME;	
+	
+printf("RGAs found in config file: %d \n", DeviceName.size());
+if(DeviceName.size() !=6) {
+    QMessageBox::information(0, "error", "Wrong format for input file");
+	exit(-1);
+}
     
 	//Masses to display on the summary plots
 	int summary_masses[]=SUMMARY_MASS_LIST;
@@ -53,7 +77,8 @@ RGA::RGA()
 	//Run the GET title commnad and swap the result into Device Title. This is used all over the place
 	Messages.push_back    ( new UserMessage() );
 	StringFormat.push_back( new QEStringFormatting() );
-    DeviceTitle.push_back ( new QEString( DeviceName[i]+":GETNAME", this, StringFormat[i], i, Messages[i]));
+    DeviceTitle.push_back ( new QEString( DeviceName[i] + ":GETNAME", this, StringFormat[i], i, Messages[i]));
+
 	//Connect the signals for a lable change to a slot to update non EPICS aware widgets
 	QObject::connect( DeviceTitle[i], SIGNAL( stringChanged( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ),
                       this, SLOT( updateTitle( const QString&, QCaAlarmInfo&, QCaDateTime&, const unsigned int & ) ) );
@@ -104,7 +129,7 @@ void  RGA::RGAMain()
 	//Setup the archiving time
     ((mymain.findChild<QGroupBox*>("Archiver") )->findChild<QELabel *>("archDt") ) -> setProperty ("variable", ArchiverName+":ONTIMER" );
 
-	
+
 	
 	for (unsigned int i = 0; i < DEVICES; i++)
     {
@@ -243,16 +268,16 @@ void RGA::updateTitle( const QString& data, QCaAlarmInfo&, QCaDateTime& timeStam
     //Update objects that are not EPICS aware
 	printf("Connection data update %d: %s \n", i, data.toStdString().c_str() );
     //Update the label
-	
+
 	//Use custom widget to fill the LED and mode indicators titles	
 	char catstring[40];
     sprintf(catstring,"box_%d",i+1);
     (mymain.findChild<RgaLed *>(catstring) )->setTitle(data.toStdString().c_str() );
-	
+
     //Use custom widget to fill the LED and mode indicators in the main window	
 	sprintf(catstring,"status_%d",i+1);
     (rgamain.findChild<RgaStatus *>(catstring))->setTitle(data.toStdString().c_str() );	
-    //Update the title box
+    //Update the title
      DynamicDeviceTitle[i]=data.toStdString().c_str();
 }
 

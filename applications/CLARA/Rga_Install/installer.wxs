@@ -33,8 +33,9 @@
             <File Id="FILE17" Source="Qt5Widgets.dll" />
             <File Id="FILE18" Source="Qt5Xml.dll" />
             <File Id="FILE19" Source="qwt.dll" />
-            <File Id="FILE20" Source="Rga.exe"/>
-            <File Id="FILE21" Source="pipes.ico"/>
+			<File Id="FILE20" Source="RGALIST.txt" />
+            <File Id="FILE21" Source="Rga.exe"/>
+            <File Id="FILE22" Source="pipes.ico"/>
             <Environment Id='UpdatePath1' Name='QE_ARCHIVE_LIST' Action='set' Permanent='no' System='no' Part='last' Value='192.168.83.13:8888/cgi-bin/ArchiveDataServer.cgi' />
             <Environment Id='UpdatePath2' Name='EPICS_CA_ADDR_LIST' Action='set' Permanent='no' System='no' Part='last' Value='192.168.83.255' />
             <Environment Id='UpdatePath3' Name='EPICS_CA_MAX_ARRAY_BYTES' Action='set' Permanent='no' System='no' Part='last' Value='1000000' />

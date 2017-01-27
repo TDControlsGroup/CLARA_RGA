@@ -1,0 +1,17 @@
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\RgaArchiverTests.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\RgaArchiverTests.pdb
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\RgaArchiver.exe
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.Wpf.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\RgaArchiver.pdb
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\RgaArchiver.xml
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.pdb
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.xml
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.Wpf.pdb
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\OxyPlot.Wpf.xml
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\obj\Debug\RgaArchiverTests.csprojResolveAssemblyReference.cache
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\obj\Debug\RgaArchiverTests.dll
+C:\Users\zgm95989\Desktop\3.2.4-CLARA\applications\CLARA\RgaArchive\RgaArchiver\RgaArchiverTests\obj\Debug\RgaArchiverTests.pdb

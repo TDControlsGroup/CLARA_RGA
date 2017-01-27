@@ -1,0 +1,923 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EpicsClient2</name>
+    </assembly>
+    <members>
+        <member name="F:PSI.EpicsClient2.CaConfiguration.DebugTiming">
+            <summary>
+            Stores the time each operation took.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.CaConfiguration.MaxSearchSeconds">
+            <summary>
+            Defines a timeout before the search of the channels ends.
+            Default 0 => will search all the time
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.CaConfiguration.WaitTimeout">
+            <summary>
+            The timeout in miliseconds used for blocking opperations.
+            -1 == infinite
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.CaConfiguration.SearchAddress">
+            <summary>
+            The list of addresses used to search the channels.
+            Addresses must be separated by semi-columns (;) , and IP / ports must be separated by columns (:)
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.AccessRights">
+            <summary>
+            Channel access rights
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.AccessRights.NoAccess">
+            <summary>
+            no write nor reade access 
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.AccessRights.ReadOnly">
+            <summary>
+            it means you can only read.
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.AccessRights.WriteOnly">
+            <summary>
+            you can only write
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.AccessRights.ReadAndWrite">
+            <summary>
+            Read and Write Rights
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsConstants.CA_MINOR_PROTOCOL_REVISION">
+            <summary>
+            Minor revision of channel access protocol implemented in this library
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.CommandID">
+            <remarks>
+            Channel access command IDs
+            </remarks>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_VERSION">
+            <summary>
+            CA protocol version
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_EVENT_ADD">
+            <summary>
+            Register monitor
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_EVENT_CANCEL">
+            <summary>
+            Unregister monitor
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_READ">
+            <summary>
+            Read channel value (without notification)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_WRITE">
+            <summary>
+            Write channel value (without notification)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_SEARCH">
+            <summary>
+            Search for a channel
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_EVENTS_OFF">
+            <summary>
+            Disable monitor events
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_EVENTS_ON">
+            <summary>
+            Enable monitor events
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_ERROR">
+            <summary>
+            Error during operation
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_CLEAR_CHANNEL">
+            <summary>
+            Release channel resources
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_RSRV_IS_UP">
+            <summary>
+            Server beacon
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_NOT_FOUND">
+            <summary>
+            Channel not found
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_READ_NOTIFY">
+            <summary>
+            Read channel value (with notification)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_REPEATER_CONFIRM">
+            <summary>
+            Repeater registration confirmation
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_CREATE_CHAN">
+            <summary>
+            Create channel
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_WRITE_NOTIFY">
+            <summary>
+            Write channel value (with notification)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_CLIENT_NAME">
+            <summary>
+            Client user name
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_HOST_NAME">
+            <summary>
+            Client host name
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_ACCESS_RIGHTS">
+            <summary>
+            Channel access rights
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_ECHO">
+            <summary>
+            Ping CA server
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_REPEATER_REGISTER">
+            <summary>
+            Register client on repeater
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_CREATE_CH_FAIL">
+            <summary>
+            Channel creation failed
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_SERVER_DISCONN">
+            <summary>
+            Server is going down
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.CommandID.CA_PROTO_BAD_RESPONSE">
+            <summary>
+            Invalid response
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.Severity">
+            <summary>
+            Defines the severity of the current alarm
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Severity.NO_ALARM">
+            <summary>
+            there is no alarm (value is betweend LowWarnLimit and HighWarnLimit)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Severity.MINOR">
+            <summary>
+            the alarm is minor (value is between LowWarnLimit and LowAlarmLimit or HighWarnLimit and HighAlarmLimit)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Severity.MAJOR">
+            <summary>
+            the alarm is major. its lower then the LowAlarmLimit or higher den the HighAlarmLimit
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Severity.INVALID">
+            <summary>
+            Invalid Status
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.Status">
+            <summary>
+            Informs about the status of the device behind this Channel
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.NO_ALARM">
+            <summary>
+            Device is working properly correctly
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.HIHI">
+            <summary>
+            Device is malfunctioning, and hit the upper Alarm Limit
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.HIGH">
+            <summary>
+            Device is missbehaving, and hit the upper Warn Limit
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.LOLO">
+            <summary>
+            Device is malfunctioning, and hit the lower Alarm Limit
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.LOW">
+            <summary>
+            Device is missbehaving, and hit theu lower Warn Limit
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.Status.UDF">
+            <summary>
+            Undefined Status
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsChannel.Get``1(System.UInt32)">
+            <summary>
+            Get a value in synchronous mode. Blocks until the value come back or the timeout is reached.
+            </summary>
+            <typeparam name="TType">Type of value requested</typeparam>
+            <param name="nbElements">The number of elements to read (by default all)</param>
+            <returns>The value the IOC returned</returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsChannel.Put``1(``0)">
+            <summary>
+            Put a value to the IOC in blocking mode.
+            </summary>
+            <example>
+            EpicsClient client = new EpicsClient();<br/>
+            EpicsChannel channel=clien.tCreateChannel("SEILER_C:CPU");<br/>
+            channel.Put&lt;int&gt;()(1);<br/>
+            </example>
+            <typeparam name="TType">The type of values to put</typeparam>
+            <param name="newValue">The new value to set</param>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.CID">
+            <summary>
+            The client unique channel ID
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.SID">
+            <summary>
+            The server unique channel ID
+            </summary>
+        </member>
+        <member name="E:PSI.EpicsClient2.EpicsChannel.StatusChanged">
+            <summary>
+            Allows to get informed when the channel connection status changes.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.ChannelDataCount">
+            <summary>
+            The number of elements the channel contains.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.MonitorMask">
+            <summary>
+            The channel monitor mask
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.HasValue">
+            <summary>
+            If the get has returned the value.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.AccessRight">
+            <summary>
+            Access Rights of the Channel
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsChannel.ChannelDefinedType">
+            <summary>
+            The type of data the channel offers natively
+            </summary>
+        </member>
+        <member name="E:PSI.EpicsClient2.EpicsChannel.MonitorChanged">
+            <summary>
+            Event-Monitor which calls as soon a change on the channel happened which fits into the defined
+            Monitormask (channel.MonitorMask).<br />The properties channel.MonitorMask and channel.MonitorDataCount
+            do touch the behavior of this event and can't be changed when a monitor is already connected.
+            <example>
+            EpicsClient client = new EpicsClient();<br/>
+            EpicsChannel channel=clien.tCreateChannel("SEILER_C:CPU");<br/>
+            channel.MonitorMask = MonitorMask.VALUE;<br/>
+            channel.MonitorDataCount = 1;<br/>
+            channel.MonitorChanged += new EpicsDelegate(channel_MonitorChanged);
+            </example>
+            </summary>
+        </member>
+        <member name="E:PSI.EpicsClient2.EpicsChannel`1.MonitorChanged">
+            <summary>
+            Event-Monitor which calls as soon a change on the channel happened which fits into the defined
+            Monitormask (channel.MonitorMask).<br />The properties channel.MonitorMask and channel.MonitorDataCount
+            do touch the behavior of this event and can't be changed when a monitor is already connected.
+            <example>
+            EpicsClient client = new EpicsClient();<br/>
+            EpicsChannel channel=clien.tCreateChannel("SEILER_C:CPU");<br/>
+            channel.MonitorMask = MonitorMask.VALUE;<br/>
+            channel.MonitorDataCount = 1;<br/>
+            channel.MonitorChanged += new EpicsDelegate(channel_MonitorChanged);
+            </example>
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.MonitorMask">
+            <summary>
+            Monitor Mask allows to define what a Monitor shall monitor
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.VALUE">
+            <summary>
+            Value type
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.LOG">
+            <summary>
+            Log type
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.VALUE_LOG">
+            <summary>
+            Value and log together
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.ALARM">
+            <summary>
+            Alarm status type
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.VALUE_ALARM">
+            <summary>
+            Value and alarm together
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.LOG_ALARM">
+            <summary>
+            Log and alarm together
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.MonitorMask.ALL">
+            <summary>
+            All three (value, log and alarm) together
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.ExtAcknowledge`1">
+            <summary>
+            extended epics Acknowledge type <br/> serves severity, status, value, precision (for double and float), unittype 
+            and a bunch of limits. 
+            </summary>
+            <typeparam name="TType">generic datatype for value</typeparam>
+        </member>
+        <member name="T:PSI.EpicsClient2.ExtType`1">
+            <summary>
+            extended epics type <br/> serves severity, status and value
+            </summary>
+            <typeparam name="TType">generic datatype for value</typeparam>
+        </member>
+        <member name="M:PSI.EpicsClient2.ExtType`1.ToString">
+            <summary>
+            builds a string line of all properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtType`1.Severity">
+            <summary>
+            Severity of the channel serving this value
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtType`1.Status">
+            <summary>
+            Status of the channel serving this value
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtType`1.Value">
+            <summary>
+            current value, type transformation made by epics not c#
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtAcknowledge`1.AcknowledgeTransient">
+            <summary>
+            transient of the acknowledge message
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtAcknowledge`1.AcknowledgeSeverity">
+            <summary>
+            Severity of the acknowledge serverity
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.ExtControl`1">
+            <summary>
+            extended epics control type <br/> serves severity, status, value, precision (for double and float), unittype 
+            and a bunch of limits. 
+            </summary>
+            <typeparam name="TType">generic datatype for value</typeparam>
+        </member>
+        <member name="T:PSI.EpicsClient2.ExtGraphic`1">
+            <summary>
+            extended epics graphic type <br/> serves severity, status, value, precision (for double and float), unittype 
+            and a bunch of limits. 
+            </summary>
+            <typeparam name="TType">generic datatype for value</typeparam>
+        </member>
+        <member name="M:PSI.EpicsClient2.ExtGraphic`1.ToString">
+            <summary>
+            builds a string line of all properties
+            </summary>
+            <returns>comma seperated string of keys and values</returns>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.Precision">
+            <summary>
+            Epics defined precision of the valuem, only set for double or float
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.EGU">
+            <summary>
+            EnGineer Unit of the value
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.LowWarnLimit">
+            <summary>
+            Low limit for correct operation.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.LowAlertLimit">
+            <summary>
+            Low limit for incorrect operation
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.LowDisplayLimit">
+            <summary>
+            Lowest possible value which is visible
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.HighWarnLimit">
+            <summary>
+            High limit for correct operation  
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.HighAlertLimit">
+            <summary>
+            High limit for incorrect operation
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtGraphic`1.HighDisplayLimit">
+            <summary>
+            Highest possible value which is visible
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.ExtControl`1.ToString">
+            <summary>
+            builds a string line of all properties
+            </summary>
+            <returns>comma seperated string of keys and values</returns>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtControl`1.LowControlLimit">
+            <summary>
+            Lowest Value which can be set
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtControl`1.HighControlLimit">
+            <summary>
+            Highest Value which can be set
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.ExtTimeType`1">
+            <summary>
+            extended time epics type <br/> serves severity,status,value and time of last change.
+            </summary>
+            <typeparam name="TType">generic datatype for value</typeparam>
+        </member>
+        <member name="M:PSI.EpicsClient2.ExtTimeType`1.ToString">
+            <summary>
+            builds a string line of all properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PSI.EpicsClient2.ExtTimeType`1.Time">
+            <summary>
+            Time of the last change on channel as local datetime
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.Pipes.DataFilter.SendData(PSI.EpicsClient2.DataPacket)">
+            <summary>
+            Sends the DataPacket further in the chain
+            </summary>
+            <param name="packet"></param>
+        </member>
+        <member name="T:PSI.EpicsClient2.DataPacket">
+            <summary>
+            Handles messages between workers.
+            Can contain either a TCP/UDP packet or an EPICS message
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.DataPacket.ReverseAnswer">
+            <summary>
+            Allows to change the sending rules
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.GetDataAsString(System.Int32,System.Int32)">
+            <summary>
+            Retreives the payload as string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.GetUInt16(System.Int32)">
+            <summary>
+            Returns an UInt16 at a given position
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.GetUInt32(System.Int32)">
+            <summary>
+            Returns an UInt32 at a given position
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.SetUInt16(System.Int32,System.UInt16)">
+            <summary>
+            Writes an UInt16 at a given position
+            </summary>
+            <param name="position"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.SetUInt32(System.Int32,System.UInt32)">
+            <summary>
+            Writes an UInt32 at a given position
+            </summary>
+            <param name="position"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.SkipSize(System.UInt32)">
+            <summary>
+            Skips a given size from the data block
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.Clone">
+            <summary>
+            Clone this packet, creating an exact copy.
+            As the clone function is an implementation of IClonable it must return an object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.Create(System.Byte[])">
+            <summary>
+            Creates a new message based on the byte buffer however use only the first "size" byte for it.
+            </summary>
+            <param name="buff"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.Create(System.Byte[],System.Int32)">
+            <summary>
+            Creates a new message based on the byte buffer however use only the first "size" byte for it.
+            </summary>
+            <param name="buff"></param>
+            <param name="size"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.Create(PSI.EpicsClient2.DataPacket,System.UInt32)">
+            <summary>
+            Creates a new message based on an existing packed and use the "size" to extract only the first part.
+            </summary>
+            <param name="packet"></param>
+            <param name="size"></param>
+        </member>
+        <member name="M:PSI.EpicsClient2.DataPacket.Create(PSI.EpicsClient2.DataPacket,PSI.EpicsClient2.DataPacket)">
+            <summary>
+            Merges 2 packets together
+            </summary>
+            <param name="remaining"></param>
+            <param name="newPacket"></param>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.ExtendedMessage">
+            <summary>
+            Checks if it's an extended message or not.
+            To check we look at the payload site as well as the datacount.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.Command">
+            <summary>
+            The ChannelAccess command
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.PayloadSize">
+            <summary>
+            Payload size either on bytes 2-4 or 16-20
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.DataType">
+            <summary>
+            Data type on bytes 4-6
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.DataCount">
+            <summary>
+            Data count either on bytes 6-8 or 20-24
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.Parameter1">
+            <summary>
+            Parameter 1 on bytes 8-12
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.Parameter2">
+            <summary>
+            Paramter 2 on bytes 12-16
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.MessageSize">
+            <summary>
+            The full message size (header + payload).
+            Can be either payload + 16 or payload + 24 in case of an extended message.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.HeaderSize">
+            <summary>
+            Returns the size of the header
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.DataPacket.HasCompleteHeader">
+            <summary>
+            Checks (by checking the buffer size) if we have the full header or not.
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.Pipes.DataPipe.Add(PSI.EpicsClient2.Pipes.DataFilter)">
+            <summary>
+            Adds the next Worker to the chain and register it to the previous Worker to the ReceiveData event.
+            </summary>
+            <param name="worker"></param>
+        </member>
+        <member name="T:PSI.EpicsClient2.EpicsDelegate">
+            <summary>
+            Monitor delegate
+            </summary>
+            <param name="sender">EpicsChannel on which the changed happened</param>
+            <param name="newValue">Object value of the type the monitor was registered for</param>
+        </member>
+        <member name="T:PSI.EpicsClient2.EpicsStatusDelegate">
+            <summary>
+            Status delegate
+            </summary>
+            <param name="sender">Channel which had his status changed</param>
+            <param name="newStatus">new status</param>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.#ctor">
+            <summary>
+            Creates a new epics client
+            </summary>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.CreateChannel(System.String)">
+            <summary>
+            Creates a new EpicsChannel based on the channel name.
+            </summary>
+            <param name="channelName">Name of the channel.</param>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.CreateChannel``1(System.String)">
+            <summary>
+            Creates a new Generic EpicsChannel of the given type.
+            </summary>
+            <typeparam name="TType">Type of the channel which needs to be deal with.</typeparam>
+            <param name="channelName">Name of the channel</param>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.MultiConnect(System.Collections.Generic.IEnumerable{PSI.EpicsClient2.EpicsChannel})">
+            <summary>
+            Connects to the channel (search, and create the virtual circuit).
+            The function blocks till all the channels specified are connected or till the timeout is reached.
+            If a channel is already connected it will not block.
+            </summary>
+            <param name="channels">The list of channels to connect</param>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.MultiGet``1(System.Collections.Generic.IEnumerable{PSI.EpicsClient2.EpicsChannel})">
+            <summary>
+            Gets all the channels in paralell and returns the values as a list of objects.
+            If the value is null it means the channel didn't gave back the value in time.
+            </summary>
+            <typeparam name="TType"></typeparam>
+            <param name="channels"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PSI.EpicsClient2.EpicsClient.Dispose">
+            <summary>
+            Close all channels, and disconnect from the IOCs.
+            </summary>
+        </member>
+        <member name="P:PSI.EpicsClient2.EpicsClient.Configuration">
+            <summary>
+            Allows configuring the channel access client...
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.EpicsType">
+            <summary>
+            This enum represents the different CA value types and their corresponding intval
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.String">
+            <summary>
+            Plain string
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Short">
+            <summary>
+            Plain 16bit integer
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Float">
+            <summary>
+            Plain 32bit floating point
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Enum">
+            <summary>
+            Plain enumeration (using 16bit unsigned integer)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Byte">
+            <summary>
+            Plain unsigned byte
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Int">
+            <summary>
+            Plain 32bit integer
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Double">
+            <summary>
+            Plain 64bit floating point
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_String">
+            <summary>
+            Extends plain string by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Short">
+            <summary>
+            Extends plain 16bit integer by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Float">
+            <summary>
+            Extends plain 32bit floating point by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Enum">
+            <summary>
+            Extends plain enumeration by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Byte">
+            <summary>
+            Extends plain unsigned byte by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Int">
+            <summary>
+            Extends plain 32bit integer by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Status_Double">
+            <summary>
+            Extends plain 64bit floating point by status and severity
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_String">
+            <summary>
+            Extends Status_String by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Short">
+            <summary>
+            Extends Status_Short by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Float">
+            <summary>
+            Extends Status_Float by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Enum">
+            <summary>
+            Extends Status_Enum by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Byte">
+            <summary>
+            Extends Status_Byte by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Int">
+            <summary>
+            Extends Status_Int by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Time_Double">
+            <summary>
+            Extends Status_Double by timestamp
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_String">
+            <summary>
+            Extends Status_String by display bounds (not used since
+            a string cannot have display bounds)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_Short">
+            <summary>
+            Extends Status_Short by display bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_Float">
+            <summary>
+            Extends Status_Float by display bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Labeled_Enum">
+            <summary>
+            Extends Status_Enum by a list of enumeration labels
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_Byte">
+            <summary>
+            Extends Status_Byte by display bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_Int">
+            <summary>
+            Extends Status_Int by display bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Display_Double">
+            <summary>
+            Extends Status_Double by display bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_String">
+            <summary>
+            Extends Display_String by control bounds (not used since
+            a string cannot have control bounds)
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Short">
+            <summary>
+            Extends Display_Short by control bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Float">
+            <summary>
+            Extends Display_Float by control bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Enum">
+            <summary>
+            Not used since parent type is Labeled_Enum
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Byte">
+            <summary>
+            Extends Display_Byte by control bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Int">
+            <summary>
+            Extends Display_Int by control bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Control_Double">
+            <summary>
+            Extends Display_Double by control bounds
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Internal_UInt">
+            <summary>
+            UInt32 not used by client, needed for the header fields! This Type is not valid as recordtype
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Internal_UShort">
+            <summary>
+            UInt16 not used by client, needed for the header fields! This Type is not valid as recordtype
+            </summary>
+        </member>
+        <member name="F:PSI.EpicsClient2.EpicsType.Invalid">
+            <summary>
+            Defines an invalid data type
+            </summary>
+        </member>
+        <member name="T:PSI.EpicsClient2.Pipes.PacketSplitter">
+            <summary>
+            Cuts TCP or UDP packet is EPICS messages
+            </summary>
+        </member>
+    </members>
+</doc>

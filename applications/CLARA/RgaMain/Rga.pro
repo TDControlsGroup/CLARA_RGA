@@ -13,7 +13,7 @@ HEADERS = RGA.h
 HEADERS += RgaCA.h
 
 #Let us see the terminal as well
-CONFIG   += console
+#CONFIG   += console
 DEFINES += _MINGW=TRUE
 
 SOURCES     = main.cpp
