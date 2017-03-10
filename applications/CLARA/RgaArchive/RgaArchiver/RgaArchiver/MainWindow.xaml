@@ -6,30 +6,74 @@
         xmlns:local="clr-namespace:RgaArchiver"
         mc:Ignorable="d"
         xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
-        Title="MainWindow" Height="328.201" Width="525">
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"         
+        Title="MainWindow">
 
-    <Window.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.New" Executed="NewCommand_Executed" CanExecute="NewCommand_CanExecute" />
-    </Window.CommandBindings>
-    
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="138"/>
+            <RowDefinition Height="Auto" MinHeight="138"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" MinHeight="138"/>
+                    <RowDefinition Height="Auto" MinHeight="138"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="378"/>
+                    <ColumnDefinition Width="Auto" MinWidth="74"/>
+                </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Enter Archiver URL" Margin="5"/>
+                <TextBox Grid.Row="1" Name="MyTextBox" Margin="5"/>
+                <Button Grid.Row="2" Content="Connect" Margin="5"/>
+                <StatusBar HorizontalAlignment="Left"  Grid.Row="3" Width="379"/>
+            </Grid>
 
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Enter form and to time range" Margin="5"/>
+                <xctk:DateTimePicker HorizontalAlignment="Left" Margin="60,5,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                <xctk:DateTimePicker HorizontalAlignment="Left" Margin="60,5,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+            </Grid>
+            
+                <Label Grid.Row="1" Grid.Column="1" Content="Yaxis:"/>
 
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Select PVs" Margin="5"/>
+                <DataGrid Grid.Row="1" x:Name="dataGrid" Height="102" Width="350"/>
+                <DataGrid x:Name="dataGrid" Height="102" Width="350"/>
+            </Grid>
+               
 
-        <oxy:Plot Title="{Binding Title}" Grid.ColumnSpan="2" x:Name="chart">
-            <oxy:Plot.Axes>
-                <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
-                <oxy:LogarithmicAxis Position="Left" Minimum="1e-8" Maximum="1e-6"/>
-            </oxy:Plot.Axes>
-            <oxy:Plot.Series>
+        </Grid>
+        <Grid Grid.Row="1">
+            <oxy:Plot Title="{Binding Title}" x:Name="chart" RenderTransformOrigin="0.466,0.5" Height="138" Width="342">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                    <oxy:LogarithmicAxis Position="Left" Minimum="1e-8" Maximum="1e-6"/>
+                </oxy:Plot.Axes>
                 <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:Plot.Series>
-        </oxy:Plot>
-        <Button x:Name="ChangeDataContextButton" Content="Button" HorizontalAlignment="Left" Margin="81,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
+            </oxy:Plot>
+        </Grid>
     </Grid>
 </Window>

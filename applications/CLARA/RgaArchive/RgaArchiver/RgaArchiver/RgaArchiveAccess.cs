@@ -20,6 +20,7 @@ namespace RgaArchiver
 
     public class RgaArchiveAccess
     {
+        private DataContainer userinfo;
         ///  <value>From date yyyy,mm,dd,hh,mm,ss</value>
         public DateTime rgaFrom { get; set; } = dateRgaFrom;
 

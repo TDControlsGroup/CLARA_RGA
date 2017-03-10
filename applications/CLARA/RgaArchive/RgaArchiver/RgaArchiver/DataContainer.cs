@@ -8,115 +8,76 @@ using System.Windows.Input;
 using OxyPlot;
 
 //This class is used to hold the waveform and mass data between various other classes
-
+/*
+ * <RgaMain>
+ * From Date
+ * To   Date
+ *   <RGA1-6>
+ *    <PV>
+ *      <mystrip>    ==> Same class with different names:
+ *      <myAnaWave>  ==> These all use DataPv class in a list. Strip data is a list of PVs scanned and ANA/BAR list is a list of Wavedata at different times
+ *      <myBarWave>  ==>
+ *    </PV>
+ *   </RGA1-6>
+ * </RgaMain>
+ * 
+ * <DataPV> This holds a plot of DataElements in a list. Each DataPV is a plot and each DataElement is a datum in that plot
+ * <DataElement> This holds all the PVs info as time and PV name. 
+ */
 namespace RgaArchiver
 {
 
-    public class AddFactory<T,R>
-           where T : Dictionary<string, R>
-           where R : new()
-    {
-        public int AddElement(string Name, T myobject)
+    public class DataContainer
+    {       //Hold one RGA
+        public string URL_root;
+        public DateTime start;
+        public DateTime end;
+        public List<DataPV> mystrip { get; set; }
+        public List<DataPV> myAnaWave { get; set; }
+        public List<DataPV> myBarWave { get; set; }
 
-        {
-            try
+        public DataContainer()
             {
-                myobject.Add(Name, new R());
+                this.mystrip   = new List<DataPV>();
+                this.myAnaWave = new List<DataPV>();
+                this.myBarWave = new List<DataPV>();
+                this.start     = new DateTime();
+                this.end       = new DateTime();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("{0} exception.", e);
-                return 1;
-            }
-            return 0;
-        }
+ 
     }
 
-    public class DataContainer:AddFactory<Dictionary<string, RgaElement>, RgaElement>
-    {
-        public DateTime from { get; set; }
-        public DateTime to { get; set; }
-        public Dictionary<string, RgaElement> rgas = new Dictionary<string, RgaElement>();
+
+        public class DataPV
+        {
+            public DataPV()
+            {
+              this.data = new List<DataElement>();
+            }
+            //Use for URL build
+            public string pv_url_suffix { get; set; }
+            //Use for strip-plots id
+            public string   pv          { get; set; }
+            //User for ANA/BAR plots
+            public DateTime time   { get; set; }
+            //ANA/BAR/Stip data
+            public List<DataElement> data { get; set; }
+
+        }
+        public class DataElement
+        {
+        public DataElement()
+        {
+            this.time = new DateTime();
+        }
+        public DateTime time  { get; set; }
+            public double   mass  { get; set; }
+            public double   pres  { get; set; }
+            public int      head  { get; set; }
+            public int      mode  { get; set; }
+            public int      fil   { get; set; }
+            public int      arch  { get; set; } 
+        }
 
     
-        //Add an RGA to the Datacontainer
-        public int AddRga(string Name)
-        {
-
-           return AddElement(Name, this.rgas);
-        }
-
-        //Get an rga from the Datacontainer
-        public RgaElement GetRga(string Name)
-        {
-            if (!(this.rgas.ContainsKey(Name))){ Console.WriteLine("Key not found: "+ Name); return new RgaElement(); }
-            return this.rgas[Name];
-        }
-
-
-    }
-
-    public class RgaElement:AddFactory<Dictionary<string, PvElement>, PvElement>
-    {
-        public Dictionary<string, PvElement> pvs = new Dictionary<string, PvElement>();
-
-        //Add an PV to the rga
-        public int AddPv(string Name)
-        {
-            return AddElement(Name, this.pvs);
-        }
-
-        //Get an pv from the rga
-        public PvElement GetPv(string Name)
-        {
-            if (!(this.pvs.ContainsKey(Name))) { Console.WriteLine("Key not found: " + Name); return new PvElement(); }
-            return this.pvs[Name];
-        }
-
-    }
-
-    public class PvElement
-    {
-        //mass of particle vs <value vs time>
-        public Dictionary<int, MassRangeElement> masses = new Dictionary<int, MassRangeElement>();
-        //time of waveform scan vs <value vs mass>
-        public Dictionary<DateTime, WaveformElement> waveforms = new Dictionary<DateTime, WaveformElement>();
-
-        //Get an waveform object at given time from the pv
-        public WaveformElement GetWaveform(DateTime time)
-        {
-            if (!(this.waveforms.ContainsKey(time))) { Console.WriteLine("Key not found: " + time); return new WaveformElement(); }
-            return this.waveforms[time];
-        }
-
-        //Get an mass object at given mass from the pv
-        public MassRangeElement GetMasse(int mass)
-        {
-            if (!(this.masses.ContainsKey(mass))) { Console.WriteLine("Key not found: " + mass); return new MassRangeElement(); }
-            return this.masses[mass];
-        }
-
-    }
-
-    public class WaveformElement
-
-    {
-        //Waveform type BAR, ANA
-        public string type;
-        //Value of waveform recorded time
-        public DateTime waveformTime { get; set; }
-        //Value of waveform vs. mass
-        public Dictionary<float, float> waveform = new Dictionary<float, float>();
-    }
-
-    public class MassRangeElement
-
-    {
-        //Waveform type BAR, ANA
-        public string type;
-        //Value of mass vs. time
-        public Dictionary<float, DateTime> mass = new Dictionary<float, DateTime>();
-    }
-
-
 }

@@ -12,29 +12,43 @@ namespace RgaArchiverTests
             // Arrange
             //Act
             RgaArchiveAccess test = new RgaArchiveAccess();
-            test.GetArchive();
             //Assert
+            test.GetArchive();
+
+            //Arrange
+            ArchiveAPI aRapi = new ArchiveAPI();
+
+            aRapi.start = new DateTime(2017, 01, 13, 09, 10, 10);
+            aRapi.end = new DateTime(2017, 01, 13, 17, 27, 10);
+            aRapi.URL_root = "http://claraserv2:17668/retrieval/data/getData.json?";
+            aRapi.myAnaWave.Add(new DataPV() { pv = "rga6" });
+            aRapi.GetArchive();
         }
         [TestMethod]
         public void TestData()
         {
-            //Arrange
+         //Arrange
             DataContainer data = new DataContainer();
-            //Act
+            data.start =  DateTime.Now;
+            data.end   =  DateTime.Today;
+            //Act:
+            //Add a new strip pv
 
-            data.AddRga("test2");
-            data.GetRga("test").AddPv("pvtest");
+            data.mystrip.Add(new DataPV() { pv = "testme3" });
+            data.mystrip.Add(new DataPV() { pv = "testme4" });
+            data.mystrip.Add(new DataPV() { pv = "testme5" });
 
+            data.myAnaWave.Add(new DataPV() { pv = "Ana" });
+            data.myAnaWave[0].data.Add(new DataElement() { time = DateTime.Now, mass = 4, pres = 0.25 });
+            data.myAnaWave[0].data.Add(new DataElement() { time = DateTime.Now, mass = 5, pres = 0.25 });
+            data.myAnaWave[0].data.Add(new DataElement() { time = DateTime.Now, mass = 6, pres = 0.25 });
+            data.myAnaWave[0].data.Add(new DataElement() { time = DateTime.Now, mass = 7, pres = 0.25 });
+            data.myAnaWave[0].data.Add(new DataElement() { time = DateTime.Now, mass = 8, pres = 0.25 });
             //Assert
-            //Add test
-            Assert.AreEqual(0,data.AddRga("test"));
-            //Fail is we try to add another test that is not unique
-            Assert.AreEqual(1, data.AddRga("test")); 
-            //See that we have only 2 rgas added (test and test2)
-            Assert.AreEqual(2, data.rgas.Count);
-            Assert.
-
-
+            Assert.AreEqual(DateTime.Today, data.end);
+            Assert.AreEqual(3, data.mystrip.Count);
+            Assert.AreEqual("testme5", data.mystrip[2].pv);
+            Assert.AreEqual(8, data.myAnaWave[0].data[4].mass);
         }
     }
 }

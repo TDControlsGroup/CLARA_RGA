@@ -135,15 +135,25 @@ void  RGA::RGAMain()
     {
 
 		/* Main Window*/
-		//Fill in names and serial numbers of the devices
-		//Names
-        updateObject<QELabel*>("id_%d", "%s:GETNAME", "variable", 1, i);		
+
+	
 
 		//Make button links from main to the summary plots and from strip plots
         updateObject<QEPushButton*>("dummy", "%d", "clickText", 2, i);	
-	
+
+	    //Fill in names, IP and serial numbers of the devices and Status
+
+		//Names
+        updateObject<QELabel*>("id_%d", "%s:GETNAME", "variable", 1, i);	
+		
 		//SN
         updateObject<QELabel*>("sn_%d", "%s:GETSERIAL", "variable", 1, i);
+
+		//IP
+		//updateObject<QELabel*>("ip_%d", "%s:GETIP", "variable", 1, i);
+
+		//Status
+		updateObject<QEBitStatus*>("IMG_%d", "%s:ILK", "variable", 1, i);			
 		
 	    //Connect the percentage scan boxes to the EPICS records
         updateObject<QGroupBox*>("per%d", "%s:PERSCANNED", "variable", 3, i);
