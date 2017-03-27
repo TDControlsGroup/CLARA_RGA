@@ -38,7 +38,7 @@
                 <StatusBar HorizontalAlignment="Left"  Grid.Row="3" Width="379"/>
             </Grid>
 
-            <Grid Grid.Row="0" Grid.Column="1">
+            <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,1,0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -61,19 +61,32 @@
                     </Grid.RowDefinitions>
                     <Label Content="Select PVs" Margin="5"/>
                 <DataGrid Grid.Row="1" x:Name="dataGrid" Height="102" Width="350"/>
-                <DataGrid x:Name="dataGrid" Height="102" Width="350"/>
+                <DataGrid x:Name="dataGrid2" Height="102" Width="350"/>
             </Grid>
                
 
         </Grid>
         <Grid Grid.Row="1">
-            <oxy:Plot Title="{Binding Title}" x:Name="chart" RenderTransformOrigin="0.466,0.5" Height="138" Width="342">
-                <oxy:Plot.Axes>
-                    <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
-                    <oxy:LogarithmicAxis Position="Left" Minimum="1e-8" Maximum="1e-6"/>
-                </oxy:Plot.Axes>
-                <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:Plot>
+            <TabControl>
+                <TabItem Header="Strip Chart">
+                    <oxy:Plot Title="{Binding Title}" x:Name="chart" RenderTransformOrigin="0.466,0.5" Height="138" Margin="10,0,34,2">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                            <oxy:LogarithmicAxis Position="Left" Minimum="1e-8" Maximum="1e-6"/>
+                        </oxy:Plot.Axes>
+                        <oxy:LineSeries ItemsSource="{Binding Points}"/>
+                    </oxy:Plot>
+                </TabItem>
+                <TabItem Header="Waveform">
+                    <oxy:Plot Title="{Binding Title}" x:Name="wave" RenderTransformOrigin="0.466,0.5" Height="138" Margin="10,0,34,2">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" />
+                            <oxy:LogarithmicAxis Position="Left" Minimum="1e-8" Maximum="1e-6"/>
+                        </oxy:Plot.Axes>
+                        <oxy:LineSeries ItemsSource="{Binding Points}"/>
+                    </oxy:Plot>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </Window>

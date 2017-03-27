@@ -9,7 +9,7 @@ if(len(sys.argv) > 1):
 	PVPatterns.extend(sys.argv[1:])
 
 finalPVList = []
-applianceMGMTUrl = 'http://192.168.83.13/mgmt/bpl/getAllPVs'
+applianceMGMTUrl = 'http://claraserv2:17665/mgmt/bpl/getAllPVs'
 if len(PVPatterns) > 0:
 	for pattern in PVPatterns:
 		resp = urllib2.urlopen(url=applianceMGMTUrl + "?" + urllib.urlencode({"pv" : pattern}))
