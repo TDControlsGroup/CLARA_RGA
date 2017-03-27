@@ -1,0 +1,38 @@
+CLARA1:
+
+record(bi, "$(type):SPOWER")
+{
+    field(DESC, "Set Power")
+    field(OUT, "$(type1):STATE_SP")
+}
+record(bo,"$(type):RPOWER")
+{
+    field(DESC, "Read Power")
+    field(INP, "$(type1):STATE_RB")
+}
+record(bo,"$(type):RILK")
+{
+    field(DESC, "Read Interlock")
+    field(INP, "$(type1):Cml")
+}
+
+
+
+
+CLARA2:
+
+record(bi, "$(type):SPOWER")
+{
+    field(DESC, "Set Power")
+    field(OUT, "$(type1):SETPOWER")
+}
+record(bo,"$(type):RPOWER")
+{
+    field(DESC, "Read Power")
+    field(INP, "$(type2):POWER")
+}
+record(bo,"$(type):RILK")
+{
+    field(DESC, "Read Interlock")
+    field(INP, "$(type2):Cml")
+}

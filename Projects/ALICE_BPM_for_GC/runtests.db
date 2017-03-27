@@ -1,0 +1,4 @@
+record(ai,"INJ-LSR-DLY-01:BCAL")
+{
+    field(VAL,"0")
+}

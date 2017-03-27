@@ -1,0 +1,68 @@
+<QEGuiConfig>
+ <Config Name="vela_chart">
+  <Component Name="QEGui">
+   <MainWindows>1</MainWindows>
+   <UserLevel>USERLEVEL_USER</UserLevel>
+  </Component>
+  <Component Name="QEGuiMainWindow_0">
+   <Identity id="0">
+    <Title>QEGui striptool</Title>
+   </Identity>
+   <Geometry Height="785" X="-1468" Y="197" Width="1158"/>
+   <State Flags="0"/>
+   <Gui ID="QEGui_window_0_form_0" CurrentGui="1" Name="C:/Users/zgm95989/Desktop/notes/VELA_SIM/striptool.ui">
+    <Title>QEGui striptool</Title>
+    <Presentation>Central</Presentation>
+   </Gui>
+  </Component>
+  <Component Name="QEGui_window_0_form_0_QEForm"/>
+  <Component Name="QEStripChart_Common">
+   <Predefined Number="0"/>
+  </Component>
+  <Component Name="QEGui_window_0_form_0_QEStripChart_0_3_0">
+   <ChartState>
+    <IsNormalVideo>1</IsNormalVideo>
+    <ChartTimeMode>tmRealTime</ChartTimeMode>
+    <YScaleMode>linear</YScaleMode>
+    <ChartYScale>manual</ChartYScale>
+    <YMinimum>-15</YMinimum>
+    <YMaximum>15</YMaximum>
+    <Duration>60</Duration>
+    <TimeZoneSpec>0</TimeZoneSpec>
+    <EndDateTime>1477990768</EndDateTime>
+   </ChartState>
+   <PV_List>
+    <PV slot="0">
+     <Name>VM-EBT-INJ-MAG-BSOL-01:RI</Name>
+    </PV>
+    <PV slot="1">
+     <Name>VM-EBT-INJ-MAG-PRN-07:On</Name>
+    </PV>
+    <PV slot="2">
+     <Name>VM-EBT-INJ-MAG-BSOL-01:SI</Name>
+    </PV>
+    <PV slot="3">
+     <Name>VM-EBT-INJ-MAG-PRR-07:On</Name>
+    </PV>
+    <PV slot="4">
+     <Name>VM-EBT-INJ-MAG-SOL-01:RI</Name>
+    </PV>
+    <PV slot="5">
+     <Name>VM-EBT-INJ-MAG-PRR-07:Sta</Name>
+    </PV>
+    <PV slot="6">
+     <Name>VM-EBT-INJ-MAG-SOL-01:SI</Name>
+    </PV>
+    <PV slot="7">
+     <Name>VM-EBT-INJ-MAG-PRN-07:Sta</Name>
+    </PV>
+    <PV slot="8">
+     <Name>VM-EBT-INJ-MAG-SOL-01:Sta</Name>
+    </PV>
+    <PV slot="10">
+     <Name>VM-EBT-INJ-MAG-HVCOR-01:Sta</Name>
+    </PV>
+   </PV_List>
+  </Component>
+ </Config>
+</QEGuiConfig>

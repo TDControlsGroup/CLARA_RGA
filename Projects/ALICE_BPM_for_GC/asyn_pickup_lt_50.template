@@ -1,0 +1,158 @@
+record(dfanout, "$(device):$(pu):BDF")
+{
+    field(DOL, "$(crate):TLC")
+    field(OMSL, "closed_loop")
+    field(OUTA, "$(device):$(pu):BSA1.NELM")
+    field(OUTB, "$(device):$(pu):BEAM.N")
+    field(FLNK, "$(device):$(pu):IBDF")
+}
+
+#RFC: INDX added for variable TLC called TLI. This record is triggered by calls to BDF
+#and updates BSA1. Not sure if BEAM needs updating as well so left it alone
+#Assuming that TLC is triggered from INJ-LSR-DLY-01.BCAL which updates TLI
+record(dfanout, "$(device):$(pu):IBDF")
+{
+    field(DOL, "$(crate):TLI")
+    field(OMSL, "closed_loop")
+    field(OUTA, "$(device):$(pu):BSA1.INDX")
+    field(FLNK, "$(device):$(pu):BSA1")
+}
+
+record(subArray, "$(device):$(pu):BSA1")
+{
+    field(INP, "$(device):$(pu):TRACE")
+    field(FTVL, "DOUBLE")
+    field(MALM, "11")
+    field(NELM, "8")
+    field(INDX, "3")
+    field(FLNK, "$(device):$(pu):BEAM")
+}
+
+record(compress, "$(device):$(pu):BEAM")
+{
+    field(INP,  "$(device):$(pu):BSA1")
+    field(ALG,  "N to 1 Average")
+    field(NSAM, "1")
+    field(N,    "8")
+    field(FLNK, "$(device):$(pu):BSA2")
+}
+
+record(subArray, "$(device):$(pu):BSA2")
+{
+    field(INP, "$(device):$(pu):TRACE")
+    field(FTVL, "DOUBLE")
+    field(MALM, "20")
+    field(NELM, "8")
+    field(INDX, "12")
+    field(FLNK, "$(device):$(pu):BEAM2")
+}
+
+record(compress, "$(device):$(pu):BEAM2")
+{
+    field(INP,  "$(device):$(pu):BSA2")
+    field(ALG,  "N to 1 Average")
+    field(NSAM, "1")
+    field(N,    "8")
+    field(FLNK, "$(device):$(pu):PSA1")
+}
+
+record(subArray, "$(device):$(pu):PSA1")
+{
+    field(INP, "$(device):$(pu):TRACE")
+    field(FTVL, "DOUBLE")
+    field(MALM, "$(idx2)")
+    field(NELM, "20")
+    field(INDX, "$(idx1)")
+    field(FLNK, "$(device):$(pu):P1")
+}
+
+record(compress, "$(device):$(pu):P1")
+{
+    field(INP,  "$(device):$(pu):PSA1")
+    field(ALG,  "N to 1 Average")
+    field(NSAM, "1")
+    field(N,    "20")
+    field(FLNK, "$(device):$(pu):PSA2")
+}
+
+record(subArray, "$(device):$(pu):PSA2")
+{
+    field(INP, "$(device):$(pu):TRACE")
+    field(FTVL, "DOUBLE")
+    field(MALM, "$(idx3)")
+    field(NELM, "20")
+    field(INDX, "$(idx2)")
+    field(FLNK, "$(device):$(pu):P2")
+}
+
+record(compress, "$(device):$(pu):P2")
+{
+    field(INP,  "$(device):$(pu):PSA2")
+    field(ALG,  "N to 1 Average")
+    field(NSAM, "1")
+    field(N,    "20")
+    field(FLNK, "$(device):$(pu):PSA3")
+}
+record(subArray, "$(device):$(pu):PSA3")
+{
+    field(INP, "$(device):$(pu):TRACE")
+    field(FTVL, "DOUBLE")
+    field(MALM, "$(idx4)")
+    field(NELM, "20")
+    field(INDX, "$(idx3)")
+    field(FLNK, "$(device):$(pu):P3")
+}
+
+record(compress, "$(device):$(pu):P3")
+{
+    field(INP,  "$(device):$(pu):PSA3")
+    field(ALG,  "N to 1 Average")
+    field(NSAM, "1")
+    field(N,    "20")
+    field(FLNK, "$(device):$(pu):PLOW")
+}
+
+record(calc, "$(device):$(pu):PLOW")
+{
+    field(INPA, "$(device):$(pu):P1")
+    field(INPB, "$(device):$(pu):P2")
+    field(INPC, "$(device):$(pu):P3")
+    field(CALC, "(A<B?A:B)<C?(A<B?A:B):C")
+    field(FLNK, "$(device):$(pu):PBUF")
+}
+
+record(compress, "$(device):$(pu):PBUF")
+{
+    field(INP,  "$(device):$(pu):PLOW")
+    field(ALG,  "Circular Buffer")
+    field(NSAM, "10")
+    field(FLNK, "$(device):$(pu):PEDESTAL")
+}
+
+record(compress, "$(device):$(pu):PEDESTAL")
+{
+    field(INP,  "$(device):$(pu):PBUF")
+    field(ALG,  "N to 1 Median")
+    field(NSAM, "1")
+    field(N,    "10")
+    field(FLNK, "$(device):$(pu):ISBEAM")
+}
+
+# Is the beam voltage at minimum 0.1V larger than the pedestal or RF pickup immediately downstream
+record(calc, "$(device):$(pu):ISBEAM")
+{
+    field(INPA, "$(device):$(pu):BEAM")
+    field(INPB, "$(device):$(pu):BEAM2")
+    field(INPC, "$(crate):ISBEAM")
+    field(CALC, "((A-B)>0.1)")
+    field(FLNK, "$(device):$(pu):VOLTS")
+}
+
+record(calc, "$(device):$(pu):VOLTS")
+{
+    field(INPA, "$(device):$(pu):BEAM")
+    field(INPB, "$(device):$(pu):PEDESTAL")
+    field(INPC, "$(device):$(pu):ISBEAM")
+    field(CALC, "C=1?A-B:11")
+    field(FLNK, "$(device):PUC")
+}

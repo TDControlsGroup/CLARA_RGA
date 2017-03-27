@@ -1,0 +1,93 @@
+# There is no CPP update from trigger because it value is always 0!!!!
+
+record(calc, "$(device):ISBEAM")
+{
+    field(INPA, "ERL-PS-CRATE-02:M14:STA.B0") # Open=0
+    field(INPB, "INJ-LSR-SHUT-02:Sta") # Open=1
+    field(INPC, "INJ-GUN-HVPSU-01:HT") # On=1
+    field(INPD, "$(trigger) CPP")
+    field(CALC, "A=0&B=1&C=1")
+}
+
+###### Variable TLC:
+###### TLC bin length and TLI are bin start 
+#They are triggered from a INJ-LSR-DLY-01:BCAL monitor and are updated from a recursive
+# chain of limit tests. They then return to asyn_pickup
+
+### Calculate TLC for NELM first
+
+##Case 1: A >= 50
+#CPP is used BCAL as we need to process the records in a chain starting here.
+#BCAL's monitor signal sets of recursive tests from here:
+
+record(calcout, "$(device):TLC")
+{
+    field(INPA, "INJ-LSR-DLY-01:BCAL CPP")
+    field(CALC, "A>=50?FLOOR((A/10)+0.00001)-2:0")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLC.VAL NPP")
+    field(FLNK, "$(device):TLC1")   
+}
+
+##Case 2: (40 <= A < 50) || (A<30) 
+#Don't trigger on any more BCAL monotirs so CA from now on as BCAL processing is done
+
+record(calcout, "$(device):TLC1")
+{
+    field(INPA, "INJ-LSR-DLY-01:BCAL CA")
+    field(CALC, "((A>=40)&&(A<50))||(A<30)?3:0")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLC.VAL NPP")
+    field(FLNK, "$(device):TLC2")  
+}
+
+#Case 3: (30 <= A < 40)
+record(calcout, "$(device):TLC2")
+{ 
+    field(INPA, "INJ-LSR-DLY-01:BCAL CA")
+    field(CALC, "(A>=30)&&(A<40)?2:0")
+	field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLC.VAL NPP")  
+}
+
+### End and TLC
+
+### Calculate TLI for INDX
+##Note: this will be triggered from BCAL
+
+##Case 1: A >= 50
+record(calcout, "$(device):TLI")
+{
+    field(INPA, "INJ-LSR-DLY-01:BCAL CPP")
+    field(CALC, "(A>=50)?3:0")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLI.VAL NPP")
+    field(FLNK, "$(device):IC1")   
+}
+
+##Case 2: 30 <= A < 50
+record(calcout, "$(device):IC1")
+{
+    field(INPA, "INJ-LSR-DLY-01:BCAL CA")
+    field(CALC, "(A>=30)&&(A<50)?2:0")
+    field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLI.VAL NPP")
+    field(FLNK, "$(device):IC2")  
+}
+
+#Case 4: A < 30
+record(calcout, "$(device):IC2")
+{
+    field(INPA, "INJ-LSR-DLY-01:BCAL CA")
+    field(CALC, "(A<30)?1:0")
+	field(OOPT, "When Non-zero")
+    field(DOPT, "Use CALC")
+    field(OUT,"$(device):TLI.VAL")
+}
+
+
